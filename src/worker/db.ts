@@ -345,7 +345,7 @@ export const MIGRATIONS: string[][] = [
     )`,
     `CREATE INDEX IF NOT EXISTS application_hits_by_ip ON application_hits(ip, at)`,
   ],
-  // 新生任务的课程证书（先是 CS50x）：学员交证书链接，管理员确认
+  // 新生任务的课程证书（先是 CS50x）：学员交证书链接，管理员确认。2026-11 起改成本人点「我已完成」，仍记在这张表里（见 api/start.ts）
   [
     `CREATE TABLE IF NOT EXISTS certificates (
       user_id TEXT NOT NULL,

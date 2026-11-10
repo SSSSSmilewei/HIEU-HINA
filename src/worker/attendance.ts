@@ -5,9 +5,10 @@ import { getSetting } from "./db";
 /**
  * 签到签退（技术方案“管理”一节）。
  *
- * 两种场景：
+ * 场景：
  *  - evening：晚自习，默认周一、二、四 19:00–20:40，只能在时段内签到（可提前 15 分钟）；到 20:40 自动结束
- *  - venue：大创场地日常使用，任意时间进场签到、离场签退；当天 23:59 自动结束
+ *  - venue：大创场地。2026-11 起取消（和晚自习是同一个场地），不能再新建；
+ *    旧记录照常显示、照常算学习时长，进行中的照常签退，当天 23:59 自动结束
  *
  * 签到、签退各拍一张现场照片（只能用摄像头拍，网页和 App 都不提供相册入口），时间以服务器为准。
  * 管理员可以在后台打开“现场口令”（每天自动换的 4 位数），晚自习签到时要再输一次。
@@ -59,9 +60,12 @@ export function attendanceMinutes(r: { kind: AttendanceKind; in_at: number; out_
   return Math.min(raw, 16 * 60);
 }
 
+/** 旧版 App 还会发场地签到的请求，用这句话回复 */
+export const VENUE_REMOVED = "场地签到已取消，请在晚自习时间签到";
+
 export class AttendanceError extends Error {
   constructor(
-    public code: "closed" | "not_evening_day" | "code" | "already_in" | "not_in" | "photo",
+    public code: "closed" | "not_evening_day" | "code" | "already_in" | "not_in" | "photo" | "venue_removed",
     message: string,
   ) {
     super(message);
@@ -145,19 +149,18 @@ export async function signIn(
   input: { userId: string; kind: AttendanceKind; rule: AttendanceRule; secret: string; code?: string; photoKey: string | null; signKey?: string | null; ip?: string | null },
   now = Date.now(),
 ): Promise<AttendanceRow> {
+  if (input.kind !== "evening") throw new AttendanceError("venue_removed", VENUE_REMOVED);
   await autoClose(db, input.rule, now, input.userId);
   const current = await openRecord(db, input.userId);
   if (current) throw new AttendanceError("already_in", current.kind === "evening" ? "你已经在晚自习签到了，离开时记得签退" : "你已经在场地签到了，离开时记得签退");
   const day = cnDate(now);
-  if (input.kind === "evening") {
-    const ev = eveningState(input.rule, now);
-    if (!ev.isDay) throw new AttendanceError("not_evening_day", "今天没有晚自习。去大创场地学习请选“场地签到”");
-    if (!ev.open) throw new AttendanceError("closed", `现在不在晚自习签到时间。签到时间是 ${cnClock(ev.opensAt)} 到 ${input.rule.window[1]}`);
-    const done = await db.prepare("SELECT 1 AS x FROM attendance WHERE user_id = ? AND day = ? AND kind = 'evening'").bind(input.userId, day).first();
-    if (done) throw new AttendanceError("already_in", "今晚已经签到过了");
-    if (input.rule.requireCode && (input.code ?? "").trim() !== (await dailyCode(input.secret, day))) {
-      throw new AttendanceError("code", "口令不对，看一下屏幕上今天的 4 位数");
-    }
+  const ev = eveningState(input.rule, now);
+  if (!ev.isDay) throw new AttendanceError("not_evening_day", "今天没有晚自习");
+  if (!ev.open) throw new AttendanceError("closed", `现在不在晚自习签到时间。签到时间是 ${cnClock(ev.opensAt)} 到 ${input.rule.window[1]}`);
+  const done = await db.prepare("SELECT 1 AS x FROM attendance WHERE user_id = ? AND day = ? AND kind = 'evening'").bind(input.userId, day).first();
+  if (done) throw new AttendanceError("already_in", "今晚已经签到过了");
+  if (input.rule.requireCode && (input.code ?? "").trim() !== (await dailyCode(input.secret, day))) {
+    throw new AttendanceError("code", "口令不对，看一下屏幕上今天的 4 位数");
   }
   if (!input.photoKey) throw new AttendanceError("photo", "签到要拍一张现场照片");
   const row: AttendanceRow = {

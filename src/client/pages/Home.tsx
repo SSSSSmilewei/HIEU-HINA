@@ -253,9 +253,6 @@ function CheckinCard({ s, now }: { s: AttendanceState; now: number }) {
             <Icon name="camera" />
             拍照签到
           </Link>
-          <Link to="/checkin?go=venue" className="btn btn-ghost btn-lg">
-            去大创场地
-          </Link>
         </div>
       </>
     );
@@ -275,11 +272,6 @@ function CheckinCard({ s, now }: { s: AttendanceState; now: number }) {
           </p>
           <p className="small sub">{p.auto ? "未签退，按结束时间记" : null}</p>
         </div>
-        <div className="row wrap">
-          <Link to="/checkin?go=venue" className="btn btn-ghost btn-lg">
-            场地签到
-          </Link>
-        </div>
       </>
     );
   if (p.kind === "evening-later")
@@ -292,11 +284,6 @@ function CheckinCard({ s, now }: { s: AttendanceState; now: number }) {
         <div className="stack" style={{ gap: 4 }}>
           <p className="hero-title">{clock(p.opensAt)} 起可以签到</p>
         </div>
-        <div className="row wrap">
-          <Link to="/checkin?go=venue" className="btn btn-ghost btn-lg">
-            场地签到
-          </Link>
-        </div>
       </>
     );
   return (
@@ -306,12 +293,12 @@ function CheckinCard({ s, now }: { s: AttendanceState; now: number }) {
         {p.next && <span className="small sub">下次：{p.next} {a}</span>}
       </div>
       <div className="stack" style={{ gap: 4 }}>
-        <p className="hero-title">去大创场地学一会儿？</p>
+        <p className="hero-title">今天不用签到</p>
+        <p className="small sub">晚自习时间是 {a} – {b}</p>
       </div>
       <div className="row wrap">
-        <Link to="/checkin?go=venue" className="btn btn-primary btn-lg">
-          <Icon name="camera" />
-          场地签到
+        <Link to="/checkin" className="btn btn-ghost btn-lg">
+          我的签到记录
         </Link>
       </div>
     </>

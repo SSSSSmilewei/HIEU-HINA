@@ -2,7 +2,7 @@ import { z } from "zod";
 import { addDays, cnDate } from "../../shared/heatmap";
 import {
   AttendanceError,
-  type AttendanceKind,
+  VENUE_REMOVED,
   attendanceCsv,
   attendanceMinutes,
   attendanceTotals,
@@ -93,16 +93,13 @@ export function attendanceRoutes(api: Router) {
     const body = PhotoBody.extend({ kind: z.enum(["evening", "venue"]), code: z.string().trim().max(8).optional(), signature: Signature }).parse(await c.body());
     const rule = await loadRule(c.env.DB);
     // 先检查能不能签到，再存照片，免得存下没用的照片
+    if (body.kind !== "evening") attendanceError(new AttendanceError("venue_removed", VENUE_REMOVED));
     const ev = eveningState(rule, Date.now());
-    if (body.kind === "evening" && !ev.open) {
-      attendanceError(
-        new AttendanceError(ev.isDay ? "closed" : "not_evening_day", ev.isDay ? `现在不在晚自习签到时间` : "今天没有晚自习。去大创场地学习请选“场地签到”"),
-      );
-    }
+    if (!ev.open) attendanceError(new AttendanceError(ev.isDay ? "closed" : "not_evening_day", ev.isDay ? "现在不在晚自习签到时间" : "今天没有晚自习"));
     const key = await storePhoto(c, body.photo, uid);
     const signKey = body.signature ? await storeSignature(c, body.signature, uid) : null;
     try {
-      const row = await signIn(c.env.DB, { userId: uid, kind: body.kind as AttendanceKind, rule, secret: requireSecret(c.env), code: body.code, photoKey: key, signKey, ip: clientIp(c.req) });
+      const row = await signIn(c.env.DB, { userId: uid, kind: "evening", rule, secret: requireSecret(c.env), code: body.code, photoKey: key, signKey, ip: clientIp(c.req) });
       return json({ ok: true, id: row.id, kind: row.kind, inAt: row.in_at });
     } catch (err) {
       attendanceError(err);

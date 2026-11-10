@@ -1,7 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { addDays } from "../../shared/heatmap";
 import { api, clock, cnToday, invalidate, longDay, relativeTime, useApi } from "../api";
-import { KIND_LABEL } from "../attendance";
 import { compressImage } from "../components/NoticeBody";
 import { Icon } from "../icons";
 import { Link } from "../router";
@@ -33,7 +32,6 @@ export function AdminTodayPage() {
   const [exporting, setExporting] = useState(false);
 
   const evening = data?.records.filter((r) => r.kind === "evening") ?? [];
-  const venueNow = data?.records.filter((r) => r.kind === "venue" && r.status === "open") ?? [];
 
   const flipCode = async () => {
     if (!data) return;
@@ -73,14 +71,6 @@ export function AdminTodayPage() {
               <i style={{ width: `${data.members ? Math.min(100, (evening.length / data.members) * 100) : 0}%` }} />
             </div>
           </div>
-          <div className="card stack" style={{ gap: 10 }}>
-            <span className="small sub">大创场地在场</span>
-            <span className="row" style={{ alignItems: "baseline", gap: 6 }}>
-              <span className="big-num">{venueNow.length}</span>
-              <span className="sub">人</span>
-            </span>
-            <span className="small sub">23:59 自动结束</span>
-          </div>
           <div className="night-card" style={{ gap: 10 }}>
             <span className="row" style={{ justifyContent: "space-between" }}>
               <span id="code-l" className="small night-sub">
@@ -109,8 +99,6 @@ export function AdminTodayPage() {
       )}
 
       <div className="stack" style={{ gap: 20 }}>
-        <CertReview />
-
         <section className="card card-flush" aria-labelledby="rec-h" style={{ padding: "8px 8px 4px" }}>
           <div className="section-head" style={{ padding: "12px 12px 8px" }}>
             <h2 id="rec-h" className="h3">
@@ -127,7 +115,6 @@ export function AdminTodayPage() {
                 <thead>
                   <tr>
                     <th scope="col">姓名 · 学号</th>
-                    <th scope="col">场景</th>
                     <th scope="col">签到</th>
                     <th scope="col">签退</th>
                     <th scope="col">状态</th>
@@ -142,7 +129,6 @@ export function AdminTodayPage() {
                           <span className="mono xsmall sub">{r.studentNo}</span>
                         </span>
                       </td>
-                      <td className="sub">{KIND_LABEL[r.kind]}</td>
                       <td>
                         <span className="row">
                           {r.inPhoto && <Thumb k={r.inPhoto} label={`${r.name} 的签到照片`} onOpen={setPhoto} />}
@@ -214,8 +200,7 @@ function ExportDialog({ onClose }: { onClose: () => void }) {
   const today = cnToday();
   const [from, setFrom] = useState(addDays(today, -30));
   const [to, setTo] = useState(today);
-  const [kind, setKind] = useState<"" | "evening" | "venue">("");
-  const qs = `from=${from}&to=${to}${kind ? `&kind=${kind}` : ""}`;
+  const qs = `from=${from}&to=${to}`;
   const href = `/api/admin/attendance.csv?${qs}`;
   return (
     <Dialog title="导出签到记录" onClose={onClose}>
@@ -229,22 +214,6 @@ function ExportDialog({ onClose }: { onClose: () => void }) {
             到
             <input className="input" type="date" value={to} onChange={(e) => setTo(e.target.value)} />
           </label>
-        </div>
-        <div className="stack" style={{ gap: 6 }}>
-          <span className="small" style={{ fontWeight: 600 }}>
-            场景
-          </span>
-          <Seg
-            label="场景"
-            flat
-            value={kind}
-            onChange={setKind}
-            options={[
-              { value: "" as const, label: "全部" },
-              { value: "evening" as const, label: "晚自习" },
-              { value: "venue" as const, label: "大创场地" },
-            ]}
-          />
         </div>
         <p className="small sub pretty">签到表带照片和手写签名，可以直接打印或存成 PDF 交给学校（最多两个月）；CSV 只有文字，适合用 Excel 再加工。</p>
         <div className="dialog-actions">
@@ -1065,106 +1034,6 @@ function OtherSettings({ s, onSaved }: { s: Record<string, string | null>; onSav
       <div>
         <button type="submit" className="btn btn-primary" disabled={busy}>
           {busy ? <Spinner /> : "保存"}
-        </button>
-      </div>
-    </form>
-  );
-}
-
-interface AdminCert {
-  course: string;
-  userId: string;
-  name: string;
-  studentNo: string | null;
-  url: string;
-  status: "pending" | "approved" | "rejected";
-  submittedAt: number;
-}
-
-/** 新生任务提交的 CS50x 证书：打开链接核对后通过或退回。没有待确认的证书时不显示。 */
-function CertReview() {
-  const toast = useToast();
-  const { data, reload } = useApi<AdminCert[]>("/api/admin/certificates");
-  const [busy, setBusy] = useState<string | null>(null);
-  const [rejecting, setRejecting] = useState<AdminCert | null>(null);
-  const pending = data?.filter((c) => c.status === "pending") ?? [];
-  if (pending.length === 0) return null;
-
-  const review = async (c: AdminCert, status: "approved" | "rejected", note?: string) => {
-    setBusy(c.userId);
-    try {
-      await api(`/api/admin/certificates/${c.course}/${c.userId}`, { method: "PUT", body: { status, note } });
-      toast(status === "approved" ? `已确认${c.name}的证书` : `已退回${c.name}的证书`);
-      void reload();
-    } catch (e) {
-      toast((e as Error).message, "error");
-    } finally {
-      setBusy(null);
-    }
-  };
-
-  return (
-    <section className="card stack" aria-labelledby="cert-h" style={{ gap: 10 }}>
-      <div className="section-head">
-        <h2 id="cert-h" className="h3">
-          待确认的 CS50x 证书
-        </h2>
-        <span className="small sub num">{pending.length} 份</span>
-      </div>
-      <ul className="stack cert-list">
-        {pending.map((c) => (
-          <li key={c.userId} className="row wrap cert-row">
-            <span className="stack" style={{ gap: 0, flex: 1, minWidth: 0 }}>
-              <span style={{ fontWeight: 500 }}>{c.name}</span>
-              <span className="xsmall sub">
-                {c.studentNo && <span className="mono">{c.studentNo} · </span>}
-                {relativeTime(c.submittedAt)}提交
-              </span>
-            </span>
-            <a href={c.url} target="_blank" rel="noreferrer" className="btn btn-ghost btn-sm">
-              <Icon name="external" size={16} />
-              打开证书
-            </a>
-            <button type="button" className="btn btn-primary btn-sm" disabled={busy === c.userId} onClick={() => void review(c, "approved")}>
-              通过
-            </button>
-            <button type="button" className="btn btn-quiet btn-sm" disabled={busy === c.userId} onClick={() => setRejecting(c)}>
-              退回
-            </button>
-          </li>
-        ))}
-      </ul>
-      {rejecting && (
-        <Dialog title={`退回${rejecting.name}的证书`} onClose={() => setRejecting(null)}>
-          <RejectBody onSubmit={(note) => void review(rejecting, "rejected", note)} />
-        </Dialog>
-      )}
-    </section>
-  );
-}
-
-function RejectBody({ onSubmit }: { onSubmit: (note: string) => void }) {
-  const close = useDialogClose();
-  const [note, setNote] = useState("证书链接无法打开，或证书信息与本人不符");
-  return (
-    <form
-      className="stack"
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSubmit(note.trim());
-        close();
-      }}
-    >
-      <label className="field">
-        <span className="small">退回原因（学员可见）</span>
-        <input className="input" value={note} onChange={(e) => setNote(e.target.value)} maxLength={200} />
-      </label>
-      <div className="dialog-actions">
-        <button type="button" className="btn btn-ghost" onClick={close}>
-          取消
-        </button>
-        <button type="submit" className="btn btn-danger">
-          退回
         </button>
       </div>
     </form>

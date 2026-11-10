@@ -1,19 +1,18 @@
 import { useState } from "react";
-import { nextItem } from "../../shared/courses";
+import type { Progress } from "../../shared/courses";
 import { api, invalidate, useApi } from "../api";
 import { Icon } from "../icons";
 import { itemHref } from "../library";
 import { Link } from "../router";
 import { loginHref, useMe } from "../session";
-import type { CourseDetail } from "../types";
 import { Bar, ErrorBox, Skeleton, Spinner, useTitle, useToast } from "../ui";
 
 /**
  * 新生任务：协会每位新成员都要完成的三项任务。
  *  1. 阅读前言：CSDIY 前言 +《我的一些小想法》（写给同学的一段话，Across the Deep Sea 的第一篇）
- *  2. CS50x：取得哈佛大学的课程证书（提交证书链接，管理员确认后才算完成，接口见 worker/api/start.ts）
+ *  2. CS50x：学完后本人点「我已完成」（原来的证书提交和确认 2026-11 取消）
  *  3. Across the Deep Sea：协会自己编写的课程，正在筹备，没有“完成”状态
- * 首页最上方是 StartCard，/start 是完整的页面。
+ * 进度只请求 /api/start 一个接口（见 worker/api/start.ts）。首页最上方是 StartCard，/start 是完整的页面。
  */
 
 const DEEP_SEA = "across-the-deep-sea";
@@ -22,14 +21,14 @@ const PREFACES = [
   { course: DEEP_SEA, item: "preface", title: "我的一些小想法" },
 ] as const;
 
-type CertStatus = "pending" | "approved" | "rejected";
-interface Certificate {
-  course: string;
-  url: string;
-  status: CertStatus;
-  note: string | null;
-  submittedAt: number;
-  reviewedAt: number | null;
+interface StartData {
+  prefaces: boolean[];
+  cs50x: {
+    done: boolean;
+    self: boolean;
+    progress: Progress;
+    next: { id: string; title: string; pages: { id: string }[] } | null;
+  };
 }
 
 interface StartState {
@@ -37,9 +36,7 @@ interface StartState {
   error: Error | null;
   reload: () => void;
   guest: boolean;
-  prefaceDone: boolean[];
-  cs50: CourseDetail | undefined;
-  cert: Certificate | null;
+  data: StartData | undefined;
   /** 当前进行到第几项（0–2）；前两项都完成后停在第 3 项 */
   current: number;
 }
@@ -47,24 +44,15 @@ interface StartState {
 function useStart(): StartState {
   const { me } = useMe();
   const guest = !me.role;
-  const csdiy = useApi<CourseDetail>("/api/courses/csdiy");
-  const deep = useApi<CourseDetail>(`/api/courses/${DEEP_SEA}`);
-  const cs50 = useApi<CourseDetail>("/api/courses/cs50x");
-  const mine = useApi<{ certificates: Certificate[] }>(guest ? null : "/api/start");
-
-  const prefaceDone = PREFACES.map((p) => !!(p.course === "csdiy" ? csdiy : deep).data?.done[p.item]);
-  const cert = mine.data?.certificates.find((c) => c.course === "cs50x") ?? null;
-  const step1 = prefaceDone.every(Boolean);
-  const step2 = cert?.status === "approved";
-  const all = [csdiy, deep, cs50, ...(guest ? [] : [mine])];
+  const { data, error, reload } = useApi<StartData>(guest ? null : "/api/start");
+  const step1 = !!data?.prefaces.every(Boolean);
+  const step2 = !!data?.cs50x.done;
   return {
-    loading: all.some((x) => !x.data && !x.error),
-    error: all.find((x) => x.error)?.error ?? null,
-    reload: () => all.forEach((x) => x.reload()),
+    loading: !guest && !data && !error,
+    error: error ?? null,
+    reload: () => void reload(),
     guest,
-    prefaceDone,
-    cs50: cs50.data,
-    cert,
+    data,
     current: !step1 ? 0 : !step2 ? 1 : 2,
   };
 }
@@ -89,17 +77,15 @@ export function StartCard() {
     );
   }
   const n = s.guest ? 0 : s.current;
-  const next = s.cs50 && nextItem(s.cs50.course, new Set(Object.keys(s.cs50.done)));
-  const unread = PREFACES.filter((_, i) => !s.prefaceDone[i]).map((p) => p.title);
+  const cs = s.data?.cs50x;
+  const unread = PREFACES.filter((_, i) => !s.data?.prefaces[i]).map((p) => p.title);
   const sub = s.guest
-    ? "协会新成员的入门任务共三项：阅读前言，完成 CS50x 课程并取得证书，学习协会课程 Across the Deep Sea。"
+    ? "协会新成员的入门任务共三项：阅读前言，完成 CS50x 课程，学习协会课程 Across the Deep Sea。"
     : n === 0
       ? `尚未阅读：${unread.join("、")}`
-      : s.cert?.status === "pending"
-        ? "证书已提交，等待管理员确认"
-        : next
-          ? `下一项：${next.title}`
-          : "站内内容已全部完成，请在 cs50.me 领取证书并提交链接";
+      : cs?.next
+        ? `下一项：${cs.next.title}`
+        : "站内内容已全部学完，请在新生任务页点击「我已完成」";
   return (
     <section className="card start-card" aria-labelledby="start-h">
       <span className="eyebrow">{s.guest ? "智慧算法网络协会" : `新生任务 · 第 ${n + 1} 项，共 3 项`}</span>
@@ -107,7 +93,7 @@ export function StartCard() {
         {s.guest ? "新生任务" : STEP_TITLES[n]}
       </h2>
       <p className="small sub pretty">{sub}</p>
-      {!s.guest && n === 1 && s.cs50 && <Bar ratio={s.cs50.progress.ratio} label={`CS50x 站内进度 ${Math.round(s.cs50.progress.ratio * 100)}%`} />}
+      {!s.guest && n === 1 && cs && <Bar ratio={cs.progress.ratio} label={`CS50x 站内进度 ${Math.round(cs.progress.ratio * 100)}%`} />}
       <div className="row wrap">
         <Link to="/start" className="btn btn-primary">
           {s.guest ? "查看新生任务" : "继续"}
@@ -139,36 +125,44 @@ export function StartPage() {
           <Step n={0} s={s}>
             <p className="small sub pretty">阅读《CS 自学指南》（csdiy.wiki）的前言，了解计算机科学的自学方法；再阅读写给协会同学的一段话《我的一些小想法》。</p>
             <ul className="start-reads">
-              {PREFACES.map((p, i) => (
-                <li key={p.item + p.course}>
-                  <Link to={`/courses/${p.course}/learn/${p.item}`} className="start-read">
-                    <span className={`start-check${s.prefaceDone[i] ? " is-done" : ""}`} aria-label={s.prefaceDone[i] ? "已读" : "未读"}>
-                      {s.prefaceDone[i] && <Icon name="check" size={14} stroke={2.4} />}
-                    </span>
-                    <span>{p.title}</span>
-                    <Icon name="arrowRight" size={16} stroke={2} />
-                  </Link>
-                </li>
-              ))}
+              {PREFACES.map((p, i) => {
+                const read = !!s.data?.prefaces[i];
+                return (
+                  <li key={p.item + p.course}>
+                    <Link to={`/courses/${p.course}/learn/${p.item}`} className="start-read">
+                      <span className={`start-check${read ? " is-done" : ""}`} aria-label={read ? "已读" : "未读"}>
+                        {read && <Icon name="check" size={14} stroke={2.4} />}
+                      </span>
+                      <span>{p.title}</span>
+                      <Icon name="arrowRight" size={16} stroke={2} />
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
             {!s.guest && <p className="xsmall sub">阅读完成后，请在讲义页底部点击“标记完成”。</p>}
           </Step>
 
           <Step n={1} s={s}>
             <p className="small sub pretty">
-              CS50x（CS50's Introduction to Computer Science，哈佛大学计算机科学导论）是协会全体成员的第一门课程。完成全部习题集和期末项目后，可以在{" "}
-              <a href="https://cs50.me/cs50x" target="_blank" rel="noreferrer">
-                cs50.me
+              CS50x（CS50's Introduction to Computer Science，哈佛大学计算机科学导论）是协会全体成员的第一门课程。请完成全部讲座和习题集；完成后点击「我已完成」，本项任务即告完成。如果希望取得哈佛大学颁发的课程证书，可以按照{" "}
+              <a href="https://cs50.harvard.edu/x/" target="_blank" rel="noreferrer">
+                CS50x 官方网站
               </a>{" "}
-              领取哈佛大学颁发的课程证书。提交证书链接并经管理员确认后，本项任务完成。
+              的要求提交作业，这一步不作强制要求。
             </p>
-            {s.cs50 && <Cs50Progress d={s.cs50} guest={s.guest} />}
             {s.guest ? (
-              <Link to={loginHref("/start")} className="btn btn-soft btn-sm">
-                登录后提交证书
-              </Link>
+              <div className="row wrap">
+                <Link to="/courses/cs50x" className="more-link">
+                  打开课程
+                  <Icon name="arrowRight" size={16} stroke={2} />
+                </Link>
+                <Link to={loginHref("/start")} className="btn btn-soft btn-sm">
+                  登录后记录进度
+                </Link>
+              </div>
             ) : (
-              <CertForm cert={s.cert} />
+              s.data && <Cs50Box cs={s.data.cs50x} />
             )}
           </Step>
 
@@ -200,81 +194,44 @@ function Step({ n, s, preparing, children }: { n: number; s: StartState; prepari
   );
 }
 
-function Cs50Progress({ d, guest }: { d: CourseDetail; guest: boolean }) {
-  const next = nextItem(d.course, new Set(Object.keys(d.done)));
-  return (
-    <div className="stack" style={{ gap: 8 }}>
-      {!guest && <Bar ratio={d.progress.ratio} label={`站内进度 ${d.progress.doneItems} / ${d.progress.items}`} />}
-      <Link to={!guest && next ? itemHref("cs50x", next) : "/courses/cs50x"} className="more-link">
-        {!guest && next ? `继续学习：${next.title}` : "打开课程"}
-        <Icon name="arrowRight" size={16} stroke={2} />
-      </Link>
-    </div>
-  );
-}
-
-const CERT_TEXT: Record<CertStatus, string> = { pending: "已提交，等待管理员确认", approved: "已通过确认", rejected: "未通过确认" };
-
-function CertForm({ cert }: { cert: Certificate | null }) {
+function Cs50Box({ cs }: { cs: StartData["cs50x"] }) {
   const toast = useToast();
-  const [url, setUrl] = useState(cert?.status === "rejected" ? cert.url : "");
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  if (cert && cert.status !== "rejected") {
-    return (
-      <p className="small">
-        <span className={`tag ${cert.status === "approved" ? "tag-ok" : "tag-accent"}`}>{CERT_TEXT[cert.status]}</span>{" "}
-        <a href={cert.url} target="_blank" rel="noreferrer" className="xsmall">
-          查看证书
-        </a>
-      </p>
-    );
-  }
-
-  const submit = async () => {
+  const set = async (done: boolean) => {
     setBusy(true);
-    setError(null);
     try {
-      await api("/api/start/certificates/cs50x", { method: "PUT", body: { url: url.trim() } });
+      await api("/api/start/done/cs50x", { method: done ? "PUT" : "DELETE" });
       invalidate("/api/start");
-      toast("证书已提交，等待管理员确认");
+      toast(done ? "已记录：CS50x 已完成" : "已撤销完成记录");
     } catch (e) {
-      setError((e as Error).message);
+      toast((e as Error).message, "error");
     } finally {
       setBusy(false);
     }
   };
-
   return (
-    <form
-      className="stack"
-      style={{ gap: 8 }}
-      onSubmit={(e) => {
-        e.preventDefault();
-        void submit();
-      }}
-    >
-      {cert?.status === "rejected" && (
-        <p className="small" role="status">
-          <span className="tag tag-bad">{CERT_TEXT.rejected}</span> {cert.note ? `原因：${cert.note}。请修改后重新提交。` : "请修改后重新提交。"}
+    <div className="stack" style={{ gap: 10 }}>
+      <Bar ratio={cs.progress.ratio} label={`站内进度 ${cs.progress.doneItems} / ${cs.progress.items}`} />
+      <Link to={cs.next ? itemHref("cs50x", cs.next) : "/courses/cs50x"} className="more-link">
+        {cs.next ? `继续学习：${cs.next.title}` : "打开课程"}
+        <Icon name="arrowRight" size={16} stroke={2} />
+      </Link>
+      {cs.done ? (
+        <p className="small row wrap" style={{ gap: 8 }}>
+          <span className="tag tag-ok">已完成</span>
+          {cs.self && (
+            <button type="button" className="btn btn-quiet btn-sm" disabled={busy} onClick={() => void set(false)}>
+              {busy ? <Spinner /> : "撤销"}
+            </button>
+          )}
         </p>
+      ) : (
+        <div className="row">
+          <button type="button" className="btn btn-primary btn-sm" disabled={busy} onClick={() => void set(true)}>
+            {busy ? <Spinner /> : "我已完成"}
+          </button>
+        </div>
       )}
-      <label className="field">
-        <span className="small">证书链接</span>
-        <input className="input" type="url" inputMode="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://" autoComplete="off" maxLength={500} />
-        <span className="hint xsmall">在 cs50.me 打开课程证书页面，复制该页面的链接。</span>
-      </label>
-      {error && (
-        <span className="error-text xsmall" role="alert">
-          {error}
-        </span>
-      )}
-      <div className="row">
-        <button type="submit" className="btn btn-primary btn-sm" disabled={busy || !url.trim()}>
-          {busy ? <Spinner /> : "提交证书"}
-        </button>
-      </div>
-    </form>
+    </div>
   );
 }

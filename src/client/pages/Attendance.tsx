@@ -7,7 +7,7 @@ import { SignatureSheet } from "../components/Signature";
 import { Icon } from "../icons";
 import { navigate, useQuery } from "../router";
 import type { AttendanceKind, AttendanceState, HeatmapPayload } from "../types";
-import { Empty, ErrorBox, Seg, Skeleton, useNow, useTitle, useToast } from "../ui";
+import { Empty, ErrorBox, Skeleton, useNow, useTitle, useToast } from "../ui";
 
 /* ---------- 表盘 ---------- */
 
@@ -80,7 +80,6 @@ export function AttendancePage() {
   const go = useQuery("go");
   const { data, error, reload } = useApi<AttendanceState>("/api/attendance", { refreshMs: 60_000 });
   const heat = useApi<HeatmapPayload>("/api/heatmap");
-  const [kind, setKind] = useState<AttendanceKind>(go === "venue" ? "venue" : "evening");
   const [camera, setCamera] = useState<null | "in" | "out">(null);
   const [code, setCode] = useState("");
   const [done, setDone] = useState<null | { title: string; sub: string }>(null);
@@ -89,7 +88,8 @@ export function AttendancePage() {
   const autoOpened = useRef(false);
 
   const p = data ? phaseOf(data, now) : null;
-  const scene: AttendanceKind = p?.kind === "in" ? p.scene : kind;
+  // 场地签到已取消（2026-11），只剩晚自习；进行中的旧场地签到照常签退
+  const scene: AttendanceKind = p?.kind === "in" ? p.scene : "evening";
 
   // 从首页点“拍照签到/签退”过来时，直接打开相机
   useEffect(() => {
@@ -98,7 +98,6 @@ export function AttendancePage() {
     const ph = phaseOf(data, Date.now());
     if (go === "out" && ph.kind === "in") setCamera("out");
     else if (go === "evening" && ph.kind === "evening-open" && !data.evening.requireCode) setCamera("in");
-    else if (go === "venue" && ph.kind !== "in") setCamera("in");
     navigate("/checkin", { replace: true });
   }, [data, go]);
 
@@ -151,17 +150,6 @@ export function AttendancePage() {
           <span className="eyebrow">{data ? `${longDay(data.today)} · ${ev?.isDay ? "晚自习日" : "没有晚自习"}` : " "}</span>
           <h1 className="h1">签到</h1>
         </div>
-        {p?.kind !== "in" && (
-          <Seg
-            label="场景"
-            value={kind}
-            onChange={(k) => setKind(k)}
-            options={[
-              { value: "evening" as const, label: "晚自习" },
-              { value: "venue" as const, label: "大创场地" },
-            ]}
-          />
-        )}
       </header>
 
       <div className="split">
@@ -176,7 +164,6 @@ export function AttendancePage() {
             <MainPanel
               data={data}
               p={p}
-              scene={scene}
               now={now}
               needCode={needCode}
               code={code}
@@ -188,7 +175,6 @@ export function AttendancePage() {
                 }
                 setCamera(m);
               }}
-              switchVenue={() => setKind("venue")}
             />
           )}
         </section>
@@ -208,8 +194,8 @@ export function AttendancePage() {
                 </li>
               )}
               <li className="row" style={{ alignItems: "flex-start" }}>
-                <Icon name="home" size={18} style={{ flexShrink: 0, marginTop: 1 }} />
-                <span>大创场地：随时，23:59 自动结束</span>
+                <Icon name="camera" size={18} style={{ flexShrink: 0, marginTop: 1 }} />
+                <span>签到时拍一张现场照片并手写签名，离开前拍照签退</span>
               </li>
             </ul>
           </section>
@@ -221,7 +207,7 @@ export function AttendancePage() {
               </h2>
               {data && (
                 <span className="xsmall sub">
-                  晚自习 {data.totals.evening} 次 · 场地 {data.totals.venue} 次
+                  晚自习 {data.totals.evening} 次{data.totals.venue > 0 && ` · 场地 ${data.totals.venue} 次`}
                 </span>
               )}
             </div>
@@ -273,23 +259,19 @@ export function AttendancePage() {
 function MainPanel({
   data,
   p,
-  scene,
   now,
   needCode,
   code,
   setCode,
   open,
-  switchVenue,
 }: {
   data: AttendanceState;
   p: ReturnType<typeof phaseOf>;
-  scene: AttendanceKind;
   now: number;
   needCode: boolean;
   code: string;
   setCode: (c: string) => void;
   open: (m: "in" | "out") => void;
-  switchVenue: () => void;
 }) {
   const ev = data.evening;
   const evFrom = Date.parse(`${data.today}T${ev.window[0]}:00+08:00`);
@@ -330,25 +312,6 @@ function MainPanel({
     );
   }
 
-  if (scene === "venue") {
-    return (
-      <>
-        <StatusRow tag={<span className="tag">大创场地</span>} note="随时可以签" />
-        <Dial from={dayFrom} to={dayTo} start={null} now={now} labels={["08:00", "24:00"]} label={`现在 ${clock(now)}`}>
-          <span className="small sub">现在</span>
-          <span className="dial-num">{clock(now)}</span>
-          <span className="small sub">23:59 自动结束</span>
-        </Dial>
-        <button type="button" className="btn btn-primary btn-xl btn-block" style={{ maxWidth: 360 }} onClick={() => open("in")}>
-          <Icon name="camera" size={22} />
-          拍照签到
-        </button>
-        <p className="small sub pretty" style={{ textAlign: "center", maxWidth: 420 }}>
-          进场拍一张，离开再拍一张签退。
-        </p>
-      </>
-    );
-  }
 
   if (p.kind === "evening-open")
     return (
@@ -389,9 +352,6 @@ function MainPanel({
             {clock(p.inAt)} – {p.outAt ? clock(p.outAt) : ev.window[1]}
           </span>
         </Dial>
-        <button type="button" className="btn btn-ghost btn-lg" onClick={switchVenue}>
-          去大创场地继续学
-        </button>
       </>
     );
 
@@ -407,17 +367,14 @@ function MainPanel({
         <button type="button" className="btn btn-primary btn-xl btn-block" style={{ maxWidth: 360 }} disabled>
           还没到签到时间
         </button>
-        <button type="button" className="btn btn-quiet" onClick={switchVenue}>
-          现在在大创场地？签场地
-        </button>
       </>
     );
 
   return (
     <>
       <StatusRow tag={<span className="tag">今天没有晚自习</span>} note={p.next ? `下次：${p.next} ${ev.window[0]}` : ""} />
-      <Empty title="今天没有晚自习" action={<button type="button" className="btn btn-primary btn-lg" onClick={switchVenue}><Icon name="camera" />去大创场地签到</button>}>
-        晚自习是每{daysText(ev.days)} {ev.window[0]}–{ev.window[1]}。在大创场地学习的话，可以签场地。
+      <Empty title="今天没有晚自习">
+        晚自习时间是每{daysText(ev.days)} {ev.window[0]}–{ev.window[1]}，请在晚自习时段内签到。
       </Empty>
     </>
   );
