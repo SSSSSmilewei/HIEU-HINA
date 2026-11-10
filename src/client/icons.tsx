@@ -67,6 +67,8 @@ const PATHS: Record<string, React.ReactNode> = {
     </>
   ),
   plus: <path d="M12 5v14M5 12h14" />,
+  menu: <path d="M4 7h16M4 12h16M4 17h16" />,
+  calendar: <path d="M5 6h14v14H5zM5 10h14M9 4v4M15 4v4" />,
   inbox: <path d="M4 13.5 6.5 5h11l2.5 8.5V19H4zM4 13.5h4.5l1 2h5l1-2H20" />,
   search: (
     <>

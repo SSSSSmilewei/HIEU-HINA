@@ -372,7 +372,7 @@ function NoticeRow({ notices, today, error, retry }: { notices?: Notice[]; today
   const comp = comps[0];
   if (!plain.length && !comp) return null;
   return (
-    <section className="grid-2" aria-label="公告与比赛">
+    <section className="grid-2" aria-label="公告与活动">
       {plain.length > 0 && (
         <div className="card stack" style={{ gap: 6 }}>
           <div className="section-head" style={{ marginBottom: 2 }}>

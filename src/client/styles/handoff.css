@@ -1,7 +1,7 @@
 /* 从开场动画进入平台的过渡（src/client/handoff.ts）。白屏本身的样式在 index.html 里内联，页面一出来就盖住 */
 html[data-handoff="play"]::after { animation: handoff-out 0.6s cubic-bezier(0.65, 0, 0.35, 1) forwards; }
 html[data-handoff="play"] .sidebar { animation: handoff-side 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.12s backwards; }
-html[data-handoff="play"] .tabbar { animation: handoff-up 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.24s backwards; }
+html[data-handoff="play"] .topbar { animation: handoff-down 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.24s backwards; }
 html[data-handoff="play"] .page-wrap { animation: handoff-rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.18s backwards; }
 html[data-handoff="play"] .hn-bar { animation: handoff-down 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.12s backwards; }
 html[data-handoff="play"] .hn-hero { animation: handoff-rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s backwards; }

@@ -117,11 +117,6 @@
 [data-skin="classic"] .nav-item {
   border-bottom: 1px solid var(--edge);
 }
-@media (max-width: 899px) {
-  [data-skin="classic"] .tabbar {
-    border-top: 1px solid var(--edge-strong);
-  }
-}
 
 /* 能点的卡片：悬停时浮起一点（墨色硬阴影），这是唯一的“动” */
 [data-skin="classic"] a.card,

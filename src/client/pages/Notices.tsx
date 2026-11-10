@@ -9,7 +9,7 @@ import { Dialog, Empty, ErrorBox, Seg, SkeletonCards, useConfirm, useDialogClose
 const dayOf = (ms: number) => new Date(ms + 8 * 3_600_000).toISOString().slice(0, 10);
 
 export function NoticesPage() {
-  useTitle("公告与比赛");
+  useTitle("公告与活动");
   const { data, error, reload } = useApi<Notice[]>("/api/notices");
   const [tab, setTab] = useState<"all" | "notice" | "competition">("all");
   const [joining, setJoining] = useState<Notice | null>(null);
@@ -28,7 +28,7 @@ export function NoticesPage() {
     <div className="page">
       <header className="page-head">
         <div className="stack" style={{ gap: 6 }}>
-          <h1 className="h1">公告与比赛</h1>
+          <h1 className="h1">公告与活动</h1>
         </div>
         <Seg
           label="显示"

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Progress } from "../../shared/courses";
 import { api, invalidate, useApi } from "../api";
+import { LearnTabs } from "../components/LearnTabs";
 import { Icon } from "../icons";
 import { itemHref } from "../library";
 import { Link } from "../router";
@@ -116,6 +117,7 @@ export function StartPage() {
           <p className="sub pretty">协会每位新成员都需要按顺序完成以下三项任务。</p>
         </div>
       </header>
+      <LearnTabs current="start" />
       {s.error ? (
         <ErrorBox error={s.error} onRetry={s.reload} />
       ) : s.loading ? (
