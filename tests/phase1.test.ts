@@ -9,7 +9,7 @@ import { itemOfPage, itemsOf, nextItem, planCards, progress, totalPeriods, weeks
 import { light } from "../src/shared/light";
 import { packageJsonSchema, parsePackage } from "../src/shared/package";
 import { BUILTIN } from "../src/worker/catalog";
-import { teachingWeek } from "../src/worker/api/members";
+import { teachingWeek } from "../src/worker/api/site";
 import type { Env } from "../src/worker/env";
 import worker from "../src/worker/index";
 

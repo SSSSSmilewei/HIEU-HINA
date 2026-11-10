@@ -2,7 +2,6 @@ import { useApi } from "../api";
 import { Icon, type IconName } from "../icons";
 import { Link, useLocation } from "../router";
 import { loginHref } from "../session";
-import type { ApplicationList } from "../pages/AdminApplications";
 import type { AttendanceState, Me } from "../types";
 
 interface NavItem {
@@ -90,13 +89,13 @@ export function Shell({ me, children }: { me: Me; children: React.ReactNode }) {
   const att = useApi<AttendanceState>(campus ? "/api/attendance" : null, { refreshMs: 120_000 });
   const live = !!att.data && att.data.evening.open && !att.data.evening.record && !att.data.current;
   // 管理员导航上“新生报名”旁边的数字
-  const apps = useApi<ApplicationList>(isAdmin ? "/api/admin/applications" : null, { refreshMs: 300_000 });
-  const adminNav = ADMIN_NAV.map((n) => (n.to === "/admin/applications" ? { ...n, count: apps.data?.counts.new ?? 0 } : n));
+  const apps = useApi<{ new: number }>(isAdmin ? "/api/admin/applications/count" : null, { refreshMs: 300_000 });
+  const adminNav = ADMIN_NAV.map((n) => (n.to === "/admin/applications" ? { ...n, count: apps.data?.new ?? 0 } : n));
 
   const member = MEMBER_NAV.filter((n) => campus || n.to !== "/checkin").map((n) => (n.to === "/checkin" ? { ...n, dot: live } : n));
   // 手机上没有侧边栏，管理员要在底栏有个入口才进得了后台
   const memberTabs = isAdmin
-    ? [...member, { to: "/admin", label: "管理", icon: "sliders" as IconName, match: () => false, count: apps.data?.counts.new ?? 0 }]
+    ? [...member, { to: "/admin", label: "管理", icon: "sliders" as IconName, match: () => false, count: apps.data?.new ?? 0 }]
     : member;
   const guestTabs = GUEST_NAV.map((n) => (n.to === "/login" ? { ...n, to: loginHref(path + search) } : n));
   const tabs = !isMember ? guestTabs : inAdmin && isAdmin ? [{ ...MEMBER_NAV[0], label: "学习", match: () => false }, ...adminNav] : memberTabs;
