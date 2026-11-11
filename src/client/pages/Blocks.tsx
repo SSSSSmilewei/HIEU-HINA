@@ -7,6 +7,7 @@ import { Icon } from "../icons";
 import { Link } from "../router";
 import { useMe } from "../session";
 import { BackLink } from "./Course";
+import { StartBlockCard } from "./Start";
 import type { CourseSummary } from "../types";
 import { ErrorBox, Skeleton, SkeletonCards, useTitle } from "../ui";
 
@@ -45,6 +46,7 @@ export function BlockCards({ limit }: { limit?: number }) {
   if (!data) return <SkeletonCards n={4} h={120} />;
   return (
     <div className="grid-cards block-cards">
+      <StartBlockCard />
       {data.slice(0, limit).map((b) => {
         const started = b.courses.some((s) => progress(s) > 0);
         return (

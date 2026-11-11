@@ -13,7 +13,7 @@ import { Bar, ErrorBox, Skeleton, Spinner, useTitle, useToast } from "../ui";
  *  1. 阅读前言：CSDIY 前言 +《我的一些小想法》（写给同学的一段话，Across the Deep Sea 的第一篇）
  *  2. CS50x：学完后本人点「我已完成」（原来的证书提交和确认 2026-11 取消）
  *  3. Across the Deep Sea：协会自己编写的课程，正在筹备，没有“完成”状态
- * 进度只请求 /api/start 一个接口（见 worker/api/start.ts）。首页最上方是 StartCard，/start 是完整的页面。
+ * 进度只请求 /api/start 一个接口（见 worker/api/start.ts）。知识块列表的第一张卡片是 StartBlockCard，/start 是完整的页面。
  */
 
 const DEEP_SEA = "across-the-deep-sea";
@@ -60,48 +60,23 @@ function useStart(): StartState {
 
 const STEP_TITLES = ["阅读前言", "CS50x：哈佛大学计算机科学导论", "Across the Deep Sea"];
 
-/** 首页最上方的卡片：当前任务和“继续”按钮。前两项完成后缩成一行。 */
-export function StartCard() {
+/** 知识块列表里的第一张卡片（首页和「学习 → 知识块」）：点进 /start */
+export function StartBlockCard() {
   const s = useStart();
   if (s.error) return null;
-  if (s.loading) return <Skeleton h={168} r={24} />;
-  if (!s.guest && s.current === 2) {
-    return (
-      <Link to="/start" className="card start-done">
-        <span className="tag tag-ok">
-          <Icon name="check" size={14} stroke={2.2} />
-          新生任务
-        </span>
-        <span className="small">前两项任务已完成，下一项：Across the Deep Sea</span>
-        <Icon name="arrowRight" size={16} stroke={2} />
-      </Link>
-    );
-  }
-  const n = s.guest ? 0 : s.current;
-  const cs = s.data?.cs50x;
-  const unread = PREFACES.filter((_, i) => !s.data?.prefaces[i]).map((p) => p.title);
-  const sub = s.guest
-    ? "协会新成员的入门任务共三项：阅读前言，完成 CS50x 课程，学习协会课程 Across the Deep Sea。"
-    : n === 0
-      ? `尚未阅读：${unread.join("、")}`
-      : cs?.next
-        ? `下一项：${cs.next.title}`
-        : "站内内容已全部学完，请在新生任务页点击「我已完成」";
+  const status = s.loading || s.guest ? null : s.current === 2 ? "前两项已完成" : `第 ${s.current + 1} 项，共 3 项`;
   return (
-    <section className="card start-card" aria-labelledby="start-h">
-      <span className="eyebrow">{s.guest ? "智慧算法网络协会" : `新生任务 · 第 ${n + 1} 项，共 3 项`}</span>
-      <h2 id="start-h" className="h2">
-        {s.guest ? "新生任务" : STEP_TITLES[n]}
-      </h2>
-      <p className="small sub pretty">{sub}</p>
-      {!s.guest && n === 1 && cs && <Bar ratio={cs.progress.ratio} label={`CS50x 站内进度 ${Math.round(cs.progress.ratio * 100)}%`} />}
-      <div className="row wrap">
-        <Link to="/start" className="btn btn-primary">
-          {s.guest ? "查看新生任务" : "继续"}
-          <Icon name="arrowRight" size={16} stroke={2} />
-        </Link>
-      </div>
-    </section>
+    <Link to="/start" className="card course-card block-card">
+      <span className="course-code">
+        <span className="ellipsis">协会新成员</span>
+        {status && <span className="tag tag-accent">{status}</span>}
+      </span>
+      <span className="course-title">新生任务</span>
+      <p className="small sub pretty clamp-2">阅读前言，完成 CS50x，学习 Across the Deep Sea。</p>
+      <span className="course-foot small sub">
+        <span className="num">3 项任务</span>
+      </span>
+    </Link>
   );
 }
 
@@ -117,7 +92,7 @@ export function StartPage() {
           <p className="sub pretty">协会每位新成员都需要按顺序完成以下三项任务。</p>
         </div>
       </header>
-      <LearnTabs current="start" />
+      <LearnTabs current="blocks" />
       {s.error ? (
         <ErrorBox error={s.error} onRetry={s.reload} />
       ) : s.loading ? (

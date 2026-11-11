@@ -50,7 +50,7 @@
 - 热力图第一行改成“协会学习时长”（分钟），规则在 `attendanceMinutes`。
 
 ### 新生任务（2026-11-04）
-- 首页最上方是「新生任务」卡片，`/start` 列出三项任务：阅读前言（CSDIY 前言、《我的一些小想法》），完成 CS50x，学习 Across the Deep Sea。
+- 「新生任务」当作一个知识块：首页和「学习 → 知识块」的第一张卡片（`StartBlockCard`，2026-11-11 起；以前是首页最上方的大卡片，负责人说不要放在首页），`/start` 列出三项任务：阅读前言（CSDIY 前言、《我的一些小想法》），完成 CS50x，学习 Across the Deep Sea。
 - 进度只请求 `GET /api/start` 一个接口（三项任务的状态 + CS50x 站内进度），首页不再为它下载三门课的详情。
 - CS50x：学完后本人在 `/start` 点「我已完成」（`PUT /api/start/done/cs50x`，点错了可以撤销）。2026-11 取消了证书提交和管理员确认；「我已完成」仍记在表 `certificates` 里（`status = 'approved'`、`reviewed_by` = 本人），旧版 App 读得懂；以前管理员确认过的证书照样算完成。证书的旧接口保留路径，提交回 410 和一句提示，管理员列表回空。
 - Across the Deep Sea 是站内课 `content/courses/across-the-deep-sea/`，《我的一些小想法》在 `preface.md`（写给同学的一段话，署负责人的名字，不强调身份；现在是占位）；「竞赛」「专题」两个模块是空的，标「筹备中」。
@@ -105,7 +105,7 @@
   2. ✅ 拆两个大文件，只搬代码、不改行为：`pages/Admin.tsx` → `pages/admin/`（`Today`、`Members`、`Notices`、`Settings`、共用的 `Head`）；`worker/api/members.ts` → `heatmap.ts`（热力图）、`site.ts`（协会介绍、教学周、App 更新和安装包）、`members.ts`（成员、邀请码、设置）。侧栏的新报名数改用 `GET /api/admin/applications/count`（只返回数量，不再每 5 分钟拉整张名单）。
   3. ✅ 导航（`components/Shell.tsx`、`components/LearnTabs.tsx`）：
      - 手机去掉底栏，顶栏左上角 ☰ 打开侧栏（抽屉）；换页、点遮罩、按 Esc 收起。手机上不在后台时，管理只显示一项「进入后台」。
-     - 「课程」改名「学习」，页内标签：我的学习（`/courses?tab=mine`）、课程目录（`?tab=all`）、知识块（`?tab=blocks`）、新生任务（仍是 `/start`）。没指定标签时，选过课的人看「我的学习」，其他人看「课程目录」。「公告与比赛」改名「公告与活动」。
+     - 「课程」改名「学习」，页内标签：我的学习（`/courses?tab=mine`）、课程目录（`?tab=all`）、知识块（`?tab=blocks`，第一张卡片是新生任务，`/start` 归在这个标签下）。没指定标签时，选过课的人看「我的学习」，其他人看「课程目录」。「公告与比赛」改名「公告与活动」。
      - 后台侧栏分四组：签到（今日签到、签到表）、学习（蓝色钉子）、通知与活动（发公告、新生报名）、成员与设置。所有旧地址不变。
      - 液态玻璃的样式和动效没动；抽屉只补了最少的样式。
   4. ✅ 蓝色钉子（2026-11-11）：
