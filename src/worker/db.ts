@@ -360,6 +360,8 @@ export const MIGRATIONS: string[][] = [
     )`,
     `CREATE INDEX IF NOT EXISTS certificates_by_status ON certificates(status, submitted_at)`,
   ],
+  // 蓝色钉子分两种（2026-11）：question 提问（大家都能看、能回复），note 标记（只有本人能看，可以不写字）
+  [`ALTER TABLE pins ADD COLUMN kind TEXT NOT NULL DEFAULT 'question'`],
 ];
 
 // 每个数据库连接只迁移一次（Worker 里通常只有一个；测试里每个用例一个内存库）

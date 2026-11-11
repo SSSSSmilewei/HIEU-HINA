@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { api, mutate, relativeTime, useApi } from "../api";
+import { api, invalidate, mutate, relativeTime, useApi } from "../api";
 import { Icon } from "../icons";
 import { Link, useQuery } from "../router";
 import { loginHref, useMe, useRequireLogin } from "../session";
-import { useToast } from "../ui";
+import { Seg, useToast } from "../ui";
 
 /**
- * 蓝色钉子：在讲义的某一段（或某道练手题）上钉一个问题，大家在下面讨论。
+ * 蓝色钉子：在讲义的某一段（或某道练手题）上钉一个问题，大家在下面讨论；
+ * 也可以钉一个「标记」，给自己划重点或记一句，只有本人能看到（可以不写字）。
  *
  * 做法照负责人的 Math-Teach-Job（PinBoard）：
  * - 内容块有固定的位置标记 data-anchor（讲义按“所在小标题 + 第几段”自动生成，练手题用题号），
@@ -36,6 +37,8 @@ export interface Pin {
   xPct: number;
   yPct: number;
   snippet: string | null;
+  /** question 提问（大家都能看）；note 标记（只有本人能看）。旧数据没有这个字段时当作提问 */
+  kind?: "question" | "note";
   status: "open" | "resolved";
   createdAt: number;
   updatedAt: number;
@@ -63,6 +66,11 @@ interface Placed {
   top: number;
   h: number;
 }
+
+type PinKind = "question" | "note";
+const isNote = (p: Pin | undefined) => p?.kind === "note";
+/** 第一次打开讲义时的提示，看过就记在这台设备上 */
+const TIP_KEY = "hiana.pins.tip";
 
 /** 两颗图钉至少隔这么高，避免叠在一起 */
 const PIN_GAP = 28;
@@ -144,10 +152,11 @@ export function PinBoard({
   onPanel?: (open: boolean) => void;
   children: React.ReactNode;
 }) {
-  const key = enabled ? `/api/pins?course=${encodeURIComponent(course)}&page=${encodeURIComponent(page)}` : null;
+  const { me } = useMe();
+  // 登录后带上自己的标记
+  const key = enabled ? `/api/pins?course=${encodeURIComponent(course)}&page=${encodeURIComponent(page)}${me.role ? "&notes=1" : ""}` : null;
   const { data } = useApi<Pin[]>(key);
   const pins = data ?? [];
-  const { me } = useMe();
   const needLogin = useRequireLogin();
   const toast = useToast();
   const wide = useWide();
@@ -160,8 +169,26 @@ export function PinBoard({
   const [placed, setPlaced] = useState<Placed[]>([]);
   const [orphans, setOrphans] = useState<string[]>([]);
   const [tick, setTick] = useState(0);
+  const [ghost, setGhost] = useState<{ el: HTMLElement; top: number } | null>(null);
+  const [tip, setTip] = useState(() => {
+    try {
+      return !localStorage.getItem(TIP_KEY);
+    } catch {
+      return false;
+    }
+  });
+  const closeTip = () => {
+    setTip(false);
+    try {
+      localStorage.setItem(TIP_KEY, "1");
+    } catch {
+      // 存不了就算了，下次再提示一次
+    }
+  };
 
-  const numbered = useMemo(() => new Map([...pins].sort((a, b) => a.createdAt - b.createdAt).map((p, i) => [p.id, i + 1])), [pins]);
+  // 只给提问编号（大家看到的编号一致）；标记不编号
+  const questions = useMemo(() => pins.filter((p) => !isNote(p)), [pins]);
+  const numbered = useMemo(() => new Map([...questions].sort((a, b) => a.createdAt - b.createdAt).map((p, i) => [p.id, i + 1])), [questions]);
   const setPins = useCallback((fn: (old: Pin[]) => Pin[]) => key && mutate<Pin[]>(key, (old) => fn(old ?? [])), [key]);
   const upsert = (p: Pin) => setPins((old) => (old.some((x) => x.id === p.id) ? old.map((x) => (x.id === p.id ? p : x)) : [...old, p]));
 
@@ -249,16 +276,32 @@ export function PinBoard({
     if (!root || !el || !root.contains(el)) return;
     e.preventDefault();
     e.stopPropagation();
+    pinAt(el, e.clientX, e.clientY);
+  };
+
+  /** 在这一块的 (x, y) 处开一个新钉子的草稿 */
+  const pinAt = (el: HTMLElement, x: number, y: number) => {
     const r = el.getBoundingClientRect();
     setDraft({
       anchorKey: el.dataset.anchor as string,
       anchorLabel: el.dataset.anchorLabel ?? null,
-      xPct: Math.min(1, Math.max(0, (e.clientX - r.left) / Math.max(1, r.width))),
-      yPct: Math.min(1, Math.max(0, (e.clientY - r.top) / Math.max(1, r.height))),
+      xPct: Math.min(1, Math.max(0, (x - r.left) / Math.max(1, r.width))),
+      yPct: Math.min(1, Math.max(0, (y - r.top) / Math.max(1, r.height))),
       snippet: norm(el.textContent).slice(0, 80) || null,
     });
     setMode(false);
+    setGhost(null);
     setActive("draft");
+    closeTip();
+  };
+
+  /* 宽屏：鼠标停在哪一段，右侧边栏就出现一个「＋」，点它直接钉在这一段 */
+  const onMouseOver = (e: React.MouseEvent) => {
+    if (!wide || mode) return;
+    const root = board.current;
+    const el = (e.target as HTMLElement).closest<HTMLElement>("[data-anchor]");
+    if (!root || !el || !root.contains(el) || el === ghost?.el) return;
+    setGhost({ el, top: el.getBoundingClientRect().top - root.getBoundingClientRect().top });
   };
 
   const startMode = () => {
@@ -266,13 +309,14 @@ export function PinBoard({
     setMode((m) => !m);
   };
 
-  const submitDraft = async (body: string) => {
+  const submitDraft = async (body: string, kind: PinKind) => {
     if (!draft) return;
-    const pin = await api<Pin>("/api/pins", { body: { course, page, ...draft, body } });
+    const pin = await api<Pin>("/api/pins", { body: { course, page, ...draft, body, kind } });
     upsert(pin);
     setDraft(null);
     setActive(pin.id);
-    toast("已经钉上了，管理员会收到通知");
+    invalidate("/api/pins/");
+    toast(kind === "note" ? "已经标记，只有你自己能看到" : "已经钉上了，管理员会收到通知");
   };
 
   const jump = (id: string) => {
@@ -289,7 +333,7 @@ export function PinBoard({
   const panel =
     active === "draft" && draft ? (
       <DraftPanel
-        number={pins.length + 1}
+        number={questions.length + 1}
         label={draft.anchorLabel}
         snippet={draft.snippet}
         onCancel={() => {
@@ -317,26 +361,55 @@ export function PinBoard({
     <div className="pin-wrap">
       {toolHost &&
         createPortal(
-          <button type="button" className={`btn btn-sm ${mode ? "btn-primary" : "btn-quiet"} pin-mode-btn`} aria-pressed={mode} onClick={startMode} title="快捷键 Q">
+          <button type="button" className="btn btn-sm btn-pin pin-mode-btn" aria-pressed={mode} onClick={startMode} title="快捷键 Q">
             <Icon name="pin" size={16} />
-            {mode ? "点一下有问题的地方" : "钉一个问题"}
+            {mode ? "请点击要钉的那一段" : "提问或标记"}
           </button>,
           toolHost,
         )}
-      <div className="pin-board" ref={board} onClickCapture={onClickCapture}>
+      {tip && (
+        <div className="pin-tip" role="note">
+          <Icon name="pin" size={18} />
+          <span className="grow">
+            <b>可以在讲义上提问或做标记。</b>
+            读到不懂的地方，点击上方的「提问或标记」，再点击那一段{wide ? "；也可以把鼠标移到那一段，点击右侧出现的「＋」" : ""}。提问所有人都能看到，同学、管理员和 AI 助手的回答都会留在这里；标记只有你自己能看到，可以用来划重点或记录心得。
+          </span>
+          <button type="button" className="btn btn-quiet btn-sm" onClick={closeTip}>
+            知道了
+          </button>
+        </div>
+      )}
+      <div className="pin-board" ref={board} onClickCapture={onClickCapture} onMouseOver={onMouseOver} onMouseLeave={() => setGhost(null)}>
         {children}
         <div className="pin-layer">
+          {ghost && !mode && (
+            <button
+              type="button"
+              className="pin-ghost"
+              style={{ top: ghost.top + 14 }}
+              aria-label="在这一段提问或标记"
+              title="在这一段提问或标记"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (needLogin()) return;
+                const r = ghost.el.getBoundingClientRect();
+                pinAt(ghost.el, r.right, r.top + 14);
+              }}
+            >
+              <Icon name="plus" size={14} stroke={2.2} />
+            </button>
+          )}
           {lit && <div className="pin-target" style={{ top: lit.top, height: lit.h }} />}
           {placed.map((p) => {
             const pin = pins.find((x) => x.id === p.key);
-            const n = p.key === "draft" ? pins.length + 1 : numbered.get(p.key);
+            const n = p.key === "draft" ? "" : isNote(pin) ? "记" : numbered.get(p.key);
             return (
               <button
                 key={p.key}
                 type="button"
-                className={`pin-dot ${p.key === "draft" ? "draft" : pinState(pin)}${active === p.key ? " active" : ""}${(pin?.votes ?? 0) >= 2 ? " hot" : ""}`}
+                className={`pin-dot ${p.key === "draft" ? "draft" : isNote(pin) ? "note" : pinState(pin)}${active === p.key ? " active" : ""}${(pin?.votes ?? 0) >= 2 ? " hot" : ""}`}
                 style={{ top: p.y }}
-                aria-label={`钉子 ${n}${pin?.anchorLabel ? `：${pin.anchorLabel}` : ""}`}
+                aria-label={isNote(pin) ? `我的标记${pin?.anchorLabel ? `：${pin.anchorLabel}` : ""}` : `钉子 ${n}${pin?.anchorLabel ? `：${pin.anchorLabel}` : ""}`}
                 onMouseEnter={() => setHover(p.key)}
                 onMouseLeave={() => setHover(null)}
                 onClick={(e) => {
@@ -356,7 +429,7 @@ export function PinBoard({
       {mode && (
         <div className="pin-hint">
           <Icon name="pin" size={16} />
-          点一下你有问题的那一段 · Esc 取消
+          请点击要提问或标记的那一段 · Esc 取消
         </div>
       )}
       {panel && wide && panelHost && createPortal(<div className="pin-panel">{panel}</div>, panelHost)}
@@ -378,7 +451,7 @@ const pinState = (p: Pin | undefined): PinState => (p?.status === "resolved" ? "
 const STATE_LABEL: Record<PinState, string> = { open: "等回复", answered: "有回复", resolved: "已解决" };
 
 /** 静态的编号徽标（列表、讨论框标题里用） */
-function PinBadge({ n, state }: { n: number | string | undefined; state: PinState | "draft" }) {
+function PinBadge({ n, state }: { n: number | string | undefined; state: PinState | "draft" | "note" }) {
   return (
     <span className={`pin-badge ${state}`} aria-hidden="true">
       {n}
@@ -405,36 +478,68 @@ function Avatar({ name, agent }: { name: string; agent: boolean }) {
 }
 
 function PinList({ pins, numbered, orphans, active, onPick }: { pins: Pin[]; numbered: Map<string, number>; orphans: string[]; active: string | null; onPick: (id: string) => void }) {
+  const qs = pins.filter((p) => !isNote(p)).sort((a, b) => Number(a.status === "resolved") - Number(b.status === "resolved") || b.votes - a.votes || a.createdAt - b.createdAt);
+  const notes = pins.filter(isNote).sort((a, b) => a.createdAt - b.createdAt);
   if (!pins.length) return null;
-  const sorted = [...pins].sort((a, b) => Number(a.status === "resolved") - Number(b.status === "resolved") || b.votes - a.votes || a.createdAt - b.createdAt);
   return (
-    <section className="pin-list" aria-labelledby="pins-h">
-      <div className="section-head">
-        <h2 id="pins-h" className="h3">
-          本页的钉子
-        </h2>
-        <span className="small sub num">{pins.length} 个</span>
-      </div>
-      <ul className="card card-flush">
-        {sorted.map((p) => (
-          <li key={p.id}>
-            <button type="button" className={`pin-row${active === p.id ? " active" : ""}`} onClick={() => onPick(p.id)}>
-              <PinBadge n={numbered.get(p.id)} state={pinState(p)} />
-              <span className="pin-row-main">
-                <span className="clamp-2">{p.messages[0]?.body}</span>
-                <span className="small sub">
-                  {p.anchorLabel ?? "这一页"}
-                  {orphans.includes(p.id) && " · 原文已变"}
-                  {p.messages.length > 1 && ` · ${p.messages.length - 1} 条回复`}
-                  {p.votes > 0 && ` · ${p.votes} 人也想问`}
-                </span>
-              </span>
-              <StateChip state={pinState(p)} />
-            </button>
-          </li>
-        ))}
-      </ul>
-    </section>
+    <>
+      {qs.length > 0 && (
+        <section className="pin-list" aria-labelledby="pins-h">
+          <div className="section-head">
+            <h2 id="pins-h" className="h3">
+              本页的问题
+            </h2>
+            <span className="small sub num">{qs.length} 个</span>
+          </div>
+          <ul className="card card-flush">
+            {qs.map((p) => (
+              <li key={p.id}>
+                <button type="button" className={`pin-row${active === p.id ? " active" : ""}`} onClick={() => onPick(p.id)}>
+                  <PinBadge n={numbered.get(p.id)} state={pinState(p)} />
+                  <span className="pin-row-main">
+                    <span className="clamp-2">{p.messages[0]?.body}</span>
+                    <span className="small sub">
+                      {p.anchorLabel ?? "这一页"}
+                      {orphans.includes(p.id) && " · 原文已变"}
+                      {p.messages.length > 1 && ` · ${p.messages.length - 1} 条回复`}
+                      {p.votes > 0 && ` · ${p.votes} 人也想问`}
+                    </span>
+                  </span>
+                  <StateChip state={pinState(p)} />
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {notes.length > 0 && (
+        <section className="pin-list" aria-labelledby="notes-h">
+          <div className="section-head">
+            <h2 id="notes-h" className="h3">
+              我的标记
+            </h2>
+            <span className="small sub">只有你自己能看到</span>
+          </div>
+          <ul className="card card-flush">
+            {notes.map((p) => (
+              <li key={p.id}>
+                <button type="button" className={`pin-row${active === p.id ? " active" : ""}`} onClick={() => onPick(p.id)}>
+                  <PinBadge n="记" state="note" />
+                  <span className="pin-row-main">
+                    <span className="clamp-2">{p.messages[0]?.body ?? p.snippet ?? "（没有写备注）"}</span>
+                    <span className="small sub">
+                      {p.anchorLabel ?? "这一页"}
+                      {orphans.includes(p.id) && " · 原文已变"}
+                      {` · ${relativeTime(p.createdAt)}`}
+                    </span>
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </>
   );
 }
 
@@ -449,18 +554,19 @@ function DraftPanel({
   label: string | null;
   snippet: string | null;
   onCancel: () => void;
-  onSubmit: (body: string) => Promise<void>;
+  onSubmit: (body: string, kind: PinKind) => Promise<void>;
 }) {
+  const [kind, setKind] = useState<PinKind>("question");
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!text.trim()) return setError("写一句你的问题");
+    if (kind === "question" && !text.trim()) return setError("请写下你的问题");
     setBusy(true);
     setError(null);
     try {
-      await onSubmit(text.trim());
+      await onSubmit(text.trim(), kind);
     } catch (err) {
       setError((err as Error).message);
       setBusy(false);
@@ -469,9 +575,9 @@ function DraftPanel({
   return (
     <form className="pin-thread" onSubmit={submit}>
       <header className="pin-thread-head">
-        <PinBadge n={number} state="draft" />
+        <PinBadge n={kind === "note" ? "记" : number} state={kind === "note" ? "note" : "draft"} />
         <span className="pin-thread-meta">
-          <span className="pin-eyebrow">新钉子</span>
+          <span className="pin-eyebrow">{kind === "note" ? "新标记" : "新问题"}</span>
           <span className="pin-thread-title">{label ?? "这一页"}</span>
         </span>
         <button type="button" className="icon-btn" aria-label="取消" onClick={onCancel}>
@@ -479,13 +585,26 @@ function DraftPanel({
         </button>
       </header>
       <Quote text={snippet} />
+      <Seg
+        label="钉子的类型"
+        value={kind}
+        onChange={(k) => {
+          setKind(k);
+          setError(null);
+        }}
+        options={[
+          { value: "question" as const, label: "提问" },
+          { value: "note" as const, label: "标记" },
+        ]}
+      />
+      <p className="small sub">{kind === "note" ? "标记只有你自己能看到，可以用来划重点或记录心得，备注可以不写。" : "问题所有人都能看到，同学、管理员和 AI 助手都可以回答，管理员会收到通知。"}</p>
       <div className="pin-compose">
         <textarea
           rows={4}
           autoFocus
           value={text}
-          aria-label="你的问题"
-          placeholder="哪一步没看懂？写一句就行，大家都能看到、都能回答"
+          aria-label={kind === "note" ? "备注" : "你的问题"}
+          placeholder={kind === "note" ? "写一句备注（可以不写）" : "请写下哪一步没有看懂"}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) void submit(e);
@@ -494,7 +613,7 @@ function DraftPanel({
         <div className="pin-compose-bar">
           <span className="small sub">Ctrl + Enter 发送</span>
           <button type="submit" className="btn btn-primary btn-sm" disabled={busy}>
-            {busy ? "正在钉上…" : "钉在这里"}
+            {busy ? "正在保存…" : kind === "note" ? "标记这一段" : "发布问题"}
           </button>
         </div>
       </div>
@@ -515,6 +634,7 @@ function ThreadPanel({ pin, number, onClose, onChange, onRemove }: { pin: Pin; n
   const [thinking, setThinking] = useState(false);
   const ai = useApi<{ enabled: boolean }>("/api/ai/status");
   const isAdmin = !!me.isAdmin;
+  const note = isNote(pin);
   const act = async (fn: () => Promise<Pin | void>) => {
     setBusy(true);
     try {
@@ -543,8 +663,65 @@ function ThreadPanel({ pin, number, onClose, onChange, onRemove }: { pin: Pin; n
   const remove = () =>
     act(async () => {
       await api(`/api/pins/${pin.id}`, { method: "DELETE" });
+      invalidate("/api/pins/");
       onRemove();
     });
+
+  if (note)
+    return (
+      <div className="pin-thread">
+        <header className="pin-thread-head">
+          <PinBadge n="记" state="note" />
+          <span className="pin-thread-meta">
+            <span className="pin-eyebrow">我的标记 · 只有你自己能看到</span>
+            <span className="pin-thread-title">{pin.anchorLabel ?? "这一页"}</span>
+          </span>
+          <button type="button" className="icon-btn" aria-label="关闭" onClick={onClose}>
+            <Icon name="close" size={14} stroke={2} />
+          </button>
+        </header>
+        <Quote text={pin.snippet} />
+        {pin.messages.length > 0 ? (
+          <ol className="pin-msgs">
+            {pin.messages.map((m) => (
+              <li key={m.id} className="pin-msg">
+                <div className="pin-msg-main">
+                  <span className="pin-msg-meta">
+                    <span className="sub">{relativeTime(m.createdAt)}</span>
+                  </span>
+                  <p className="pin-msg-body">{m.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="small sub">这一段已经标记，还没有写备注。</p>
+        )}
+        <div className="pin-actions">
+          <button type="button" className="btn btn-quiet btn-sm" disabled={busy} onClick={remove}>
+            删除标记
+          </button>
+        </div>
+        <form className="pin-compose" onSubmit={send}>
+          <textarea
+            rows={3}
+            value={text}
+            aria-label="添加备注"
+            placeholder="添加一句备注"
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) send(e);
+            }}
+          />
+          <div className="pin-compose-bar">
+            <span className="small sub">Ctrl + Enter 保存</span>
+            <button type="submit" className="btn btn-primary btn-sm" disabled={busy || !text.trim()}>
+              添加备注
+            </button>
+          </div>
+        </form>
+      </div>
+    );
 
   return (
     <div className="pin-thread">

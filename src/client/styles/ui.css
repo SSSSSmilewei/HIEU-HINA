@@ -3903,12 +3903,16 @@ pre.code code {
   --pin-soft: color-mix(in srgb, var(--pin) 14%, var(--surface));
   --pin-grey: color-mix(in srgb, var(--ink) 38%, var(--surface));
   --pin-rail: 40px;
+  /* 标记（只有自己能看）用琥珀色，和提问的蓝色分开 */
+  --note: #b45309;
+  --note-soft: color-mix(in srgb, var(--note) 14%, var(--surface));
 }
 :root[data-mode="dark"] {
   --pin: #6ea8ff;
   --pin-deep: #a9c8ff;
   --pin-ink: #0b1220;
   --pin-tint: color-mix(in srgb, var(--pin) 12%, transparent);
+  --note: #f0b452;
 }
 @media (max-width: 899px) {
   :root {
@@ -4063,6 +4067,81 @@ body.pin-mode .pin-board [data-anchor]:hover {
 }
 .pin-badge.draft {
   border-style: dashed;
+}
+.pin-badge.note,
+.pin-dot.note {
+  border-color: var(--note);
+  color: var(--note);
+  background: var(--note-soft);
+  box-shadow: none;
+}
+
+/* 讲义上方的入口：钉子的蓝色实心按钮 */
+.btn-pin {
+  background: var(--pin);
+  border-color: var(--pin);
+  color: var(--pin-ink);
+}
+.btn-pin:hover {
+  background: var(--pin-deep);
+  border-color: var(--pin-deep);
+}
+.btn-pin[aria-pressed="true"] {
+  box-shadow: 0 0 0 3px var(--pin-tint);
+}
+
+/* 第一次打开讲义时的提示 */
+.pin-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--r-ctl);
+  border: 1px solid color-mix(in srgb, var(--pin) 40%, transparent);
+  background: var(--pin-tint);
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  line-height: 1.7;
+}
+.pin-tip > svg {
+  flex: none;
+  margin-top: 3px;
+  color: var(--pin);
+}
+.pin-tip b {
+  margin-right: 4px;
+}
+
+/* 宽屏：鼠标停在哪一段，右侧边栏出现「＋」 */
+.pin-ghost {
+  position: absolute;
+  right: calc(var(--pin-rail) / 2);
+  translate: 50% -50%;
+  pointer-events: auto;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: var(--pin);
+  background: var(--surface);
+  border: 1.5px dashed var(--pin);
+  cursor: pointer;
+  opacity: 0.85;
+}
+.pin-ghost:hover {
+  opacity: 1;
+  border-style: solid;
+}
+.pin-ghost:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* 课程页条目上的问题数 */
+.unit-pins {
+  color: var(--pin);
 }
 
 .pin-state {

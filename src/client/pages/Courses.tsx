@@ -4,6 +4,7 @@ import type { CoursePackage } from "../../shared/package";
 import { useApi } from "../api";
 import { ImportCourse } from "../components/ImportCourse";
 import { LearnTabs, type LearnTab } from "../components/LearnTabs";
+import { PinRows, type TitledPin } from "../components/PinRows";
 import { BlockCards } from "./Blocks";
 import { Icon } from "../icons";
 import { localMeta, localPackages, onLocalChange } from "../library";
@@ -64,7 +65,7 @@ export function CoursesPage() {
   const hosted = all.filter((c) => c.itemCount > 0 && !c.slug.startsWith("local-") && !mine.includes(c));
   const rest = list.filter((c) => c.itemCount === 0 && !mine.includes(c));
   // 没指定标签时：选过课（或导入过课程包）的人看「我的学习」，其他人看「课程目录」
-  const tab: LearnTab = cat ? "all" : asked === "mine" || asked === "all" || asked === "blocks" ? asked : mine.length || local.length ? "mine" : "all";
+  const tab: LearnTab = cat ? "all" : asked === "mine" || asked === "all" || asked === "blocks" || asked === "questions" ? asked : mine.length || local.length ? "mine" : "all";
   const setCat = (c: string | null) => navigate(c ? `/courses?tab=all&c=${encodeURIComponent(c)}` : "/courses?tab=all", { replace: true });
 
   return (
@@ -115,6 +116,8 @@ export function CoursesPage() {
         ) : (
           <p className="sub">没有找到{query ? `“${query}”` : "课程"}</p>
         )
+      ) : tab === "questions" ? (
+        <RecentPins />
       ) : tab === "blocks" ? (
         <section className="section" aria-label="知识块">
           <span className="small sub">每个知识块是一个方向的学习路线：该学哪些课程、按什么顺序学。</span>
@@ -198,6 +201,25 @@ export function CoursesPage() {
       )}
       {importing && <ImportCourse onClose={() => setImporting(false)} />}
     </div>
+  );
+}
+
+/** 「问题」标签：最近钉在讲义上的问题，还没人回答的在前 */
+function RecentPins() {
+  const { data, error, reload } = useApi<TitledPin[]>("/api/pins/recent");
+  if (error && !data) return <ErrorBox error={error} onRetry={reload} />;
+  if (!data) return <SkeletonCards n={3} h={90} />;
+  return (
+    <section className="section" aria-label="最近的问题">
+      <span className="small sub">同学们钉在讲义上的问题。还没有人回答的排在前面，点击一条可以跳到讲义的原处回答或继续讨论。</span>
+      {data.length ? (
+        <PinRows pins={data} />
+      ) : (
+        <div className="card">
+          <Empty title="还没有人提问">读讲义时遇到不懂的地方，点击讲义上方的「在讲义上提问」，问题会出现在这里。</Empty>
+        </div>
+      )}
+    </section>
   );
 }
 
