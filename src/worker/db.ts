@@ -362,6 +362,8 @@ export const MIGRATIONS: string[][] = [
   ],
   // 蓝色钉子分两种（2026-11）：question 提问（大家都能看、能回复），note 标记（只有本人能看，可以不写字）
   [`ALTER TABLE pins ADD COLUMN kind TEXT NOT NULL DEFAULT 'question'`],
+  // 标记可以公开（1）或只给自己（0，默认）；提问不看这一列，本来就公开
+  [`ALTER TABLE pins ADD COLUMN is_public INTEGER NOT NULL DEFAULT 0`],
 ];
 
 // 每个数据库连接只迁移一次（Worker 里通常只有一个；测试里每个用例一个内存库）

@@ -178,7 +178,8 @@ export function Dialog({
   useEffect(() => {
     const prev = document.activeElement as HTMLElement | null;
     const first = ref.current?.querySelector<HTMLElement>("input, textarea, select, button:not([data-close])");
-    first?.focus();
+    // 不滚动：否则弹窗只有底部一个按钮时，一打开就滚到底，标题被挡住
+    first?.focus({ preventScroll: true });
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
       if (e.key === "Tab" && ref.current) {

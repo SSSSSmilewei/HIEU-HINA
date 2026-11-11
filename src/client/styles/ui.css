@@ -4139,6 +4139,131 @@ body.pin-mode .pin-board [data-anchor]:hover {
   outline-offset: 3px;
 }
 
+/* 蓝色钉子使用说明（components/PinGuide.tsx） */
+.pin-guide {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  counter-reset: pg;
+}
+.pin-guide > li {
+  counter-increment: pg;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 128px;
+  gap: 12px;
+  align-items: start;
+}
+.pin-guide > li::before {
+  content: counter(pg);
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font: 700 13px/1 var(--font-sans);
+  color: var(--pin);
+  background: var(--pin-tint);
+}
+.pin-guide-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  line-height: 1.7;
+}
+.pin-guide-pic {
+  position: relative;
+  height: 68px;
+  border-radius: var(--r-ctl);
+  border: 1px solid var(--line);
+  background: var(--well);
+  overflow: hidden;
+}
+.pin-guide-pic i {
+  position: absolute;
+  font-style: normal;
+}
+.pg-line {
+  left: 10px;
+  right: 34px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+  translate: 0 -50%;
+}
+.pg-line.short {
+  right: 52px;
+}
+.pg-btn {
+  top: 4px;
+  right: 4px;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-size: 10px;
+  line-height: 16px;
+  background: var(--pin);
+  color: var(--pin-ink);
+}
+.pg-plus,
+.pg-dot {
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  translate: 0 -50%;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+}
+.pg-plus {
+  border-radius: 8px;
+  border: 1.5px dashed var(--pin);
+  color: var(--pin);
+  background: var(--surface);
+}
+.pg-dot {
+  border-radius: 50% 50% 50% 0;
+  rotate: 45deg;
+  border: 2px solid var(--pin);
+  background: var(--surface);
+}
+.pg-dot.note {
+  border-color: var(--note);
+  background: var(--note-soft);
+}
+.pg-seg {
+  left: 50%;
+  bottom: 4px;
+  translate: -50% 0;
+  white-space: nowrap;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  line-height: 18px;
+  color: var(--note);
+  background: var(--note-soft);
+  border: 1px solid var(--note);
+}
+.pg-bubble {
+  right: 30px;
+  bottom: 6px;
+  width: 52px;
+  height: 18px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--pin);
+}
+@media (max-width: 520px) {
+  .pin-guide > li {
+    grid-template-columns: 28px minmax(0, 1fr);
+  }
+  .pin-guide-pic {
+    display: none;
+  }
+}
+
 /* 课程页条目上的问题数 */
 .unit-pins {
   color: var(--pin);

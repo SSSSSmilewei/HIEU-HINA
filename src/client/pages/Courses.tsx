@@ -4,6 +4,7 @@ import type { CoursePackage } from "../../shared/package";
 import { useApi } from "../api";
 import { ImportCourse } from "../components/ImportCourse";
 import { LearnTabs, type LearnTab } from "../components/LearnTabs";
+import { PinGuideButton } from "../components/PinGuide";
 import { PinRows, type TitledPin } from "../components/PinRows";
 import { BlockCards } from "./Blocks";
 import { Icon } from "../icons";
@@ -211,12 +212,15 @@ function RecentPins() {
   if (!data) return <SkeletonCards n={3} h={90} />;
   return (
     <section className="section" aria-label="最近的问题">
-      <span className="small sub">同学们钉在讲义上的问题。还没有人回答的排在前面，点击一条可以跳到讲义的原处回答或继续讨论。</span>
+      <div className="row wrap" style={{ gap: 8, justifyContent: "space-between", alignItems: "center" }}>
+        <span className="small sub">同学们钉在讲义上的问题。还没有人回答的排在前面，点击一条可以跳到讲义的原处回答或继续讨论。</span>
+        <PinGuideButton />
+      </div>
       {data.length ? (
         <PinRows pins={data} />
       ) : (
         <div className="card">
-          <Empty title="还没有人提问">读讲义时遇到不懂的地方，点击讲义上方的「在讲义上提问」，问题会出现在这里。</Empty>
+          <Empty title="还没有人提问">读讲义时遇到不懂的地方，点击讲义上方的「提问或标记」，问题会出现在这里。</Empty>
         </div>
       )}
     </section>

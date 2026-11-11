@@ -2,13 +2,14 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { createPortal } from "react-dom";
 import { api, invalidate, mutate, relativeTime, useApi } from "../api";
 import { Icon } from "../icons";
+import { PinGuideButton } from "./PinGuide";
 import { Link, useQuery } from "../router";
 import { loginHref, useMe, useRequireLogin } from "../session";
 import { Seg, useToast } from "../ui";
 
 /**
  * 蓝色钉子：在讲义的某一段（或某道练手题）上钉一个问题，大家在下面讨论；
- * 也可以钉一个「标记」，给自己划重点或记一句，只有本人能看到（可以不写字）。
+ * 也可以钉一个「标记」，划重点或记一句（可以不写字），本人选「只给自己」或「公开」。
  *
  * 做法照负责人的 Math-Teach-Job（PinBoard）：
  * - 内容块有固定的位置标记 data-anchor（讲义按“所在小标题 + 第几段”自动生成，练手题用题号），
@@ -39,6 +40,8 @@ export interface Pin {
   snippet: string | null;
   /** question 提问（大家都能看）；note 标记（只有本人能看）。旧数据没有这个字段时当作提问 */
   kind?: "question" | "note";
+  /** 标记是否公开（提问一律 true） */
+  isPublic?: boolean;
   status: "open" | "resolved";
   createdAt: number;
   updatedAt: number;
@@ -153,8 +156,8 @@ export function PinBoard({
   children: React.ReactNode;
 }) {
   const { me } = useMe();
-  // 登录后带上自己的标记
-  const key = enabled ? `/api/pins?course=${encodeURIComponent(course)}&page=${encodeURIComponent(page)}${me.role ? "&notes=1" : ""}` : null;
+  // notes=1：带上公开的标记和自己的标记（旧版 App 不带，只看到提问）
+  const key = enabled ? `/api/pins?course=${encodeURIComponent(course)}&page=${encodeURIComponent(page)}&notes=1` : null;
   const { data } = useApi<Pin[]>(key);
   const pins = data ?? [];
   const needLogin = useRequireLogin();
@@ -309,14 +312,14 @@ export function PinBoard({
     setMode((m) => !m);
   };
 
-  const submitDraft = async (body: string, kind: PinKind) => {
+  const submitDraft = async (body: string, kind: PinKind, isPublic: boolean) => {
     if (!draft) return;
-    const pin = await api<Pin>("/api/pins", { body: { course, page, ...draft, body, kind } });
+    const pin = await api<Pin>("/api/pins", { body: { course, page, ...draft, body, kind, isPublic } });
     upsert(pin);
     setDraft(null);
     setActive(pin.id);
     invalidate("/api/pins/");
-    toast(kind === "note" ? "已经标记，只有你自己能看到" : "已经钉上了，管理员会收到通知");
+    toast(kind === "question" ? "已经钉上了，管理员会收到通知" : isPublic ? "已经标记，所有人都能看到" : "已经标记，只有你自己能看到");
   };
 
   const jump = (id: string) => {
@@ -361,10 +364,13 @@ export function PinBoard({
     <div className="pin-wrap">
       {toolHost &&
         createPortal(
-          <button type="button" className="btn btn-sm btn-pin pin-mode-btn" aria-pressed={mode} onClick={startMode} title="快捷键 Q">
-            <Icon name="pin" size={16} />
-            {mode ? "请点击要钉的那一段" : "提问或标记"}
-          </button>,
+          <span className="row" style={{ gap: 6 }}>
+            <PinGuideButton />
+            <button type="button" className="btn btn-sm btn-pin pin-mode-btn" aria-pressed={mode} onClick={startMode} title="快捷键 Q">
+              <Icon name="pin" size={16} />
+              {mode ? "请点击要钉的那一段" : "提问或标记"}
+            </button>
+          </span>,
           toolHost,
         )}
       {tip && (
@@ -372,11 +378,14 @@ export function PinBoard({
           <Icon name="pin" size={18} />
           <span className="grow">
             <b>可以在讲义上提问或做标记。</b>
-            读到不懂的地方，点击上方的「提问或标记」，再点击那一段{wide ? "；也可以把鼠标移到那一段，点击右侧出现的「＋」" : ""}。提问所有人都能看到，同学、管理员和 AI 助手的回答都会留在这里；标记只有你自己能看到，可以用来划重点或记录心得。
+            读到不懂的地方，点击上方的「提问或标记」，再点击那一段{wide ? "；也可以把鼠标移到那一段，点击右侧出现的「＋」" : ""}。提问所有人都能看到，同学、管理员和 AI 助手的回答都会留在这里；标记用来划重点或记录心得，可以只给自己，也可以公开。
           </span>
-          <button type="button" className="btn btn-quiet btn-sm" onClick={closeTip}>
-            知道了
-          </button>
+          <span className="row" style={{ gap: 6, flexWrap: "wrap", justifyContent: "flex-end" }}>
+            <PinGuideButton label="查看使用说明" />
+            <button type="button" className="btn btn-quiet btn-sm" onClick={closeTip}>
+              知道了
+            </button>
+          </span>
         </div>
       )}
       <div className="pin-board" ref={board} onClickCapture={onClickCapture} onMouseOver={onMouseOver} onMouseLeave={() => setGhost(null)}>
@@ -409,7 +418,7 @@ export function PinBoard({
                 type="button"
                 className={`pin-dot ${p.key === "draft" ? "draft" : isNote(pin) ? "note" : pinState(pin)}${active === p.key ? " active" : ""}${(pin?.votes ?? 0) >= 2 ? " hot" : ""}`}
                 style={{ top: p.y }}
-                aria-label={isNote(pin) ? `我的标记${pin?.anchorLabel ? `：${pin.anchorLabel}` : ""}` : `钉子 ${n}${pin?.anchorLabel ? `：${pin.anchorLabel}` : ""}`}
+                aria-label={isNote(pin) ? `标记${pin?.anchorLabel ? `：${pin.anchorLabel}` : ""}` : `钉子 ${n}${pin?.anchorLabel ? `：${pin.anchorLabel}` : ""}`}
                 onMouseEnter={() => setHover(p.key)}
                 onMouseLeave={() => setHover(null)}
                 onClick={(e) => {
@@ -516,9 +525,9 @@ function PinList({ pins, numbered, orphans, active, onPick }: { pins: Pin[]; num
         <section className="pin-list" aria-labelledby="notes-h">
           <div className="section-head">
             <h2 id="notes-h" className="h3">
-              我的标记
+              本页的标记
             </h2>
-            <span className="small sub">只有你自己能看到</span>
+            <span className="small sub num">{notes.length} 个</span>
           </div>
           <ul className="card card-flush">
             {notes.map((p) => (
@@ -530,9 +539,10 @@ function PinList({ pins, numbered, orphans, active, onPick }: { pins: Pin[]; num
                     <span className="small sub">
                       {p.anchorLabel ?? "这一页"}
                       {orphans.includes(p.id) && " · 原文已变"}
-                      {` · ${relativeTime(p.createdAt)}`}
+                      {` · ${p.mine ? "我" : p.author} · ${relativeTime(p.createdAt)}`}
                     </span>
                   </span>
+                  <span className="pin-state">{p.isPublic ? "公开" : "只给自己"}</span>
                 </button>
               </li>
             ))}
@@ -554,9 +564,10 @@ function DraftPanel({
   label: string | null;
   snippet: string | null;
   onCancel: () => void;
-  onSubmit: (body: string, kind: PinKind) => Promise<void>;
+  onSubmit: (body: string, kind: PinKind, isPublic: boolean) => Promise<void>;
 }) {
   const [kind, setKind] = useState<PinKind>("question");
+  const [isPublic, setPublic] = useState(false);
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -566,7 +577,7 @@ function DraftPanel({
     setBusy(true);
     setError(null);
     try {
-      await onSubmit(text.trim(), kind);
+      await onSubmit(text.trim(), kind, kind === "note" && isPublic);
     } catch (err) {
       setError((err as Error).message);
       setBusy(false);
@@ -597,7 +608,24 @@ function DraftPanel({
           { value: "note" as const, label: "标记" },
         ]}
       />
-      <p className="small sub">{kind === "note" ? "标记只有你自己能看到，可以用来划重点或记录心得，备注可以不写。" : "问题所有人都能看到，同学、管理员和 AI 助手都可以回答，管理员会收到通知。"}</p>
+      {kind === "note" && (
+        <Seg
+          label="谁能看到这个标记"
+          value={isPublic ? "public" : "private"}
+          onChange={(v) => setPublic(v === "public")}
+          options={[
+            { value: "private" as const, label: "只给自己" },
+            { value: "public" as const, label: "公开" },
+          ]}
+        />
+      )}
+      <p className="small sub">
+        {kind === "question"
+          ? "问题所有人都能看到，同学、管理员和 AI 助手都可以回答，管理员会收到通知。"
+          : isPublic
+            ? "公开的标记所有人都能看到，同学可以在下面回复；之后可以改成只给自己。备注可以不写。"
+            : "这个标记只有你自己能看到，可以用来划重点或记录心得；之后可以改成公开。备注可以不写。"}
+      </p>
       <div className="pin-compose">
         <textarea
           rows={4}
@@ -673,7 +701,9 @@ function ThreadPanel({ pin, number, onClose, onChange, onRemove }: { pin: Pin; n
         <header className="pin-thread-head">
           <PinBadge n="记" state="note" />
           <span className="pin-thread-meta">
-            <span className="pin-eyebrow">我的标记 · 只有你自己能看到</span>
+            <span className="pin-eyebrow">
+              {pin.mine ? "我的标记" : `${pin.author} 的标记`} · {pin.isPublic ? "公开" : "只有你自己能看到"}
+            </span>
             <span className="pin-thread-title">{pin.anchorLabel ?? "这一页"}</span>
           </span>
           <button type="button" className="icon-btn" aria-label="关闭" onClick={onClose}>
@@ -685,8 +715,10 @@ function ThreadPanel({ pin, number, onClose, onChange, onRemove }: { pin: Pin; n
           <ol className="pin-msgs">
             {pin.messages.map((m) => (
               <li key={m.id} className="pin-msg">
+                <Avatar name={m.author} agent={false} />
                 <div className="pin-msg-main">
                   <span className="pin-msg-meta">
+                    <b>{m.author}</b>
                     <span className="sub">{relativeTime(m.createdAt)}</span>
                   </span>
                   <p className="pin-msg-body">{m.body}</p>
@@ -697,29 +729,42 @@ function ThreadPanel({ pin, number, onClose, onChange, onRemove }: { pin: Pin; n
         ) : (
           <p className="small sub">这一段已经标记，还没有写备注。</p>
         )}
-        <div className="pin-actions">
-          <button type="button" className="btn btn-quiet btn-sm" disabled={busy} onClick={remove}>
-            删除标记
-          </button>
-        </div>
-        <form className="pin-compose" onSubmit={send}>
-          <textarea
-            rows={3}
-            value={text}
-            aria-label="添加备注"
-            placeholder="添加一句备注"
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) send(e);
-            }}
-          />
-          <div className="pin-compose-bar">
-            <span className="small sub">Ctrl + Enter 保存</span>
-            <button type="submit" className="btn btn-primary btn-sm" disabled={busy || !text.trim()}>
-              添加备注
+        {(pin.mine || isAdmin) && (
+          <div className="pin-actions">
+            {pin.mine && (
+              <button type="button" className="btn btn-quiet btn-sm" disabled={busy} onClick={() => act(() => api<Pin>(`/api/pins/${pin.id}/visibility`, { body: { isPublic: !pin.isPublic } }))}>
+                {pin.isPublic ? "改为只给自己" : "改为公开"}
+              </button>
+            )}
+            <button type="button" className="btn btn-quiet btn-sm" disabled={busy} onClick={remove}>
+              删除标记
             </button>
           </div>
-        </form>
+        )}
+        {me.role ? (
+          <form className="pin-compose" onSubmit={send}>
+            <textarea
+              rows={3}
+              value={text}
+              aria-label={pin.mine ? "添加备注" : "回复"}
+              placeholder={pin.mine ? "添加一句备注" : "写下你的看法"}
+              onChange={(e) => setText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) send(e);
+              }}
+            />
+            <div className="pin-compose-bar">
+              <span className="small sub">Ctrl + Enter 发送</span>
+              <button type="submit" className="btn btn-primary btn-sm" disabled={busy || !text.trim()}>
+                {pin.mine ? "添加备注" : "回复"}
+              </button>
+            </div>
+          </form>
+        ) : (
+          <Link to={loginHref(location.pathname + location.search)} className="btn btn-quiet btn-sm pin-login">
+            登录后参与讨论
+          </Link>
+        )}
       </div>
     );
 

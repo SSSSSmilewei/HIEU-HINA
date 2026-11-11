@@ -401,7 +401,24 @@ describe("蓝色钉子 · 标记", () => {
     expect((await call("guest", "GET", "/api/pins/counts?course=cs50x")).data).toEqual({ "w1-lecture": { total: 1, open: 1 } });
     expect((await call("boot", "GET", "/api/admin/pins")).data.map((p: { id: string }) => p.id)).toEqual([q.id]);
 
-    // 自己的标记随时能删
+    // 改成公开：大家（包括游客）都能看到，别人能回复；仍然不进问题列表
+    expect((await call("chen", "POST", `/api/pins/${id}/visibility`, { isPublic: true })).status).toBe(404);
+    expect((await call("lin", "POST", `/api/pins/${q.id}/visibility`, { isPublic: true })).status).toBe(400);
+    expect((await call("lin", "POST", `/api/pins/${id}/visibility`, { isPublic: true })).data.isPublic).toBe(true);
+    expect((await call("guest", "GET", `${page}&notes=1`)).data.map((p: { id: string }) => p.id).sort()).toEqual([id, q.id].sort());
+    expect((await call("guest", "GET", page)).data.map((p: { id: string }) => p.id)).toEqual([q.id]);
+    expect((await call("chen", "POST", `/api/pins/${id}/messages`, { body: "我也觉得" })).data.messages).toHaveLength(2);
+    expect((await call("chen", "POST", `/api/pins/${id}/visibility`, { isPublic: false })).status).toBe(403);
+    expect((await call("chen", "DELETE", `/api/pins/${id}`)).status).toBe(403);
+    expect((await call("guest", "GET", "/api/pins/recent")).data.map((p: { id: string }) => p.id)).toEqual([q.id]);
+
+    // 钉的时候直接选公开
+    const shown = await call("chen", "POST", "/api/pins", { ...base, kind: "note", isPublic: true, body: "重点" });
+    expect(shown.data).toMatchObject({ kind: "note", isPublic: true });
+    // 公开的标记管理员能删
+    expect((await call("boot", "DELETE", `/api/pins/${shown.data.id}`)).data.ok).toBe(true);
+
+    // 自己的标记随时能删（有别人的回复也能删）
     expect((await call("lin", "DELETE", `/api/pins/${id}`)).data.ok).toBe(true);
   });
 });
