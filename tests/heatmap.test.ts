@@ -10,7 +10,7 @@ import {
   overview,
   weekdayMon0,
 } from "../src/shared/heatmap";
-import { type Fetch, type ProviderContext, atcoder, codeforces, github, gitee, leetcode, leetcodeCn, parseSubmissionCalendar } from "../src/worker/heatmap/providers";
+import { type Fetch, type ProviderContext, atcoder, codeforces, getProvider, github, leetcode, leetcodeCn, parseSubmissionCalendar } from "../src/worker/heatmap/providers";
 import { sanitize, syncBindings } from "../src/worker/heatmap/sync";
 
 const SINCE = Date.parse("2026-01-01T00:00:00+08:00") / 1000;
@@ -172,7 +172,7 @@ describe("同步", () => {
     const out = await syncBindings(
       [
         { source: "codeforces", handle: "tourist" },
-        { source: "gitee", handle: "someone" },
+        { source: "wakatime", handle: "someone" },
         { source: "nope", handle: "x" },
       ],
       ctx(f),
@@ -180,14 +180,14 @@ describe("同步", () => {
     );
     expect(out[0].error).toBeUndefined();
     expect(out[0].days).toEqual({ "2026-10-21": 1 });
-    expect(out[1].error).toContain("暂不支持");
+    expect(out[1].error).toContain("暂未接入");
     expect(out[2].error).toBe("未知的平台");
   });
   test("清洗：去掉未来、太早、非法的值", () => {
     expect(sanitize({ "2026-10-21": 2, "2027-01-01": 3, "2020-01-01": 1, bad: 1, "2026-10-20": -1 }, "2026-10-21")).toEqual({ "2026-10-21": 2 });
   });
-  test("gitee 现在明确标为暂不支持", async () => {
-    await expect(gitee.fetchDaily("x", ctx(fakeFetch(() => ({}))))).rejects.toThrow("暂不支持");
+  test("没有接口的 Gitee、洛谷、扇贝已从平台列表里删掉", () => {
+    for (const id of ["gitee", "luogu", "shanbay"]) expect(getProvider(id)).toBeUndefined();
   });
   test("cnDateFromSeconds 与 cnDate 一致", () => {
     const ms = Date.parse("2026-10-21T23:30:00+08:00");

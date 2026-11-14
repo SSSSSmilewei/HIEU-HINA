@@ -75,6 +75,9 @@ export function ReportPage() {
 
   const days = [...new Set(data.records.map((r) => r.day))].sort();
   const people = data.people.filter((p) => p.evening + p.venue > 0).concat(data.people.filter((p) => p.evening + p.venue === 0));
+  // 场地签到 2026-11 起取消，只有这段时间里有旧的场地记录时才显示场地一列
+  const venueCol = data.kind === "venue" || (data.kind !== "evening" && data.records.some((r) => r.kind === "venue"));
+  const kindCol = !data.kind && venueCol;
 
   return (
     <div className="page report-page">
@@ -119,7 +122,7 @@ export function ReportPage() {
                 <th>姓名</th>
                 <th>班级</th>
                 {data.kind !== "venue" && <th>晚自习</th>}
-                {data.kind !== "evening" && <th>场地</th>}
+                {venueCol && <th>场地</th>}
                 <th>累计时长</th>
               </tr>
             </thead>
@@ -130,7 +133,7 @@ export function ReportPage() {
                   <td>{p.name}</td>
                   <td>{p.className}</td>
                   {data.kind !== "venue" && <td className="num">{p.evening} 次</td>}
-                  {data.kind !== "evening" && <td className="num">{p.venue} 次</td>}
+                  {venueCol && <td className="num">{p.venue} 次</td>}
                   <td className="num">{hours(p.minutes)}</td>
                 </tr>
               ))}
@@ -146,7 +149,7 @@ export function ReportPage() {
                 <tr>
                   <th>姓名</th>
                   <th>学号</th>
-                  {!data.kind && <th>场景</th>}
+                  {kindCol && <th>场景</th>}
                   <th>签到</th>
                   <th>签退</th>
                   <th>时长</th>
@@ -162,7 +165,7 @@ export function ReportPage() {
                     <tr key={`${r.studentNo}-${r.inAt}`}>
                       <td>{r.name}</td>
                       <td className="num">{r.studentNo}</td>
-                      {!data.kind && <td>{KIND[r.kind]}</td>}
+                      {kindCol && <td>{KIND[r.kind]}</td>}
                       <td className="num">{clock(r.inAt)}</td>
                       <td className="num">{r.status === "closed" && r.outAt ? clock(r.outAt) : r.status === "open" ? "进行中" : "未签退"}</td>
                       <td className="num">{r.minutes} 分钟</td>

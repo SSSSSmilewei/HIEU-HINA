@@ -3,6 +3,7 @@ import { memoryD1 } from "../scripts/local-d1";
 import { recordActivity, recordActivityOnce, siteDaily, siteDailyByCategory } from "../src/worker/activity";
 import { attendanceCsv, attendanceMinutes, autoClose, cnClock, dailyCode, eveningState, listAttendance, parseDays, parseWindow, signIn, signOut } from "../src/worker/attendance";
 import { MIGRATIONS } from "../src/worker/db";
+import { cnDate } from "../src/shared/heatmap";
 import { type Fetch, bbdc, bbdcDate, duolingo, maimemo } from "../src/worker/heatmap/providers";
 import { bindSource, listBindings, loadSeries, syncEveryone, syncUser, unbindSource } from "../src/worker/heatmap/store";
 import { openSecret, sealSecret } from "../src/worker/secret-box";
@@ -55,6 +56,12 @@ describe("签到签退", () => {
   const rule = { days: [1, 2, 4], window: ["19:00", "20:40"] as [string, string], earlyMinutes: 15, requireCode: false };
   const thu = (hhmm: string) => at(`2026-10-22T${hhmm}:00+08:00`);
   const base = { rule, secret: SECRET, photoKey: "attendance/x/1" };
+  /** 场地签到 2026-11 取消后不能再新建，测试旧记录时直接写进数据库 */
+  const oldVenue = (userId: string, inAt: number) =>
+    db
+      .prepare("INSERT INTO attendance (id, user_id, kind, day, in_at, in_photo, status) VALUES (?, ?, 'venue', ?, ?, 'p', 'open')")
+      .bind(crypto.randomUUID(), userId, cnDate(inAt), inAt)
+      .run();
 
   test("时间与日期解析", () => {
     expect(parseWindow("19:00-20:40")).toEqual(["19:00", "20:40"]);
@@ -75,21 +82,29 @@ describe("签到签退", () => {
   test("签到、签退各记一条，进热力图的签到分类", async () => {
     const r = await signIn(db, { ...base, userId: "u1", kind: "evening" }, thu("19:02"));
     expect(r.status).toBe("open");
-    await expect(signIn(db, { ...base, userId: "u1", kind: "venue" }, thu("19:05"))).rejects.toThrow("已经在晚自习签到");
+    await expect(signIn(db, { ...base, userId: "u1", kind: "evening" }, thu("19:05"))).rejects.toThrow("已经在晚自习签到");
     const out = await signOut(db, { userId: "u1", rule, photoKey: "attendance/x/2" }, thu("20:30"));
     expect(out.status).toBe("closed");
     expect((await siteDailyByCategory(db, "u1", "2026-10-01")).attendance).toEqual({ "2026-10-22": 2 });
     await expect(signIn(db, { ...base, userId: "u1", kind: "evening" }, thu("20:35"))).rejects.toThrow("已经签到过了");
   });
 
-  test("不是晚自习日或不在时段内，不能晚自习签到；场地签到任何时间都可以", async () => {
+  test("不是晚自习日或不在时段内，不能晚自习签到；场地签到已取消，不能再新建", async () => {
     await expect(signIn(db, { ...base, userId: "u1", kind: "evening" }, at("2026-10-21T19:30:00+08:00"))).rejects.toThrow("今天没有晚自习");
     await expect(signIn(db, { ...base, userId: "u1", kind: "evening" }, thu("15:00"))).rejects.toThrow("不在晚自习签到时间");
-    expect((await signIn(db, { ...base, userId: "u1", kind: "venue" }, thu("15:00"))).kind).toBe("venue");
+    await expect(signIn(db, { ...base, userId: "u1", kind: "venue" }, thu("15:00"))).rejects.toThrow("场地签到已取消");
+    await expect(signIn(db, { ...base, userId: "u1", kind: "venue" }, thu("19:10"))).rejects.toThrow("场地签到已取消");
   });
 
   test("没照片不能签到", async () => {
-    await expect(signIn(db, { ...base, photoKey: null, userId: "u1", kind: "venue" }, thu("15:00"))).rejects.toThrow("照片");
+    await expect(signIn(db, { ...base, photoKey: null, userId: "u1", kind: "evening" }, thu("19:10"))).rejects.toThrow("照片");
+  });
+
+  test("以前的场地签到（取消前留下的）照常签退、照常算时长", async () => {
+    await oldVenue("u2", thu("14:00"));
+    const out = await signOut(db, { userId: "u2", rule, photoKey: "p" }, thu("15:30"));
+    expect(out.kind).toBe("venue");
+    expect(attendanceMinutes(out)).toBe(90);
   });
 
   test("开启现场口令后，晚自习要输对", async () => {
@@ -102,7 +117,7 @@ describe("签到签退", () => {
 
   test("忘记签退：晚自习到 20:40、场地到 23:59 自动结束，记为未签退", async () => {
     await signIn(db, { ...base, userId: "u1", kind: "evening" }, thu("19:10"));
-    await signIn(db, { ...base, userId: "u2", kind: "venue" }, thu("21:00"));
+    await oldVenue("u2", thu("21:00"));
     expect(await autoClose(db, rule, thu("20:50"))).toBe(1);
     expect(await autoClose(db, rule, at("2026-10-23T00:01:00+08:00"))).toBe(1);
     const rows = await listAttendance(db, "2026-10-22", "2026-10-22");
@@ -221,7 +236,8 @@ describe("绑定、同步、读取", () => {
   test("需要令牌的平台不填令牌不能绑定；待实测的平台不能绑定", async () => {
     const db = await freshDb();
     await expect(bindSource(db, SECRET, { userId: "u1", source: "maimemo", handle: "林" })).rejects.toThrow("需要令牌");
-    await expect(bindSource(db, SECRET, { userId: "u1", source: "gitee", handle: "x" })).rejects.toThrow("暂不支持");
+    await expect(bindSource(db, SECRET, { userId: "u1", source: "wakatime", handle: "x" })).rejects.toThrow("暂不支持");
+    await expect(bindSource(db, SECRET, { userId: "u1", source: "gitee", handle: "x" })).rejects.toThrow("不支持这个平台");
   });
 
   test("改用户名时不填令牌，保留原令牌", async () => {

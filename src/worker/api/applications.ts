@@ -244,6 +244,13 @@ export function applicationRoutes(api: Router) {
     return json({ items: rows.results.map(summary), counts: byStatus, settings });
   });
 
+  /** 只返回新报名的数量（侧栏上的数字用，不下载整张名单） */
+  api.get("/api/admin/applications/count", async (c) => {
+    requireAdmin(c);
+    const r = await c.env.DB.prepare("SELECT COUNT(*) AS n FROM applications WHERE status = 'new'").first<{ n: number }>();
+    return json({ new: r?.n ?? 0 });
+  });
+
   api.get("/api/admin/applications.csv", async (c) => {
     requireAdmin(c);
     const rows = await c.env.DB.prepare("SELECT * FROM applications ORDER BY created_at").all<Row>();

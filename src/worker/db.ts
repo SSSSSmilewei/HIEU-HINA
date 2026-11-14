@@ -345,7 +345,7 @@ export const MIGRATIONS: string[][] = [
     )`,
     `CREATE INDEX IF NOT EXISTS application_hits_by_ip ON application_hits(ip, at)`,
   ],
-  // 新生任务的课程证书（先是 CS50x）：学员交证书链接，管理员确认
+  // 新生任务的课程证书（先是 CS50x）：学员交证书链接，管理员确认。2026-11 起改成本人点「我已完成」，仍记在这张表里（见 api/start.ts）
   [
     `CREATE TABLE IF NOT EXISTS certificates (
       user_id TEXT NOT NULL,
@@ -360,6 +360,10 @@ export const MIGRATIONS: string[][] = [
     )`,
     `CREATE INDEX IF NOT EXISTS certificates_by_status ON certificates(status, submitted_at)`,
   ],
+  // 蓝色钉子分两种（2026-11）：question 提问（大家都能看、能回复），note 标记（只有本人能看，可以不写字）
+  [`ALTER TABLE pins ADD COLUMN kind TEXT NOT NULL DEFAULT 'question'`],
+  // 标记可以公开（1）或只给自己（0，默认）；提问不看这一列，本来就公开
+  [`ALTER TABLE pins ADD COLUMN is_public INTEGER NOT NULL DEFAULT 0`],
 ];
 
 // 每个数据库连接只迁移一次（Worker 里通常只有一个；测试里每个用例一个内存库）

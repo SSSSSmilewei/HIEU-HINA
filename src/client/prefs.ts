@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import { type CustomFont, type CustomPalette, type FontSlot, fontCss, loadUploadedFont, paletteCss } from "./theme";
 
 /**
- * 外观偏好：皮肤、深浅、配色（含导入的配色）、字体。
+ * 外观偏好：深浅、配色（含导入的配色）、字体。
  * 只存在这台设备的浏览器里。首帧前由 index.html 里的小脚本先设好（含导入配色和字体的 CSS），避免闪一下。
  */
-export type Skin = "glass" | "classic";
 export type ThemeChoice = "system" | "light" | "dark";
 /** 配色主题；swatch 为 [底色, 表面, 文字, 强调色]，只用来在设置里画预览，真正的颜色在 palettes.css */
 export const PALETTES = [
-  { id: "shanmoew-mizu", label: "shanmoew-mizu", light: ["#f2f9fa", "#ffffff", "#102c35", "#add8e6"], dark: ["#0c1a20", "#13262e", "#e3f3f6", "#add8e6"] },
   { id: "hiana", label: "海纳橙", light: ["#f6f5f3", "#ffffff", "#1b1a19", "#f26b1d"], dark: ["#0e0d0c", "#1c1a19", "#f3f1ee", "#ff7a2e"] },
+  { id: "shanmoew-mizu", label: "shanmoew-mizu", light: ["#f2f9fa", "#ffffff", "#102c35", "#add8e6"], dark: ["#0c1a20", "#13262e", "#e3f3f6", "#add8e6"] },
   { id: "nord", label: "Nord", light: ["#eceff4", "#ffffff", "#2e3440", "#5e81ac"], dark: ["#2e3440", "#3b4252", "#eceff4", "#88c0d0"] },
   { id: "catppuccin", label: "Catppuccin", light: ["#eff1f5", "#ffffff", "#4c4f69", "#8839ef"], dark: ["#1e1e2e", "#313244", "#cdd6f4", "#cba6f7"] },
   { id: "tokyo-night", label: "Tokyo Night", light: ["#e6e7ed", "#ffffff", "#343b58", "#2e7de9"], dark: ["#1a1b26", "#24283b", "#c0caf5", "#7aa2f7"] },
@@ -23,9 +22,8 @@ export const PALETTES = [
   { id: "vesper", label: "Vesper", light: ["#f6f1ea", "#ffffff", "#1c1c1c", "#c2662a"], dark: ["#101010", "#1a1a1a", "#e6e6e6", "#ffc799"] },
 ] as const;
 export type PaletteId = (typeof PALETTES)[number]["id"] | "custom";
-export const DEFAULT_PALETTE: PaletteId = "shanmoew-mizu";
+export const DEFAULT_PALETTE: PaletteId = "hiana";
 export interface Prefs {
-  skin: Skin;
   theme: ThemeChoice;
   palette: PaletteId;
   custom: CustomPalette | null;
@@ -43,14 +41,13 @@ export function readPrefs(): Prefs {
     const raw = JSON.parse(localStorage.getItem(KEY) ?? "{}") as Partial<Prefs>;
     const custom = raw.custom && raw.custom.light && raw.custom.dark ? raw.custom : null;
     return {
-      skin: raw.skin === "classic" ? "classic" : "glass",
       theme: raw.theme === "light" || raw.theme === "dark" ? raw.theme : "system",
       palette: raw.palette === "custom" && custom ? "custom" : PALETTES.some((x) => x.id === raw.palette) ? (raw.palette as PaletteId) : DEFAULT_PALETTE,
       custom,
       fonts: raw.fonts && typeof raw.fonts === "object" ? raw.fonts : {},
     };
   } catch {
-    return { skin: "glass", theme: "system", palette: DEFAULT_PALETTE, custom: null, fonts: {} };
+    return { theme: "system", palette: DEFAULT_PALETTE, custom: null, fonts: {} };
   }
 }
 
@@ -81,11 +78,10 @@ export function applyPrefs(p: Prefs) {
     styleTag(`hiana-font-${slot}`, fontCss(slot, p.fonts[slot] ?? null));
     void loadUploadedFont(slot, p.fonts[slot] ?? null);
   }
-  root.dataset.skin = p.skin;
   root.dataset.mode = mode;
   root.dataset.palette = p.palette;
   const computed = getComputedStyle(root).getPropertyValue("--bg").trim();
-  const color = computed || (mode === "dark" ? "#0c1a20" : "#f2f9fa");
+  const color = computed || (mode === "dark" ? "#0e0d0c" : "#f6f5f3");
   document.querySelector('meta[name="theme-color"]')?.setAttribute("content", color);
 }
 

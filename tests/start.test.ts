@@ -43,35 +43,62 @@ function setup() {
   return { env, call, accounts };
 }
 
-describe("新生任务：CS50 证书", () => {
-  test("交证书 → 管理员看到 → 退回 → 重交 → 通过；通过后不能再改", async () => {
+describe("新生任务", () => {
+  test("/api/start 一次返回三项任务的进度；前言在讲义页标记完成后变成已读", async () => {
     const { call, accounts } = setup();
     await accounts();
     expect((await call("guest", "GET", "/api/start")).status).toBe(401);
-    expect((await call("lin", "GET", "/api/start")).data.certificates).toEqual([]);
+    const s0 = (await call("lin", "GET", "/api/start")).data;
+    expect(s0.prefaces).toEqual([false, false]);
+    expect(s0.cs50x.done).toBe(false);
+    expect(s0.cs50x.progress.items).toBeGreaterThan(0);
+    expect(s0.cs50x.next.id).toBeTruthy();
+    expect(s0.certificates).toEqual([]);
 
-    expect((await call("lin", "PUT", "/api/start/certificates/cs50x", { url: "not a url" })).status).toBe(400);
-    expect((await call("lin", "PUT", "/api/start/certificates/cs61a", { url: "https://x.example/c" })).status).toBe(404);
+    await call("lin", "PUT", "/api/courses/csdiy/items/preface", { done: true });
+    await call("lin", "PUT", "/api/courses/across-the-deep-sea/items/preface", { done: true });
+    await call("lin", "PUT", `/api/courses/cs50x/items/${s0.cs50x.next.id}`, { done: true });
+    const s1 = (await call("lin", "GET", "/api/start")).data;
+    expect(s1.prefaces).toEqual([true, true]);
+    expect(s1.cs50x.progress.doneItems).toBe(1);
+    expect(s1.cs50x.next.id).not.toBe(s0.cs50x.next.id);
+  });
+
+  test("CS50x：本人点「我已完成」，可以撤销；旧版 App 读 certificates 也认作完成", async () => {
+    const { call, accounts } = setup();
+    await accounts();
+    expect((await call("guest", "PUT", "/api/start/done/cs50x")).status).toBe(401);
+    expect((await call("lin", "DELETE", "/api/start/done/cs50x")).status).toBe(409);
+
+    expect((await call("lin", "PUT", "/api/start/done/cs50x")).status).toBe(200);
+    const s = (await call("lin", "GET", "/api/start")).data;
+    expect(s.cs50x).toMatchObject({ done: true, self: true });
+    expect(s.certificates[0]).toMatchObject({ course: "cs50x", status: "approved" });
+
+    expect((await call("lin", "DELETE", "/api/start/done/cs50x")).status).toBe(200);
+    expect((await call("lin", "GET", "/api/start")).data.cs50x.done).toBe(false);
+  });
+
+  test("证书提交和确认已取消：旧接口回提示，不报错；以前确认过的证书照样算完成、不能撤销", async () => {
+    const { env, call, accounts } = setup();
+    await accounts();
     const put = await call("lin", "PUT", "/api/start/certificates/cs50x", { url: "https://certificates.cs50.io/abc.pdf" });
-    expect(put.status).toBe(200);
-    expect(put.data.certificate.status).toBe("pending");
-
+    expect(put.status).toBe(410);
+    expect(put.data.error).toContain("我已完成");
     expect((await call("lin", "GET", "/api/admin/certificates")).status).toBe(403);
-    const list = await call("admin", "GET", "/api/admin/certificates");
-    expect(list.data).toHaveLength(1);
-    expect(list.data[0]).toMatchObject({ name: "林同学", studentNo: "250101001", status: "pending" });
-    const uid = list.data[0].userId;
+    expect((await call("admin", "GET", "/api/admin/certificates")).data).toEqual([]);
+    expect((await call("admin", "PUT", "/api/admin/certificates/cs50x/someone", { status: "approved" })).status).toBe(410);
 
-    expect((await call("admin", "PUT", `/api/admin/certificates/cs50x/${uid}`, { status: "rejected", note: "打不开" })).status).toBe(200);
-    expect((await call("lin", "GET", "/api/start")).data.certificates[0]).toMatchObject({ status: "rejected", note: "打不开" });
-
-    await call("lin", "PUT", "/api/start/certificates/cs50x", { url: "https://certificates.cs50.io/def.pdf" });
-    expect((await call("lin", "GET", "/api/start")).data.certificates[0]).toMatchObject({ status: "pending", note: null, url: "https://certificates.cs50.io/def.pdf" });
-
-    expect((await call("admin", "PUT", `/api/admin/certificates/cs50x/${uid}`, { status: "approved" })).status).toBe(200);
-    expect((await call("lin", "GET", "/api/start")).data.certificates[0].status).toBe("approved");
-    expect((await call("lin", "PUT", "/api/start/certificates/cs50x", { url: "https://x.example/other" })).status).toBe(409);
-    expect((await call("admin", "PUT", "/api/admin/certificates/cs50x/nobody", { status: "approved" })).status).toBe(404);
+    // 取消前管理员确认过的证书
+    const lin = await env.DB.prepare("SELECT id FROM users WHERE student_no = '250101001'").first<{ id: string }>();
+    const admin = await env.DB.prepare("SELECT id FROM users WHERE student_no = '254030411'").first<{ id: string }>();
+    await env.DB.prepare(
+      "INSERT INTO certificates (user_id, course_slug, url, status, submitted_at, reviewed_by, reviewed_at) VALUES (?, 'cs50x', 'https://x.example/c', 'approved', 1, ?, 2)",
+    )
+      .bind(lin?.id, admin?.id)
+      .run();
+    expect((await call("lin", "GET", "/api/start")).data.cs50x).toMatchObject({ done: true, self: false });
+    expect((await call("lin", "DELETE", "/api/start/done/cs50x")).status).toBe(409);
   });
 
   test("Across the Deep Sea 是站内课，前言能标记完成", async () => {

@@ -342,50 +342,8 @@ export const duolingo: Provider = {
   },
 };
 
-/* ---------- 还没实测出可用接口的平台 ---------- */
-function pending(id: string, label: string, unit: string, category: Provider["category"], handleHint: string, note: string): Provider {
-  return {
-    id,
-    label,
-    unit,
-    status: "pending",
-    category,
-    coverage: "snapshot",
-    handleHint,
-    note,
-    async fetchDaily() {
-      throw new ProviderError(`${label} 暂不支持，接口还在测试`);
-    },
-  };
-}
-
-export const gitee = pending(
-  "gitee",
-  "Gitee",
-  "次贡献",
-  "code",
-  "Gitee 个人空间地址（gitee.com/ 后面那一段）",
-  "Gitee 个人主页有公开的贡献日历，但没有官方 API；已有开源项目读取它（merge-git-contribution），上线前要实测具体地址。备选：直接用 Gitee API v5 统计学员作业仓库的提交。",
-);
-export const luogu = pending(
-  "luogu",
-  "洛谷",
-  "道题",
-  "algo",
-  "洛谷 UID（数字）",
-  "社区整理的洛谷 API 文档里，新版 /user/:uid 页面数据疑似包含做题热度图，需要实测。",
-);
-
-export const shanbay = pending(
-  "shanbay",
-  "扇贝单词",
-  "个单词",
-  "english",
-  "扇贝用户 ID",
-  "扇贝的接口要登录 cookie，返回内容还经过编码，三个月左右过期一次，不适合让学员绑定。暂不考虑。",
-);
-
-export const PROVIDERS: Provider[] = [github, gitee, leetcodeCn, leetcode, codeforces, atcoder, luogu, maimemo, bbdc, duolingo, shanbay, wakatime];
+// Gitee、洛谷、扇贝没有可用的接口，2026-11 从列表里删掉了（以前也绑定不了，数据库里没有它们的记录）
+export const PROVIDERS: Provider[] = [github, leetcodeCn, leetcode, codeforces, atcoder, maimemo, bbdc, duolingo, wakatime];
 
 export function getProvider(id: string): Provider | undefined {
   return PROVIDERS.find((p) => p.id === id);

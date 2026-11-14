@@ -9,7 +9,7 @@ import { itemOfPage, itemsOf, nextItem, planCards, progress, totalPeriods, weeks
 import { light } from "../src/shared/light";
 import { packageJsonSchema, parsePackage } from "../src/shared/package";
 import { BUILTIN } from "../src/worker/catalog";
-import { teachingWeek } from "../src/worker/api/members";
+import { teachingWeek } from "../src/worker/api/site";
 import type { Env } from "../src/worker/env";
 import worker from "../src/worker/index";
 
@@ -341,6 +341,85 @@ describe("蓝色钉子", () => {
     const mine = await call("lin", "POST", "/api/pins", pin);
     expect((await call("chen", "DELETE", `/api/pins/${mine.data.id}`)).status).toBe(403);
     expect((await call("lin", "DELETE", `/api/pins/${mine.data.id}`)).data.ok).toBe(true);
+  });
+});
+
+describe("蓝色钉子 · 最近的问题和问题数", () => {
+  test("没人回答的排在前面，其次有人回了，最后已解决；按条目数问题，游客也能看", async () => {
+    const { call, member } = setup();
+    await member("lin", "250101001", "林同学");
+    await member("chen", "250101002", "陈同学");
+    const base = { course: "cs50x", page: "notes-1", anchorKey: "k", xPct: 0, yPct: 0, snippet: null };
+    const a = (await call("lin", "POST", "/api/pins", { ...base, body: "第一个" })).data.id;
+    const b = (await call("lin", "POST", "/api/pins", { ...base, body: "第二个" })).data.id;
+    const c = (await call("lin", "POST", "/api/pins", { ...base, body: "第三个" })).data.id;
+    await call("chen", "POST", `/api/pins/${a}/messages`, { body: "回一下" });
+    await call("lin", "POST", `/api/pins/${b}/resolve`, { resolved: true });
+
+    const recent = await call("guest", "GET", "/api/pins/recent");
+    expect(recent.data.map((p: { id: string }) => p.id)).toEqual([c, a, b]);
+    expect(recent.data[0]).toMatchObject({ courseTitle: "CS50x：哈佛计算机科学导论", item: "w1-lecture", author: "协会成员" });
+
+    expect((await call("guest", "GET", "/api/pins/counts?course=cs50x")).data).toEqual({ "w1-lecture": { total: 3, open: 2 } });
+    expect((await call("guest", "GET", "/api/pins/counts?course=nope")).data).toEqual({});
+    expect((await call("guest", "GET", "/api/pins/counts")).status).toBe(400);
+  });
+});
+
+describe("蓝色钉子 · 标记", () => {
+  test("标记只有本人能看到，可以不写字；别人当作不存在；不进最近的问题、问题数和后台", async () => {
+    const { call, member } = setup();
+    await member("lin", "250101001", "林同学");
+    await member("chen", "250101002", "陈同学");
+    const base = { course: "cs50x", page: "notes-1", anchorKey: "k", xPct: 0, yPct: 0, snippet: "printf 是" };
+    // 提问仍然要写字；标记可以不写
+    expect((await call("lin", "POST", "/api/pins", { ...base, body: "" })).status).toBe(400);
+    const note = await call("lin", "POST", "/api/pins", { ...base, kind: "note", body: "" });
+    expect(note.data).toMatchObject({ kind: "note", messages: [], mine: true });
+    const id = note.data.id;
+    const q = (await call("lin", "POST", "/api/pins", { ...base, body: "这是提问" })).data;
+    expect(q.kind).toBe("question");
+
+    const page = "/api/pins?course=cs50x&page=notes-1";
+    // 本人带 notes=1 才看得到自己的标记（旧版 App 不带，只看到提问）
+    expect((await call("lin", "GET", `${page}&notes=1`)).data.map((p: { id: string }) => p.id).sort()).toEqual([id, q.id].sort());
+    expect((await call("lin", "GET", page)).data.map((p: { id: string }) => p.id)).toEqual([q.id]);
+    expect((await call("chen", "GET", `${page}&notes=1`)).data.map((p: { id: string }) => p.id)).toEqual([q.id]);
+    expect((await call("guest", "GET", `${page}&notes=1`)).data.map((p: { id: string }) => p.id)).toEqual([q.id]);
+    expect((await call("boot", "GET", `${page}&notes=1`)).data.map((p: { id: string }) => p.id)).toEqual([q.id]);
+
+    // 别人（包括管理员）读写都是 404
+    expect((await call("chen", "POST", `/api/pins/${id}/messages`, { body: "偷看" })).status).toBe(404);
+    expect((await call("boot", "DELETE", `/api/pins/${id}`)).status).toBe(404);
+    // 本人：补一句可以；我也想问、已解决不适用
+    expect((await call("lin", "POST", `/api/pins/${id}/messages`, { body: "这里要记住" })).data.messages[0].body).toBe("这里要记住");
+    expect((await call("lin", "POST", `/api/pins/${id}/vote`, {})).status).toBe(400);
+    expect((await call("lin", "POST", `/api/pins/${id}/resolve`, { resolved: true })).status).toBe(400);
+
+    // 不进公开列表
+    expect((await call("guest", "GET", "/api/pins/recent")).data.map((p: { id: string }) => p.id)).toEqual([q.id]);
+    expect((await call("guest", "GET", "/api/pins/counts?course=cs50x")).data).toEqual({ "w1-lecture": { total: 1, open: 1 } });
+    expect((await call("boot", "GET", "/api/admin/pins")).data.map((p: { id: string }) => p.id)).toEqual([q.id]);
+
+    // 改成公开：大家（包括游客）都能看到，别人能回复；仍然不进问题列表
+    expect((await call("chen", "POST", `/api/pins/${id}/visibility`, { isPublic: true })).status).toBe(404);
+    expect((await call("lin", "POST", `/api/pins/${q.id}/visibility`, { isPublic: true })).status).toBe(400);
+    expect((await call("lin", "POST", `/api/pins/${id}/visibility`, { isPublic: true })).data.isPublic).toBe(true);
+    expect((await call("guest", "GET", `${page}&notes=1`)).data.map((p: { id: string }) => p.id).sort()).toEqual([id, q.id].sort());
+    expect((await call("guest", "GET", page)).data.map((p: { id: string }) => p.id)).toEqual([q.id]);
+    expect((await call("chen", "POST", `/api/pins/${id}/messages`, { body: "我也觉得" })).data.messages).toHaveLength(2);
+    expect((await call("chen", "POST", `/api/pins/${id}/visibility`, { isPublic: false })).status).toBe(403);
+    expect((await call("chen", "DELETE", `/api/pins/${id}`)).status).toBe(403);
+    expect((await call("guest", "GET", "/api/pins/recent")).data.map((p: { id: string }) => p.id)).toEqual([q.id]);
+
+    // 钉的时候直接选公开
+    const shown = await call("chen", "POST", "/api/pins", { ...base, kind: "note", isPublic: true, body: "重点" });
+    expect(shown.data).toMatchObject({ kind: "note", isPublic: true });
+    // 公开的标记管理员能删
+    expect((await call("boot", "DELETE", `/api/pins/${shown.data.id}`)).data.ok).toBe(true);
+
+    // 自己的标记随时能删（有别人的回复也能删）
+    expect((await call("lin", "DELETE", `/api/pins/${id}`)).data.ok).toBe(true);
   });
 });
 

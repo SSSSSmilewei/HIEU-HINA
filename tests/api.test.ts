@@ -141,7 +141,7 @@ describe("接口", () => {
     expect(hm.data.providers.find((p: { id: string }) => p.id === "maimemo").needsUserSecret).toContain("开放 API");
 
     // 绑定一个待实测的平台被拒绝，提示清楚
-    const bad = await call("lin", "POST", "/api/heatmap/bindings", { source: "gitee", handle: "lin" });
+    const bad = await call("lin", "POST", "/api/heatmap/bindings", { source: "wakatime", handle: "lin" });
     expect(bad.status).toBe(400);
     expect(bad.data.error).toContain("暂不支持");
 
@@ -152,10 +152,14 @@ describe("接口", () => {
     const photo = JPEG_B64;
     expect((await call("lin", "POST", "/api/attendance/in", { kind: "evening", photo, code: today.data.code === "0000" ? "1111" : "0000" })).status).toBe(400);
     expect((await call("lin", "POST", "/api/attendance/in", { kind: "evening", photo: "x".repeat(200), code: today.data.code })).status).toBe(400);
-    const ok = await call("lin", "POST", "/api/attendance/in", { kind: "evening", photo, code: today.data.code });
+    // 手写签名要是 PNG
+    expect((await call("lin", "POST", "/api/attendance/in", { kind: "evening", photo, code: today.data.code, signature: JPEG_B64 })).status).toBe(400);
+    const ok = await call("lin", "POST", "/api/attendance/in", { kind: "evening", photo, code: today.data.code, signature: PNG_B64 });
     expect(ok.data.ok).toBe(true);
-    const again = await call("lin", "POST", "/api/attendance/in", { kind: "venue", photo });
-    expect(again.status).toBe(409);
+    // 场地签到已取消（旧版 App 还会发），回一句提示
+    const venueTry = await call("lin", "POST", "/api/attendance/in", { kind: "venue", photo });
+    expect(venueTry.status).toBe(409);
+    expect(venueTry.data.error).toContain("场地签到已取消");
     const state = await call("lin", "GET", "/api/attendance");
     expect(state.data.current).toMatchObject({ kind: "evening", inAt: ok.data.inAt });
     expect((await call("lin", "POST", "/api/attendance/out", { photo })).data.ok).toBe(true);
@@ -180,19 +184,14 @@ describe("接口", () => {
     expect(String(csv.data)).toContain("250101001,林同学,计科2501");
     expect(String(csv.data)).toContain("已签退");
 
-    // 场地签到带手写签名（PNG）；签名不是 PNG 时拒绝
-    expect((await call("lin", "POST", "/api/attendance/in", { kind: "venue", photo, signature: JPEG_B64 })).status).toBe(400);
-    expect((await call("lin", "POST", "/api/attendance/in", { kind: "venue", photo, signature: PNG_B64 })).data.ok).toBe(true);
-    await call("lin", "POST", "/api/attendance/out", { photo });
-
     // 给学校的签到表：每条记录带照片和签名，按人汇总
     const report = await call("admin", "GET", `/api/admin/attendance/report?from=${state.data.today}&to=${state.data.today}`);
     expect(report.status).toBe(200);
-    expect(report.data.records).toHaveLength(2);
-    const venue = report.data.records.find((r: { kind: string }) => r.kind === "venue");
-    expect(venue.sign).toMatch(/^signature\//);
-    expect((await call("admin", "GET", `/api/files/${venue.sign}`)).headers.get("content-type")).toBe("image/png");
-    expect(report.data.people.find((p: { name: string }) => p.name === "林同学")).toMatchObject({ evening: 1, venue: 1 });
+    expect(report.data.records).toHaveLength(1);
+    const rec = report.data.records[0];
+    expect(rec.sign).toMatch(/^signature\//);
+    expect((await call("admin", "GET", `/api/files/${rec.sign}`)).headers.get("content-type")).toBe("image/png");
+    expect(report.data.people.find((p: { name: string }) => p.name === "林同学")).toMatchObject({ evening: 1, venue: 0 });
     expect((await call("lin", "GET", "/api/admin/attendance/report")).status).toBe(403);
     expect(String((await call("admin", "GET", `/api/admin/attendance.csv?from=${state.data.today}&to=${state.data.today}`)).data)).toContain("有,有,有");
 

@@ -9,6 +9,12 @@ import { isAdmin, requireAdmin, requireUser, seesNames, viewerId } from "./commo
 
 /**
  * 蓝色钉子：在讲义的某一段（或某道练手题）上钉一个问题，大家在下面讨论，Agent 的回答也留在里面。
+ * 钉子分两种：question 提问（大家都能看）；note 标记（成员划的重点或记录，可以不写字）。
+ * 标记由本人选「只给自己」（默认）或「公开」，之后能改：
+ *  - 只给自己的标记对别人（包括管理员）就像不存在，读写一律回 404；
+ *  - 公开的标记大家都能看、能回复，本人和管理员能删；
+ *  - 标记都不进「最近的问题」、问题数和后台，不通知，不能点“我也想问”、标已解决、请 AI。
+ * 旧版 App 不认识标记，所以按页面取钉子时要带 ?notes=1 才会带上标记。
  * 定位照 Math-Teach-Job：内容块有固定的位置标记 anchor_key，图钉存成“在这个块里的百分比坐标”；
  * 另存这一段开头的文字 snippet，讲义改版后网页按它重新找位置，找不到就收进“原文已变”。
  *
@@ -24,8 +30,11 @@ const PinInput = z.object({
   xPct: z.number().min(0).max(1),
   yPct: z.number().min(0).max(1),
   snippet: z.string().max(200).nullable().optional(),
-  body: z.string().trim().min(1, "写一句你的问题").max(2000),
-});
+  kind: z.enum(["question", "note"]).default("question"),
+  /** 只对标记有用：true 公开，false 只给自己 */
+  isPublic: z.boolean().default(false),
+  body: z.string().trim().max(2000),
+}).refine((p) => p.kind === "note" || p.body.length > 0, { message: "写一句你的问题", path: ["body"] });
 const Body = z.object({ body: z.string().trim().min(1, "写点什么").max(2000) });
 
 interface PinRow {
@@ -39,6 +48,8 @@ interface PinRow {
   x_pct: number;
   y_pct: number;
   snippet: string | null;
+  kind: "question" | "note";
+  is_public: number;
   status: "open" | "resolved";
   created_at: number;
   updated_at: number;
@@ -97,6 +108,9 @@ async function loadPins(c: Ctx, where: string, ...binds: unknown[]) {
       xPct: p.x_pct,
       yPct: p.y_pct,
       snippet: p.snippet,
+      kind: p.kind,
+      // 提问一律公开
+      isPublic: p.kind === "question" || !!p.is_public,
       status: p.status,
       createdAt: p.created_at,
       updatedAt: p.updated_at,
@@ -126,7 +140,8 @@ async function onePin(c: Ctx, id: string) {
 
 async function pinRow(c: Ctx, id: string): Promise<PinRow> {
   const row = await c.env.DB.prepare("SELECT * FROM pins WHERE id = ?").bind(id).first<PinRow>();
-  if (!row) throw new HttpError(404, "找不到这颗钉子");
+  // 别人的标记当作不存在
+  if (!row || (row.kind === "note" && !row.is_public && row.user_id !== viewerId(c))) throw new HttpError(404, "找不到这颗钉子");
   return row;
 }
 
@@ -167,6 +182,18 @@ export function excerpt(text: string, snippet: string | null, size = 3000): stri
   return text.slice(start, start + size);
 }
 
+/** 给钉子补上课程名和条目名（列表里显示用） */
+async function withTitles<T extends { course: string; item: string }>(c: Ctx, rows: T[]) {
+  const titles = new Map<string, string>();
+  for (const p of rows) {
+    if (titles.has(p.course)) continue;
+    const meta = await getCourse(c.env.DB, p.course);
+    titles.set(p.course, meta?.title ?? p.course);
+    if (meta) for (const it of itemsOf(meta)) titles.set(`${p.course}/${it.id}`, it.title);
+  }
+  return rows.map((p) => ({ ...p, courseTitle: titles.get(p.course) ?? p.course, itemTitle: titles.get(`${p.course}/${p.item}`) ?? p.item }));
+}
+
 export function pinRoutes(api: Router) {
   /** AI 有没有接上（网页和 App 据此显示“请 AI 回答”） */
   api.get("/api/ai/status", async (c) => json({ enabled: !!modelConfig(c.env) }));
@@ -177,6 +204,7 @@ export function pinRoutes(api: Router) {
     const cfg = modelConfig(c.env);
     if (!cfg) throw new HttpError(503, "还没有接 AI。管理员在 Cloudflare 的 Worker 设置里填 AI_API_KEY 后就能用");
     const pin = await pinRow(c, c.params.id);
+    if (pin.kind === "note") throw new HttpError(400, "标记不能请 AI 回答；想问的话请改用「提问」");
     const db = c.env.DB;
     const dayStart = Date.parse(`${new Date(Date.now() + 8 * 3_600_000).toISOString().slice(0, 10)}T00:00:00+08:00`);
     const [mine, onPin] = await Promise.all([
@@ -230,13 +258,18 @@ export function pinRoutes(api: Router) {
     const course = c.url.searchParams.get("course") ?? "";
     const page = c.url.searchParams.get("page") ?? "";
     if (!course || !page) throw new HttpError(400, "要指定课程和页面");
-    return json(await loadPins(c, "course = ? AND page = ?", course, page));
+    if (c.url.searchParams.get("notes") === "1") {
+      // 提问、公开的标记、自己的标记（游客没有自己的）
+      return json(await loadPins(c, "course = ? AND page = ? AND (kind = 'question' OR is_public = 1 OR user_id = ?)", course, page, viewerId(c) ?? ""));
+    }
+    return json(await loadPins(c, "course = ? AND page = ? AND kind = 'question'", course, page));
   });
 
   api.post("/api/pins", async (c) => {
     const u = requireUser(c);
     const input = PinInput.parse(await c.body());
     if (input.course.startsWith("local-")) throw new HttpError(400, "导入到本机的课只有你自己能看到，不能钉问题");
+    const note = input.kind === "note";
     const meta = await getCourse(c.env.DB, input.course);
     if (!meta) throw new HttpError(404, "没有这门课");
     const item = itemsOf(meta).find((it) => it.pages.some((p) => p.id === input.page) || it.id === input.page);
@@ -247,11 +280,14 @@ export function pinRoutes(api: Router) {
     await db.batch([
       db
         .prepare(
-          "INSERT INTO pins (id, user_id, course, item, page, anchor_key, anchor_label, x_pct, y_pct, snippet, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'open', ?, ?)",
+          "INSERT INTO pins (id, user_id, course, item, page, anchor_key, anchor_label, x_pct, y_pct, snippet, kind, is_public, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'open', ?, ?)",
         )
-        .bind(id, u.id, input.course, item.id, input.page, input.anchorKey, input.anchorLabel ?? null, input.xPct, input.yPct, input.snippet ?? null, now, now),
-      db.prepare("INSERT INTO pin_messages (pin_id, user_id, author_kind, body, created_at) VALUES (?, ?, 'member', ?, ?)").bind(id, u.id, input.body, now),
+        .bind(id, u.id, input.course, item.id, input.page, input.anchorKey, input.anchorLabel ?? null, input.xPct, input.yPct, input.snippet ?? null, input.kind, note && input.isPublic ? 1 : 0, now, now),
+      // 标记可以不写字，那就没有第一条消息
+      ...(input.body ? [db.prepare("INSERT INTO pin_messages (pin_id, user_id, author_kind, body, created_at) VALUES (?, ?, 'member', ?, ?)").bind(id, u.id, input.body, now)] : []),
     ]);
+    // 标记是记录，不是提问：不记“提问”活动，不通知管理员
+    if (note) return json(await onePin(c, id));
     await recordActivity(db, u.id, "ask", id, now);
     await enqueue(c.env, {
       kind: "pin",
@@ -273,7 +309,9 @@ export function pinRoutes(api: Router) {
       db.prepare("INSERT INTO pin_messages (pin_id, user_id, author_kind, body, created_at) VALUES (?, ?, 'member', ?, ?)").bind(pin.id, u.id, body, now),
       db.prepare("UPDATE pins SET updated_at = ? WHERE id = ?").bind(now, pin.id),
     ]);
-    if (pin.user_id !== u.id) await recordActivity(db, u.id, "answer", pin.id, now);
+    if (pin.kind === "note") {
+      // 标记下的回复不通知
+    } else if (pin.user_id !== u.id) await recordActivity(db, u.id, "answer", pin.id, now);
     else {
       await enqueue(c.env, { kind: "followup", title: "【蓝色钉子】有人追问", body: body.slice(0, 300), link: adminLink(c.env, `/courses/${pin.course}/learn/${pin.page}?pin=${pin.id}`) });
       await flush(c.env, { force: false }).catch(() => {});
@@ -285,6 +323,7 @@ export function pinRoutes(api: Router) {
   api.post("/api/pins/:id/vote", async (c) => {
     const u = requireUser(c);
     const pin = await pinRow(c, c.params.id);
+    if (pin.kind === "note") throw new HttpError(400, "标记只有你自己能看到，不能点“我也想问”");
     const db = c.env.DB;
     const had = await db.prepare("SELECT 1 AS x FROM pin_votes WHERE pin_id = ? AND user_id = ?").bind(pin.id, u.id).first();
     if (had) await db.prepare("DELETE FROM pin_votes WHERE pin_id = ? AND user_id = ?").bind(pin.id, u.id).run();
@@ -296,10 +335,24 @@ export function pinRoutes(api: Router) {
   api.post("/api/pins/:id/resolve", async (c) => {
     const u = requireUser(c);
     const pin = await pinRow(c, c.params.id);
+    if (pin.kind === "note") throw new HttpError(400, "标记没有“已解决”状态");
     if (pin.user_id !== u.id && !isAdmin(c)) throw new HttpError(403, "只有提问的人和管理员能改状态");
     const { resolved } = z.object({ resolved: z.boolean() }).parse(await c.body());
     await c.env.DB.prepare("UPDATE pins SET status = ?, updated_at = ? WHERE id = ?")
       .bind(resolved ? "resolved" : "open", Date.now(), pin.id)
+      .run();
+    return json(await onePin(c, pin.id));
+  });
+
+  /** 标记改成公开或只给自己：只有本人 */
+  api.post("/api/pins/:id/visibility", async (c) => {
+    const u = requireUser(c);
+    const pin = await pinRow(c, c.params.id);
+    if (pin.kind !== "note") throw new HttpError(400, "提问本来就是公开的");
+    if (pin.user_id !== u.id) throw new HttpError(403, "只有做标记的人能改");
+    const { isPublic } = z.object({ isPublic: z.boolean() }).parse(await c.body());
+    await c.env.DB.prepare("UPDATE pins SET is_public = ?, updated_at = ? WHERE id = ?")
+      .bind(isPublic ? 1 : 0, Date.now(), pin.id)
       .run();
     return json(await onePin(c, pin.id));
   });
@@ -309,7 +362,10 @@ export function pinRoutes(api: Router) {
     const u = requireUser(c);
     const pin = await pinRow(c, c.params.id);
     const db = c.env.DB;
-    if (!isAdmin(c)) {
+    // 标记：本人随时能删，公开的标记管理员也能删（别人只给自己的标记 pinRow 已经回了 404）
+    if (pin.kind === "note") {
+      if (pin.user_id !== u.id && !isAdmin(c)) throw new HttpError(403, "只能删除自己的标记");
+    } else if (!isAdmin(c)) {
       if (pin.user_id !== u.id) throw new HttpError(403, "只能撤回自己的问题");
       const replied = await db
         .prepare("SELECT 1 AS x FROM pin_messages WHERE pin_id = ? AND (author_kind = 'agent' OR user_id != ?) LIMIT 1")
@@ -335,23 +391,34 @@ export function pinRoutes(api: Router) {
     if (!m) throw new HttpError(404, "找不到这条回复");
     if (m.user_id !== u.id && !isAdmin(c)) throw new HttpError(403, "只能删除自己的回复");
     const first = await c.env.DB.prepare("SELECT MIN(id) AS id FROM pin_messages WHERE pin_id = ?").bind(pin.id).first<{ id: number }>();
-    if (first?.id === m.id) throw new HttpError(400, "这是问题本身；要撤回请撤回整颗钉子");
+    if (pin.kind === "question" && first?.id === m.id) throw new HttpError(400, "这是问题本身；要撤回请撤回整颗钉子");
     await c.env.DB.prepare("DELETE FROM pin_messages WHERE id = ?").bind(m.id).run();
     return json(await onePin(c, pin.id));
+  });
+
+  /** 最近的问题（「学习 → 问题」，游客也能看）：还没人回答的在前，其次有人回了，最后已解决；同一类里新的在前 */
+  api.get("/api/pins/recent", async (c) => {
+    const rows = await loadPins(c, "id IN (SELECT id FROM pins WHERE kind = 'question' ORDER BY (status = 'resolved'), updated_at DESC LIMIT 100)");
+    const rank = (p: (typeof rows)[number]) => (p.status === "resolved" ? 2 : p.answered ? 1 : 0);
+    rows.sort((a, b) => rank(a) - rank(b) || b.updatedAt - a.updatedAt);
+    return json(await withTitles(c, rows.slice(0, 50)));
+  });
+
+  /** 一门课每个条目有几个问题（课程页的条目列表用）：{ 条目 id: { total, open } }，open 是还没解决的 */
+  api.get("/api/pins/counts", async (c) => {
+    const course = c.url.searchParams.get("course") ?? "";
+    if (!course) throw new HttpError(400, "要指定课程");
+    const rows = await c.env.DB.prepare("SELECT item, COUNT(*) AS total, SUM(status != 'resolved') AS open FROM pins WHERE course = ? AND kind = 'question' GROUP BY item")
+      .bind(course)
+      .all<{ item: string; total: number; open: number }>();
+    return json(Object.fromEntries(rows.results.map((r) => [r.item, { total: r.total, open: r.open ?? 0 }])));
   });
 
   /** 管理后台：最近的钉子（没解决的在前） */
   api.get("/api/admin/pins", async (c) => {
     requireAdmin(c);
-    const rows = await loadPins(c, "id IN (SELECT id FROM pins ORDER BY (status = 'resolved'), updated_at DESC LIMIT 100)");
-    const titles = new Map<string, string>();
-    for (const p of rows) {
-      if (titles.has(p.course)) continue;
-      const meta = await getCourse(c.env.DB, p.course);
-      titles.set(p.course, meta?.title ?? p.course);
-      if (meta) for (const it of itemsOf(meta)) titles.set(`${p.course}/${it.id}`, it.title);
-    }
+    const rows = await loadPins(c, "id IN (SELECT id FROM pins WHERE kind = 'question' ORDER BY (status = 'resolved'), updated_at DESC LIMIT 100)");
     rows.sort((a, b) => Number(a.status === "resolved") - Number(b.status === "resolved") || b.updatedAt - a.updatedAt);
-    return json(rows.map((p) => ({ ...p, courseTitle: titles.get(p.course) ?? p.course, itemTitle: titles.get(`${p.course}/${p.item}`) ?? p.item })));
+    return json(await withTitles(c, rows));
   });
 }

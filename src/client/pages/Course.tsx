@@ -8,7 +8,7 @@ import { Icon } from "../icons";
 import { downloadJson, exportPackage, forgetPackage, itemHref, removeLocal } from "../library";
 import { Link, navigate, useQuery } from "../router";
 import { useMe } from "../session";
-import { api } from "../api";
+import { api, useApi } from "../api";
 import { refreshLearning } from "../courseMeta";
 import { Dialog, Empty, ErrorBox, Ring, Seg, Skeleton, useConfirm, useTitle, useToast } from "../ui";
 import { Stars } from "./Courses";
@@ -340,6 +340,8 @@ function Contents({
   const doneSet = new Set(Object.keys(state.done));
   const modules = meta.modules.map((m) => ({ ...m, items: m.items.filter((it) => kind === "all" || it.kind === kind) })).filter((m) => m.items.length);
   const single = meta.modules.length === 1;
+  // 每个条目有几个问题（蓝色钉子）；本机导入的课不能钉
+  const pins = useApi<Record<string, { total: number; open: number }>>(slug.startsWith("local-") ? null : `/api/pins/counts?course=${encodeURIComponent(slug)}`).data;
 
   return (
     <div className="stack" style={{ gap: 20 }}>
@@ -397,6 +399,11 @@ function Contents({
                         {it.practice > 0 && (
                           <span className="num">
                             练手 {solved} / {it.practice}
+                          </span>
+                        )}
+                        {!!pins?.[it.id] && (
+                          <span className="unit-pins num">
+                            {pins[it.id].total} 个问题{pins[it.id].open ? ` · ${pins[it.id].open} 个未解决` : ""}
                           </span>
                         )}
                       </span>
@@ -529,7 +536,7 @@ export function BackLink() {
   return (
     <Link to="/courses" className="back-link">
       <Icon name="arrowLeft" size={16} stroke={2} />
-      课程
+      学习
     </Link>
   );
 }

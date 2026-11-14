@@ -182,6 +182,7 @@ describe("新生报名", () => {
     const id = (await env.DB.prepare("SELECT id FROM applications").first<{ id: string }>())?.id as string;
     const routes: [string, string, unknown?][] = [
       ["GET", "/api/admin/applications"],
+      ["GET", "/api/admin/applications/count"],
       ["GET", "/api/admin/applications?status=new&q=小海"],
       ["GET", `/api/admin/applications/${id}`],
       ["PATCH", `/api/admin/applications/${id}`, { status: "accepted" }],
@@ -212,6 +213,7 @@ describe("新生报名", () => {
     const all = await call("admin", "GET", "/api/admin/applications");
     expect(all.data.items.map((i: { name: string }) => i.name)).toEqual(["小纳", "小海"]);
     expect(all.data.counts).toMatchObject({ all: 2, new: 2, contacted: 0 });
+    expect((await call("admin", "GET", "/api/admin/applications/count")).data).toEqual({ new: 2 });
     expect(all.data.items[0].phone).toBeUndefined();
     expect((await call("admin", "GET", `/api/admin/applications?q=${encodeURIComponent("软工")}`)).data.items).toHaveLength(1);
     expect((await call("admin", "GET", "/api/admin/applications?q=260101")).data.items[0].name).toBe("小海");
@@ -228,6 +230,7 @@ describe("新生报名", () => {
     expect(p.data.handledAt).toBeGreaterThan(0);
     expect((await call("admin", "GET", "/api/admin/applications?status=interview")).data.items).toHaveLength(1);
     expect((await call("admin", "GET", "/api/admin/applications")).data.counts).toMatchObject({ all: 2, new: 1, interview: 1 });
+    expect((await call("admin", "GET", "/api/admin/applications/count")).data).toEqual({ new: 1 });
 
     const csv = await call("admin", "GET", "/api/admin/applications.csv");
     expect(csv.headers.get("content-type")).toContain("text/csv");

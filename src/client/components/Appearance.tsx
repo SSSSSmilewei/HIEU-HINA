@@ -33,28 +33,11 @@ function Tile({ label, active, onClick, children }: { label: string; active: boo
 
 const abs = (css: React.CSSProperties): React.CSSProperties => ({ position: "absolute", ...css });
 
-/** 风格（液态玻璃 / 经典直角）和深浅。 */
+/** 深浅。 */
 export function StylePickers() {
   const [prefs, setPrefs] = usePrefs();
   return (
     <>
-      <div className="stack" style={{ gap: 8 }}>
-        <span className="small sub">风格</span>
-        <div role="group" aria-label="风格" style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 10 }}>
-          <Tile label="液态玻璃" active={prefs.skin === "glass"} onClick={() => setPrefs({ skin: "glass" })}>
-            <span style={abs({ inset: 0, background: "var(--well)" })} />
-            <span style={abs({ right: 8, top: 8, width: 14, height: 14, borderRadius: 4, background: "var(--accent)" })} />
-            <span style={abs({ right: 26, top: 8, width: 14, height: 14, borderRadius: 4, background: "var(--tint)" })} />
-            <span style={abs({ left: 8, right: 30, bottom: 8, height: 22, borderRadius: 9, background: "var(--glass-strong)", border: "1px solid var(--glass-edge)" })} />
-          </Tile>
-          <Tile label="经典直角" active={prefs.skin === "classic"} onClick={() => setPrefs({ skin: "classic" })}>
-            <span style={abs({ inset: 0, background: "var(--surface)", border: "1px solid var(--line-strong)" })} />
-            <span style={abs({ left: 0, top: 0, bottom: 0, width: 6, background: "var(--accent)" })} />
-            <span style={abs({ left: 16, top: 12, width: 50, height: 6, background: "var(--ink)" })} />
-            <span style={abs({ left: 16, top: 26, width: 72, height: 4, background: "var(--sub)" })} />
-          </Tile>
-        </div>
-      </div>
       <div className="stack" style={{ gap: 8 }}>
         <span className="small sub">深浅</span>
         <Seg
