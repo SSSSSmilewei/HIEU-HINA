@@ -1,5 +1,5 @@
 /*
- * 配色主题：<html data-palette="名称">，叠在液态玻璃 / 经典直角两套皮肤之上。
+ * 配色主题：<html data-palette="名称">，叠在液态玻璃之上。
  * 每个主题只写 7 个基色（浅、深各一套），其余变量都由基色推导。
  * 不设 data-palette（或为 "hiana"）时用 tokens.css 里的默认橙色。
  */
@@ -69,32 +69,24 @@
   /* 深色模式的阴影必须是黑的，不能用浅色文字色调出光晕 */
   --glass-shadow: rgba(0, 0, 0, 0.5);
   --pill-shadow: inset 0 1px 0 color-mix(in srgb, var(--p-ink) 8%, transparent);
+  /* 遮罩同理：深色模式的文字色是浅的，拿它调遮罩会变成一层白雾 */
+  --scrim: rgba(0, 0, 0, 0.55);
 }
-/* 玻璃皮肤：半透明表面；经典皮肤保持实心 */
-:root[data-palette]:not([data-palette="hiana"]):not([data-skin="classic"]) {
+/* 玻璃表面：半透明 */
+:root[data-palette]:not([data-palette="hiana"]) {
   --glass: color-mix(in srgb, var(--p-surface) 62%, transparent);
   --glass-strong: color-mix(in srgb, var(--p-surface) 88%, transparent);
   --glass-edge: color-mix(in srgb, var(--p-ink) 12%, transparent);
   --glass-hi: color-mix(in srgb, var(--p-ink) 6%, transparent);
   --pill: color-mix(in srgb, var(--p-ink) 9%, var(--p-surface));
   --ghost: color-mix(in srgb, var(--p-ink) 5%, transparent);
-}
-:root[data-palette]:not([data-palette="hiana"])[data-skin="classic"] {
-  --glass: var(--p-surface);
-  --glass-strong: var(--p-surface);
-  --glass-edge: var(--line);
-  --pill: var(--well);
-  --line-strong: var(--p-ink);
-  --now: var(--p-accent);
-}
-:root[data-palette]:not([data-palette="hiana"]) {
   --now: color-mix(in srgb, var(--p-accent) 60%, #e5484d);
   --bad-bg: color-mix(in srgb, #e5484d 14%, transparent);
   --bad-ink: color-mix(in srgb, #e5484d 78%, var(--p-ink));
 }
 
 /*
- * shanmoew-mizu（默认）：以水色（JIS 慣用色名 6B 8/4 ≈ #bce2e8）和 Light Blue #add8e6 为主色，
+ * shanmoew-mizu：以水色（JIS 慣用色名 6B 8/4 ≈ #bce2e8）和 Light Blue #add8e6 为主色，
  * 配水縹 #afdfe4、Aqua Green #88bfbf、Water Green #a5c9c1、Aqua Blue #00bfff 和白。
  * 主色很浅，直接当文字看不清：文字、链接用同色相压深的 #1d6b80，主按钮用浅色底 + 深色字。
  */

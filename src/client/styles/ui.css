@@ -197,10 +197,10 @@ img {
 }
 @keyframes pop {
   0% {
-    transform: scale(0.6);
+    transform: scale(0.85);
   }
   60% {
-    transform: scale(1.12);
+    transform: scale(1.03);
   }
   100% {
     transform: scale(1);
@@ -220,7 +220,7 @@ img {
     opacity: 0;
   }
   60% {
-    transform: scale(1.06);
+    transform: scale(1.02);
     opacity: 1;
   }
   100% {
@@ -242,7 +242,7 @@ img {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.35);
+    transform: scale(1.12);
   }
   100% {
     transform: scale(1);
@@ -344,13 +344,15 @@ img {
   height: 100dvh;
   flex: 0 0 264px;
   padding: 16px;
-  view-transition-name: sidebar;
   z-index: 10;
 }
+/* view-transition-name 要写在毛玻璃这一层自己身上：写在外层 .sidebar 上，Chrome 会让里面的 backdrop-filter 失效，只剩半透明的颜色，后面的字清清楚楚透出来 */
+/* 外层是圆角玻璃，滚动放在里层：上下各留出圆角那么高，滚动条只在直边上，不会顶出圆角 */
 .sidebar-inner {
   height: 100%;
-  overflow-y: auto;
-  padding: 20px 12px 12px;
+  overflow: hidden;
+  padding: 14px 4px;
+  view-transition-name: sidebar;
   border-radius: var(--r-hero);
   background: var(--glass);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -359,6 +361,14 @@ img {
   box-shadow:
     inset 0 1px 0 var(--glass-hi),
     0 18px 40px var(--glass-shadow);
+}
+.sidebar-scroll {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+  padding: 6px 8px 0;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -500,6 +510,8 @@ img {
 }
 .page {
   max-width: 1040px;
+  /* 宽屏时内容在侧栏右边的区域里居中，不贴左 */
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -508,12 +520,6 @@ img {
 /* 手机顶栏：左上角 ☰ 打开侧栏（宽屏不显示） */
 .topbar {
   display: none;
-}
-.only-narrow {
-  display: none;
-}
-.nav-groups {
-  display: contents;
 }
 
 @media (max-width: 899px) {
@@ -564,6 +570,10 @@ img {
       transform var(--t-slow) var(--ease),
       visibility 0s linear var(--t-slow);
   }
+  /* 抽屉盖在正文上面，玻璃要更实一些，不然后面的字会透出来 */
+  .sidebar-inner {
+    background: var(--glass-strong);
+  }
   .sidebar[data-open] {
     transform: none;
     visibility: visible;
@@ -575,12 +585,6 @@ img {
     z-index: 45;
     background: var(--scrim);
     animation: fade-in var(--t-mid) var(--ease) both;
-  }
-  .only-narrow {
-    display: contents;
-  }
-  .nav-groups.only-wide {
-    display: none;
   }
 }
 
@@ -2030,267 +2034,6 @@ a.course-title:hover {
   gap: 20px;
   animation: rise 560ms var(--ease) 200ms both;
   background: var(--glass-strong);
-}
-
-/* ---------- 经典直角皮肤：改形状，不只改颜色 ---------- */
-
-[data-skin="classic"] .shell::before,
-[data-skin="classic"] .shell::after {
-  display: none;
-}
-[data-skin="classic"] .sidebar {
-  padding: 0;
-  flex-basis: 240px;
-}
-[data-skin="classic"] .sidebar-inner {
-  border: 0;
-  border-right: 1px solid var(--line);
-  box-shadow: none;
-  padding: 28px 0 20px;
-  gap: 28px;
-}
-[data-skin="classic"] .brand {
-  padding: 0 24px;
-}
-[data-skin="classic"] .brand-mark {
-  gap: 2px;
-  width: 32px;
-  height: 32px;
-}
-[data-skin="classic"] .brand-mark i {
-  border-radius: 0;
-}
-[data-skin="classic"] .brand-name {
-  letter-spacing: 1.2px;
-}
-[data-skin="classic"] .nav-items {
-  gap: 0;
-  border-top: 1px solid var(--line);
-}
-[data-skin="classic"] .nav-label {
-  padding: 12px 24px 6px;
-  font-family: var(--font-mono);
-  font-weight: 600;
-  letter-spacing: 1.2px;
-}
-[data-skin="classic"] .nav-item {
-  height: 48px;
-  padding: 0 24px;
-  border-bottom: 1px solid var(--line);
-}
-[data-skin="classic"] .nav-item:hover {
-  background: var(--well);
-}
-[data-skin="classic"] .nav-item[aria-current="page"] {
-  font-weight: 700;
-}
-[data-skin="classic"] .nav-item[aria-current="page"] svg {
-  color: var(--ink);
-}
-[data-skin="classic"] .nav-pill {
-  height: 48px;
-  right: auto;
-  width: 100%;
-  background: var(--well);
-  border-left: 4px solid var(--accent);
-  transform: translateY(calc(var(--i) * 48px));
-}
-[data-skin="classic"] .me-card {
-  margin: auto 24px 0;
-  padding: 12px 0 0;
-  background: transparent;
-  border-top: 1px solid var(--line);
-}
-[data-skin="classic"] .avatar {
-  border-radius: 0;
-  background: var(--ink);
-  color: var(--bg);
-}
-@media (max-width: 899px) {
-  [data-skin="classic"] .sidebar {
-    padding: 0;
-    background: var(--bg);
-  }
-  [data-skin="classic"] .sidebar-inner {
-    padding-top: calc(20px + env(safe-area-inset-top));
-  }
-  [data-skin="classic"] .topbar {
-    background: var(--bg);
-    border-bottom: 1px solid var(--ink);
-  }
-}
-[data-skin="classic"] .page-head {
-  padding-bottom: 24px;
-  border-bottom: 2px solid var(--ink);
-}
-[data-skin="classic"] .eyebrow {
-  color: var(--accent);
-  font-size: var(--fs-xs);
-  font-weight: 600;
-  letter-spacing: 1.4px;
-}
-[data-skin="classic"] .h1 {
-  letter-spacing: -0.5px;
-}
-[data-skin="classic"] .card,
-[data-skin="classic"] .error-box {
-  border-color: var(--line);
-}
-[data-skin="classic"] .btn-primary {
-  box-shadow: none;
-}
-[data-skin="classic"] .btn-ghost,
-[data-skin="classic"] .icon-btn {
-  border-color: var(--ink);
-}
-[data-skin="classic"] .btn-soft {
-  background: transparent;
-  border: 1px solid var(--accent);
-}
-[data-skin="classic"] .icon-btn,
-[data-skin="classic"] .check-btn,
-[data-skin="classic"] .switch,
-[data-skin="classic"] .switch::after,
-[data-skin="classic"] .avatars span,
-[data-skin="classic"] .chip,
-[data-skin="classic"] .chip .dot,
-[data-skin="classic"] .live-dot,
-[data-skin="classic"] .nav-dot,
-[data-skin="classic"] .photo-thumb,
-[data-skin="classic"] .kind-icon,
-[data-skin="classic"] .next-step,
-[data-skin="classic"] .why-box,
-[data-skin="classic"] .unit,
-[data-skin="classic"] .ext-link,
-[data-skin="classic"] .hero-card,
-[data-skin="classic"] .hero-legend,
-[data-skin="classic"] .wall i,
-[data-skin="classic"] .mini-wall i,
-[data-skin="classic"] .legend i,
-[data-skin="classic"] .hm-strip i,
-[data-skin="classic"] .done-week i,
-[data-skin="classic"] .toast,
-[data-skin="classic"] .dialog,
-[data-skin="classic"] .login-card,
-[data-skin="classic"] .seg button,
-[data-skin="classic"] .code-boxes input,
-[data-skin="classic"] .me-card {
-  border-radius: 0;
-}
-[data-skin="classic"] .check-btn {
-  border: 1px solid var(--ink);
-  color: var(--ink);
-}
-[data-skin="classic"] .check-btn[aria-pressed="true"] {
-  background: var(--ink);
-  color: var(--bg);
-}
-[data-skin="classic"] .seg {
-  padding: 0;
-  gap: 0;
-  border: 1px solid var(--ink);
-  background: transparent;
-  box-shadow: none;
-}
-[data-skin="classic"] .seg button {
-  height: 42px;
-}
-[data-skin="classic"] .seg button + button {
-  border-left: 1px solid var(--ink);
-}
-[data-skin="classic"] .seg button[aria-pressed="true"] {
-  color: var(--bg);
-}
-[data-skin="classic"] .seg-pill {
-  top: 0;
-  bottom: 0;
-  left: 0;
-  border-radius: 0;
-  background: var(--ink);
-  box-shadow: none;
-  width: calc(100% / var(--n));
-  transform: translateX(calc(var(--i) * 100%));
-}
-[data-skin="classic"] .tag {
-  border-radius: 0;
-  border: 1px solid var(--line-strong);
-  background: transparent;
-  color: var(--ink);
-}
-[data-skin="classic"] .tag-bad,
-[data-skin="classic"] .tag-accent {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-[data-skin="classic"] .tag-solid {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-[data-skin="classic"] .bar {
-  height: 6px;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: inset 0 0 0 1px var(--ink);
-}
-[data-skin="classic"] .bar > i {
-  background: var(--ink);
-}
-[data-skin="classic"] .hero {
-  border: 1px solid var(--ink);
-}
-[data-skin="classic"] .wall {
-  transform: none;
-  top: 18px;
-  right: 18px;
-  grid-template-rows: repeat(7, 26px);
-  grid-auto-columns: 26px;
-  gap: 3px;
-}
-[data-skin="classic"] .hero-card {
-  border: 1px solid var(--ink);
-  box-shadow: none;
-}
-[data-skin="classic"] .next-step,
-[data-skin="classic"] .why-box {
-  background: transparent;
-  border: 1px solid var(--line);
-}
-[data-skin="classic"] .kind-icon {
-  background: transparent;
-  border: 1px solid var(--ink);
-  color: var(--ink);
-}
-[data-skin="classic"] .night-card {
-  border-radius: 0;
-}
-[data-skin="classic"] .hm-cell.today,
-[data-skin="classic"] .done-week i.today {
-  box-shadow: none;
-  outline: 1.5px solid var(--now);
-  outline-offset: 1px;
-}
-[data-skin="classic"] .hm-cell[aria-selected="true"] {
-  box-shadow: none;
-  outline: 2px solid var(--ink);
-  outline-offset: 1px;
-}
-[data-skin="classic"] .unit.is-next {
-  box-shadow: inset 4px 0 0 var(--accent);
-}
-[data-skin="classic"] .login .wall {
-  transform: translate(-50%, -50%);
-}
-[data-skin="classic"] .login-card {
-  border: 1px solid var(--ink);
-  box-shadow: none;
-}
-[data-skin="classic"] .done-disk {
-  border-radius: 0;
-  box-shadow: none;
-}
-[data-skin="classic"] .done-badge .ring {
-  border-radius: 0;
 }
 
 .night-card .switch {
@@ -3755,25 +3498,6 @@ pre.code code {
   }
 }
 
-[data-skin="classic"] .mm-root {
-  border-radius: 0;
-  box-shadow: 3px 3px 0 var(--edge-strong);
-}
-[data-skin="classic"] .mm-group,
-[data-skin="classic"] .mm-course,
-[data-skin="classic"] .mm-link {
-  border-radius: 0;
-}
-[data-skin="classic"] .mm-course,
-[data-skin="classic"] .mm-link {
-  border-color: var(--edge);
-}
-[data-skin="classic"] .mm-course:hover,
-[data-skin="classic"] .mm-link:hover {
-  border-color: var(--edge-strong);
-  box-shadow: 3px 3px 0 var(--edge-strong);
-}
-
 /* ---------- 手写签名 ---------- */
 
 .signature-pad {
@@ -3784,9 +3508,6 @@ pre.code code {
   background: #ffffff;
   touch-action: none;
   cursor: crosshair;
-}
-[data-skin="classic"] .signature-pad {
-  border-radius: 0;
 }
 
 /* ---------- 给学校的签到表（可打印） ---------- */
@@ -4555,39 +4276,6 @@ body.pin-mode .pin-board [data-anchor]:hover {
   }
 }
 
-/* 经典直角：图钉成菱形，标签和徽标成方块；讨论框用墨色细线和硬阴影 */
-[data-skin="classic"] .pin-panel {
-  border-color: var(--edge-strong);
-  box-shadow: var(--hard);
-}
-[data-skin="classic"] .pin-sheet {
-  border-top: 1px solid var(--edge-strong);
-  box-shadow: none;
-}
-[data-skin="classic"] .pin-sheet::before {
-  display: none;
-}
-[data-skin="classic"] .pin-dot {
-  box-shadow: var(--hard-sm);
-}
-[data-skin="classic"] .pin-dot.resolved {
-  box-shadow: none;
-}
-[data-skin="classic"] .pin-compose {
-  border-color: var(--edge-strong);
-}
-[data-skin="classic"] .pin-compose:focus-within {
-  box-shadow: none;
-  outline: 2px solid var(--focus);
-  outline-offset: -1px;
-}
-[data-skin="classic"] .pin-actions {
-  border-top-color: var(--edge);
-}
-[data-skin="classic"] .pin-hint {
-  box-shadow: var(--hard-sm);
-}
-
 /* ---------- 管理后台：新生报名 ---------- */
 /* 六个状态标签：放不下就横着滑，不要挤在一起 */
 .seg-scroll > .seg {
@@ -4836,5 +4524,37 @@ body.pin-mode .pin-board [data-anchor]:hover {
 @media (max-width: 899px) {
   .start-step-body {
     padding-left: 0;
+  }
+}
+
+/* ---------- 圆角容器里的滚动条 ---------- */
+/* 滚动条不能顶进圆角：轨道上下让出圆角的高度，滑块做细做圆 */
+.dialog::-webkit-scrollbar,
+.pin-panel::-webkit-scrollbar,
+.pin-sheet::-webkit-scrollbar {
+  width: 10px;
+}
+.dialog::-webkit-scrollbar-track {
+  margin-block: var(--r-hero);
+}
+.pin-panel::-webkit-scrollbar-track {
+  margin-block: var(--r-card, 18px);
+}
+.pin-sheet::-webkit-scrollbar-track {
+  margin-top: 22px;
+}
+.dialog::-webkit-scrollbar-thumb,
+.pin-panel::-webkit-scrollbar-thumb,
+.pin-sheet::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: var(--line-strong) padding-box;
+}
+@supports not selector(::-webkit-scrollbar) {
+  .dialog,
+  .pin-panel,
+  .pin-sheet {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
   }
 }

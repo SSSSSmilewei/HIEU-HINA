@@ -32,7 +32,7 @@ function finish() {
   }
 }
 
-const STEPS = ["风格", "配色", "昵称"] as const;
+const STEPS = ["深浅", "配色", "昵称"] as const;
 
 export function Onboarding({ onDone }: { onDone: () => void }) {
   const { me, setMe } = useMe();
