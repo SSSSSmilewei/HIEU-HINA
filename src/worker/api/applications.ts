@@ -34,7 +34,7 @@ const Submit = z.object({
   studentId: z.string().trim().regex(/^\d{6,15}$/, "学号应该是 6–15 位数字"),
   phone: z.string().trim().regex(/^1\d{10}$/, "手机号应该是 1 开头的 11 位数字"),
   qq: z.string().trim().regex(/^\d{5,11}$/, "QQ 号应该是 5–11 位数字"),
-  fresh: z.literal(true, { error: "报名只面向湖南涉外经济学院的在读新生，请勾选确认" }),
+  fresh: z.literal(true, { errorMap: () => ({ message: "报名只面向湖南涉外经济学院的在读新生，请勾选确认" }) }),
   q1: z.string().trim().min(1, "第 1 题还没写").max(2000, "第 1 题最多 2000 字"),
   q2: z.string().trim().max(2000, "第 2 题最多 2000 字").optional().nullable(),
   q3: z.string().trim().max(2000, "第 3 题最多 2000 字").optional().nullable(),
@@ -80,7 +80,7 @@ async function loadSettings(db: D1Database): Promise<{ open: boolean; message: s
   return { open: open !== "0", message: message || APPLICATIONS_CLOSED_DEFAULT };
 }
 
-function summary(r: Pick<Row, "id" | "student_id" | "name" | "class_name" | "status" | "submit_count" | "created_at" | "updated_at">): ApplicationSummary {
+function summary(r: Row): ApplicationSummary {
   return {
     id: r.id,
     studentId: r.student_id,
@@ -229,7 +229,7 @@ export function applicationRoutes(api: Router) {
     }
     const [rows, counts, settings] = await Promise.all([
       db
-        .prepare(`SELECT id, student_id, name, class_name, status, submit_count, created_at, updated_at FROM applications ${where.length ? `WHERE ${where.join(" AND ")}` : ""} ORDER BY created_at DESC LIMIT 1000`)
+        .prepare(`SELECT * FROM applications ${where.length ? `WHERE ${where.join(" AND ")}` : ""} ORDER BY created_at DESC LIMIT 1000`)
         .bind(...binds)
         .all<Row>(),
       db.prepare("SELECT status, COUNT(*) AS n FROM applications GROUP BY status").all<{ status: string; n: number }>(),

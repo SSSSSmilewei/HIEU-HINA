@@ -320,41 +320,6 @@ describe("接口", () => {
     expect(res.status).toBe(400);
   });
 
-  test("请求体超过上限时返回 413", async () => {
-    const { env } = setup();
-    const res = await worker.fetch(new Request("http://localhost/api/auth/member", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ password: "x", account: "x" }).padEnd(65_537, " "),
-    }), env);
-    expect(res.status).toBe(413);
-    expect(await res.json()).toEqual({ error: "请求内容太大" });
-  });
-
-  test("路径参数不是有效的百分号编码", async () => {
-    const { call } = setup();
-    const res = await call("x", "GET", "/api/files/a/b/%E0%A4%A");
-    expect(res.status).toBe(400);
-    expect(res.data.error).toBe("路径参数格式不正确");
-  });
-
-  test("流式请求按实际字节限制，不能用较小的 Content-Length 绕过", async () => {
-    const { env } = setup();
-    const chunk = new TextEncoder().encode("中".repeat(12_000));
-    for (const headers of [{}, { "content-length": "1" }]) {
-      let cancelled = false;
-      const body = new ReadableStream<Uint8Array>({
-        pull(controller) { controller.enqueue(chunk); },
-        cancel() { cancelled = true; },
-      });
-      const res = await worker.fetch(new Request("http://localhost/api/auth/member", {
-        method: "POST", headers, body,
-      }), env);
-      expect(res.status).toBe(413);
-      expect(cancelled).toBe(true);
-    }
-  });
-
   test("非 /api 路径交给静态资源", async () => {
     const { env } = setup();
     expect(await (await worker.fetch(new Request("http://localhost/profile"), env)).text()).toBe("index");

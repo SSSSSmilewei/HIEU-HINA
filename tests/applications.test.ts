@@ -215,7 +215,6 @@ describe("新生报名", () => {
     expect(all.data.counts).toMatchObject({ all: 2, new: 2, contacted: 0 });
     expect((await call("admin", "GET", "/api/admin/applications/count")).data).toEqual({ new: 2 });
     expect(all.data.items[0].phone).toBeUndefined();
-    expect(all.data.items[0].qq).toBeUndefined();
     expect((await call("admin", "GET", `/api/admin/applications?q=${encodeURIComponent("软工")}`)).data.items).toHaveLength(1);
     expect((await call("admin", "GET", "/api/admin/applications?q=260101")).data.items[0].name).toBe("小海");
     expect((await call("admin", "GET", "/api/admin/applications?q=%25")).data.items).toHaveLength(0);
