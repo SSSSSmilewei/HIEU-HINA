@@ -90,7 +90,7 @@ export function attendanceRoutes(api: Router) {
 
   api.post("/api/attendance/in", async (c) => {
     const uid = requireCampus(c);
-    const body = PhotoBody.extend({ kind: z.enum(["evening", "venue"]), code: z.string().trim().max(8).optional(), signature: Signature }).parse(await c.body(1_500_000));
+    const body = PhotoBody.extend({ kind: z.enum(["evening", "venue"]), code: z.string().trim().max(8).optional(), signature: Signature }).parse(await c.body());
     const rule = await loadRule(c.env.DB);
     // 先检查能不能签到，再存照片，免得存下没用的照片
     if (body.kind !== "evening") attendanceError(new AttendanceError("venue_removed", VENUE_REMOVED));
@@ -108,7 +108,7 @@ export function attendanceRoutes(api: Router) {
 
   api.post("/api/attendance/out", async (c) => {
     const uid = requireCampus(c);
-    const body = PhotoBody.parse(await c.body(1_100_000));
+    const body = PhotoBody.parse(await c.body());
     const rule = await loadRule(c.env.DB);
     await autoClose(c.env.DB, rule, Date.now(), uid);
     if (!(await openRecord(c.env.DB, uid))) attendanceError(new AttendanceError("not_in", "现在没有进行中的签到。超过结束时间的记录已经自动结束了"));

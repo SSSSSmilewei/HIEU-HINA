@@ -2385,11 +2385,10 @@
   /* ---------- 交到网站：POST /api/applications，服务器再查一遍；成功了才算收到 ---------- */
   const FIELDS = ["f-name", "f-class", "f-sid", "f-phone", "f-qq", "q1", "q2", "q3", "q4", "q5"];
   const DRAFT_KEY = "hiana.intro.draft";
-  const DRAFT_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
   const store = (fn) => { try { return fn(localStorage); } catch (e) { return null; } }; // 隐私模式下 localStorage 会报错
   function saveDraft() {
-    const d = { step: formStep, fresh: $("f-fresh").checked, savedAt: Date.now() };
-    FIELDS.filter((id) => id !== "f-phone" && id !== "f-qq").forEach((id) => (d[id] = $(id).value));
+    const d = { step: formStep, fresh: $("f-fresh").checked };
+    FIELDS.forEach((id) => (d[id] = $(id).value));
     store((ls) => ls.setItem(DRAFT_KEY, JSON.stringify(d)));
   }
   const clearDraft = () => store((ls) => ls.removeItem(DRAFT_KEY));
@@ -2398,10 +2397,10 @@
     const raw = store((ls) => ls.getItem(DRAFT_KEY));
     if (!raw) return;
     let d; try { d = JSON.parse(raw); } catch (e) { clearDraft(); return; }
-    if (!d || typeof d !== "object" || !Number.isFinite(d.savedAt) || Date.now() - d.savedAt > DRAFT_MAX_AGE || d.savedAt > Date.now()) { clearDraft(); return; }
+    if (!d || typeof d !== "object") return;
     FIELDS.forEach((id) => { if (typeof d[id] === "string") $(id).value = d[id]; });
     $("f-fresh").checked = d.fresh === true;
-    formStep = 1; // 联系方式不落盘，恢复草稿时需要重新填写
+    formStep = d.step === 2 ? 2 : 1;
     draft = true;
   })();
   // 填到一半关掉或刷新页面：也先存一份

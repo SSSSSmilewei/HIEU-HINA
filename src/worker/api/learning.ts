@@ -189,7 +189,7 @@ export function learningRoutes(api: Router) {
   /** 管理员发布课程包：校验格式，同 slug 覆盖。不能覆盖仓库自带的课。 */
   api.put("/api/admin/packages", async (c) => {
     const { userId } = requireAdmin(c);
-    const raw = await c.body(MAX_PACKAGE_BYTES);
+    const raw = await c.body();
     if (JSON.stringify(raw).length > MAX_PACKAGE_BYTES) throw new HttpError(413, "课程包太大（上限约 1.9MB），把图片换成外链或拆成几门课");
     const r = parsePackage(raw);
     if (!r.ok) return json({ error: "课程包格式不对", errors: r.errors }, 400);
