@@ -27,7 +27,7 @@ export interface Ctx {
   user: CurrentUser | null;
   /** 待写入响应的 Set-Cookie 头 */
   cookies: string[];
-  body<T = unknown>(): Promise<T>;
+  body<T = unknown>(maxBytes?: number): Promise<T>;
   cookie(name: string): string | undefined;
 }
 
@@ -61,7 +61,7 @@ export class Router {
     return this.on("DELETE", path, h);
   }
 
-  match(method: string, pathname: string): { handler: Handler; params: Record<string, string> } | "method" | null {
+  match(method: string, pathname: string): { handler: Handler; params: Record<string, string> } | "method" | "bad-param" | null {
     const segs = pathname.split("/").filter(Boolean);
     let wrongMethod = false;
     for (const r of this.routes) {
@@ -70,7 +70,7 @@ export class Router {
       let ok = true;
       for (let i = 0; i < segs.length; i++) {
         const p = r.parts[i];
-        if (p.startsWith(":")) params[p.slice(1)] = decodeURIComponent(segs[i]);
+        if (p.startsWith(":")) params[p.slice(1)] = segs[i];
         else if (p !== segs[i]) {
           ok = false;
           break;
@@ -80,6 +80,11 @@ export class Router {
       if (r.method !== method) {
         wrongMethod = true;
         continue;
+      }
+      try {
+        for (const key of Object.keys(params)) params[key] = decodeURIComponent(params[key]);
+      } catch {
+        return "bad-param";
       }
       return { handler: r.handler, params };
     }
@@ -119,6 +124,7 @@ export async function dispatch(router: Router, req: Request, env: Env, session: 
   const m = router.match(req.method, url.pathname);
   if (m === null) return json({ error: "没有这个接口" }, 404);
   if (m === "method") return json({ error: "不支持这种请求方式" }, 405);
+  if (m === "bad-param") return json({ error: "路径参数格式不正确" }, 400);
   const jar = parseCookies(req.headers.get("cookie"));
   const ctx: Ctx = {
     req,
@@ -128,11 +134,39 @@ export async function dispatch(router: Router, req: Request, env: Env, session: 
     session,
     user,
     cookies: [],
-    async body<T>() {
+    async body<T>(maxBytes = 65_536) {
+      const contentLength = Number(req.headers.get("content-length"));
+      if (Number.isFinite(contentLength) && contentLength > maxBytes) {
+        throw new HttpError(413, "请求内容太大");
+      }
+      if (!req.body) throw new HttpError(400, "请求不是有效的 JSON");
+
+      const reader = req.body.getReader();
+      const chunks: Uint8Array[] = [];
+      let size = 0;
       try {
-        return (await req.json()) as T;
-      } catch {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          size += value.byteLength;
+          if (size > maxBytes) {
+            void reader.cancel().catch(() => {});
+            throw new HttpError(413, "请求内容太大");
+          }
+          chunks.push(value);
+        }
+        const bytes = new Uint8Array(size);
+        let offset = 0;
+        for (const chunk of chunks) {
+          bytes.set(chunk, offset);
+          offset += chunk.byteLength;
+        }
+        return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)) as T;
+      } catch (err) {
+        if (err instanceof HttpError) throw err;
         throw new HttpError(400, "请求不是有效的 JSON");
+      } finally {
+        reader.releaseLock();
       }
     },
     cookie: (name) => jar[name],

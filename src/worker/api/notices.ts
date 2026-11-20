@@ -126,7 +126,7 @@ export function noticeRoutes(api: Router) {
   api.post("/api/admin/notices/image", async (c) => {
     requireAdmin(c);
     if (!c.env.IMAGES || !c.env.IMAGE_BASE_URL) throw new HttpError(400, "图床未配置：需要绑定 IMAGES 存储桶并设置 IMAGE_BASE_URL");
-    const { data } = z.object({ data: z.string().min(1) }).parse(await c.body());
+    const { data } = z.object({ data: z.string().min(1) }).parse(await c.body(4_300_000));
     let bytes: Uint8Array;
     try {
       bytes = decodeBase64(data);
