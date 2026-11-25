@@ -37,6 +37,8 @@ function Workspace({ slug, ch, lv }: { slug: string; ch: Chapter; lv: Level }) {
   const { passed, reload: reloadPassed } = usePassed(slug);
   const id = `${ch.id}/${lv.id}`;
   const done = !!passed[id];
+  // 每次渲染都新建会让编辑器的保存函数跟着变，卸载时的保存会在每次渲染时触发
+  const repo = useMemo(() => (me.role ? serverRepo(slug) : localRepo(slug)), [me.role, slug]);
   const idx = ch.levels.indexOf(lv);
   const prev = ch.levels[idx - 1];
   const next = ch.levels[idx + 1];
@@ -113,7 +115,7 @@ function Workspace({ slug, ch, lv }: { slug: string; ch: Chapter; lv: Level }) {
             )}
           </section>
         ) : (
-          <Editor slug={slug} ch={ch} lv={lv} repo={me.role ? serverRepo(slug) : localRepo(slug)} repoKey={me.role ? "server" : "local"} onPass={markPassed} next={next} done={done} />
+          <Editor slug={slug} ch={ch} lv={lv} repo={repo} repoKey={me.role ? "server" : "local"} onPass={markPassed} next={next} done={done} />
         )}
       </div>
     </div>
