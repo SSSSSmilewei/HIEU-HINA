@@ -6,7 +6,7 @@ import { Prose } from "../components/Prose";
 import { Icon } from "../icons";
 import { Link } from "../router";
 import { useMe } from "../session";
-import { BackLink } from "./Course";
+import { BackLink } from "../components/BackLink";
 import { StartBlockCard } from "./Start";
 import type { CourseSummary } from "../types";
 import { ErrorBox, Skeleton, SkeletonCards, useTitle } from "../ui";
