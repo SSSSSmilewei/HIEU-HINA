@@ -13,6 +13,7 @@ export type ActivityKind =
   | "reflect" // 晨思夜思
   | "lesson" // 完成一个课时
   | "exercise" // 练习做对
+  | "level" // 闯关：通过一关
   | "ask" // 提问
   | "answer" // 回答别人
   | "plan" // 发布学习规划

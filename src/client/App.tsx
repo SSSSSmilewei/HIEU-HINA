@@ -16,6 +16,8 @@ import { CoursePage } from "./pages/Course";
 import { CoursesPage } from "./pages/Courses";
 import { FormatPage } from "./pages/Format";
 import { LessonPage } from "./pages/Lesson";
+import { LevelPage } from "./pages/Level";
+import { LevelMapPage } from "./pages/LevelMap";
 import { HomePage } from "./pages/Home";
 import { LoginPage, PasswordPage } from "./pages/Login";
 import { Onboarding, needsOnboarding } from "./components/Onboarding";
@@ -99,6 +101,8 @@ export function App() {
   const course = matchPath("/courses/:slug", path);
   const lesson = matchPath("/courses/:slug/learn/:page", path);
   const block = matchPath("/blocks/:slug", path);
+  const levelMap = matchPath("/courses/:slug/map", path);
+  const levelPage = matchPath("/courses/:slug/levels/:chapter/:level", path);
   if (path.startsWith("/admin")) {
     if (!isAdmin) page = <Empty title="这里需要管理员账号" />;
     else if (path === "/admin") page = <AdminTodayPage />;
@@ -114,6 +118,8 @@ export function App() {
   else if (path === "/courses") page = <CoursesPage />;
   else if (path === "/courses/format") page = <FormatPage />;
   else if (block) page = <BlockPage key={block.slug} slug={block.slug} />;
+  else if (levelMap) page = <LevelMapPage key={levelMap.slug} slug={levelMap.slug} />;
+  else if (levelPage) page = <LevelPage key={`${levelPage.chapter}/${levelPage.level}`} slug={levelPage.slug} chapter={levelPage.chapter} level={levelPage.level} />;
   else if (course) page = <CoursePage key={course.slug} slug={course.slug} />;
   else if (lesson) page = <LessonPage key={lesson.slug} slug={lesson.slug} page={lesson.page} />;
   else if (path === "/checkin") page = me.member?.kind === "external" ? <Empty title="校外账号不用签到" /> : <AttendancePage />;

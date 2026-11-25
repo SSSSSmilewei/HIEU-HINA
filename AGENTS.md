@@ -27,6 +27,12 @@
   - CS61A（2026 春季）已重做，生成脚本 `scripts/courses/cs61a/build.py`：讲义用 csfive/composing-programs-zh 的教材中文翻译按小节拆到各讲（教材没覆盖的 9 讲是依据官方幻灯片自编的），视频配哔哩哔哩双语分集；247 道练手题改编自官方实验、作业、讨论课（Scheme 题改成填空和选择）；实验 / 作业 / 讨论课的「要做什么」页由脚本生成，四个项目页是据官方说明改写的。代码题的检查方法见 `scripts/courses/qhelp.py`。
   - MIT 18.06SC 线性代数（slug `mitla`，2011 秋季 OCW 版）已重做，生成脚本 `scripts/courses/mitla/build.py`（读本地缓存的 OCW 压缩包）：全部 37 个讲座条目（含三次考试复习和期末复习）每条都有：官方讲座摘要的中文翻译（`notes/`）和官方习题与解答的中文翻译（`problems/`，解答折叠），三次单元考试和期末考试也整份翻译（PDF 是特殊字体，按图片读的）；视频配哔哩哔哩双语分集 + 官方 YouTube；221 道练手题（`practice.py`）改编自官方习题和讲座摘要。翻译时发现的原文笔误都加了「译注」并在译文里更正（例如期末第 9 题官方算出的 207 应为 63）。**未经人工逐页核对**。
   - MIT 18.01SC 单变量微积分（slug `mit-1801`，2010 秋季 OCW 版）已重做，生成脚本 `scripts/courses/mit1801/build.py`（读本地缓存的 OCW 压缩包）：5 个单元 19 个模块、114 个条目——101 节讲座（每节「讲义」= 各讲座片段配套讲义的中文翻译，`notes/`；77 节有「例题与解答」，`examples/`）、11 次习题课（只翻译官方指定的题，`psets/`）、4 次单元考试和期末考试（整份翻译，`exams/`）；视频是官方 YouTube 讲座片段（带起始时间）和习题讲解视频，另附 Mathlet 交互演示；430 道练手题（`practice.py`）改编自讲义、例题、习题课和考试。翻译时发现的原文错误有 64 处加了「译注」并在译文里更正（例如第 69 节例题 ∫sin⁴x cos²x dx、第 81 节落体例题丢了负号、习题 4G-5 积分上限），每一处都对照过原文 PDF 的图片（pdftotext 会丢上标和分数，不能只看文字）；官方解答缺的部分标「本站补写」。**未经人工逐页核对**。
+- **闯关（2026-11-26 起，试点 CS61A）**：一门课一张地图（`/courses/<课>/map`），一章是一个官方项目，一关是官方的一个问题（`/courses/<课>/levels/<章>/<关>`）。课程页有「开始闯关」入口（`src/shared/levels.ts` 的 `LEVEL_COURSES`）。
+  - 内容在 `content/levels/<课>/`：`index.json`（格式 `hiana-levels@1`，类型见 `src/shared/levels.ts`）+ 官方起始代码和 ok 测试，由 `scripts/courses/cs61a/levels.py` 生成，构建时原样复制到 `/levels/`。Hog 13 关已做完；Cats、Ants、Scheme 是「筹备中」占位。
+  - 判题器 `content/levels/ok_runner.py` 在浏览器的 Pyodide 里跑官方 ok 测试（`src/client/levels/runner.ts`）。官方测试的期望输出是 hmac-md5 加密的（密钥是作业名，如 `Hog Project`），把学生输出加密后比较，**站内没有官方答案**。改判题器后用本地 Python 对照一份参考解跑一遍全部测试（参考解不进仓库）。
+  - 「我的仓库」：登录后存表 `repo_files`（v15），游客存 `localStorage` 的 `hiana.repo.<课>`；只存可编辑的文件，只读文件和测试读静态文件。过关记表 `level_passes`，第一次通过记一条学习记录（`level`）。接口在 `src/worker/api/levels.ts`，测试 `tests/levels.test.ts`。
+  - 编辑器暂时是 textarea（Tab 缩进、Ctrl+Enter 运行、Ctrl+S 保存），前端重做时再换。
+  - 许可：起始代码和测试 © UC Berkeley CS 61A，取自课程网站存档镜像，**还没确认能否转载**，见 `index.json` 的 `license`。
 - 网页能显示数学公式（2026-11-19，`src/client/markdown.ts` 用 KaTeX）：行内 `$…$` 或 `\(…\)`，独立成段 `$$…$$` 或 `\[…\]`；`$15`、`$ ls` 这类写法不会被当成公式。App 还不显示公式。
 - 练手题在浏览器里判：选择、填空、代码（Python 用 Pyodide，SQL 用 sql.js，JavaScript）；做对记进热力图。
 - 导入 / 导出课程包；任何人都能导入到自己设备上学，管理员能发布给所有人；`/courses/format` 有格式说明和给 AI 用的整理提示词。
