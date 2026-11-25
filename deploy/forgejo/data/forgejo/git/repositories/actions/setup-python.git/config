@@ -1,0 +1,10 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+[remote "origin"]
+	url = https://code.forgejo.org/actions/setup-python.git
+	tagOpt = --no-tags
+	fetch = +refs/*:refs/*
+	mirror = true
+	fetch = +refs/tags/*:refs/tags/*

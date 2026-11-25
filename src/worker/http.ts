@@ -116,7 +116,14 @@ export function serializeCookie(name: string, value: string, opts: { maxAge: num
 
 export async function dispatch(router: Router, req: Request, env: Env, session: Session | null, user: CurrentUser | null = null): Promise<Response> {
   const url = new URL(req.url);
-  const m = router.match(req.method, url.pathname);
+  let m: ReturnType<Router["match"]>;
+  try {
+    m = router.match(req.method, url.pathname);
+  } catch (err) {
+    // 路径里有不合法的百分号编码（如 %E0%A4%A），decodeURIComponent 会抛 URIError
+    if (err instanceof URIError) return json({ error: "请求地址不对" }, 400);
+    throw err;
+  }
   if (m === null) return json({ error: "没有这个接口" }, 404);
   if (m === "method") return json({ error: "不支持这种请求方式" }, 405);
   const jar = parseCookies(req.headers.get("cookie"));
