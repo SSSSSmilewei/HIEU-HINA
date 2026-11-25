@@ -95,7 +95,7 @@
 - 开场动画各站的详细介绍按负责人的培养方案文档补充过；获奖汇总用学校统计（2020.10—2026.6，国家级 12、省级 82、合计 94）。
 - 从开场动画点「进入平台」：跳转时有接力过渡（白屏接住 → 揭开平台），只在从动画过来的那一次播，平时不播。做法见 `intro/README.md`。
 - 开场动画掉帧已修：两张画布按 1 倍分辨率画（原来三倍屏上每帧画 9 倍像素）。
-- 本地装依赖：锁文件里的地址是 `registry.npmmirror.com`，云端容器连不上时用 `npm ci --registry=https://registry.npmjs.org/ --replace-registry-host=registry.npmmirror.com`。
+- 本地装依赖：锁文件里的地址 2026-11-26 起改回官方源 `registry.npmjs.org`（Cloudflare 和 CI 都在国外）；国内开发自己配镜像，例如 `npm ci --registry=https://registry.npmmirror.com/`。
 
 ### 外观
 - 只有液态玻璃一套皮肤。「经典直角」2026-11-12 删掉了（负责人看过重做的版本，决定不要）。
