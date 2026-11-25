@@ -1,58 +1,2473 @@
 {
- "format": "hiana-course@1",
- "slug": "cs61b",
- "title": "CS61B: Data Structures and Algorithms",
- "category": "数据结构与算法",
- "provider": "UC Berkeley",
- "instructors": [],
- "language": "Java",
- "prerequisites": "CS61A",
- "difficulty": 3,
- "hours": "60 小时",
- "summary": "伯克利 CS61 系列的第二门课程，注重数据结构与算法的设计，同时让学生有机会接触上千行的工程代码，通过 Java 初步领会软件工程的思想。",
- "tags": [],
- "license": "介绍文字 © csdiy.wiki，MIT 许可",
- "intro": {
-  "community": "## 课程简介\n\n伯克利 CS61 系列的第二门课程，注重数据结构与算法的设计，同时让学生有机会接触上千行的工程代码，通过 Java 初步领会软件工程的思想。\n\n我上的是 2018 年春季学期的版本，该课的开课老师 Josh Hug 教授慷慨地将 autograder 开源了，大家可以通过网站公开的邀请码在 [gradescope](https://gradescope.com/)\n 免费加入课程，从而方便地测评自己的代码。\n\n根据教授最新的政策，SP2021 的 CS61B 也对公众开放。要设置所有内容，请前往 Gradescope 并选择\"Add a course\"按钮。输入课程代码 <strong>MB7ZPY</strong> 以添加课程。\n\n这门课所有的编程作业都是使用 Java 完成的。没有 Java 基础的同学也不用担心，课程会有保姆级的教程，从 IDEA（一款主流的 Java 编程环境）的配置讲起，把 Java 的核心语法与特性事无巨细地讲授，大家完全不用担心跟不上的问题。\n\n这门课的作业质量也是绝绝子。14 个 lab 会让你自己实现课上所讲的绝大部分数据结构，10 个 Homework 会让你运用数据结构和算法解决实际问题，\n另外还有 3 个 Project 更是让你有机会接触上千行的工程代码，在实战中磨练自己的 Java 能力。\n\n## 课程资源\n\n- 课程网站：[spring2024](https://sp24.datastructur.es/), [fall2023](https://fa23.datastructur.es/), [spring2023](https://sp23.datastructur.es/), [spring2021](https://sp21.datastructur.es/), [spring2018](https://sp18.datastructur.es/)\n- 课程视频：原版视频参见课程网站，B站有中文翻译搬运。\n- 课程教材：无\n- 课程作业：每年略有不同，18 年春季学期有 14 个 Lab，10 个 Homework以及 3 个 Project，具体要求详见课程网站。\n\n## 资源汇总\n\n@PKUFlyingPig 在学习这门课中用到的所有资源和作业实现都汇总在 [PKUFlyingPig/CS61B - GitHub](https://github.com/PKUFlyingPig/CS61B) 中。\n  \n@InsideEmpire 在学习这门课中用到的所有资源和作业实现都汇总在 [InsideEmpire/CS61B-PathwayToSuccess - GitHub](https://github.com/InsideEmpire/CS61B-PathwayToSuccess.git) 中。\n",
-  "communitySource": {
-   "kind": "website",
-   "label": "csdiy.wiki",
-   "url": "https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/CS61B/"
+  "format": "hiana-course@1",
+  "slug": "cs61b",
+  "title": "CS61B：数据结构与算法（Data Structures and Algorithms）",
+  "category": "数据结构与算法",
+  "provider": "UC Berkeley",
+  "instructors": [
+    "Josh Hug",
+    "Kay Ousterhout"
+  ],
+  "language": "Java",
+  "prerequisites": "CS61A",
+  "difficulty": 3,
+  "hours": "60 小时",
+  "summary": "伯克利 CS61 系列的第二门课程，注重数据结构与算法的设计，同时让学生有机会接触上千行的工程代码，通过 Java 初步领会软件工程的思想。",
+  "tags": [],
+  "license": "教材、作业与项目说明、讨论课题目 © UC Berkeley CS61B 课程组（Josh Hug、Kay Ousterhout 等），中文翻译 海纳协会，仅供非商业学习使用；课程介绍文字 © csdiy.wiki，MIT 许可",
+  "intro": {
+    "community": "## 课程简介\n\n伯克利 CS61 系列的第二门课程，注重数据结构与算法的设计，同时让学生有机会接触上千行的工程代码，通过 Java 初步领会软件工程的思想。\n\n我上的是 2018 年春季学期的版本，该课的开课老师 Josh Hug 教授慷慨地将 autograder 开源了，大家可以通过网站公开的邀请码在 [gradescope](https://gradescope.com/)\n 免费加入课程，从而方便地测评自己的代码。\n\n根据教授最新的政策，SP2021 的 CS61B 也对公众开放。要设置所有内容，请前往 Gradescope 并选择\"Add a course\"按钮。输入课程代码 <strong>MB7ZPY</strong> 以添加课程。\n\n这门课所有的编程作业都是使用 Java 完成的。没有 Java 基础的同学也不用担心，课程会有保姆级的教程，从 IDEA（一款主流的 Java 编程环境）的配置讲起，把 Java 的核心语法与特性事无巨细地讲授，大家完全不用担心跟不上的问题。\n\n这门课的作业质量也是绝绝子。14 个 lab 会让你自己实现课上所讲的绝大部分数据结构，10 个 Homework 会让你运用数据结构和算法解决实际问题，\n另外还有 3 个 Project 更是让你有机会接触上千行的工程代码，在实战中磨练自己的 Java 能力。\n\n## 课程资源\n\n- 课程网站：[spring2024](https://sp24.datastructur.es/), [fall2023](https://fa23.datastructur.es/), [spring2023](https://sp23.datastructur.es/), [spring2021](https://sp21.datastructur.es/), [spring2018](https://sp18.datastructur.es/)\n- 课程视频：原版视频参见课程网站，B站有中文翻译搬运。\n- 课程教材：无\n- 课程作业：每年略有不同，18 年春季学期有 14 个 Lab，10 个 Homework以及 3 个 Project，具体要求详见课程网站。\n\n## 资源汇总\n\n@PKUFlyingPig 在学习这门课中用到的所有资源和作业实现都汇总在 [PKUFlyingPig/CS61B - GitHub](https://github.com/PKUFlyingPig/CS61B) 中。\n  \n@InsideEmpire 在学习这门课中用到的所有资源和作业实现都汇总在 [InsideEmpire/CS61B-PathwayToSuccess - GitHub](https://github.com/InsideEmpire/CS61B-PathwayToSuccess.git) 中。\n",
+    "communitySource": {
+      "kind": "website",
+      "label": "csdiy.wiki",
+      "url": "https://csdiy.wiki/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/CS61B/"
+    },
+    "official": "这是加州大学伯克利分校的数据结构课程。课程涵盖类、列表、引用和递归等基础概念，链表、数组、双端队列、二叉搜索树、哈希映射等数据结构，红黑树、不交集合、堆、字典树等高级结构，以及选择排序、堆排序、归并排序、快速排序、基数排序、图遍历和最短路径算法等排序和图算法。课程包含周任务、四个主要项目、两个中期考试和期末考试。",
+    "officialSource": {
+      "kind": "website",
+      "label": "sp24.datastructur.es",
+      "url": "https://sp24.datastructur.es/"
+    }
   },
-  "official": "这是加州大学伯克利分校的数据结构课程。课程涵盖类、列表、引用和递归等基础概念，链表、数组、双端队列、二叉搜索树、哈希映射等数据结构，红黑树、不交集合、堆、字典树等高级结构，以及选择排序、堆排序、归并排序、快速排序、基数排序、图遍历和最短路径算法等排序和图算法。课程包含周任务、四个主要项目、两个中期考试和期末考试。",
-  "officialSource": {
-   "kind": "website",
-   "label": "sp24.datastructur.es",
-   "url": "https://sp24.datastructur.es/"
-  }
- },
- "links": [
-  {
-   "kind": "website",
-   "label": "网站 · spring2024",
-   "url": "https://sp24.datastructur.es/"
-  },
-  {
-   "kind": "website",
-   "label": "网站 · fall2023",
-   "url": "https://fa23.datastructur.es/"
-  },
-  {
-   "kind": "website",
-   "label": "网站 · spring2023",
-   "url": "https://sp23.datastructur.es/"
-  },
-  {
-   "kind": "website",
-   "label": "网站 · spring2021",
-   "url": "https://sp21.datastructur.es/"
-  },
-  {
-   "kind": "website",
-   "label": "网站 · spring2018",
-   "url": "https://sp18.datastructur.es/"
-  }
- ],
- "modules": [],
- "titleEn": "CS61B: Data Structures and Algorithms"
+  "links": [
+    {
+      "kind": "website",
+      "label": "网站 · 2026 春季（站内课程内容按这一学期整理）",
+      "url": "https://sp26.datastructur.es/"
+    },
+    {
+      "kind": "textbook",
+      "label": "官方教材 · 2026 春季版（GitHub）",
+      "url": "https://github.com/Berkeley-CS61B/sp26-gitbook"
+    },
+    {
+      "kind": "repo",
+      "label": "作业起始代码 · skeleton-sp26",
+      "url": "https://github.com/Berkeley-CS61B/skeleton-sp26"
+    },
+    {
+      "kind": "video",
+      "label": "讲座录像 · YouTube 播放列表",
+      "url": "https://www.youtube.com/playlist?list=PL8FaHk7qbOD44fDmItR1wrkor8XdfUXC6"
+    },
+    {
+      "kind": "website",
+      "label": "网站 · spring2024",
+      "url": "https://sp24.datastructur.es/"
+    },
+    {
+      "kind": "website",
+      "label": "网站 · fall2023",
+      "url": "https://fa23.datastructur.es/"
+    },
+    {
+      "kind": "website",
+      "label": "网站 · spring2023",
+      "url": "https://sp23.datastructur.es/"
+    },
+    {
+      "kind": "website",
+      "label": "网站 · spring2021",
+      "url": "https://sp21.datastructur.es/"
+    },
+    {
+      "kind": "website",
+      "label": "网站 · spring2018",
+      "url": "https://sp18.datastructur.es/"
+    }
+  ],
+  "modules": [
+    {
+      "id": "start",
+      "title": "开始之前",
+      "items": [
+        {
+          "id": "guide",
+          "kind": "reading",
+          "title": "开始之前：这门课怎么学",
+          "periods": 1,
+          "pages": [
+            {
+              "id": "guide",
+              "title": "学习指南"
+            }
+          ],
+          "videos": [],
+          "links": [
+            {
+              "kind": "website",
+              "label": "CS61B 2026 春季官网",
+              "url": "https://sp26.datastructur.es/"
+            },
+            {
+              "kind": "repo",
+              "label": "作业起始代码 skeleton-sp26",
+              "url": "https://github.com/Berkeley-CS61B/skeleton-sp26"
+            }
+          ],
+          "practice": []
+        }
+      ]
+    },
+    {
+      "id": "w01",
+      "title": "第 1 周",
+      "items": [
+        {
+          "id": "lec01",
+          "kind": "lecture",
+          "title": "第 1 讲：欢迎来到 61B，Java 入门",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch01",
+              "title": "教材第 1 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/x5ZT_oSxXUw"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 1",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/1.-introduction"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/11XrWQGpF_FBSKtLACcFlTeJouJ8WEeusK6Jve546KOU/edit?slide=id.g19143fda576_0_135"
+            }
+          ],
+          "practice": [
+            {
+              "id": "lec01-println-510",
+              "type": "choice",
+              "prompt": "在 Java 里运行 `IO.println(5 + \"10\");`，输出是什么？（官方教材第 1 章的思考题）",
+              "options": [
+                "510",
+                "15",
+                "5 10",
+                "编译错误"
+              ],
+              "answer": 0,
+              "explain": "参数里出现了字符串 `\"10\"`，`+` 在这里按字符串连接处理：先把 5 转成字符串再拼接，结果是 `\"510\"`。题目改编自官方教材第 1 章「入门」的正文和思考题。",
+              "origin": "official"
+            },
+            {
+              "id": "lec01-println-15",
+              "type": "choice",
+              "prompt": "在 Java 里运行 `IO.println(5 + 10);`，输出是什么？",
+              "options": [
+                "510",
+                "15",
+                "5 10",
+                "编译错误"
+              ],
+              "answer": 1,
+              "explain": "两个操作数都是 `int`，`+` 就是普通的加法，结果是整数 15；字符串连接只在有字符串参与时发生。题目改编自官方教材第 1 章「入门」的正文和思考题。",
+              "origin": "review"
+            },
+            {
+              "id": "lec01-static-type",
+              "type": "choice",
+              "prompt": "关于 Java 的静态类型（static typing），下面哪一句是**错误**的？",
+              "options": [
+                "变量声明类型之后，类型永远不能改变",
+                "类型不相容的表达式会在编译时报错，而不是运行时崩溃",
+                "编译器在程序运行之前就检查类型是否相容",
+                "静态类型让代码更简短、通用性更强"
+              ],
+              "answer": 3,
+              "explain": "前三个都是静态类型的优点或事实。静态类型的缺点恰恰是代码更冗长、通用性更差。题目改编自官方教材第 1 章「入门」的正文和思考题。",
+              "origin": "official"
+            },
+            {
+              "id": "lec01-string-assign",
+              "type": "choice",
+              "prompt": "下面哪一条语句能通过编译？",
+              "options": [
+                "`String h = 5 + \"horse\";`",
+                "`int h = 5 + \"horse\";`",
+                "两条都能",
+                "两条都不能"
+              ],
+              "answer": 0,
+              "explain": "声明成 `String` 时，Java 把 `+` 解释为字符串连接，结果 `\"5horse\"` 是字符串，类型相容；声明成 `int` 时没法把一个数和一个字符串连接成整数，编译失败。题目改编自官方教材第 1 章「入门」的正文和思考题。",
+              "origin": "review"
+            },
+            {
+              "id": "lec01-javac",
+              "type": "text",
+              "prompt": "在终端里要把 `Hello.java` 变成能运行的程序，第一步用的命令是什么？（只要命令名）",
+              "answer": [
+                "javac"
+              ],
+              "explain": "两步流程：先用 `javac Hello.java` 编译成 `.class` 文件，再用 `java Hello` 运行。`.class` 文件已经通过了类型检查，执行也更高效。题目改编自官方教材第 1 章「入门」的正文和思考题。",
+              "origin": "review"
+            }
+          ]
+        },
+        {
+          "id": "disc01",
+          "kind": "section",
+          "title": "讨论课 1：Python 复习，欢迎来到 Java",
+          "periods": 2,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "讨论课题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc01.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "讨论课解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc01-sols.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "hw01",
+          "kind": "assignment",
+          "title": "工具作业 1：环境配置",
+          "periods": 3,
+          "pages": [
+            {
+              "id": "hw01",
+              "title": "作业说明"
+            }
+          ],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "作业原文（英文）",
+              "url": "https://sp26.datastructur.es/homeworks/hw01"
+            }
+          ],
+          "practice": [],
+          "submit": {
+            "kind": "other",
+            "label": "Gradescope（伯克利账号）",
+            "url": "https://www.gradescope.com/"
+          }
+        },
+        {
+          "id": "lec02",
+          "kind": "lecture",
+          "title": "第 2 讲：定义和使用类，列表",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch02",
+              "title": "教材第 2 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/3XGB1dsg62E"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 2",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/2.-defining-and-using-classes"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1n2lWQTc6gjdNEGGv3t9kG85nEplOeN6E3O4nm7LkM2E"
+            }
+          ],
+          "practice": [
+            {
+              "id": "lec02-instance-method",
+              "type": "choice",
+              "prompt": "`public class Dog { public int weightInPounds; public void makeNoise() { … } }`。下面哪种说法是对的？",
+              "options": [
+                "`makeNoise` 是实例方法，必须先实例化一只 `Dog` 再调用",
+                "`makeNoise` 是静态方法，可以直接用 `Dog.makeNoise()` 调用",
+                "`weightInPounds` 是静态变量，全体 `Dog` 共享一份",
+                "实例变量可以在运行时随意添加"
+              ],
+              "answer": 0,
+              "explain": "`makeNoise` 没有 `static` 关键字，是实例（非静态）方法；`weightInPounds` 也是非静态的实例变量，每个对象各有一份。Java 里实例变量必须在类里声明，不能运行时添加。题目改编自官方教材第 2 章「定义和使用类」的正文。",
+              "origin": "review"
+            },
+            {
+              "id": "lec02-weight-20",
+              "type": "choice",
+              "prompt": "教材里的 `Dog`：体重小于 10 打印 `yipyipyip!`，小于 30 打印 `bark. bark.`，否则打印 `woof!`。运行 `Dog d = new Dog(20); d.makeNoise();` 输出什么？",
+              "options": [
+                "yipyipyip!",
+                "bark. bark.",
+                "woof!",
+                "编译错误"
+              ],
+              "answer": 1,
+              "explain": "20 落在「小于 30」的分支，输出 `bark. bark.`。构造函数 `public Dog(int w)` 把 `weightInPounds` 设成 20。题目改编自官方教材第 2 章「定义和使用类」的正文。",
+              "origin": "review"
+            },
+            {
+              "id": "lec02-constructor",
+              "type": "choice",
+              "prompt": "关于 Java 的构造函数，下面哪句是正确的？",
+              "options": [
+                "构造函数用 `new` 调用，写法上和类同名",
+                "构造函数必须声明返回类型 `void`",
+                "构造函数和 Python 的 `__repr__` 方法非常相似",
+                "每个类最多只能有一个构造函数"
+              ],
+              "answer": 0,
+              "explain": "构造函数和类同名、没有返回类型、用 `new` 调用；教材说它和 Python 的 `__init__` 方法非常相似。一个类可以有多个不同参数的构造函数。题目改编自官方教材第 2 章「定义和使用类」的正文。",
+              "origin": "review"
+            },
+            {
+              "id": "lec02-client",
+              "type": "text",
+              "prompt": "使用另一个类的类，教材里叫作那个类的什么？（一个词，中文或英文均可）",
+              "answer": [
+                "客户端",
+                "client"
+              ],
+              "explain": "`DogLauncher` 使用 `Dog` 类，就称为 `Dog` 的客户端（client）。题目改编自官方教材第 2 章「定义和使用类」的正文。",
+              "origin": "review"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w02",
+      "title": "第 2 周",
+      "items": [
+        {
+          "id": "lec03",
+          "kind": "lecture",
+          "title": "第 3 讲：列表、数组、映射与引用",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch03a",
+              "title": "教材第 3 章（上）"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/ZumKK42NHbc"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 3",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/3.-references-recursion-and-lists"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1bCFjzXsni-lBfJltkYlVKL1LLMiyTE1hoWzX4BCaFoI/"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "disc02",
+          "kind": "section",
+          "title": "讨论课 2：类、列表、映射、数组与引用",
+          "periods": 2,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "讨论课题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc02.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "讨论课解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc02-sols.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep02.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep02-sols.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "hw02",
+          "kind": "assignment",
+          "title": "编程作业 2：Java 入门",
+          "periods": 3,
+          "pages": [
+            {
+              "id": "hw02",
+              "title": "作业说明"
+            }
+          ],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "作业原文（英文）",
+              "url": "https://sp26.datastructur.es/homeworks/hw02"
+            }
+          ],
+          "practice": [],
+          "submit": {
+            "kind": "other",
+            "label": "Gradescope（伯克利账号）",
+            "url": "https://www.gradescope.com/"
+          }
+        },
+        {
+          "id": "proj0",
+          "kind": "project",
+          "title": "小项目 0：粒子模拟器",
+          "periods": 6,
+          "pages": [
+            {
+              "id": "proj0",
+              "title": "项目说明"
+            }
+          ],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "项目原文（英文）",
+              "url": "https://sp26.datastructur.es/projects/proj0"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec04",
+          "kind": "lecture",
+          "title": "第 4 讲：测试",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch04",
+              "title": "教材第 4 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/ZXDTUagGPRY"
+            },
+            {
+              "kind": "video",
+              "label": "附加视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/1MzbwZwos6Q"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 4",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/4.-testing"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1cnDbUBWAYn2dtJmc6gXlphZHaFVF_Y8UUyyozzn0vQg/"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec05",
+          "kind": "lecture",
+          "title": "第 5 讲：包、递归与 IntList",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch03b",
+              "title": "教材第 3 章（下）"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://www.youtube.com/watch?v=4Buta_Cw9fY"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 3",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/3.-references-recursion-and-lists"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1kCCJZc4HWUumdGZmbDvd1cicucQ-eaaJ-XPUIhVt5QY/"
+            }
+          ],
+          "practice": []
+        }
+      ]
+    },
+    {
+      "id": "w03",
+      "title": "第 3 周",
+      "items": [
+        {
+          "id": "lec06",
+          "kind": "lecture",
+          "title": "第 6 讲：SLList、嵌套类与哨兵节点",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch05",
+              "title": "教材第 5 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://www.youtube.com/playlist?list=PLnp31xXvnfRqyuN_xxm4o1Woa44dXW_N8"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 5",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/5.-sllists"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1JtX9RSr5Pn8-E_aYoJq4ib_383H1Kbq8ai-b-_kUhYc/"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "disc03",
+          "kind": "section",
+          "title": "讨论课 3：IntList 与 SLList",
+          "periods": 2,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "讨论课题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc03.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "讨论课解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc03-sols.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep03.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep03-sols.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "hw03",
+          "kind": "assignment",
+          "title": "编程作业 3：IntList",
+          "periods": 3,
+          "pages": [
+            {
+              "id": "hw03",
+              "title": "作业说明"
+            }
+          ],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "作业原文（英文）",
+              "url": "https://sp26.datastructur.es/homeworks/hw03"
+            }
+          ],
+          "practice": [],
+          "submit": {
+            "kind": "other",
+            "label": "Gradescope（伯克利账号）",
+            "url": "https://www.gradescope.com/"
+          }
+        },
+        {
+          "id": "lec07",
+          "kind": "lecture",
+          "title": "第 7 讲：DLList 与基础 AList",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch06",
+              "title": "教材第 6 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/lSgta6_emBc"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 6",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/6.-dllists-and-arrays"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1O6Ok9HwmBxppT9CNFRZ2Sf2uvjtNlsKzO0z0LjMznmQ"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "proj1",
+          "kind": "project",
+          "title": "小项目 1：LinkedListDeque",
+          "periods": 6,
+          "pages": [
+            {
+              "id": "proj1",
+              "title": "项目说明"
+            }
+          ],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "项目原文（英文）",
+              "url": "https://sp26.datastructur.es/projects/proj1"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec08",
+          "kind": "lecture",
+          "title": "第 8 讲：调整大小的数组与循环数组",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch07",
+              "title": "教材第 7 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/OghHfO5snmQ"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 7",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/7.-resizing-arraylist"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1askFQ_VAqE-sTmfeZhsL3CtMWylUQizgIloYVOHul6A"
+            }
+          ],
+          "practice": []
+        }
+      ]
+    },
+    {
+      "id": "w04",
+      "title": "第 4 周",
+      "items": [
+        {
+          "id": "lec09",
+          "kind": "lecture",
+          "title": "第 9 讲：接口继承与实现继承",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch08",
+              "title": "教材第 8 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/KNxSuvW_OCA"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 8",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/8.-inheritance-i-interface-and-implementation-inheritance"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1vcJ6Va1Pl2kDxKvz9VBPYBNE3i-99BTXsrYk0nSmbw4"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "disc04",
+          "kind": "section",
+          "title": "讨论课 4：DLList、默认方法与 AList",
+          "periods": 2,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "讨论课题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc04.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "讨论课解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc04-sols.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep04.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep04-sols.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec10",
+          "kind": "lecture",
+          "title": "第 10 讲：迭代器、可迭代对象与 equals",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch10",
+              "title": "教材第 10 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/pQe6kHPRL0U"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 10",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/10.-inheritance-iv-iterators-object-methods"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1vP9jUF8ZbZCu1L6vApkSehaR-R3noa81UhXKe7O86p4"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "proj2",
+          "kind": "project",
+          "title": "小项目 2：ArrayDeque",
+          "periods": 6,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "项目原文（英文）",
+              "url": "https://sp26.datastructur.es/projects/proj2"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec11",
+          "kind": "lecture",
+          "title": "第 11 讲：子类型多态、Comparable 与 Comparator",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch09",
+              "title": "教材第 9 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/GBHnvXfNfU0"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 9",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/9.-inheritance-ii-extends-casting-higher-order-functions"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1NjVdEuLsk3dH5nd2w9hFNxn49ub80zfVz3Zuv89f3WQ/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        }
+      ]
+    },
+    {
+      "id": "w05",
+      "title": "第 5 周",
+      "items": [
+        {
+          "id": "disc05",
+          "kind": "section",
+          "title": "讨论课 5：Comparable/Comparator、迭代器与可迭代对象",
+          "periods": 2,
+          "pages": [],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讨论课讲解录像原文（Zoom，英文）",
+              "url": "https://berkeley.zoom.us/rec/share/2d3xB3uSL_-dFeqfnmY-25BnxWGD-Qt7277zvN_ZBf_NE7uXZKm-mRyR050B45et.2O42HA65KG-R20DL"
+            }
+          ],
+          "links": [
+            {
+              "kind": "other",
+              "label": "讨论课解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc05-sols.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec12",
+          "kind": "lecture",
+          "title": "第 12 讲：复习与期中练习",
+          "periods": 2,
+          "pages": [],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/kgisvVDHZwo"
+            }
+          ],
+          "links": [
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/10b7_CjJclQD-hdyA9dd1OYnBP_2jLP6u0xT0DljoMJA/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec13",
+          "kind": "lecture",
+          "title": "第 13 讲：渐近分析（一）",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch11",
+              "title": "教材第 11 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://www.youtube.com/watch?v=81w_vPohulg"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 11",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/11.-asymptotics-i"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1BN_ggZUv0QcNMkgeu0OuaSUvLbi-NuW9SCq83YzgEcA/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "hw04",
+          "kind": "assignment",
+          "title": "编程作业 4：上机考试练习",
+          "periods": 3,
+          "pages": [
+            {
+              "id": "hw04",
+              "title": "作业说明"
+            }
+          ],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "作业原文（英文）",
+              "url": "https://sp26.datastructur.es/homeworks/hw04"
+            }
+          ],
+          "practice": [],
+          "submit": {
+            "kind": "other",
+            "label": "Gradescope（伯克利账号）",
+            "url": "https://www.gradescope.com/"
+          }
+        }
+      ]
+    },
+    {
+      "id": "w06",
+      "title": "第 6 周",
+      "items": [
+        {
+          "id": "lec14",
+          "kind": "lecture",
+          "title": "第 14 讲：并查集",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch14",
+              "title": "教材第 14 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/PFAdowX3K6s"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 14",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/14.-disjoint-sets"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1-_-YgqNu4uW4ZsUNL-LD7Jdvie3uYTbLz-SD9h7aETY/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "disc06",
+          "kind": "section",
+          "title": "讨论课 6：渐近分析与并查集",
+          "periods": 2,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "讨论课题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc06.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "讨论课解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc06-sols.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep06.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep06-sols.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "proj3",
+          "kind": "project",
+          "title": "小项目 3：渗流（Percolation）",
+          "periods": 6,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "项目原文（英文）",
+              "url": "https://sp26.datastructur.es/projects/proj3"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec15",
+          "kind": "lecture",
+          "title": "第 15 讲：渐近分析（二）",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch12",
+              "title": "教材第 12 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/o5dQz4ylVP4"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 12",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/12.-asymptotics-ii"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1Sk_gSs4Vj4XH_DDTnLutrLNz5uB6YHThsY0imK8cVlw/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec16",
+          "kind": "lecture",
+          "title": "第 16 讲：渐近分析（三）",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch13",
+              "title": "教材第 13 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/VSPMkSMQUqQ"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 13",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/13.-asymptotics-iii"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1BjI-I3_iJZujwZD7lMqjaAXJISsMABPR3kt8wSYWGkE/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        }
+      ]
+    },
+    {
+      "id": "w07",
+      "title": "第 7 周",
+      "items": [
+        {
+          "id": "lec17",
+          "kind": "lecture",
+          "title": "第 17 讲：集合、extends 与二叉搜索树",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch15",
+              "title": "教材第 15 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/a-a1Jer5oJw"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 15",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/15.-bsts"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1RKRhM4ALXfvmjpA-6iG97wCNSwTAu7yCTzrcb6oG_oo/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "disc07",
+          "kind": "section",
+          "title": "讨论课 7：渐近分析（二）",
+          "periods": 2,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "讨论课题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc07.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "讨论课解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc07-sols.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep07.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep07-sols.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec18",
+          "kind": "lecture",
+          "title": "第 18 讲：B 树",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch16",
+              "title": "教材第 16 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/z1q1imA6coI"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 16",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/16.-b-trees"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1U637ksATIWgiGF1ZwTxEXLV6I8ryiNE6hSJlo_WqcXM/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "proj4a",
+          "kind": "project",
+          "title": "设计项目 4A：TimeSeries 与 NGramMap",
+          "periods": 6,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "项目原文（英文）",
+              "url": "https://sp26.datastructur.es/proj4/proj4a"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec19",
+          "kind": "lecture",
+          "title": "第 19 讲：红黑树",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch17",
+              "title": "教材第 17 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/KdhsP3ReBLI"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 17",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/17.-red-black-trees"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1xq_D__4tWIAHULDMXPBmrmvk2gy5qgtmoG1JCwhXcPo/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "hw05",
+          "kind": "assignment",
+          "title": "理论作业 5：渐近分析",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "hw05",
+              "title": "作业说明"
+            }
+          ],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "Gradescope 作业（需伯克利账号）",
+              "url": "https://www.gradescope.com/courses/1211464/assignments/7760663"
+            }
+          ],
+          "practice": []
+        }
+      ]
+    },
+    {
+      "id": "w08",
+      "title": "第 8 周",
+      "items": [
+        {
+          "id": "lec20",
+          "kind": "lecture",
+          "title": "第 20 讲：堆、优先队列与树的表示",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch18",
+              "title": "教材第 18 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/O88fDtgdWSs"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 18",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/18.-heaps-and-priority-queues"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1eJIeXKIXdUJaBw-c93IxED6UTbSnLioW54-eeVve_0o/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "disc08",
+          "kind": "section",
+          "title": "讨论课 8：二叉搜索树、B 树与左倾红黑树",
+          "periods": 2,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "讨论课题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc08.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "讨论课解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc08-sols.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep08.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep08-sols.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec21",
+          "kind": "lecture",
+          "title": "第 21 讲：树和图的遍历",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch19",
+              "title": "教材第 19 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/tSKAavhugls"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 19",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/19.-tree-traversals-and-graphs"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1G9pNZ84qwm8bpjYwjm-66GrInFZkPa4XaNGYX0HyF3I/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "proj4b",
+          "kind": "project",
+          "title": "设计项目 4B：WordNet（设计）",
+          "periods": 6,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "项目原文（英文）",
+              "url": "https://sp26.datastructur.es/proj4/proj4b"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec22",
+          "kind": "lecture",
+          "title": "第 22 讲：图的遍历与实现",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch20",
+              "title": "教材第 20 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/w3VRoZ6fmBg"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 20",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/20.-graph-traversals-and-implementations"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1uTQ_u0UZ0Ivi-dojgl8dCWuyBysVvIZzxt2rHipqcv8/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "hw06",
+          "kind": "assignment",
+          "title": "编程作业 6：BSTMap",
+          "periods": 3,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "作业原文（英文）",
+              "url": "https://sp26.datastructur.es/homeworks/hw06"
+            }
+          ],
+          "practice": [],
+          "submit": {
+            "kind": "other",
+            "label": "Gradescope（伯克利账号）",
+            "url": "https://www.gradescope.com/"
+          }
+        }
+      ]
+    },
+    {
+      "id": "w09",
+      "title": "第 9 周",
+      "items": [
+        {
+          "id": "lec23",
+          "kind": "lecture",
+          "title": "第 23 讲：最短路径",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch21",
+              "title": "教材第 21 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/A6VcwvmBENM"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 21",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/21.-shortest-paths"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/10zAArANG4EcEhnKqDYT6wOrqhBWK4peQPzdYxkjspW4/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "disc09",
+          "kind": "section",
+          "title": "讨论课 9：树的遍历与图",
+          "periods": 2,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "讨论课题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc09.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "讨论课解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc09-sols.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep09.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep09-sols.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec24",
+          "kind": "lecture",
+          "title": "第 24 讲：最小生成树",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch22",
+              "title": "教材第 22 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/1IG_ny5CORQ"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 22",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/22.-minimum-spanning-trees"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1VtZdOAC7Sug05D-hYiCXTkKOT_NZwhz3_Ub2BMAzN_o/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "proj4c",
+          "kind": "project",
+          "title": "设计项目 4C：WordNet（k = 0）",
+          "periods": 6,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "项目原文（英文）",
+              "url": "https://sp26.datastructur.es/proj4/proj4c"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec25",
+          "kind": "lecture",
+          "title": "第 25 讲：有向无环图",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch23",
+              "title": "教材第 23 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/Hwbg6-R37ac"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 23",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/23.-reductions-and-decomposition"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1eM_Z07xhoyttv3RLcLfssAwayHh9QyLuoW702aQLZjU/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        }
+      ]
+    },
+    {
+      "id": "w11",
+      "title": "第 11 周",
+      "items": [
+        {
+          "id": "lec26",
+          "kind": "lecture",
+          "title": "第 26 讲：哈希（一）",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch24",
+              "title": "教材第 24 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/CbzDbGwrQRQ"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 24",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/24.-hashing-i"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1S3sYTeG8Hb0y3Qctr9AzUe0mRyRTFY98krI0SWvcWtI/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "disc10",
+          "kind": "section",
+          "title": "讨论课 10：最短路径与最小生成树",
+          "periods": 2,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "讨论课题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc10.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "讨论课解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc10-sols.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep10.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep10-sols.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec27",
+          "kind": "lecture",
+          "title": "第 27 讲：哈希（二）",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch25",
+              "title": "教材第 25 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/KjbQH6myVmw"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 25",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/25.-hashing-ii"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1sXkrt87KtDu-zolIDOmYu8isTrn2McA3oajMMTcck9Y/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "proj4d",
+          "kind": "project",
+          "title": "设计项目 4D：WordNet（k ≠ 0）",
+          "periods": 6,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "项目原文（英文）",
+              "url": "https://sp26.datastructur.es/proj4/proj4d"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec28",
+          "kind": "lecture",
+          "title": "第 28 讲：字典树",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch26",
+              "title": "教材第 26 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/peqlzvOSf_Q"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 26",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/26.-prefix-operations-and-tries"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1tkikVivoqfUPI2RRVJkoGHRdAiRlYqE0LWM2FpW5Eyg/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        }
+      ]
+    },
+    {
+      "id": "w12",
+      "title": "第 12 周",
+      "items": [
+        {
+          "id": "lec29",
+          "kind": "lecture",
+          "title": "第 29 讲：软件工程（一）",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch27",
+              "title": "教材第 27 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/76M2z87CxXY"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 27",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/27.-software-engineering-i"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://sp26.datastructur.es/assets/lectures/cs61b-sp26-lec29.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "disc11",
+          "kind": "section",
+          "title": "讨论课 11：哈希与字典树",
+          "periods": 2,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "讨论课题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc11.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "讨论课解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc11-sols.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep11.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep11-sols.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "hw07",
+          "kind": "assignment",
+          "title": "理论作业 7：期中复习",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "hw07",
+              "title": "作业说明"
+            }
+          ],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "Gradescope 作业（需伯克利账号）",
+              "url": "https://www.gradescope.com/courses/1211464/assignments/7876648"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec30",
+          "kind": "lecture",
+          "title": "第 30 讲：期中考试 2 复习",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "lec30",
+              "title": "讲义"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/QrR5lr92T0s"
+            }
+          ],
+          "links": [],
+          "practice": []
+        },
+        {
+          "id": "proj5a",
+          "kind": "project",
+          "title": "设计项目 5A：组队与 BYOW 设计",
+          "periods": 6,
+          "pages": [
+            {
+              "id": "proj5a",
+              "title": "项目说明"
+            },
+            {
+              "id": "proj5",
+              "title": "项目 5 总览"
+            },
+            {
+              "id": "proj5-partnerships",
+              "title": "组队说明"
+            }
+          ],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "项目原文（英文）",
+              "url": "https://sp26.datastructur.es/proj5/proj5a"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec31",
+          "kind": "lecture",
+          "title": "第 31 讲：软件工程（二）：BYOW 热身",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch28",
+              "title": "教材第 28 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/BRsuHSQ800U"
+            }
+          ],
+          "links": [
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1UihRVbxTSzIWkd7RDIjnukkgMyqSfuR7cnA3I13ntzg/edit?slide=id.g34929aa6301_0_135#slide=id.g34929aa6301_0_135"
+            }
+          ],
+          "practice": []
+        }
+      ]
+    },
+    {
+      "id": "w13",
+      "title": "第 13 周",
+      "items": [
+        {
+          "id": "lec32",
+          "kind": "lecture",
+          "title": "第 32 讲：基础排序",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch29a",
+              "title": "教材第 29 章（上）"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/lzag844x4mc"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 29",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/29.-basic-sorts"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1QmABKPuDyLhCPTgMGJGrXYKX9hCz7OXeE6iICoczzQw/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "disc12",
+          "kind": "section",
+          "title": "讨论课 12：再谈哈希与字典树",
+          "periods": 2,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "讨论课题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc12.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "讨论课解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc12-sols.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep12.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep12-sols.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec33",
+          "kind": "lecture",
+          "title": "第 33 讲：插入排序与快速排序入门",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch29b",
+              "title": "教材第 29 章（下）"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/ON1mvnN8V5Y"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 29",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/29.-basic-sorts"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/12NM1edirB9RJwnDfV9rZqu8-2hANyYPaOVq1wZFjkso/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec34",
+          "kind": "lecture",
+          "title": "第 34 讲：快速排序",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch30",
+              "title": "教材第 30 章"
+            },
+            {
+              "id": "ch31",
+              "title": "教材第 31 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/8EydCt2HCHg"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 30",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/30.-quicksort"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/10K4DrlGIT_ouv_v65XeJ2-tZAHitlSLUP9dq_AV60xw/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "proj5b",
+          "kind": "project",
+          "title": "设计项目 5B：BYOW 世界生成",
+          "periods": 6,
+          "pages": [
+            {
+              "id": "proj5b",
+              "title": "项目说明"
+            }
+          ],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "项目原文（英文）",
+              "url": "https://sp26.datastructur.es/proj5/proj5b"
+            }
+          ],
+          "practice": []
+        }
+      ]
+    },
+    {
+      "id": "w14",
+      "title": "第 14 周",
+      "items": [
+        {
+          "id": "lec35",
+          "kind": "lecture",
+          "title": "第 35 讲：排序与算法的下界",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch32",
+              "title": "教材第 32 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/h4Gq078qXRM"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 32",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/32.-sorting-and-algorithmic-bounds"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/12P85DeC9M35Sd4RpzullQWjI29UgP6bCEWoKztdONEw"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "disc13",
+          "kind": "section",
+          "title": "讨论课 13：排序",
+          "periods": 2,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "讨论课题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc13.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "讨论课解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc13-sols.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep13.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep13-sols.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec36",
+          "kind": "lecture",
+          "title": "第 36 讲：基数排序",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch33",
+              "title": "教材第 33 章"
+            },
+            {
+              "id": "ch34",
+              "title": "教材第 34 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/ytNQpHoE_8s"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 33",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/33.-radix-sorts"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1PxXBH88P_-EpII9BPRqH7TU2ziPe2F7G6r337QvG3Ts"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "proj5c",
+          "kind": "project",
+          "title": "设计项目 5C：BYOW 交互",
+          "periods": 6,
+          "pages": [
+            {
+              "id": "proj5c",
+              "title": "项目说明"
+            },
+            {
+              "id": "proj5-ambition",
+              "title": "进阶功能（Ambition）"
+            },
+            {
+              "id": "proj5-bugs",
+              "title": "常见问题"
+            },
+            {
+              "id": "proj5-checkoff",
+              "title": "验收"
+            }
+          ],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "项目原文（英文）",
+              "url": "https://sp26.datastructur.es/proj5/proj5c"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec37",
+          "kind": "lecture",
+          "title": "第 37 讲：计算的社会影响",
+          "periods": 2,
+          "pages": [],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/xZ1s02wVFGA"
+            }
+          ],
+          "links": [
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1Hye7_dhBIjf9BcGCRk3xQ1d4AeBJ1nJ_KOYfpP4J3Uo"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "hw08",
+          "kind": "assignment",
+          "title": "编程作业 8：HashMap",
+          "periods": 3,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "作业原文（英文）",
+              "url": "https://sp26.datastructur.es/homeworks/hw08"
+            }
+          ],
+          "practice": [],
+          "submit": {
+            "kind": "other",
+            "label": "Gradescope（伯克利账号）",
+            "url": "https://www.gradescope.com/"
+          }
+        }
+      ]
+    },
+    {
+      "id": "w15",
+      "title": "第 15 周",
+      "items": [
+        {
+          "id": "lec38",
+          "kind": "lecture",
+          "title": "第 38 讲：软件工程（三）：软件工程中的 AI",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch35",
+              "title": "教材第 35 章"
+            },
+            {
+              "id": "ch36",
+              "title": "教材第 36 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/FMgG5u3-wlo"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 35",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/35.-software-engineering-iii"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1KzEsD8C6npkGkTIzBaOVqvYFCsayGXzlxIlIkExKBKo"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "disc14",
+          "kind": "section",
+          "title": "讨论课 14：排序（二）",
+          "periods": 2,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "讨论课题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc14.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "讨论课解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-disc14-sols.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习题目原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep14.pdf"
+            },
+            {
+              "kind": "other",
+              "label": "考试难度练习解答原文（PDF，英文）",
+              "url": "https://sp26.datastructur.es/assets/discussions/cs61b-sp26-examprep14-sols.pdf"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec39",
+          "kind": "lecture",
+          "title": "第 39 讲：压缩",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "ch37",
+              "title": "教材第 37 章"
+            },
+            {
+              "id": "ch38",
+              "title": "教材第 38 章"
+            }
+          ],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/y1yWwn1HNpM"
+            }
+          ],
+          "links": [
+            {
+              "kind": "textbook",
+              "label": "教材原文（英文）：Ch. 37",
+              "url": "https://cs61b-2.gitbook.io/cs61b-textbook-spring-2026/37.-compression-and-complexity"
+            },
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1N09o_DQmofBEk8W-7P_0eQeFVhzACnHFdtrzNeTkWWQ"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "lec40",
+          "kind": "lecture",
+          "title": "第 40 讲：总结与趣味内容",
+          "periods": 2,
+          "pages": [],
+          "videos": [
+            {
+              "kind": "video",
+              "label": "讲座视频（官方 YouTube，英文）",
+              "url": "https://youtu.be/VUL93byf1FI"
+            }
+          ],
+          "links": [
+            {
+              "kind": "slides",
+              "label": "幻灯片（英文）",
+              "url": "https://docs.google.com/presentation/d/1gt4DxO5yNDnrG7AbwWlGp8Xh1jgyFI3mC6bcv2jJ3vQ/edit?usp=sharing"
+            }
+          ],
+          "practice": []
+        },
+        {
+          "id": "hw09",
+          "kind": "assignment",
+          "title": "编程作业 9：LLRB 集合",
+          "periods": 3,
+          "pages": [],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "作业原文（英文）",
+              "url": "https://sp26.datastructur.es/homeworks/hw09"
+            }
+          ],
+          "practice": [],
+          "submit": {
+            "kind": "other",
+            "label": "Gradescope（伯克利账号）",
+            "url": "https://www.gradescope.com/"
+          }
+        }
+      ]
+    },
+    {
+      "id": "w16",
+      "title": "第 16 周",
+      "items": [
+        {
+          "id": "hw10",
+          "kind": "assignment",
+          "title": "理论作业 10：期末复习",
+          "periods": 2,
+          "pages": [
+            {
+              "id": "hw10",
+              "title": "作业说明"
+            }
+          ],
+          "videos": [],
+          "links": [
+            {
+              "kind": "other",
+              "label": "Gradescope 作业（需伯克利账号）",
+              "url": "https://www.gradescope.com/courses/1211464/assignments/8013303"
+            }
+          ],
+          "practice": []
+        }
+      ]
+    },
+    {
+      "id": "w17",
+      "title": "第 17 周",
+      "items": [
+        {
+          "id": "final",
+          "kind": "exam",
+          "title": "期末考试",
+          "periods": 3,
+          "pages": [
+            {
+              "id": "final",
+              "title": "复习与往年试题"
+            }
+          ],
+          "videos": [],
+          "links": [
+            {
+              "kind": "exams",
+              "label": "往年试题汇总（官方）",
+              "url": "https://sp26.datastructur.es/resources/exam-archive/"
+            }
+          ],
+          "practice": []
+        }
+      ]
+    }
+  ],
+  "titleEn": "CS61B: Data Structures, Spring 2026"
 }

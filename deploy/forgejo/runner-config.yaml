@@ -1,0 +1,29 @@
+# Forgejo 运行器配置。完整说明：https://forgejo.org/docs/latest/admin/actions/runner-installation/
+
+log:
+  level: info
+
+runner:
+  file: .runner
+  # 同时最多跑几份作业的测试
+  capacity: 2
+  # 一次判分最多跑 10 分钟，防止死循环占着机器
+  timeout: 10m
+  # 工作流里写 `runs-on: docker`，就用这个镜像跑。
+  # node:20-bookworm 自带 Node（actions/checkout 要用）、Python 3、git、gcc、make。
+  labels:
+    - "docker:docker://node:20-bookworm"
+
+cache:
+  enabled: false
+
+container:
+  # 判分容器和宿主机共用网络，这样才能用 ROOT_URL（比如 http://localhost:3000）拉代码。
+  # 试装够用；正式上线时判分要放到单独的虚拟机或 dind 里，见 README「正式上线前」。
+  network: host
+  privileged: false
+  # 不把 docker.sock 给学生的代码，否则学生能控制整台机器
+  docker_host: "-"
+  # 镜像已经提前拉好时不再联网拉取（断网也能判分）
+  force_pull: false
+  valid_volumes: []

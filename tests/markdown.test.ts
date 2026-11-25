@@ -70,3 +70,33 @@ describe("课程内容安全过滤", () => {
     for (const url of ["http://example.edu", "https://example.edu/course?a=1#b", "/courses/demo", "/"]) expect(parsePackage(pkg(url)).ok).toBe(true);
   });
 });
+
+describe("数学公式", () => {
+  test("行内和独立公式都渲染成 KaTeX", () => {
+    const doc = fragment(renderMarkdown("行内 $x^2$ 和 \\(\\pi\\)。\n\n$$\n\\frac{1}{2}\n$$\n\n\\[ a + b \\]"));
+    expect(doc.querySelectorAll(".katex").length).toBe(4);
+    expect(doc.querySelectorAll(".math-block .katex-display").length).toBe(2);
+    expect(doc.querySelector(".math-ph")).toBeNull();
+  });
+
+  test("钱数、命令行提示符和代码里的 $ 不当作公式", () => {
+    const doc = fragment(renderMarkdown("花了 $15，又花了 $10 more。\n\n`echo $HOME $PATH`\n\n```sh\n$ ls $x$\n```\n\n$ ls"));
+    expect(doc.querySelector(".katex")).toBeNull();
+    expect(doc.textContent).toContain("$15");
+    expect(doc.querySelector("code")?.textContent).toBe("echo $HOME $PATH");
+  });
+
+  test("练手题选项里的公式也渲染", () => {
+    expect(fragment(renderInline("答案是 $\\Theta(n)$")).querySelector(".katex")).not.toBeNull();
+  });
+
+  test("原始 HTML 里伪造的占位符不会被填进公式", () => {
+    const doc = fragment(renderMarkdown('<span class="math-ph" id="math-ph-0"></span>正文'));
+    expect(doc.querySelector(".katex")).toBeNull();
+  });
+
+  test("公式里的链接命令不会生成链接", () => {
+    const doc = fragment(renderMarkdown("$\\href{javascript:alert(1)}{x}$"));
+    expect(doc.querySelector("a")).toBeNull();
+  });
+});

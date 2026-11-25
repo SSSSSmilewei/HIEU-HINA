@@ -1,0 +1,84 @@
+# 海纳协会 · Forgejo 试装（作业仓库 + 自动判分）
+# 用法见同目录的 README.md。第一次请运行 scripts/setup.sh，不要直接 docker compose up。
+
+services:
+  forgejo:
+    # 15 是长期支持版（LTS），只升级小版本，不会突然变样
+    image: data.forgejo.org/forgejo/forgejo:15
+    container_name: hiana-forgejo
+    restart: unless-stopped
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      # —— 基本 ——
+      - FORGEJO__DEFAULT__APP_NAME=海纳协会代码仓库
+      - FORGEJO__server__ROOT_URL=${ROOT_URL}
+      - FORGEJO__server__SSH_DOMAIN=${SSH_DOMAIN}
+      - FORGEJO__server__SSH_PORT=${SSH_PORT}
+      - FORGEJO__database__DB_TYPE=sqlite3
+      - FORGEJO__security__INSTALL_LOCK=true
+      # —— 账号与可见范围 ——
+      # 不能自己注册，账号由管理员开
+      - FORGEJO__service__DISABLE_REGISTRATION=true
+      # 不登录什么都看不到（只剩登录页）
+      - FORGEJO__service__REQUIRE_SIGNIN_VIEW=true
+      # 新建的组织和用户默认不公开
+      - FORGEJO__service__DEFAULT_USER_VISIBILITY=private
+      - FORGEJO__service__DEFAULT_ORG_VISIBILITY=private
+      - FORGEJO__repository__DEFAULT_PRIVATE=private
+      # 普通用户不能自己建组织，避免越建越乱
+      - FORGEJO__admin__DISABLE_REGULAR_ORG_CREATION=true
+      # —— 自动判分（Forgejo Actions）——
+      - FORGEJO__actions__ENABLED=true
+      # 关键：`uses: actions/checkout@v4` 这类步骤从本机取，不去连 GitHub。
+      # 要先运行 scripts/mirror-actions.sh 把这些步骤镜像过来。
+      - FORGEJO__actions__DEFAULT_ACTIONS_URL=self
+      # —— 断网也能用 ——
+      - FORGEJO__mailer__ENABLED=false
+      - FORGEJO__picture__DISABLE_GRAVATAR=true
+      - FORGEJO__picture__ENABLE_FEDERATED_AVATAR=false
+      - FORGEJO__cron.update_checker__ENABLED=false
+    volumes:
+      # :Z 让 Fedora 等开着 SELinux 的系统允许容器写这个目录
+      - ./data/forgejo:/data:Z
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "${HTTP_PORT}:3000"
+      - "${SSH_PORT}:22"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/api/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  # 判分用的运行器：学生推送代码后，由它起一个临时容器跑测试
+  runner:
+    image: data.forgejo.org/forgejo/runner:13
+    container_name: hiana-forgejo-runner
+    restart: unless-stopped
+    depends_on:
+      forgejo:
+        condition: service_healthy
+    # 和宿主机共用网络：运行器要用 ROOT_URL（比如 http://localhost:3300）去取 actions/checkout，
+    # 在独立的容器网络里 localhost 指的是它自己，取不到
+    network_mode: host
+    # 需要读写宿主机的 Docker，所以用 root；Fedora 上关掉 SELinux 标签，否则读不了 docker.sock
+    user: "0:0"
+    security_opt:
+      - label=disable
+    environment:
+      - RUNNER_SECRET=${RUNNER_SECRET}
+      - HTTP_PORT=${HTTP_PORT}
+    volumes:
+      - ./data/runner:/data:Z
+      - ./runner-config.yaml:/config.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /data
+    # 第一次启动时用共享密钥生成 .runner 文件（不需要网页上复制令牌），然后常驻
+    command: >-
+      sh -c '
+        if [ ! -f .runner ]; then
+          forgejo-runner create-runner-file --instance "http://localhost:$$HTTP_PORT" --name hiana-runner-1 --secret "$$RUNNER_SECRET" || exit 1;
+        fi;
+        exec forgejo-runner daemon --config /config.yaml
+      '
