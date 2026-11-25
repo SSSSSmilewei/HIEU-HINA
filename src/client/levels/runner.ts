@@ -100,8 +100,20 @@ function kill() {
 const LOAD_MS = 120_000;
 const RUN_MS = 20_000;
 
-// biome-ignore lint/suspicious/noExplicitAny: Worker 消息
+/** 同一时间只给 Worker 一条消息（例如运行测试时又点了「检查」），否则后一条会覆盖前一条的回调 */
+let queue: Promise<unknown> = Promise.resolve();
+
 function call<T>(msg: unknown, onLoaded?: () => void): Promise<T> {
+  const next = queue.then(
+    () => send<T>(msg, onLoaded),
+    () => send<T>(msg, onLoaded),
+  );
+  queue = next.catch(() => undefined);
+  return next;
+}
+
+// biome-ignore lint/suspicious/noExplicitAny: Worker 消息
+function send<T>(msg: unknown, onLoaded?: () => void): Promise<T> {
   const w = getWorker();
   return new Promise((resolve, reject) => {
     const fail = (m: string) => {

@@ -17,6 +17,18 @@ const LEVEL_RE = /^[a-z0-9][a-z0-9-]{0,31}\/[a-z0-9][a-z0-9-]{0,31}$/;
 
 const FileBody = z.object({ path: z.string(), content: z.string() });
 
+/** 关卡目录是静态文件（/levels/<课>/index.json），通过 ASSETS 读，确认这一关真的存在 */
+async function levelExists(env: { ASSETS: Fetcher }, base: URL, slug: string, chapter: string, level: string): Promise<boolean> {
+  try {
+    const res = await env.ASSETS.fetch(new Request(new URL(`/levels/${slug}/index.json`, base)));
+    if (!res.ok) return false;
+    const index = (await res.json()) as { chapters?: { id: string; levels?: { id: string }[] }[] };
+    return !!index.chapters?.some((c) => c.id === chapter && c.levels?.some((l) => l.id === level));
+  } catch {
+    return false;
+  }
+}
+
 async function needCourse(db: D1Database, slug: string) {
   const course = await getCourse(db, slug);
   if (!course) throw new HttpError(404, "没有这门课");
@@ -83,6 +95,7 @@ export function levelRoutes(api: Router) {
     await needCourse(c.env.DB, slug);
     const id = `${c.params.chapter}/${c.params.level}`;
     if (!LEVEL_RE.test(id)) throw new HttpError(400, "关卡 id 不对");
+    if (!(await levelExists(c.env, c.url, slug, c.params.chapter, c.params.level))) throw new HttpError(404, "没有这一关");
     const now = Date.now();
     const r = await c.env.DB.prepare("INSERT OR IGNORE INTO level_passes (user_id, course_slug, level_id, passed_at) VALUES (?, ?, ?, ?)")
       .bind(uid, slug, id, now)

@@ -378,7 +378,7 @@ export function KnowledgeGraph({
   };
 
   return (
-    <div className="kg" style={{ height }}>
+    <div className="kg" style={{ height: `min(${height}px, 62vh)` }}>
       <svg
         ref={svgRef}
         className="kg-svg"

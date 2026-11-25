@@ -8,7 +8,14 @@ import worker from "../src/worker/index";
 function setup() {
   const env = {
     DB: memoryD1(),
-    ASSETS: { fetch: async () => new Response("index") },
+    // 静态文件：/levels/... 从 content/levels 读，其余返回 404
+    ASSETS: {
+      fetch: async (req: Request) => {
+        const path = new URL(req.url).pathname;
+        const file = `content${path}`;
+        return path.startsWith("/levels/") && existsSync(file) ? new Response(readFileSync(file)) : new Response("not found", { status: 404 });
+      },
+    },
     SESSION_SECRET: "test-session-secret-0123456789abcdef",
     FIRST_ADMIN_CODE: "first-admin-secret",
   } as unknown as Env;
@@ -71,6 +78,8 @@ describe("闯关：仓库和过关记录", () => {
     const got = await call("lin", "GET", "/api/levels/cs61a");
     expect(Object.keys(got.data.passed)).toEqual(["hog/q01"]);
     expect((await call("lin", "PUT", "/api/levels/cs61a/Hog_X/q01")).status).toBe(400);
+    expect((await call("lin", "PUT", "/api/levels/cs61a/hog/q99")).status).toBe(404);
+    expect((await call("lin", "PUT", "/api/levels/cs61a/cats/q01")).status).toBe(404);
   });
 });
 
