@@ -57,6 +57,10 @@
   "__schema0": {
    "type": "object",
    "properties": {
+    "id": {
+     "type": "string",
+     "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+    },
     "title": {
      "type": "string",
      "minLength": 1,
@@ -111,6 +115,41 @@
     },
     "optional": {
      "type": "boolean"
+    },
+    "pre": {
+     "maxItems": 10,
+     "type": "array",
+     "items": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+     }
+    },
+    "body": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 4000
+    },
+    "sources": {
+     "maxItems": 10,
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "label": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 80
+       },
+       "url": {
+        "type": "string",
+        "pattern": "^(https?:\\/\\/|\\/)\\S+$"
+       }
+      },
+      "required": [
+       "label",
+       "url"
+      ]
+     }
     }
    }
   }

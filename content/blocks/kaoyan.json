@@ -7,46 +7,109 @@
   "intro": "408 考数据结构、计算机组成原理、操作系统、计算机网络四门。下面每门都给了能把原理讲透的公开课，适合大一大二提前打底；临考还是要回到考纲、教材和真题。\n\n数学一和数学二的高数、线代、概率也列在最后。",
   "nodes": [
     {
+      "id": "goal",
+      "title": "408 四门课之间的关系",
+      "note": "先学数据结构和组成原理，再学操作系统和网络",
+      "body": "计算机学科专业基础（408）考数据结构、计算机组成原理、操作系统、计算机网络四门，考试范围以教育部教育考试院当年发布的考试大纲为准。四门课的关系：\n\n- **计算机组成原理**讲硬件如何表示数据、执行指令、组织存储（Cache、主存、虚拟存储）。\n- **操作系统**建立在组成原理之上，讲如何管理进程、内存、文件和设备。其中的虚拟内存、中断等内容直接依赖组成原理。\n- **计算机网络**讲多台计算机如何分层通信，和其他三门的依赖较少。\n- **数据结构**相对独立，但其他三门里的很多机制都用到它，例如调度用的队列、页表、路由表。\n\n建议先学数据结构和组成原理，再学操作系统，计算机网络可以和操作系统并行学。",
+      "sources": [
+        {
+          "label": "中国研究生招生信息网（考试大纲、报名）",
+          "url": "https://yz.chsi.com.cn/"
+        },
+        {
+          "label": "Bryant、O'Hallaron《深入理解计算机系统》（CS:APP）官方网站",
+          "url": "https://csapp.cs.cmu.edu/"
+        },
+        {
+          "label": "Kurose、Ross《计算机网络：自顶向下方法》官方网站",
+          "url": "https://gaia.cs.umass.edu/kurose_ross/"
+        }
+      ]
+    },
+    {
       "title": "数据结构",
       "pick": 1,
       "children": [
-        { "course": "cs61b" },
-        { "course": "6-006", "note": "MIT 算法导论，偏理论" }
-      ]
+        {
+          "course": "cs61b"
+        },
+        {
+          "course": "6-006",
+          "note": "MIT 算法导论，偏理论"
+        }
+      ],
+      "id": "ds"
     },
     {
       "title": "计算机组成原理",
       "pick": 1,
       "children": [
-        { "course": "cs61c" },
-        { "course": "csapp" }
-      ]
+        {
+          "course": "cs61c"
+        },
+        {
+          "course": "csapp"
+        }
+      ],
+      "id": "arch"
     },
     {
       "title": "操作系统",
       "pick": 1,
       "children": [
-        { "course": "hitos", "note": "哈工大李治军，中文，贴近考研" },
-        { "course": "njuos" }
+        {
+          "course": "hitos",
+          "note": "哈工大李治军，中文，贴近考研"
+        },
+        {
+          "course": "njuos"
+        }
+      ],
+      "id": "os",
+      "pre": [
+        "arch"
       ]
     },
     {
       "title": "计算机网络",
       "pick": 1,
       "children": [
-        { "course": "topdown-ustc", "note": "中科大郑烇，中文，自顶向下" },
-        { "course": "cs144", "note": "动手实现 TCP，难" }
-      ]
+        {
+          "course": "topdown-ustc",
+          "note": "中科大郑烇，中文，自顶向下"
+        },
+        {
+          "course": "cs144",
+          "note": "动手实现 TCP，难"
+        }
+      ],
+      "id": "net"
     },
     {
       "title": "数学",
       "children": [
-        { "course": "mit-1801", "note": "高等数学" },
-        { "course": "mitla", "note": "线性代数" },
-        { "course": "cs126", "optional": true, "note": "概率论（很难，选学）" }
-      ]
+        {
+          "course": "mit-1801",
+          "note": "高等数学"
+        },
+        {
+          "course": "mitla",
+          "note": "线性代数"
+        },
+        {
+          "course": "cs126",
+          "optional": true,
+          "note": "概率论（很难，选学）"
+        }
+      ],
+      "id": "math"
     },
-    { "link": { "label": "中国研究生招生信息网（考纲、报名）", "url": "https://yz.chsi.com.cn/" } }
+    {
+      "link": {
+        "label": "中国研究生招生信息网（考纲、报名）",
+        "url": "https://yz.chsi.com.cn/"
+      }
+    }
   ],
   "next": []
 }

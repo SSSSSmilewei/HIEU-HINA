@@ -137,7 +137,7 @@ describe("知识块", () => {
   const BLOCKS = readBlocks(".");
 
   test("每个知识块都通过 hiana-block@1 校验，引用的课和条目都存在", () => {
-    expect(BLOCKS.map((b: { slug: string }) => b.slug)).toEqual(["newbie", "ai", "embedded", "kaoyan"]);
+    expect(BLOCKS.map((b: { slug: string }) => b.slug)).toEqual(["newbie", "ai", "embedded", "kaoyan", "systems"]);
     for (const raw of BLOCKS) {
       const r = parseBlock(raw);
       expect({ slug: raw.slug, errors: r.ok ? [] : r.errors }).toEqual({ slug: raw.slug, errors: [] });

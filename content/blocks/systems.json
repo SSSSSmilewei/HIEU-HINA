@@ -1,0 +1,179 @@
+{
+  "format": "hiana-block@1",
+  "slug": "systems",
+  "title": "计算机系统知识块",
+  "summary": "一行代码怎么在机器上跑起来，又怎么和别的机器通信",
+  "audience": "学完一门编程入门课、想弄懂底层的同学",
+  "intro": "这个知识块不对应某一门考试或某一个岗位，目标是把「计算机是怎么工作的」从头到尾弄明白：从程序被翻译成指令开始，到处理器执行、操作系统调度，再到网络通信。每一阶段先读概念节点，弄清楚要回答哪些问题，再选一门课系统学。\n\n学完这条路线，再学编译原理、数据库、分布式系统或安全，会容易得多。",
+  "nodes": [
+    {
+      "id": "goal",
+      "title": "要研究明白的问题",
+      "note": "整条路线回答的六个问题",
+      "body": "1. 一个 C 程序被编译、汇编、链接以后变成了什么？\n2. 处理器如何一条一条地执行指令？\n3. 为什么同样的计算，改变访问内存的顺序，速度会相差几倍甚至几十倍？（存储层次与局部性）\n4. 操作系统如何让多个程序同时运行、互不干扰？（进程、虚拟内存、系统调用）\n5. 两台计算机之间如何可靠地传输数据？（分层协议、TCP）\n6. 数据如何长期保存，并被高效地查询？（文件系统、数据库）\n\n前五个问题由下面四个阶段回答，第六个问题在最后的「选一个方向」里展开。",
+      "sources": [
+        {
+          "label": "Bryant、O'Hallaron《深入理解计算机系统》（CS:APP）官方网站",
+          "url": "https://csapp.cs.cmu.edu/"
+        },
+        {
+          "label": "ACM/IEEE-CS/AAAI《计算机科学课程指南 2023》（CS2023）",
+          "url": "https://csed.acm.org/"
+        }
+      ]
+    },
+    {
+      "id": "warmup",
+      "title": "热身：从与非门搭一台计算机",
+      "optional": true,
+      "pre": [
+        "goal"
+      ],
+      "children": [
+        {
+          "course": "n2t",
+          "note": "想先建立「硬件如何执行程序」的直觉，可以先学这门"
+        }
+      ]
+    },
+    {
+      "id": "machine-why",
+      "title": "机器层要弄明白什么",
+      "pre": [
+        "goal"
+      ],
+      "body": "程序最终都变成处理器的指令。这一阶段要弄懂：数据（整数、浮点数）在机器里如何表示；C 语言的语句如何对应到汇编指令；处理器如何取指、译码、执行；以及**存储层次**：寄存器、各级 Cache、主存、磁盘的速度相差几个数量级，所以程序访问内存时的**局部性**（连续访问、重复访问）对性能影响很大。",
+      "sources": [
+        {
+          "label": "UC Berkeley CS 61C 课程主页",
+          "url": "https://cs61c.org/"
+        },
+        {
+          "label": "Bryant、O'Hallaron《深入理解计算机系统》（CS:APP）官方网站",
+          "url": "https://csapp.cs.cmu.edu/"
+        }
+      ]
+    },
+    {
+      "id": "machine",
+      "title": "① 程序在机器上怎么执行",
+      "pick": 1,
+      "pre": [
+        "machine-why"
+      ],
+      "children": [
+        {
+          "course": "cs61c",
+          "note": "RISC-V、C、并行，带完整实验"
+        },
+        {
+          "course": "csapp",
+          "note": "x86-64，实验经典（炸弹实验、缓存实验）"
+        }
+      ]
+    },
+    {
+      "id": "os-why",
+      "title": "操作系统要回答的三个问题",
+      "pre": [
+        "machine"
+      ],
+      "body": "《Operating Systems: Three Easy Pieces》把操作系统归结为三个主题：\n\n- **虚拟化**：让每个程序都以为自己独占处理器（进程与调度）和内存（虚拟内存、页表）。\n- **并发**：多个执行流同时访问共享数据时，如何保证结果正确（锁、条件变量）。\n- **持久化**：如何把数据可靠地保存在磁盘上，断电也不丢（文件系统、日志）。\n\n学操作系统时，可以把每个知识点归到这三类里。",
+      "sources": [
+        {
+          "label": "Arpaci-Dusseau《Operating Systems: Three Easy Pieces》（免费在线版）",
+          "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/"
+        }
+      ]
+    },
+    {
+      "id": "os",
+      "title": "② 操作系统",
+      "pick": 1,
+      "pre": [
+        "os-why"
+      ],
+      "children": [
+        {
+          "course": "mit6-s081",
+          "note": "在 xv6 上动手实现，实验很硬"
+        },
+        {
+          "course": "njuos",
+          "note": "中文，蒋炎岩"
+        },
+        {
+          "course": "cs162",
+          "note": "伯克利，项目基于 Pintos"
+        }
+      ]
+    },
+    {
+      "id": "net-why",
+      "title": "网络为什么要分层",
+      "pre": [
+        "machine"
+      ],
+      "body": "网络通信被分成几层，每层只解决一个问题，并且只依赖下一层提供的服务：\n\n- **应用层**：具体应用之间交换什么消息（HTTP、DNS）。\n- **传输层**：在不可靠的网络上提供可靠的、按顺序的字节流（TCP），或简单快速的报文（UDP）。\n- **网络层**：把数据包从一台主机送到另一台主机，要经过哪些路由器（IP、路由）。\n- **链路层**：在同一条链路上的相邻设备之间传输数据帧（以太网、Wi-Fi）。\n\n《计算机网络：自顶向下方法》按从应用层到链路层的顺序讲解。",
+      "sources": [
+        {
+          "label": "Kurose、Ross《计算机网络：自顶向下方法》官方网站",
+          "url": "https://gaia.cs.umass.edu/kurose_ross/"
+        },
+        {
+          "label": "Stanford CS 144 课程主页",
+          "url": "https://cs144.github.io/"
+        }
+      ]
+    },
+    {
+      "id": "net",
+      "title": "③ 计算机网络",
+      "pick": 1,
+      "pre": [
+        "net-why"
+      ],
+      "children": [
+        {
+          "course": "topdown-ustc",
+          "note": "中科大郑烇，中文，自顶向下"
+        },
+        {
+          "course": "cs144",
+          "note": "动手实现 TCP，难"
+        }
+      ]
+    },
+    {
+      "id": "deep",
+      "title": "④ 选一个方向深入",
+      "pick": 1,
+      "pre": [
+        "os",
+        "net"
+      ],
+      "children": [
+        {
+          "course": "cs143",
+          "note": "编译原理：程序是怎么被翻译成指令的"
+        },
+        {
+          "course": "15445",
+          "note": "数据库系统：数据怎么存、怎么查"
+        },
+        {
+          "course": "mit6-824",
+          "note": "分布式系统：多台机器如何协同、容错"
+        },
+        {
+          "course": "cs161",
+          "note": "计算机安全：系统会在哪里被攻破"
+        }
+      ]
+    }
+  ],
+  "next": [
+    "embedded",
+    "kaoyan"
+  ]
+}

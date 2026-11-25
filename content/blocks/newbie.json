@@ -7,17 +7,71 @@
   "intro": "先学会用电脑干活，再上一门完整的编程入门课，最后用数据结构把基础打牢。每一步都只挑一门，学完再去下一个知识块。\n\n不知道选哪门时：**CS50x** 最友好，讲义、练手题都在站内；**CS61A** 更硬核，适合想打牢编程思维的同学。",
   "nodes": [
     {
+      "id": "goal",
+      "title": "入门阶段要弄明白什么",
+      "note": "这条路线覆盖的三件事",
+      "body": "入门阶段要建立三种能力：\n\n1. **用程序表达计算**：变量、条件、循环、函数，以及把大问题拆成若干小函数的习惯，也就是「抽象」。\n2. **在真实的开发环境里工作**：命令行、编辑器、版本控制。之后每门课的作业和项目都在这样的环境里完成。\n3. **组织数据**：数组、链表、树、哈希表分别适合什么操作，以及用时间复杂度比较两种做法的快慢。\n\nACM、IEEE 计算机学会和 AAAI 联合制定的《计算机科学课程指南 2023》把「软件开发基础」和「算法基础」列为计算机专业学生都要掌握的知识领域，这条路线对应的就是这两部分的入门内容。",
+      "sources": [
+        {
+          "label": "ACM/IEEE-CS/AAAI《计算机科学课程指南 2023》（CS2023）",
+          "url": "https://csed.acm.org/"
+        },
+        {
+          "label": "Harvard CS50x 课程主页",
+          "url": "https://cs50.harvard.edu/x/"
+        },
+        {
+          "label": "UC Berkeley CS 61A 课程主页",
+          "url": "https://cs61a.org/"
+        }
+      ]
+    },
+    {
       "title": "① 先读这个",
       "children": [
-        { "course": "csdiy", "items": ["preface", "how-to-use", "cs-roadmap"], "note": "自学 CS 是怎么回事、这本书怎么用" }
+        {
+          "course": "csdiy",
+          "items": [
+            "preface",
+            "how-to-use",
+            "cs-roadmap"
+          ],
+          "note": "自学 CS 是怎么回事、这本书怎么用"
+        }
+      ],
+      "id": "start",
+      "pre": [
+        "goal"
       ]
     },
     {
       "title": "② 会用电脑写程序",
       "note": "命令行、编辑器、Git：后面每门课都要用",
       "children": [
-        { "course": "missing-semester", "items": ["course-shell", "command-line-environment", "development-environment", "version-control"], "note": "先学这四讲，其余的用到再回来看" },
-        { "course": "csdiy", "items": ["git", "github", "vim"], "optional": true, "note": "工具的中文介绍" }
+        {
+          "course": "missing-semester",
+          "items": [
+            "course-shell",
+            "command-line-environment",
+            "development-environment",
+            "version-control"
+          ],
+          "note": "先学这四讲，其余的用到再回来看"
+        },
+        {
+          "course": "csdiy",
+          "items": [
+            "git",
+            "github",
+            "vim"
+          ],
+          "optional": true,
+          "note": "工具的中文介绍"
+        }
+      ],
+      "id": "tools",
+      "pre": [
+        "start"
       ]
     },
     {
@@ -25,27 +79,62 @@
       "pick": 1,
       "note": "三门选一门",
       "children": [
-        { "course": "cs50x", "note": "推荐：站内全文 + 练手题，C → Python → SQL → Web" },
-        { "course": "cs61a", "note": "Python + 函数式思维，作业质量很高" },
-        { "course": "cs50p", "note": "只想先学 Python 的话" }
+        {
+          "course": "cs50x",
+          "note": "推荐：站内全文 + 练手题，C → Python → SQL → Web"
+        },
+        {
+          "course": "cs61a",
+          "note": "Python + 函数式思维，作业质量很高"
+        },
+        {
+          "course": "cs50p",
+          "note": "只想先学 Python 的话"
+        }
+      ],
+      "id": "first",
+      "pre": [
+        "tools"
       ]
     },
     {
       "title": "④ 数据结构",
       "pick": 1,
       "children": [
-        { "course": "cs61b", "note": "Java，项目多" },
-        { "course": "algo", "note": "普林斯顿算法，Java" }
+        {
+          "course": "cs61b",
+          "note": "Java，项目多"
+        },
+        {
+          "course": "algo",
+          "note": "普林斯顿算法，Java"
+        }
+      ],
+      "id": "ds",
+      "pre": [
+        "first"
       ]
     },
     {
       "title": "顺手补的数学",
       "optional": true,
       "children": [
-        { "course": "mit-1801", "note": "高数课跟不上时看" },
-        { "course": "6-042j", "note": "离散数学：证明、计数、概率" }
-      ]
+        {
+          "course": "mit-1801",
+          "note": "高数课跟不上时看"
+        },
+        {
+          "course": "6-042j",
+          "note": "离散数学：证明、计数、概率"
+        }
+      ],
+      "id": "math"
     }
   ],
-  "next": ["ai", "embedded", "kaoyan"]
+  "next": [
+    "ai",
+    "embedded",
+    "kaoyan",
+    "systems"
+  ]
 }

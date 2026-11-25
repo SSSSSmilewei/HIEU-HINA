@@ -4,7 +4,6 @@ import { playHandoff } from "./handoff";
 import { BrandMark, Shell } from "./components/Shell";
 import { PageContent } from "./components/PageContent";
 import { StartPage } from "./pages/Start";
-import { BlockPage } from "./pages/Blocks";
 import { HomePage } from "./pages/Home";
 import { LoginPage, PasswordPage } from "./pages/Login";
 import { Onboarding, needsOnboarding } from "./components/Onboarding";
@@ -26,6 +25,8 @@ const AttendancePage = lazy(() => import("./pages/Attendance").then((m) => ({ de
 const CoursePage = lazy(() => import("./pages/Course").then((m) => ({ default: m.CoursePage })));
 const CoursesPage = lazy(() => import("./pages/Courses").then((m) => ({ default: m.CoursesPage })));
 const FormatPage = lazy(() => import("./pages/Format").then((m) => ({ default: m.FormatPage })));
+const BlockPage = lazy(() => import("./pages/BlockDetail").then((m) => ({ default: m.BlockPage })));
+const SiteGraphPage = lazy(() => import("./pages/BlockDetail").then((m) => ({ default: m.SiteGraphPage })));
 const LessonPage = lazy(() => import("./pages/Lesson").then((m) => ({ default: m.LessonPage })));
 const LevelPage = lazy(() => import("./pages/Level").then((m) => ({ default: m.LevelPage })));
 const LevelMapPage = lazy(() => import("./pages/LevelMap").then((m) => ({ default: m.LevelMapPage })));
@@ -48,7 +49,7 @@ function Redirect({ to }: { to: string }) {
 
 /** 游客也能看的页面；其余页面要登录。 */
 function guestCanSee(path: string): boolean {
-  return path === "/" || path === "/about" || path === "/honors" || path.startsWith("/courses") || path.startsWith("/blocks/") || path === "/notices" || path === "/start";
+  return path === "/" || path === "/about" || path === "/honors" || path.startsWith("/courses") || path.startsWith("/blocks") || path === "/notices" || path === "/start";
 }
 
 export function App() {
@@ -119,6 +120,7 @@ export function App() {
   else if (path === "/start") page = <StartPage />;
   else if (path === "/courses") page = <CoursesPage />;
   else if (path === "/courses/format") page = <FormatPage />;
+  else if (path === "/blocks") page = <SiteGraphPage />;
   else if (block) page = <BlockPage key={block.slug} slug={block.slug} />;
   else if (levelMap) page = <LevelMapPage key={levelMap.slug} slug={levelMap.slug} />;
   else if (levelPage) page = <LevelPage key={`${levelPage.chapter}/${levelPage.level}`} slug={levelPage.slug} chapter={levelPage.chapter} level={levelPage.level} />;

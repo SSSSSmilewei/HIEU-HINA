@@ -4,11 +4,15 @@
  *
  *   知识块
  *   ├─ 基本信息：标题、一句话、适合谁、介绍（Markdown）
- *   ├─ nodes[]   节点，三种：
+ *   ├─ nodes[]   节点，四种：
  *   │    ├─ 分组  { title, children[], pick?: 几门里选几门, optional?: 选学 }
  *   │    ├─ 课程  { course: slug, items?: 重点看的条目, note?: 一句话 }
- *   │    └─ 链接  { link: { label, url } }（书、网站这类站外资源）
+ *   │    ├─ 链接  { link: { label, url } }（书、网站这类站外资源）
+ *   │    └─ 概念  { title, body }（讲清一个方向要研究明白什么、为什么按这个顺序学；2026-11 起）
+ *   │    任何节点都可以有：id（知识块内唯一）、pre（先学哪些节点的 id）、sources（权威出处）
  *   └─ next[]    学完以后可以去的知识块
+ *
+ * 图谱（2026-11）：节点之间的父子关系 + 先修关系（pre）画成网状图，见 shared/blockGraph.ts。
  *
  * 源文件在 content/blocks/<slug>.json，顺序在 content/blocks/order.json。
  * 构建时补上每个课程节点的课程名和课时（scripts/blocks.mjs），网页直接用，不用再查课程目录。
@@ -23,6 +27,8 @@ export interface BlockLink {
 }
 
 export interface BlockNode {
+  /** 知识块内唯一，给 pre 引用 */
+  id?: string;
   title?: string;
   note?: string;
   course?: string;
@@ -34,6 +40,12 @@ export interface BlockNode {
   pick?: number;
   /** 选学：不算进总课时和完成度 */
   optional?: boolean;
+  /** 先修：学这个节点之前要先学的节点 id（同一个知识块里） */
+  pre?: string[];
+  /** 概念节点的正文（Markdown）：这个方向要研究明白什么、怎么一步步弄懂 */
+  body?: string;
+  /** 权威出处：官方课程、教材、标准、学会的课程指南 */
+  sources?: BlockLink[];
   // 以下由构建补上
   courseTitle?: string;
   itemTitles?: string[];
@@ -62,11 +74,12 @@ export interface BlockSummary {
   periods: number;
 }
 
-export type NodeKind = "group" | "course" | "link";
+export type NodeKind = "group" | "course" | "link" | "concept";
 
 export function kindOf(n: BlockNode): NodeKind {
   if (n.course) return "course";
   if (n.link) return "link";
+  if (n.body !== undefined && !n.children) return "concept";
   return "group";
 }
 
@@ -105,7 +118,7 @@ export function nodePeriods(n: BlockNode): number {
 function requiredPeriods(n: BlockNode): number {
   const k = kindOf(n);
   if (k === "course") return n.periods ?? 0;
-  if (k === "link") return 0;
+  if (k === "link" || k === "concept") return 0;
   const kids = (n.children ?? []).filter((c) => !c.optional).map(requiredPeriods);
   if (n.pick) return kids.sort((a, b) => a - b).slice(0, n.pick).reduce((a, b) => a + b, 0);
   return kids.reduce((a, b) => a + b, 0);
@@ -122,12 +135,25 @@ export type CourseProgress = (slug: string) => number;
 export function nodeRatio(n: BlockNode, p: CourseProgress): number | null {
   const k = kindOf(n);
   if (k === "course") return p(n.course as string);
-  if (k === "link") return null;
+  if (k === "link" || k === "concept") return null;
   const kids = (n.children ?? []).filter((c) => !c.optional).map((c) => nodeRatio(c, p)).filter((x): x is number => x !== null);
   if (!kids.length) return null;
   const used = n.pick ? kids.sort((a, b) => b - a).slice(0, n.pick) : kids;
   const want = n.pick ? Math.min(n.pick, kids.length) : kids.length;
   return used.reduce((a, b) => a + b, 0) / want;
+}
+
+/** 知识块里所有带 id 的节点 */
+export function nodesById(nodes: BlockNode[]): Map<string, BlockNode> {
+  const out = new Map<string, BlockNode>();
+  const walk = (ns: BlockNode[]) => {
+    for (const n of ns) {
+      if (n.id) out.set(n.id, n);
+      if (n.children) walk(n.children);
+    }
+  };
+  walk(nodes);
+  return out;
 }
 
 export function blockRatio(b: Pick<Block, "nodes">, p: CourseProgress): number {
@@ -144,7 +170,7 @@ export function nextCourse(b: Pick<Block, "nodes">, p: CourseProgress): BlockNod
     const k = kindOf(n);
     if (n.optional) return null;
     if (k === "course") return p(n.course as string) < 1 ? n : null;
-    if (k === "link") return null;
+    if (k === "link" || k === "concept") return null;
     const kids = n.children ?? [];
     if (n.pick) {
       const r = nodeRatio(n, p);
