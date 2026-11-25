@@ -39,6 +39,9 @@ const result = await build({
 });
 
 if (existsSync(join(root, "public"))) cpSync(join(root, "public"), out, { recursive: true });
+// 闯关（content/levels/）：起始代码、官方测试、关卡说明、判题器，原样放到 /levels/，浏览器里的 Pyodide 直接读
+if (existsSync(join(root, "content/levels")))
+  cpSync(join(root, "content/levels"), join(out, "levels"), { recursive: true, filter: (src) => !src.includes("__pycache__") });
 const pageCount = buildCourses(root, out, courses);
 const blockCount = buildBlocks(root, out, courses.map(light));
 

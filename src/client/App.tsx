@@ -27,6 +27,8 @@ const CoursePage = lazy(() => import("./pages/Course").then((m) => ({ default: m
 const CoursesPage = lazy(() => import("./pages/Courses").then((m) => ({ default: m.CoursesPage })));
 const FormatPage = lazy(() => import("./pages/Format").then((m) => ({ default: m.FormatPage })));
 const LessonPage = lazy(() => import("./pages/Lesson").then((m) => ({ default: m.LessonPage })));
+const LevelPage = lazy(() => import("./pages/Level").then((m) => ({ default: m.LevelPage })));
+const LevelMapPage = lazy(() => import("./pages/LevelMap").then((m) => ({ default: m.LevelMapPage })));
 const NoticesPage = lazy(() => import("./pages/Notices").then((m) => ({ default: m.NoticesPage })));
 const ProfilePage = lazy(() => import("./pages/Profile").then((m) => ({ default: m.ProfilePage })));
 const ReportPage = lazy(() => import("./pages/Report").then((m) => ({ default: m.ReportPage })));
@@ -101,6 +103,8 @@ export function App() {
   const course = matchPath("/courses/:slug", path);
   const lesson = matchPath("/courses/:slug/learn/:page", path);
   const block = matchPath("/blocks/:slug", path);
+  const levelMap = matchPath("/courses/:slug/map", path);
+  const levelPage = matchPath("/courses/:slug/levels/:chapter/:level", path);
   if (path.startsWith("/admin")) {
     if (!isAdmin) page = <Empty title="这里需要管理员账号" />;
     else if (path === "/admin") page = <AdminTodayPage />;
@@ -116,6 +120,8 @@ export function App() {
   else if (path === "/courses") page = <CoursesPage />;
   else if (path === "/courses/format") page = <FormatPage />;
   else if (block) page = <BlockPage key={block.slug} slug={block.slug} />;
+  else if (levelMap) page = <LevelMapPage key={levelMap.slug} slug={levelMap.slug} />;
+  else if (levelPage) page = <LevelPage key={`${levelPage.chapter}/${levelPage.level}`} slug={levelPage.slug} chapter={levelPage.chapter} level={levelPage.level} />;
   else if (course) page = <CoursePage key={course.slug} slug={course.slug} />;
   else if (lesson) page = <LessonPage key={lesson.slug} slug={lesson.slug} page={lesson.page} />;
   else if (path === "/checkin") page = me.member?.kind === "external" ? <Empty title="校外账号不用签到" /> : <AttendancePage />;

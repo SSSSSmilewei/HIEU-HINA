@@ -9,6 +9,7 @@ import { downloadJson, exportPackage, forgetPackage, itemHref, removeLocal } fro
 import { Link, navigate, useQuery } from "../router";
 import { useMe } from "../session";
 import { api, useApi } from "../api";
+import { hasLevels } from "../../shared/levels";
 import { refreshLearning } from "../courseMeta";
 import { Dialog, Empty, ErrorBox, Ring, Seg, Skeleton, useConfirm, useTitle, useToast } from "../ui";
 import { Stars } from "./Courses";
@@ -84,6 +85,11 @@ export function CoursePage({ slug }: { slug: string }) {
           {meta.titleEn && meta.titleEn !== meta.title && <p className="course-en">{meta.titleEn}</p>}
           {meta.summary && <p className="lead pretty">{meta.summary}</p>}
           <Facts c={meta} totalPeriods={p.totalPeriods} />
+          {hasLevels(slug) && (
+            <Link to={`/courses/${slug}/map`} className="btn btn-primary btn-lg level-entry">
+              开始闯关：在自己的仓库里写出官方项目
+            </Link>
+          )}
         </header>
 
         <section className="split-side card stack" aria-label="我的进度" style={{ gap: 16 }}>

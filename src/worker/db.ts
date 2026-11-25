@@ -364,6 +364,25 @@ export const MIGRATIONS: string[][] = [
   [`ALTER TABLE pins ADD COLUMN kind TEXT NOT NULL DEFAULT 'question'`],
   // 标记可以公开（1）或只给自己（0，默认）；提问不看这一列，本来就公开
   [`ALTER TABLE pins ADD COLUMN is_public INTEGER NOT NULL DEFAULT 0`],
+  // v15：闯关（2026-11）。每人每门课一个「仓库」，先存在这里（以后同步到 Forgejo）；只存本人写的文件，官方只读文件和测试是静态文件
+  [
+    `CREATE TABLE IF NOT EXISTS repo_files (
+      user_id TEXT NOT NULL,
+      course_slug TEXT NOT NULL,
+      path TEXT NOT NULL,
+      content TEXT NOT NULL,
+      updated_at INTEGER NOT NULL,
+      PRIMARY KEY (user_id, course_slug, path)
+    )`,
+    // 过关记录：判题在浏览器里，第一次通过时记一条（level_id 形如 hog/q01）
+    `CREATE TABLE IF NOT EXISTS level_passes (
+      user_id TEXT NOT NULL,
+      course_slug TEXT NOT NULL,
+      level_id TEXT NOT NULL,
+      passed_at INTEGER NOT NULL,
+      PRIMARY KEY (user_id, course_slug, level_id)
+    )`,
+  ],
 ];
 
 // 每个数据库连接只迁移一次（Worker 里通常只有一个；测试里每个用例一个内存库）
