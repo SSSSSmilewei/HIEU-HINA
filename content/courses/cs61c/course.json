@@ -4,14 +4,16 @@
  "title": "CS61C: Great Ideas in Computer Architecture",
  "category": "体系结构",
  "provider": "UC Berkeley",
- "instructors": [],
+ "instructors": [
+  "Dan Garcia"
+ ],
  "language": "C",
  "prerequisites": "CS61A, CS61B",
  "difficulty": 4,
  "hours": "100 小时",
  "summary": "伯克利 CS61 系列的最后一门课程，深入计算机的硬件细节，带领学生逐步理解 C 语言是如何一步步转化为 RISC-V 汇编并在 CPU 上执行的。和 Nand2Tetris 不同，这门课 在难度和深度上都会提高很多，具体会涉及到流水线、Cache、虚存以及并发相关的内容。",
  "tags": [],
- "license": "介绍文字 © csdiy.wiki，MIT 许可",
+ "license": "介绍文字 © csdiy.wiki，MIT 许可；课程结构按 UC Berkeley 官方课表整理，每讲要点与练手题由海纳协会编写（标「官方改编」的题目改编自官方作业），讲义、作业版权归 UC Berkeley 课程组",
  "intro": {
   "community": "## 课程简介\n\n伯克利 CS61 系列的最后一门课程，深入计算机的硬件细节，带领学生逐步理解 C 语言是如何一步步转化为 RISC-V 汇编并在 CPU 上执行的。和 [Nand2Tetris](/courses/n2t) 不同，这门课\n在难度和深度上都会提高很多，具体会涉及到流水线、Cache、虚存以及并发相关的内容。\n\n这门课的 Project 也非常新颖有趣。Project1 会让你用 C 语言写一个小程序，20 年秋季学期是著名的游戏 <em>Game of Life</em>。Project2 会让你用 RISC-V 汇编编写一个神经网络，用来\n识别 MNIST 手写数字，非常锻炼你对汇编代码的理解和运用。Project3 中你会用 Logisim 这个数字电路模拟软件搭建出一个二级流水线的 CPU，并在上面运行 RISC-V 汇编代码。Project4\n会让你使用 OpenMP, SIMD 等方法并行优化矩阵运算，实现一个简易的 Numpy。\n\n总而言之，这是个人上过的最好的计算机体系结构的课程。\n\n## 课程资源\n\n- [课程网站](https://cs61c.org/)\n- 课程网站 (页面备份): [Fa24-WayBack Machine](https://web.archive.org/web/20241219154359/https://cs61c.org/fa24/), [Fa20-WayBack Machine](https://web.archive.org/web/20220120134001/https://inst.eecs.berkeley.edu/~cs61c/fa20/), [Fa20-备份](https://www.learncs.site/docs/curriculum-resource/cs61c/syllabus)\n- 课程视频: [Su20-Bilibili](https://www.bilibili.com/video/BV1fC4y147iZ/?share_source=copy_web&vd_source=7c3823b46a52fbbef42b79e01d55c300), [Su20-Youtube](https://youtube.com/playlist?list=PLDoI-XvXO0aqgoMQvogzmf7CKiSMSUS3M&si=62aaH5a_PMGrAT2Y), [Fa20-Bilibili](https://www.bilibili.com/video/BV17b42177VG/?share_source=copy_web&vd_source=7c3823b46a52fbbef42b79e01d55c300), [Fa20-Youtube](https://youtube.com/playlist?list=PL0j-r-omG7i0-mnsxN5T4UcVS1Di0isqf&si=CG1EjQiPcw7r7Vs4)\n- 课程作业: [Fa20-备份](https://github.com/InsideEmpire/CS61C-Assignment#)\n\n## 资源汇总\n\n@PKUFlyingPig 在学习这门课中用到的所有资源和作业实现都汇总在 [PKUFlyingPig/CS61C-summer20 - GitHub](https://github.com/PKUFlyingPig/CS61C-summer20) 中。\n\n@InsideEmpire 在学习这门课中用到的所有资源和作业实现都汇总在 [@InsideEmpire/CS61C-fall20 - GitHub](https://github.com/InsideEmpire/CS61C-PathwayToSuccess) 中。\n\n@RisingUppercut 在学习这门课中用到的所有资源和作业实现都汇总在 [@RisingUppercut/CS61C-fall24 - GitHub](https://github.com/RisingUppercut/CS61C_2024_Fall) 中。\n",
   "communitySource": {
@@ -22,6 +24,16 @@
   "official": "伯克利 CS61 系列的最后一门课程，深入计算机的硬件细节，带领学生逐步理解 C 语言是如何一步步转化为 RISC-V 汇编并在 CPU 上执行的。课程涉及流水线、Cache、虚存以及并发相关的内容。Project 包括 C 语言编程、RISC-V 汇编、数字电路设计和并行优化等。"
  },
  "links": [
+  {
+   "kind": "website",
+   "label": "网站 · 2026 秋季（站内课程内容按这一学期整理）",
+   "url": "https://cs61c.org/fa26/"
+  },
+  {
+   "kind": "notes",
+   "label": "官方课程笔记（Course Notes）",
+   "url": "https://notes.cs61c.org/"
+  },
   {
    "kind": "website",
    "label": "网站",
@@ -68,5 +80,3324 @@
    "url": "https://github.com/InsideEmpire/CS61C-Assignment#"
   }
  ],
- "modules": []
+ "modules": [
+  {
+   "id": "start",
+   "title": "开始之前",
+   "items": [
+    {
+     "id": "guide",
+     "kind": "reading",
+     "title": "开始之前：这门课怎么学",
+     "periods": 1,
+     "pages": [
+      {
+       "id": "guide",
+       "title": "学习指南"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "2026 秋季学期课程网站",
+       "url": "https://cs61c.org/fa26/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记（Course Notes）",
+       "url": "https://notes.cs61c.org/"
+      },
+      {
+       "kind": "other",
+       "label": "Venus：在线 RISC-V 模拟器",
+       "url": "https://venus.cs61c.org/"
+      },
+      {
+       "kind": "other",
+       "label": "RISC-V 参考卡（Reference Card）",
+       "url": "https://cs61c.org/fa26/pdfs/resources/reference-card.pdf"
+      }
+     ],
+     "practice": []
+    }
+   ]
+  },
+  {
+   "id": "week-1",
+   "title": "第 1 周：课程介绍、数的表示",
+   "items": [
+    {
+     "id": "lec01",
+     "kind": "lecture",
+     "title": "第 1 讲：课程介绍与计算机体系结构的伟大思想",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec01",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec01/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1oqljbqJaxbIyMliAiunTNgDIJlbwi_G-gBnYaV-Sc24/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec01-q1",
+       "type": "choice",
+       "prompt": "CS61C 主要研究的是？",
+       "options": [
+        "网页设计",
+        "软件与硬件的交界：程序怎样在机器上执行",
+        "算法的正确性证明",
+        "数据库的使用"
+       ],
+       "answer": 1,
+       "explain": "课程的英文名是 Great Ideas in Computer Architecture (Machine Structures)。",
+       "origin": "review"
+      },
+      {
+       "id": "lec01-q2",
+       "type": "choice",
+       "prompt": "下面哪一项属于课程强调的「伟大思想」？",
+       "options": [
+        "面向对象",
+        "局部性原理与存储层次",
+        "敏捷开发",
+        "函数式编程"
+       ],
+       "answer": 1,
+       "explain": "缓存和虚拟内存都建立在局部性原理之上。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "hw01",
+     "kind": "assignment",
+     "title": "作业 1：数的表示",
+     "periods": 4,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "exams",
+       "label": "往年试题（可以代替作业做练习）",
+       "url": "https://cs61c.org/fa26/resources/exams/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec02",
+     "kind": "lecture",
+     "title": "第 2 讲：数的表示",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec02",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec02/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L02 Course Notes",
+       "url": "https://notes.cs61c.org/content/number-rep/"
+      },
+      {
+       "kind": "other",
+       "label": "Comparing Integer Representations Handout: Binary",
+       "url": "https://drive.google.com/file/d/1s3PPtErCftTzHUzzQhdb362AmDHi1AxU/view?usp=sharing"
+      },
+      {
+       "kind": "other",
+       "label": "Negation and Zeroes",
+       "url": "https://drive.google.com/file/d/1UgnNkEwYUdjCJFgujwiF5X2pkC3egA8W/view?usp=sharing"
+      },
+      {
+       "kind": "other",
+       "label": "Increments and Monotonicity",
+       "url": "https://drive.google.com/file/d/1M7ADd7XN5QjuCfeDLFcp6YyapUunYkPl/view?usp=sharing"
+      },
+      {
+       "kind": "other",
+       "label": "The Thrilling Conclusion!",
+       "url": "https://drive.google.com/file/d/1XaBLHBEwtjekK2lTSMAJ--ISBjTJ4ykf/view?usp=sharing"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1kKp62QvdOan8Q68Txz6yRBA_AL08Liwl6OlBAQN6zyM/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec02-q1",
+       "type": "text",
+       "prompt": "十六进制数 0x1F 等于十进制的 ___。",
+       "answer": [
+        "31"
+       ],
+       "explain": "1 × 16 + 15 = 31。",
+       "origin": "review"
+      },
+      {
+       "id": "lec02-q2",
+       "type": "choice",
+       "prompt": "8 位补码能表示的整数范围是？",
+       "options": [
+        "0 到 255",
+        "−127 到 127",
+        "−128 到 127",
+        "−128 到 128"
+       ],
+       "answer": 2,
+       "explain": "N 位补码的范围是 −2^(N−1) 到 2^(N−1) − 1。",
+       "origin": "review"
+      },
+      {
+       "id": "lec02-q3",
+       "type": "choice",
+       "prompt": "用 8 位补码表示 −1，二进制写法是？",
+       "options": [
+        "10000001",
+        "11111110",
+        "11111111",
+        "00000001"
+       ],
+       "answer": 2,
+       "explain": "1 是 00000001，按位取反得 11111110，再加一得 11111111。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "lab00",
+     "kind": "lab",
+     "title": "实验 0：课程介绍、环境配置",
+     "periods": 3,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "labs",
+       "label": "Lab 0: Intro, Setup（官方，英文）",
+       "url": "https://cs61c.org/fa26/labs/lab00/"
+      }
+     ],
+     "practice": []
+    }
+   ]
+  },
+  {
+   "id": "week-2",
+   "title": "第 2 周：C 语言入门",
+   "items": [
+    {
+     "id": "lec03",
+     "kind": "lecture",
+     "title": "第 3 讲：C 语言入门：基础",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec03",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec03/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L03 Notes",
+       "url": "https://notes.cs61c.org/content/c-basics/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1UUfYXfJNMs-0CMxObINJncHcKN7Sg3l-r-yv4lWqG9U/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec03-q1",
+       "type": "choice",
+       "prompt": "C 语言中下面哪个值被当作「假」？",
+       "options": [
+        "-1",
+        "0",
+        "'a'",
+        "3.14"
+       ],
+       "answer": 1,
+       "explain": "0（以及空指针）是假，其余都是真。",
+       "origin": "review"
+      },
+      {
+       "id": "lec03-q2",
+       "type": "choice",
+       "prompt": "与 Python 这样的解释型语言相比，C 的主要特点是？",
+       "options": [
+        "不需要声明类型",
+        "先编译成机器码再运行，速度快但要为每种机器重新编译",
+        "自动管理内存",
+        "不能操作内存地址"
+       ],
+       "answer": 1,
+       "explain": "这也是系统软件普遍使用 C 的原因。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "disc01",
+     "kind": "section",
+     "title": "讨论课 1：数的表示",
+     "periods": 2,
+     "pages": [],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "讲解视频（2024 春季）",
+       "url": "https://www.youtube.com/playlist?list=PLnvUoC1Ghb7wq7iPJB47O-PttTdXKqInl"
+      }
+     ],
+     "links": [
+      {
+       "kind": "notes",
+       "label": "Discussion 1: Number Rep（官方，英文）",
+       "url": "https://cs61c.org/fa26/discussions/disc01/"
+      },
+      {
+       "kind": "notes",
+       "label": "题目（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc01/disc01.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "参考答案（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc01/disc01-sols.pdf"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "lec04",
+     "kind": "lecture",
+     "title": "第 4 讲：C 语言入门：指针、数组、字符串",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec04",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec04/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L04 Notes",
+       "url": "https://notes.cs61c.org/content/c-pointers-arrays-strings/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/16An_Qh5KVyT_FA2lCvTsosyNoMAHbl_lImbp9AOxTo0/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec04-q1",
+       "type": "choice",
+       "prompt": "已知 `int x = 3; int *p = &x; *p = 5;`，此时 `x` 的值是？",
+       "options": [
+        "3",
+        "5",
+        "x 的地址",
+        "不确定"
+       ],
+       "answer": 1,
+       "explain": "p 指向 x，对 *p 赋值就是修改 x。",
+       "origin": "review"
+      },
+      {
+       "id": "lec04-q2",
+       "type": "text",
+       "prompt": "C 字符串 `\"abc\"` 在内存里一共占 ___ 个字节（填数字）。",
+       "answer": [
+        "4"
+       ],
+       "explain": "三个字符加上结尾的空字符 '\\0'。",
+       "origin": "review"
+      },
+      {
+       "id": "lec04-q3",
+       "type": "choice",
+       "prompt": "对 `int a[10]`，表达式 `a[3]` 等价于？",
+       "options": [
+        "`*a + 3`",
+        "`*(a + 3)`",
+        "&a + 3",
+        "a * 3"
+       ],
+       "answer": 1,
+       "explain": "下标运算就是指针运算加解引用。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "lab01",
+     "kind": "lab",
+     "title": "实验 1：C 语言",
+     "periods": 3,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "labs",
+       "label": "Lab 1: C（官方，英文）",
+       "url": "https://cs61c.org/fa26/labs/lab01/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "hw02",
+     "kind": "assignment",
+     "title": "作业 2：C 语言",
+     "periods": 4,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "exams",
+       "label": "往年试题（可以代替作业做练习）",
+       "url": "https://cs61c.org/fa26/resources/exams/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec05",
+     "kind": "lecture",
+     "title": "第 5 讲：C 的内存管理",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec05",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec05/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L05 Notes",
+       "url": "https://notes.cs61c.org/content/c-memory-management/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1iCXs1cROWsU1He1hQsdmJRij8aUN3DKo6RlkraBELQQ/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec05-q1",
+       "type": "choice",
+       "prompt": "用 `malloc` 申请的内存位于哪个区域？",
+       "options": [
+        "栈",
+        "堆",
+        "静态数据区",
+        "代码区"
+       ],
+       "answer": 1,
+       "explain": "堆上的内存由程序员负责申请和释放。",
+       "origin": "review"
+      },
+      {
+       "id": "lec05-q2",
+       "type": "choice",
+       "prompt": "下面哪一种做法是错误的？",
+       "options": [
+        "在函数里 malloc 一块内存并返回它的地址",
+        "返回函数内部局部数组的地址",
+        "用完之后调用 free",
+        "用 sizeof 计算要申请的大小"
+       ],
+       "answer": 1,
+       "explain": "函数返回后栈帧失效，局部数组的地址不能再使用。",
+       "origin": "review"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "week-3",
+   "title": "第 3 周：C 的泛型与抽象数据类型",
+   "items": [
+    {
+     "id": "disc02",
+     "kind": "section",
+     "title": "讨论课 2：C 语言与内存管理",
+     "periods": 2,
+     "pages": [],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "讲解视频（2024 春季）",
+       "url": "https://www.youtube.com/playlist?list=PLnvUoC1Ghb7wq7iPJB47O-PttTdXKqInl"
+      }
+     ],
+     "links": [
+      {
+       "kind": "notes",
+       "label": "Discussion 2: C & Memory Management（官方，英文）",
+       "url": "https://cs61c.org/fa26/discussions/disc02/"
+      },
+      {
+       "kind": "notes",
+       "label": "题目（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc02/disc02.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "参考答案（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc02/disc02-sols.pdf"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "lab02",
+     "kind": "lab",
+     "title": "实验 2：C 语言调试",
+     "periods": 3,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "labs",
+       "label": "Lab 2: C Debugging（官方，英文）",
+       "url": "https://cs61c.org/fa26/labs/lab02/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "proj1",
+     "kind": "project",
+     "title": "项目 1：snek",
+     "periods": 12,
+     "pages": [
+      {
+       "id": "proj1",
+       "title": "项目介绍"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "assignments",
+       "label": "Project 1: snek（官方，英文）",
+       "url": "https://cs61c.org/fa26/projects/proj1/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec06",
+     "kind": "lecture",
+     "title": "第 6 讲：C 的泛型",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec06",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec06/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L06 Notes",
+       "url": "https://notes.cs61c.org/content/c-odds-and-ends/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1oOwSbLSlW9xXoyFA4xRNmfWqKYroo10Q6LWUe7SmXYU/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec06-q1",
+       "type": "choice",
+       "prompt": "C 语言里用来表示「指向任意类型」的通用指针类型是？",
+       "options": [
+        "int *",
+        "char",
+        "void *",
+        "any"
+       ],
+       "answer": 2,
+       "explain": "void * 可以和任何对象指针互相转换。",
+       "origin": "review"
+      },
+      {
+       "id": "lec06-q2",
+       "type": "choice",
+       "prompt": "标准库的 `qsort` 靠什么知道应该怎样比较两个元素？",
+       "options": [
+        "自动推断",
+        "调用者传入的比较函数（函数指针）",
+        "元素的类型名",
+        "编译选项"
+       ],
+       "answer": 1,
+       "explain": "这是函数指针的典型用法。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "lec07",
+     "kind": "lecture",
+     "title": "第 7 讲：C 的抽象数据类型",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec07",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec07/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L07 Notes",
+       "url": "https://notes.cs61c.org/content/c-generics/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：IEC Prefixes Notes",
+       "url": "https://notes.cs61c.org/content/misc/iec-prefixes/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1gZrDrvjgH8vdlU3Bk5wp1jnynikM8oSeRwyu5A0LXC4/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec07-q1",
+       "type": "choice",
+       "prompt": "`p` 是指向结构体的指针，访问字段 `x` 的正确写法是？",
+       "options": [
+        "p.x",
+        "p->x",
+        "p::x",
+        "&p.x"
+       ],
+       "answer": 1,
+       "explain": "p->x 等价于 (*p).x。",
+       "origin": "review"
+      },
+      {
+       "id": "lec07-q2",
+       "type": "text",
+       "prompt": "按 IEC 前缀，1 Ki 等于 2 的 ___ 次方（填数字）。",
+       "answer": [
+        "10"
+       ],
+       "explain": "1 Ki = 1024 = 2^10。",
+       "origin": "review"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "week-4",
+   "title": "第 4 周：浮点数、RISC-V 入门",
+   "items": [
+    {
+     "id": "lec08",
+     "kind": "lecture",
+     "title": "第 8 讲：浮点数",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec08",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec08/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L08 Notes",
+       "url": "https://notes.cs61c.org/content/floating-point/"
+      },
+      {
+       "kind": "other",
+       "label": "IEEE 754 Simulator",
+       "url": "https://www.h-schmidt.net/FloatConverter/IEEE754.html"
+      },
+      {
+       "kind": "other",
+       "label": "Floating-Point Numbers",
+       "url": "https://drive.google.com/file/d/1nfm8ybC4223Sgz9v1YU4wnPOC1b6WwRZ/view?usp=sharing"
+      },
+      {
+       "kind": "other",
+       "label": "Floating-Point Numbers: Examples & Special Numbers",
+       "url": "https://drive.google.com/file/d/10zg9OCmQWxiGET1YwpTKRtdyb1BkTdy-/view?usp=sharing"
+      },
+      {
+       "kind": "other",
+       "label": "Floating-Point Number Line",
+       "url": "https://drive.google.com/file/d/1qXX68MpAV0pUo8U4rjUGzCOvuTcmgMEG/view?usp=sharing"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1slo37xlZh3lX9igxzWvRkLz6d_fMKtEZ4GYRnSWdb84/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec08-q1",
+       "type": "choice",
+       "prompt": "IEEE 754 单精度浮点数的指数字段有几位？",
+       "options": [
+        "1",
+        "8",
+        "23",
+        "32"
+       ],
+       "answer": 1,
+       "explain": "1 位符号、8 位指数、23 位有效数字。",
+       "origin": "review"
+      },
+      {
+       "id": "lec08-q2",
+       "type": "choice",
+       "prompt": "单精度浮点数的指数字段使用的偏移量（bias）是？",
+       "options": [
+        "0",
+        "127",
+        "128",
+        "255"
+       ],
+       "answer": 1,
+       "explain": "实际指数 = 指数字段的值 − 127。",
+       "origin": "review"
+      },
+      {
+       "id": "lec08-q3",
+       "type": "choice",
+       "prompt": "为什么不应该用 `==` 比较两个经过计算得到的浮点数？",
+       "options": [
+        "语法不允许",
+        "浮点运算有舍入误差，数学上相等的结果可能差一点点",
+        "浮点数没有符号",
+        "比较很慢"
+       ],
+       "answer": 1,
+       "explain": "应当比较两者之差是否足够小。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "disc03",
+     "kind": "section",
+     "title": "讨论课 3：C 语言、浮点数、IEC 前缀",
+     "periods": 2,
+     "pages": [],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "讲解视频（2024 春季）",
+       "url": "https://www.youtube.com/playlist?list=PLnvUoC1Ghb7yb0CUgMlxBGiNEiDZOU0Wp"
+      }
+     ],
+     "links": [
+      {
+       "kind": "notes",
+       "label": "Discussion 3: C, Floating Point, IEC（官方，英文）",
+       "url": "https://cs61c.org/fa26/discussions/disc03/"
+      },
+      {
+       "kind": "notes",
+       "label": "题目（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc03/disc03.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "参考答案（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc03/disc03-sols.pdf"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "hw03",
+     "kind": "assignment",
+     "title": "作业 3：C 语言、浮点数热身",
+     "periods": 4,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "exams",
+       "label": "往年试题（可以代替作业做练习）",
+       "url": "https://cs61c.org/fa26/resources/exams/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec09",
+     "kind": "lecture",
+     "title": "第 9 讲：RISC-V 入门",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec09",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec09/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L09 Notes",
+       "url": "https://notes.cs61c.org/content/rv-intro/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1zPKZsmPJniroSG4-uWHY5l745V-nZT6KFCT61OVIlUU/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec09-q1",
+       "type": "choice",
+       "prompt": "RISC-V 的寄存器 `x0` 有什么特别之处？",
+       "options": [
+        "保存返回地址",
+        "它的值永远是 0",
+        "它是栈指针",
+        "它不能被读取"
+       ],
+       "answer": 1,
+       "explain": "写入 x0 没有任何效果。",
+       "origin": "review"
+      },
+      {
+       "id": "lec09-q2",
+       "type": "choice",
+       "prompt": "`addi x5, x6, -3` 的作用是？",
+       "options": [
+        "x6 = x5 − 3",
+        "x5 = x6 − 3",
+        "x5 = x6 + 3",
+        "x5 = −3"
+       ],
+       "answer": 1,
+       "explain": "第一个操作数是目的寄存器。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "exam-quest",
+     "kind": "exam",
+     "title": "小测验（Quest）",
+     "periods": 3,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "exams",
+       "label": "往年试题（Past Exams）",
+       "url": "https://cs61c.org/fa26/resources/exams/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lab03",
+     "kind": "lab",
+     "title": "实验 3：RISC-V、Venus",
+     "periods": 3,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "labs",
+       "label": "Lab 3: RISC-V, Venus（官方，英文）",
+       "url": "https://cs61c.org/fa26/labs/lab03/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec10",
+     "kind": "lecture",
+     "title": "第 10 讲：RISC-V 数据传送",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec10",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec10/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L10 Notes",
+       "url": "https://notes.cs61c.org/content/rv-data-transfer/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1C4gaW8fyAyR2VNA3JsOBnyhWpiWVm8mxn1fh8S5gt6Y/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec10-q1",
+       "type": "choice",
+       "prompt": "`lw x10, 8(x15)` 读取的内存地址是？",
+       "options": [
+        "8",
+        "x15 的值",
+        "x15 的值加 8",
+        "x10 的值加 8"
+       ],
+       "answer": 2,
+       "explain": "地址 = 基址寄存器 + 偏移量。",
+       "origin": "review"
+      },
+      {
+       "id": "lec10-q2",
+       "type": "choice",
+       "prompt": "`int` 数组 `a` 的首地址在 x15 里，`a[2]` 的偏移量应该写多少？",
+       "options": [
+        "2",
+        "4",
+        "8",
+        "16"
+       ],
+       "answer": 2,
+       "explain": "每个 int 占 4 个字节，2 × 4 = 8。",
+       "origin": "review"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "week-5",
+   "title": "第 5 周：RISC-V 条件判断、过程调用、指令格式",
+   "items": [
+    {
+     "id": "lec11",
+     "kind": "lecture",
+     "title": "第 11 讲：RISC-V 条件判断",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec11",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec11/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L11 Notes",
+       "url": "https://notes.cs61c.org/content/rv-decision-making/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1CUwsbcxTUwb3q9c9GcwTflGQ6bZScKnQ5XU9jqFY37Q/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec11-q1",
+       "type": "choice",
+       "prompt": "`beq x5, x6, Label` 在什么情况下跳转到 Label？",
+       "options": [
+        "x5 小于 x6",
+        "x5 等于 x6",
+        "x5 不等于 x6",
+        "总是跳转"
+       ],
+       "answer": 1,
+       "explain": "beq 是 branch if equal。",
+       "origin": "review"
+      },
+      {
+       "id": "lec11-q2",
+       "type": "choice",
+       "prompt": "`slli x5, x6, 3` 相当于把 x6 的值？",
+       "options": [
+        "除以 8",
+        "加 3",
+        "乘以 8",
+        "乘以 3"
+       ],
+       "answer": 2,
+       "explain": "左移 3 位即乘以 2³。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "disc04",
+     "kind": "section",
+     "title": "讨论课 4：RISC-V",
+     "periods": 2,
+     "pages": [],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "讲解视频（2024 春季）",
+       "url": "https://www.youtube.com/playlist?list=PLnvUoC1Ghb7y2k1ejxf6iu4WO_FLl2E9e"
+      }
+     ],
+     "links": [
+      {
+       "kind": "notes",
+       "label": "Discussion 4: RISC-V（官方，英文）",
+       "url": "https://cs61c.org/fa26/discussions/disc04/"
+      },
+      {
+       "kind": "notes",
+       "label": "题目（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc04/disc04.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "参考答案（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc04/disc04-sols.pdf"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "proj2",
+     "kind": "project",
+     "title": "项目 2：CS61Classify",
+     "periods": 16,
+     "pages": [
+      {
+       "id": "proj2",
+       "title": "项目介绍"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "assignments",
+       "label": "Project 2: CS61Classify（官方，英文）",
+       "url": "https://cs61c.org/fa26/projects/proj2/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec12",
+     "kind": "lecture",
+     "title": "第 12 讲：RISC-V 过程调用",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec12",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec12/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L12 Notes",
+       "url": "https://notes.cs61c.org/content/rv-procs/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1gt9Gl_wxOCVUV3uZ2v7qhe61kfrDwX_lNtZUsSDo1jo/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec12-q1",
+       "type": "choice",
+       "prompt": "RISC-V 调用约定中，函数的返回值放在哪个寄存器？",
+       "options": [
+        "ra",
+        "sp",
+        "a0",
+        "t0"
+       ],
+       "answer": 2,
+       "explain": "a0（必要时加上 a1）存放返回值。",
+       "origin": "review"
+      },
+      {
+       "id": "lec12-q2",
+       "type": "choice",
+       "prompt": "函数想使用 `s0` 寄存器，按调用约定必须怎么做？",
+       "options": [
+        "直接使用",
+        "先把原值保存到栈上，返回前恢复",
+        "改用 x0",
+        "通知调用者"
+       ],
+       "answer": 1,
+       "explain": "s 开头的寄存器是被调用者保存的。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "hw04",
+     "kind": "assignment",
+     "title": "作业 4：RISC-V",
+     "periods": 4,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "exams",
+       "label": "往年试题（可以代替作业做练习）",
+       "url": "https://cs61c.org/fa26/resources/exams/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec13",
+     "kind": "lecture",
+     "title": "第 13 讲：RISC-V 指令格式（一）",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec13",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec13/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L13 Notes",
+       "url": "https://notes.cs61c.org/content/rv-isa-formats-i/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1xodUXF_ypjbaW2w7ni9oa_9q1ZwgfrJuWISLnx_hwyw/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec13-q1",
+       "type": "choice",
+       "prompt": "一条 RV32 指令的长度是多少位？",
+       "options": [
+        "8",
+        "16",
+        "32",
+        "64"
+       ],
+       "answer": 2,
+       "explain": "每条指令恰好是一个字。",
+       "origin": "review"
+      },
+      {
+       "id": "lec13-q2",
+       "type": "choice",
+       "prompt": "I 型指令的立即数有多少位？",
+       "options": [
+        "5",
+        "12",
+        "20",
+        "32"
+       ],
+       "answer": 1,
+       "explain": "12 位立即数符号扩展后参与运算。",
+       "origin": "review"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "week-6",
+   "title": "第 6 周：指令格式、CALL、同步数字系统入门",
+   "items": [
+    {
+     "id": "lec14",
+     "kind": "lecture",
+     "title": "第 14 讲：RISC-V 指令格式（二）",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec14",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec14/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L14 Notes",
+       "url": "https://notes.cs61c.org/content/rv-isa-formats-ii/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/18b22c9g44DnIxopF159Na0_frz3CHSXROtt9J7_WlO4/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec14-q1",
+       "type": "choice",
+       "prompt": "条件分支指令里的立即数表示的是？",
+       "options": [
+        "跳转目标的绝对地址",
+        "相对当前指令地址（PC）的偏移量",
+        "寄存器编号",
+        "比较用的常数"
+       ],
+       "answer": 1,
+       "explain": "这叫 PC 相对寻址。",
+       "origin": "review"
+      },
+      {
+       "id": "lec14-q2",
+       "type": "choice",
+       "prompt": "把一个任意的 32 位常数装进寄存器，通常需要哪两条指令配合？",
+       "options": [
+        "add 和 sub",
+        "lui 和 addi",
+        "lw 和 sw",
+        "beq 和 jal"
+       ],
+       "answer": 1,
+       "explain": "lui 装入高 20 位，addi 补上低 12 位。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "disc05",
+     "kind": "section",
+     "title": "讨论课 5：RISC-V 调用约定",
+     "periods": 2,
+     "pages": [],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "讲解视频（2024 春季）",
+       "url": "https://www.youtube.com/playlist?list=PLnvUoC1Ghb7x7iTP2qBJd7dBYrZXJ34xq"
+      }
+     ],
+     "links": [
+      {
+       "kind": "notes",
+       "label": "Discussion 5: RISC-V Calling Convention（官方，英文）",
+       "url": "https://cs61c.org/fa26/discussions/disc05/"
+      },
+      {
+       "kind": "notes",
+       "label": "题目（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc05/disc05.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "参考答案（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc05/disc05-sols.pdf"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "lec15",
+     "kind": "lecture",
+     "title": "第 15 讲：编译、汇编、链接、装载",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec15",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec15/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L15 Notes",
+       "url": "https://notes.cs61c.org/content/call/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1t_lhWC1MyVcGPo_9nSdPeKRiDUR2mxVmHgTGVdBwtA8/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec15-q1",
+       "type": "choice",
+       "prompt": "CALL 四个步骤的正确顺序是？",
+       "options": [
+        "链接、编译、汇编、装载",
+        "编译、汇编、链接、装载",
+        "汇编、编译、装载、链接",
+        "装载、链接、汇编、编译"
+       ],
+       "answer": 1,
+       "explain": "Compiler → Assembler → Linker → Loader。",
+       "origin": "review"
+      },
+      {
+       "id": "lec15-q2",
+       "type": "choice",
+       "prompt": "把多个目标文件合并成一个可执行文件、并填好地址的是？",
+       "options": [
+        "编译器",
+        "汇编器",
+        "链接器",
+        "装载器"
+       ],
+       "answer": 2,
+       "explain": "链接器根据符号表和重定位表完成这件事。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "lab04",
+     "kind": "lab",
+     "title": "实验 4：RISC-V 调用约定",
+     "periods": 3,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "labs",
+       "label": "Lab 4: RISC-V Calling Convention（官方，英文）",
+       "url": "https://cs61c.org/fa26/labs/lab04/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec16",
+     "kind": "lecture",
+     "title": "第 16 讲：同步数字系统入门",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec16",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec16/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L16 Notes",
+       "url": "https://notes.cs61c.org/content/sds-intro/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1q1Jm18oKK0YsQeq9WoUupHmREYPPQa17KwN3ygHgNK4/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec16-q1",
+       "type": "choice",
+       "prompt": "组合逻辑电路的输出取决于？",
+       "options": [
+        "时钟的频率",
+        "当前的输入",
+        "以前的输入",
+        "寄存器里保存的值"
+       ],
+       "answer": 1,
+       "explain": "组合逻辑没有记忆。",
+       "origin": "review"
+      },
+      {
+       "id": "lec16-q2",
+       "type": "choice",
+       "prompt": "「同步」数字系统里，各部分靠什么协调动作？",
+       "options": [
+        "软件",
+        "统一的时钟信号",
+        "电压的高低",
+        "传播延迟"
+       ],
+       "answer": 1,
+       "explain": "状态元件只在时钟边沿更新。",
+       "origin": "review"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "week-7",
+   "title": "第 7 周：组合逻辑、状态、算术逻辑单元",
+   "items": [
+    {
+     "id": "lec17",
+     "kind": "lecture",
+     "title": "第 17 讲：组合逻辑",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec17",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec17/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L17 Notes",
+       "url": "https://notes.cs61c.org/content/sds-combinational-logic/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1Bo_IjIUxOTmgbXXVzMars4xOZhb0Q-vKVlCZXJ8MXBI/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec17-q1",
+       "type": "choice",
+       "prompt": "有 3 个输入的真值表一共有多少行？",
+       "options": [
+        "3",
+        "6",
+        "8",
+        "9"
+       ],
+       "answer": 2,
+       "explain": "每个输入有两种取值，2³ = 8。",
+       "origin": "review"
+      },
+      {
+       "id": "lec17-q2",
+       "type": "choice",
+       "prompt": "按德摩根定律，「A 与 B」整体取非，等于？",
+       "options": [
+        "A 的非 与 B 的非",
+        "A 的非 或 B 的非",
+        "A 或 B",
+        "A 与 B"
+       ],
+       "answer": 1,
+       "explain": "与变成或，并且各自取非。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "disc06",
+     "kind": "section",
+     "title": "讨论课 6：指令翻译、CALL",
+     "periods": 2,
+     "pages": [],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "讲解视频（2024 春季）",
+       "url": "https://www.youtube.com/playlist?list=PLnvUoC1Ghb7zS6tnBg_Nkgn785Run0Vdp"
+      }
+     ],
+     "links": [
+      {
+       "kind": "notes",
+       "label": "Discussion 6: Instruction Translation, CALL（官方，英文）",
+       "url": "https://cs61c.org/fa26/discussions/disc06/"
+      },
+      {
+       "kind": "notes",
+       "label": "题目（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc06/disc06.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "参考答案（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc06/disc06-sols.pdf"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "hw05",
+     "kind": "assignment",
+     "title": "作业 5：CALL、同步数字系统",
+     "periods": 4,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "exams",
+       "label": "往年试题（可以代替作业做练习）",
+       "url": "https://cs61c.org/fa26/resources/exams/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec18",
+     "kind": "lecture",
+     "title": "第 18 讲：状态",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec18",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec18/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：L18 Notes",
+       "url": "https://notes.cs61c.org/content/sds-state/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1whJnqtQrN9vdsJNfDr1wUCkb2C8BoMFVCDJfFiOnL6A/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec18-q1",
+       "type": "choice",
+       "prompt": "触发器在什么时刻把输入的值存进去？",
+       "options": [
+        "输入变化的任意时刻",
+        "时钟的上升沿",
+        "时钟为低电平的整个期间",
+        "断电时"
+       ],
+       "answer": 1,
+       "explain": "这门课使用的是上升沿触发的触发器。",
+       "origin": "review"
+      },
+      {
+       "id": "lec18-q2",
+       "type": "choice",
+       "prompt": "电路的最小时钟周期由什么决定？",
+       "options": [
+        "逻辑门的总数",
+        "时钟到输出延迟 + 关键路径的组合逻辑延迟 + 建立时间",
+        "输入信号的个数",
+        "寄存器的位数"
+       ],
+       "answer": 1,
+       "explain": "周期再短，数据就来不及在下一个上升沿之前稳定。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "lec19",
+     "kind": "lecture",
+     "title": "第 19 讲：功能模块与算术逻辑单元",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec19",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec19/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：SDS Blocks Notes",
+       "url": "https://notes.cs61c.org/content/sds-blocks/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：Adder Subtractor Notes",
+       "url": "https://notes.cs61c.org/content/sds-blocks/adder-subtractor/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1yTMS6Fa0buS5Q3Bt9hhfgimXn2UfGbPecrGyi918Tzs/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec19-q1",
+       "type": "choice",
+       "prompt": "一个 4 选 1 的多路选择器需要几位选择信号？",
+       "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+       ],
+       "answer": 1,
+       "explain": "2 位可以区分 4 个输入。",
+       "origin": "review"
+      },
+      {
+       "id": "lec19-q2",
+       "type": "choice",
+       "prompt": "加法器怎样被复用来做减法 A − B？",
+       "options": [
+        "把 A 取反",
+        "把 B 按位取反，并把进位输入设为 1",
+        "把结果左移一位",
+        "做不到，必须另做减法器"
+       ],
+       "answer": 1,
+       "explain": "A − B = A + (B 取反) + 1。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "proj3",
+     "kind": "project",
+     "title": "项目 3：CS61CPU",
+     "periods": 20,
+     "pages": [
+      {
+       "id": "proj3",
+       "title": "项目介绍"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "assignments",
+       "label": "Project 3: CS61CPU（官方，英文）",
+       "url": "https://cs61c.org/fa26/projects/proj3/"
+      }
+     ],
+     "practice": []
+    }
+   ]
+  },
+  {
+   "id": "week-8",
+   "title": "第 8 周：单周期处理器",
+   "items": [
+    {
+     "id": "lec20",
+     "kind": "lecture",
+     "title": "第 20 讲：RISC-V 单周期数据通路（一）",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec20",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec20/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：Datapath Notes",
+       "url": "https://notes.cs61c.org/content/datapath/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://drive.google.com/file/d/1ElDgNc2d7JyT-ZUE9ATy-Xqy0yhCHOev/view?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec20-q1",
+       "type": "choice",
+       "prompt": "单周期处理器执行一条指令需要几个时钟周期？",
+       "options": [
+        "1 个",
+        "2 个",
+        "5 个",
+        "取决于指令"
+       ],
+       "answer": 0,
+       "explain": "所以时钟周期必须长到能容纳最慢的那条指令。",
+       "origin": "review"
+      },
+      {
+       "id": "lec20-q2",
+       "type": "choice",
+       "prompt": "程序计数器（PC）里保存的是什么？",
+       "options": [
+        "当前指令的运算结果",
+        "当前指令的地址",
+        "已经执行的指令条数",
+        "栈顶的地址"
+       ],
+       "answer": 1,
+       "explain": "顺序执行时每条指令之后 PC 加 4。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "disc07",
+     "kind": "section",
+     "title": "讨论课 7：布尔代数、同步数字系统、有限状态机",
+     "periods": 2,
+     "pages": [],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "讲解视频（2024 春季）",
+       "url": "https://www.youtube.com/playlist?list=PLnvUoC1Ghb7xpBAj21USNfDGf98hiwul_"
+      }
+     ],
+     "links": [
+      {
+       "kind": "notes",
+       "label": "Discussion 7: Boolean Algebra, SDS, FSM（官方，英文）",
+       "url": "https://cs61c.org/fa26/discussions/disc07/"
+      },
+      {
+       "kind": "notes",
+       "label": "题目（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc07/disc07.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "参考答案（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc07/disc07-sols.pdf"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "lec21",
+     "kind": "lecture",
+     "title": "第 21 讲：RISC-V 单周期数据通路（二）",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec21",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec21/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：Datapath II Notes",
+       "url": "https://notes.cs61c.org/content/datapath/load-store/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://drive.google.com/file/d/1zUzCU_5TytNYp6OId1kDvdsf7TbDkzMw/view?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec21-q1",
+       "type": "choice",
+       "prompt": "执行加载指令 `lw` 时，写回寄存器的数据来自哪里？",
+       "options": [
+        "算术逻辑单元的输出",
+        "数据存储器读出的值",
+        "PC + 4",
+        "立即数生成器"
+       ],
+       "answer": 1,
+       "explain": "算术逻辑单元的输出在这里用作访存的地址。",
+       "origin": "review"
+      },
+      {
+       "id": "lec21-q2",
+       "type": "choice",
+       "prompt": "执行 `sw` 指令时，哪个阶段实际上什么都不做？",
+       "options": [
+        "取指",
+        "执行",
+        "访存",
+        "写回"
+       ],
+       "answer": 3,
+       "explain": "存储指令不修改任何寄存器。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "lab05",
+     "kind": "lab",
+     "title": "实验 5：Logisim",
+     "periods": 3,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "labs",
+       "label": "Lab 5: Logisim（官方，英文）",
+       "url": "https://cs61c.org/fa26/labs/lab05/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "hw06",
+     "kind": "assignment",
+     "title": "作业 6：RISC-V 单周期数据通路",
+     "periods": 4,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "exams",
+       "label": "往年试题（可以代替作业做练习）",
+       "url": "https://cs61c.org/fa26/resources/exams/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec22",
+     "kind": "lecture",
+     "title": "第 22 讲：RISC-V 单周期控制",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec22",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec22/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：Control Notes",
+       "url": "https://notes.cs61c.org/content/datapath/control/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://drive.google.com/file/d/1bdlGjC3QVeVXJdoMhc1GZXggy5IUpRMS/view?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec22-q1",
+       "type": "choice",
+       "prompt": "控制信号 `RegWEn` 的作用是？",
+       "options": [
+        "选择运算种类",
+        "决定这条指令是否写寄存器堆",
+        "选择立即数格式",
+        "控制存储器读写"
+       ],
+       "answer": 1,
+       "explain": "例如 sw 和分支指令不写寄存器，RegWEn 为 0。",
+       "origin": "review"
+      },
+      {
+       "id": "lec22-q2",
+       "type": "choice",
+       "prompt": "单周期处理器里，通常是哪一类指令决定了时钟周期的长度？",
+       "options": [
+        "add",
+        "分支",
+        "加载（例如 lw）",
+        "跳转"
+       ],
+       "answer": 2,
+       "explain": "加载指令依次用到取指、译码、执行、访存、写回。",
+       "origin": "review"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "week-9",
+   "title": "第 9 周：五级流水线",
+   "items": [
+    {
+     "id": "lec23",
+     "kind": "lecture",
+     "title": "第 23 讲：RISC-V 五级流水线（一）",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec23",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec23/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：Pipeline I Notes",
+       "url": "https://notes.cs61c.org/content/pipeline/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1H3AQ5sggGZwZEi-2bZC6Sf0_upYCq36WUUSguLDRYIw/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec23-q1",
+       "type": "choice",
+       "prompt": "流水线主要提高的是？",
+       "options": [
+        "单条指令的执行速度",
+        "吞吐量（单位时间完成的指令数）",
+        "存储器的容量",
+        "指令的种类"
+       ],
+       "answer": 1,
+       "explain": "单条指令的延迟并没有缩短。",
+       "origin": "review"
+      },
+      {
+       "id": "lec23-q2",
+       "type": "choice",
+       "prompt": "流水线处理器的时钟周期由什么决定？",
+       "options": [
+        "所有阶段延迟之和",
+        "最慢的那一个阶段的延迟",
+        "最快的阶段的延迟",
+        "指令的条数"
+       ],
+       "answer": 1,
+       "explain": "所以各阶段的延迟越均衡越好。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "disc08",
+     "kind": "section",
+     "title": "讨论课 8：数据通路",
+     "periods": 2,
+     "pages": [],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "讲解视频（2024 春季）",
+       "url": "https://www.youtube.com/playlist?list=PLnvUoC1Ghb7xc5NXktqSjtb2NgqqxgU_n"
+      }
+     ],
+     "links": [
+      {
+       "kind": "notes",
+       "label": "Discussion 8: Datapath（官方，英文）",
+       "url": "https://cs61c.org/fa26/discussions/disc08/"
+      },
+      {
+       "kind": "notes",
+       "label": "题目（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc08/disc08.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "参考答案（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc08/disc08-sols.pdf"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "lec24",
+     "kind": "lecture",
+     "title": "第 24 讲：RISC-V 五级流水线（二）：冒险",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec24",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec24/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：Pipeline II Notes",
+       "url": "https://notes.cs61c.org/content/pipeline-hazards/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/12S6IoDzNudgKIa_d5Fb4DodhX43iB1T-s6X0IO4AgU4/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec24-q1",
+       "type": "choice",
+       "prompt": "「后一条指令要用前一条指令尚未写回的结果」属于哪种冒险？",
+       "options": [
+        "结构冒险",
+        "数据冒险",
+        "控制冒险",
+        "不属于冒险"
+       ],
+       "answer": 1,
+       "explain": "通常用转发来解决。",
+       "origin": "review"
+      },
+      {
+       "id": "lec24-q2",
+       "type": "choice",
+       "prompt": "下面哪种情况即使有转发也必须停顿一个周期？",
+       "options": [
+        "add 之后紧跟 sub",
+        "lw 之后的下一条指令立刻使用加载出来的值",
+        "两条互不相关的指令",
+        "addi 之后紧跟 add"
+       ],
+       "answer": 1,
+       "explain": "加载的数据要到访存阶段结束才有，下一条指令的执行阶段等不到。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "hw07",
+     "kind": "assignment",
+     "title": "作业 7：RISC-V 五级流水线",
+     "periods": 4,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "exams",
+       "label": "往年试题（可以代替作业做练习）",
+       "url": "https://cs61c.org/fa26/resources/exams/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec25",
+     "kind": "lecture",
+     "title": "第 25 讲：RISC-V 五级流水线（三）：冒险（续）",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec25",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec25/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：Pipeline III Notes",
+       "url": "https://notes.cs61c.org/content/pipeline-hazards/control-hazards/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1yP6v3bdGAG8Gs9-RMSeefU5ihB4xXW9mcV4hW0YDkNQ/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec25-q1",
+       "type": "choice",
+       "prompt": "分支预测错误时，处理器要做什么？",
+       "options": [
+        "重启程序",
+        "清除已经取进流水线的错误指令，从正确的地址重新取指",
+        "什么都不用做",
+        "报告异常"
+       ],
+       "answer": 1,
+       "explain": "被清除的指令还没有修改任何状态。",
+       "origin": "review"
+      },
+      {
+       "id": "lec25-q2",
+       "type": "choice",
+       "prompt": "控制冒险产生的原因是？",
+       "options": [
+        "两条指令争用存储器",
+        "分支的结果在取下一条指令时还不知道",
+        "寄存器不够用",
+        "立即数太大"
+       ],
+       "answer": 1,
+       "explain": "分支结果要到执行阶段才算出来。",
+       "origin": "review"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "week-10",
+   "title": "第 10 周：缓存",
+   "items": [
+    {
+     "id": "lec26",
+     "kind": "lecture",
+     "title": "第 26 讲：缓存（一）：性能",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec26",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec26/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：Caches I Notes",
+       "url": "https://notes.cs61c.org/content/caches-intro/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://drive.google.com/file/d/1Ht3hC5Z_1PdFlePwzXX4q7sN59MxWaMQ/view?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec26-q1",
+       "type": "choice",
+       "prompt": "「顺序遍历一个数组」主要利用了哪种局部性？",
+       "options": [
+        "时间局部性",
+        "空间局部性",
+        "两者都不是",
+        "网络局部性"
+       ],
+       "answer": 1,
+       "explain": "相邻的元素在内存里挨在一起，会被同一个缓存块带进来。",
+       "origin": "review"
+      },
+      {
+       "id": "lec26-q2",
+       "type": "text",
+       "prompt": "缓存命中时间是 1 ns，缺失率是 10%，缺失代价是 100 ns，平均访存时间是 ___ ns（填数字）。",
+       "answer": [
+        "11"
+       ],
+       "explain": "1 + 0.1 × 100 = 11。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "disc09",
+     "kind": "section",
+     "title": "讨论课 9：流水线、冒险",
+     "periods": 2,
+     "pages": [],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "讲解视频（2024 春季）",
+       "url": "https://www.youtube.com/playlist?list=PLnvUoC1Ghb7w4-8s5ZOqdZIy-aA6pNh-2"
+      }
+     ],
+     "links": [
+      {
+       "kind": "notes",
+       "label": "Discussion 9: Pipelining, Hazards（官方，英文）",
+       "url": "https://cs61c.org/fa26/discussions/disc09/"
+      },
+      {
+       "kind": "notes",
+       "label": "题目（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc09/disc09.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "参考答案（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc09/disc09-sols.pdf"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "lec27",
+     "kind": "lecture",
+     "title": "第 27 讲：缓存（二）",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec27",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec27/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：Caches II Notes",
+       "url": "https://notes.cs61c.org/content/caches-ii/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://drive.google.com/file/d/1DhB1LKIq711nwMWu4GSuaCeDYn7tzNkW/view?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec27-q1",
+       "type": "choice",
+       "prompt": "块大小是 16 字节的缓存，地址里的块内偏移占几位？",
+       "options": [
+        "2",
+        "4",
+        "8",
+        "16"
+       ],
+       "answer": 1,
+       "explain": "log₂16 = 4。",
+       "origin": "review"
+      },
+      {
+       "id": "lec27-q2",
+       "type": "choice",
+       "prompt": "缓存行里的「标记」（tag）是用来做什么的？",
+       "options": [
+        "记录数据是否被修改",
+        "确认这一行存放的是不是要找的那个内存块",
+        "记录访问的次数",
+        "保存数据本身"
+       ],
+       "answer": 1,
+       "explain": "很多不同的内存块会映射到同一个位置，靠标记区分。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "exam-mt1",
+     "kind": "exam",
+     "title": "期中考试第一部分",
+     "periods": 3,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "exams",
+       "label": "往年试题（Past Exams）",
+       "url": "https://cs61c.org/fa26/resources/exams/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lab06",
+     "kind": "lab",
+     "title": "实验 6：CPU、流水线",
+     "periods": 3,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "labs",
+       "label": "Lab 6: CPU, Pipelining（官方，英文）",
+       "url": "https://cs61c.org/fa26/labs/lab06/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec28",
+     "kind": "lecture",
+     "title": "第 28 讲：缓存（三）",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec28",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec28/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：Caches III Notes",
+       "url": "https://notes.cs61c.org/content/caches-ii/direct-mapped/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://drive.google.com/file/d/1pgF_0d9fe_ev4e8WGmvVYI3vaC4RDcCO/view?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec28-q1",
+       "type": "choice",
+       "prompt": "直接映射缓存中，一个内存块可以放在缓存的几个位置？",
+       "options": [
+        "任何位置",
+        "只有 1 个位置",
+        "2 个位置",
+        "4 个位置"
+       ],
+       "answer": 1,
+       "explain": "位置由地址里的索引唯一决定。",
+       "origin": "review"
+      },
+      {
+       "id": "lec28-q2",
+       "type": "text",
+       "prompt": "32 位地址，块大小 16 字节，一共 64 个块的直接映射缓存，标记占 ___ 位（填数字）。",
+       "answer": [
+        "22"
+       ],
+       "explain": "32 − 4（偏移）− 6（索引）= 22。",
+       "origin": "review"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "week-11",
+   "title": "第 11 周：缓存、并行入门",
+   "items": [
+    {
+     "id": "lec29",
+     "kind": "lecture",
+     "title": "第 29 讲：缓存（四）",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec29",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec29/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：Caches IV Notes",
+       "url": "https://notes.cs61c.org/content/caches-iii/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://drive.google.com/file/d/1D9l5neHdwdc6ETJ4YmdvdePNNSDOLtjN/view?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec29-q1",
+       "type": "choice",
+       "prompt": "提高缓存的相联度主要减少哪一类缺失？",
+       "options": [
+        "强制缺失",
+        "容量缺失",
+        "冲突缺失",
+        "都不能减少"
+       ],
+       "answer": 2,
+       "explain": "同一个组里可以放更多的块，互相挤出的情况变少。",
+       "origin": "review"
+      },
+      {
+       "id": "lec29-q2",
+       "type": "choice",
+       "prompt": "最近最少使用（LRU）替换策略换出的是？",
+       "options": [
+        "最先进入缓存的块",
+        "最长时间没有被访问过的块",
+        "随机一个块",
+        "最大的块"
+       ],
+       "answer": 1,
+       "explain": "依据是时间局部性。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "disc10",
+     "kind": "section",
+     "title": "讨论课 10：缓存",
+     "periods": 2,
+     "pages": [],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "讲解视频（2024 春季）",
+       "url": "https://www.youtube.com/playlist?list=PLnvUoC1Ghb7zUclmmdOmPj2xHE6blvhYc"
+      }
+     ],
+     "links": [
+      {
+       "kind": "notes",
+       "label": "Discussion 10: Caches（官方，英文）",
+       "url": "https://cs61c.org/fa26/discussions/disc10/"
+      },
+      {
+       "kind": "notes",
+       "label": "题目（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc10/disc10.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "参考答案（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc10/disc10-sols.pdf"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "hw08",
+     "kind": "assignment",
+     "title": "作业 8：硬件性能、缓存",
+     "periods": 4,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "exams",
+       "label": "往年试题（可以代替作业做练习）",
+       "url": "https://cs61c.org/fa26/resources/exams/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec30",
+     "kind": "lecture",
+     "title": "第 30 讲：并行（一）：性能与阿姆达尔定律",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec30",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec30/"
+      },
+      {
+       "kind": "other",
+       "label": "OpenMP Summary Card",
+       "url": "https://inst.eecs.berkeley.edu/~cs61c/sp21/resources-pdfs/OpenMP3.0-SummarySpec.pdf"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：Performance Programming Notes",
+       "url": "https://notes.cs61c.org/content/parallel-performance/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1Xc5lLEg2uG3XkKyfjzYZehEaNq8otkHRcG_cd8WkHTM/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec30-q1",
+       "type": "text",
+       "prompt": "程序有 50% 可以并行，使用无穷多个处理器，整体加速比的上限是 ___ 倍（填数字）。",
+       "answer": [
+        "2"
+       ],
+       "explain": "1 / (1 − 0.5) = 2。",
+       "origin": "review"
+      },
+      {
+       "id": "lec30-q2",
+       "type": "choice",
+       "prompt": "阿姆达尔定律说明了什么？",
+       "options": [
+        "处理器越多程序一定越快",
+        "整体加速比受到程序里不能加速的部分的限制",
+        "并行程序不需要缓存",
+        "时钟频率可以无限提高"
+       ],
+       "answer": 1,
+       "explain": "要先优化占比最大的部分。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "lec31",
+     "kind": "lecture",
+     "title": "第 31 讲：并行（二）：SIMD",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec31",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec31/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：SIMD, DLP Notes",
+       "url": "https://notes.cs61c.org/content/parallel-dlp/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/18ZApz4ee77Zqq7UQqfpYxsXaAoEVgg0o16TX-4oXmd8/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec31-q1",
+       "type": "choice",
+       "prompt": "SIMD 属于哪一种并行？",
+       "options": [
+        "线程级并行",
+        "数据级并行",
+        "进程级并行",
+        "网络并行"
+       ],
+       "answer": 1,
+       "explain": "一条指令同时处理多个数据。",
+       "origin": "review"
+      },
+      {
+       "id": "lec31-q2",
+       "type": "choice",
+       "prompt": "256 位的向量寄存器一次可以放多少个 32 位整数？",
+       "options": [
+        "4",
+        "8",
+        "16",
+        "32"
+       ],
+       "answer": 1,
+       "explain": "256 ÷ 32 = 8。",
+       "origin": "review"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "week-12",
+   "title": "第 12 周：线程级并行与同步",
+   "items": [
+    {
+     "id": "lec32",
+     "kind": "lecture",
+     "title": "第 32 讲：并行（三）：线程级并行",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec32",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec32/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：MIMD, TLP Notes",
+       "url": "https://notes.cs61c.org/content/parallel-tlp/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1kWjHyOvuMOmCbozOtxXFY9Kyrxy8_65G596ePciQxmM/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec32-q1",
+       "type": "choice",
+       "prompt": "同一个进程里的多个线程共享的是？",
+       "options": [
+        "寄存器",
+        "程序计数器",
+        "栈",
+        "堆和全局数据"
+       ],
+       "answer": 3,
+       "explain": "每个线程有自己的寄存器、PC 和栈。",
+       "origin": "review"
+      },
+      {
+       "id": "lec32-q2",
+       "type": "choice",
+       "prompt": "`#pragma omp parallel for` 的作用是？",
+       "options": [
+        "让循环执行两遍",
+        "把 for 循环的各次迭代分给多个线程执行",
+        "关闭编译优化",
+        "把循环改成递归"
+       ],
+       "answer": 1,
+       "explain": "前提是各次迭代之间互不依赖。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "exam-mt2",
+     "kind": "exam",
+     "title": "期中考试第二部分",
+     "periods": 3,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "exams",
+       "label": "往年试题（Past Exams）",
+       "url": "https://cs61c.org/fa26/resources/exams/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "disc11",
+     "kind": "section",
+     "title": "讨论课 11：并行",
+     "periods": 2,
+     "pages": [],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "讲解视频（2024 春季）",
+       "url": "https://www.youtube.com/playlist?list=PLnvUoC1Ghb7wAN5y6QnVlGje54DjwGEBS"
+      }
+     ],
+     "links": [
+      {
+       "kind": "notes",
+       "label": "Discussion 11: Parallelism（官方，英文）",
+       "url": "https://cs61c.org/fa26/discussions/disc11/"
+      },
+      {
+       "kind": "notes",
+       "label": "题目（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc11/disc11.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "参考答案（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc11/disc11-sols.pdf"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "hw09",
+     "kind": "assignment",
+     "title": "作业 9：并行",
+     "periods": 4,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "exams",
+       "label": "往年试题（可以代替作业做练习）",
+       "url": "https://cs61c.org/fa26/resources/exams/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec33",
+     "kind": "lecture",
+     "title": "第 33 讲：并行（四）：并发与同步",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec33",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec33/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：Synchronization Notes",
+       "url": "https://notes.cs61c.org/content/parallel-tlp/data-race/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1w7U33GZoXfGsDOPemK6Cntxogi1Z0N7k2LBzqqtboZM/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec33-q1",
+       "type": "choice",
+       "prompt": "构成数据竞争的条件是？",
+       "options": [
+        "多个线程同时读同一个变量",
+        "多个线程访问同一个位置，至少有一个在写，并且没有同步",
+        "一个线程访问多个变量",
+        "线程数超过核心数"
+       ],
+       "answer": 1,
+       "explain": "只读不写不构成数据竞争。",
+       "origin": "review"
+      },
+      {
+       "id": "lec33-q2",
+       "type": "choice",
+       "prompt": "用多个线程对数组求和，既正确又高效的 OpenMP 写法是？",
+       "options": [
+        "所有线程直接执行 sum += a[i]",
+        "把整个循环放进 critical",
+        "使用 reduction(+:sum)",
+        "不使用并行"
+       ],
+       "answer": 2,
+       "explain": "reduction 让每个线程维护私有的局部和，最后合并。",
+       "origin": "review"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "week-13",
+   "title": "第 13 周：并行、虚拟内存",
+   "items": [
+    {
+     "id": "lec34",
+     "kind": "lecture",
+     "title": "第 34 讲：并行（五）：MIMD",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec34",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec34/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：MIMD, TLP Notes",
+       "url": "https://notes.cs61c.org/content/parallel-tlp/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1ejS0QYN3bKdIkxOHSHdmsELaYhjGPx4GZYa_6ivNQaY/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec34-q1",
+       "type": "choice",
+       "prompt": "「伪共享」指的是？",
+       "options": [
+        "两个线程共用一把锁",
+        "两个线程修改的不同变量位于同一个缓存块，导致缓存块反复失效",
+        "多个进程共用一个文件",
+        "线程数量太少"
+       ],
+       "answer": 1,
+       "explain": "解决办法是让这些变量分开放在不同的缓存块里。",
+       "origin": "review"
+      },
+      {
+       "id": "lec34-q2",
+       "type": "choice",
+       "prompt": "多核处理器需要缓存一致性协议的原因是？",
+       "options": [
+        "缓存容量不够",
+        "每个核心有自己的缓存，同一份数据可能有多个副本",
+        "主存速度太快",
+        "为了省电"
+       ],
+       "answer": 1,
+       "explain": "一个核心写入后，其他核心里的旧副本必须失效或更新。",
+       "origin": "review"
+      }
+     ]
+    },
+    {
+     "id": "disc12",
+     "kind": "section",
+     "title": "讨论课 12：并行（续）、虚拟内存",
+     "periods": 2,
+     "pages": [],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "讲解视频（2024 春季）",
+       "url": "https://www.youtube.com/playlist?list=PLnvUoC1Ghb7wEieCr2owa2GP1vRxagqNH"
+      }
+     ],
+     "links": [
+      {
+       "kind": "notes",
+       "label": "Discussion 12: More Parallelism, VM（官方，英文）",
+       "url": "https://cs61c.org/fa26/discussions/disc12/"
+      },
+      {
+       "kind": "notes",
+       "label": "题目（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc12/disc12.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "参考答案（PDF）",
+       "url": "https://cs61c.org/fa26/pdfs/discussions/disc12/disc12-sols.pdf"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "lec35",
+     "kind": "lecture",
+     "title": "第 35 讲：客座讲座：并行（六）",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec35",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方课程网站的课表（材料发布后在这里）",
+       "url": "https://cs61c.org/fa26/"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "lab07",
+     "kind": "lab",
+     "title": "实验 7：并行",
+     "periods": 3,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方课程网站的课表（材料发布后在这里）",
+       "url": "https://cs61c.org/fa26/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "hw10",
+     "kind": "assignment",
+     "title": "作业 10：虚拟内存",
+     "periods": 4,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "exams",
+       "label": "往年试题（可以代替作业做练习）",
+       "url": "https://cs61c.org/fa26/resources/exams/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec36",
+     "kind": "lecture",
+     "title": "第 36 讲：虚拟内存（一）",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec36",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec36/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：VM I Notes",
+       "url": "https://notes.cs61c.org/content/vm/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1iepGDQtiYckyEcFCIt4MDk-k3YllBYC_lPYumk3MP6c/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec36-q1",
+       "type": "choice",
+       "prompt": "页大小是 4 KiB 时，地址中的页内偏移占几位？",
+       "options": [
+        "10",
+        "12",
+        "16",
+        "20"
+       ],
+       "answer": 1,
+       "explain": "4 KiB = 2¹² 字节。",
+       "origin": "review"
+      },
+      {
+       "id": "lec36-q2",
+       "type": "choice",
+       "prompt": "虚拟地址翻译成物理地址时，哪一部分保持不变？",
+       "options": [
+        "页号",
+        "页内偏移",
+        "整个地址",
+        "都要改变"
+       ],
+       "answer": 1,
+       "explain": "只把虚拟页号换成物理页号。",
+       "origin": "review"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "week-14",
+   "title": "第 14 周：虚拟内存",
+   "items": [
+    {
+     "id": "lec37",
+     "kind": "lecture",
+     "title": "第 37 讲：虚拟内存（二）",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec37",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec37/"
+      },
+      {
+       "kind": "notes",
+       "label": "官方课程笔记：VM II Notes",
+       "url": "https://notes.cs61c.org/content/vm/page-table/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://docs.google.com/presentation/d/1dy1gr6EkEZKEfmAya3MhopzKeJDp8K22OThQPEBUR9A/edit?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec37-q1",
+       "type": "choice",
+       "prompt": "快表（TLB）缓存的是什么？",
+       "options": [
+        "最近访问过的数据",
+        "最近用过的「虚拟页号 → 物理页号」翻译结果",
+        "磁盘上的文件",
+        "指令的译码结果"
+       ],
+       "answer": 1,
+       "explain": "它是页表的缓存。",
+       "origin": "review"
+      },
+      {
+       "id": "lec37-q2",
+       "type": "choice",
+       "prompt": "使用多级页表的主要原因是？",
+       "options": [
+        "加快地址翻译",
+        "减少页表本身占用的内存",
+        "提高缓存命中率",
+        "支持更多的线程"
+       ],
+       "answer": 1,
+       "explain": "没有用到的地址范围不需要建立下一级页表。",
+       "origin": "review"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "week-15",
+   "title": "第 15 周：客座讲座与总结",
+   "items": [
+    {
+     "id": "lec38",
+     "kind": "lecture",
+     "title": "第 38 讲：客座讲座：用计算拯救世界（Kathy Yelick）",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec38",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方课程网站的课表（材料发布后在这里）",
+       "url": "https://cs61c.org/fa26/"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "disc13",
+     "kind": "section",
+     "title": "讨论课 13：虚拟内存",
+     "periods": 2,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方课程网站的课表（材料发布后在这里）",
+       "url": "https://cs61c.org/fa26/"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "lec39",
+     "kind": "lecture",
+     "title": "第 39 讲：客座讲座：Dave Patterson",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec39",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方课程网站的课表（材料发布后在这里）",
+       "url": "https://cs61c.org/fa26/"
+      }
+     ],
+     "practice": [],
+     "optional": true
+    },
+    {
+     "id": "proj4",
+     "kind": "project",
+     "title": "项目 4：61kaChow（选做，与实验 8 合并）",
+     "periods": 12,
+     "optional": true,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方课程网站（发布后在课表里）",
+       "url": "https://cs61c.org/fa26/"
+      }
+     ],
+     "practice": []
+    },
+    {
+     "id": "lec40",
+     "kind": "lecture",
+     "title": "第 40 讲：总结与展望",
+     "periods": 2,
+     "pages": [
+      {
+       "id": "lec40",
+       "title": "要点"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "官方讲座页面（幻灯片、录像）",
+       "url": "https://cs61c.org/fa26/lectures/lec40/"
+      },
+      {
+       "kind": "slides",
+       "label": "幻灯片",
+       "url": "https://drive.google.com/file/d/1V8VFFRI_FbiF5wj0GZFmcnA3VU_kmIoB/view?usp=sharing"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lec40-q1",
+       "type": "choice",
+       "prompt": "下面哪一项不是 CS61C 的内容？",
+       "options": [
+        "RISC-V 汇编",
+        "缓存",
+        "流水线处理器",
+        "平衡搜索树的实现"
+       ],
+       "answer": 3,
+       "explain": "数据结构是 CS61B 的内容。",
+       "origin": "review"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "final",
+   "title": "期末考试",
+   "items": [
+    {
+     "id": "exam-final",
+     "kind": "exam",
+     "title": "期末考试",
+     "periods": 3,
+     "pages": [],
+     "videos": [],
+     "links": [
+      {
+       "kind": "exams",
+       "label": "往年试题（Past Exams）",
+       "url": "https://cs61c.org/fa26/resources/exams/"
+      }
+     ],
+     "practice": []
+    }
+   ]
+  }
+ ]
 }

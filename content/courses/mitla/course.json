@@ -1,17 +1,19 @@
 {
  "format": "hiana-course@1",
  "slug": "mitla",
- "title": "MIT18.06: Linear Algebra",
+ "title": "MIT 18.06SC：线性代数（Linear Algebra）",
  "category": "数学基础",
  "provider": "MIT",
- "instructors": [],
- "language": "无",
+ "instructors": [
+  "Gilbert Strang"
+ ],
+ "language": "中文（翻译）、英文视频",
  "prerequisites": "英文",
  "difficulty": 3,
  "hours": "因人而异",
  "summary": "数学大牛 Gilbert Strang 老先生年逾古稀仍坚持授课，其经典教材 Introduction to Linear Algebra 已被清华采用为官方教材。我当时看完盗版 PDF 之后深感愧疚，含泪花了两百多买了一本英文正版收藏。下面附上此书封面……",
  "tags": [],
- "license": "介绍文字 © csdiy.wiki，MIT 许可",
+ "license": "讲座摘要、习题与解答 © MIT OpenCourseWare（Gilbert Strang），CC BY-NC-SA 4.0；中文翻译 海纳协会，同协议",
  "intro": {
   "community": "## 课程简介\n\n数学大牛 Gilbert Strang 老先生年逾古稀仍坚持授课，其经典教材 [Introduction to Linear Algebra](https://math.mit.edu/~gs/linearalgebra/) 已被清华采用为官方教材。我当时看完盗版 PDF 之后深感愧疚，含泪花了两百多买了一本英文正版收藏。下面附上此书封面，如果你能完全理解封面图的数学含义，那你对线性代数的理解一定会达到新的高度。\n\n <img src=\"https://math.mit.edu/~gs/linearalgebra/ila5/linearalgebra5_Front.jpg\" width = \"300\" height = \"300\" align=center />\n\n配合油管数学网红 <strong>3Blue1Brown</strong> 的[线性代数的本质](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab)系列视频食用更佳。\n\n## 课程资源\n\n- 课程网站：[fall2011](https://ocw.mit.edu/courses/mathematics/18-06sc-linear-algebra-fall-2011/syllabus/)\n- 课程视频：参见课程网站\n- 课程教材：Introduction to Linear Algebra. Gilbert Strang\n- 课程作业：参见课程网站\n\n2023年5月15日，Gilbert Strang 上完了他在 18.06 的[最后一课](https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/final-1806-lecture-2023/)，以88岁高龄结束了在其 MIT 61年的教学及科研生涯。但他的线性代数课已经并且还将继续影响一代代青年学子，让我们向老先生致以最崇高的敬意。\n",
   "communitySource": {
@@ -29,15 +31,5553 @@
  "links": [
   {
    "kind": "website",
-   "label": "课程网站",
-   "url": "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/"
+   "label": "网站 · OCW 18.06SC（站内课程内容按这一版整理）",
+   "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/"
+  },
+  {
+   "kind": "video",
+   "label": "视频 · 哔哩哔哩中英双语字幕（35 讲）",
+   "url": "https://www.bilibili.com/video/BV1zx411g7gq/"
   },
   {
    "kind": "website",
-   "label": "网站 · fall2011",
-   "url": "https://ocw.mit.edu/courses/mathematics/18-06sc-linear-algebra-fall-2011/syllabus/"
+   "label": "课程网站",
+   "url": "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/"
   }
  ],
- "modules": [],
- "titleEn": "Linear Algebra"
+ "modules": [
+  {
+   "id": "start",
+   "title": "开始之前",
+   "items": [
+    {
+     "id": "guide",
+     "kind": "reading",
+     "title": "开始之前：这门课怎么学",
+     "periods": 1,
+     "pages": [
+      {
+       "id": "guide",
+       "title": "学习指南"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "MIT OCW 18.06SC 课程网站",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra 主页",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      },
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：全部 35 讲（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/"
+      }
+     ],
+     "practice": []
+    }
+   ]
+  },
+  {
+   "id": "unit-1",
+   "title": "单元 1：Ax = b 与四个基本子空间",
+   "items": [
+    {
+     "id": "ses1-1",
+     "kind": "lecture",
+     "title": "第 1 讲：线性方程组的几何解释",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses1-1-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses1-1-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=1"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=J7DzL2_Na80"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=My5w4MXWBew"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解（普通话）：线性代数的几何表示",
+       "url": "https://www.youtube.com/watch?v=mgbjhzDndOY"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/the-geometry-of-linear-equations/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/6913aa2f37dada8fdda334168b30339b_MIT18_06SCF11_Ses1.1sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/924857f47516849941e6217c76d3b357_J7DzL2_Na80.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/da7edc26bc12b2aca08bbeff1dc2f25f_My5w4MXWBew.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/f511d20996159f321b6704f5b2070e04_MIT18_06SCF11_Ses1.1prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/290a5d857d2a51bf21d4eebf05905620_MIT18_06SCF11_Ses1.1sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 1.1, 1.2,、2.1 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "dependent",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 1.1。\n\n向量 $w_1 = (1, 2, 3)$、$w_2 = (4, 5, 6)$、$w_3 = (7, 8, 9)$ 是线性无关的还是线性相关的？它们位于什么之中？",
+       "options": [
+        "线性相关，位于同一个平面中",
+        "线性无关，可以张成整个三维空间",
+        "线性相关，位于同一条直线上",
+        "线性无关，位于同一个平面中"
+       ],
+       "answer": 0,
+       "explain": "$w_1 - 2w_2 + w_3 = 0$，有一个不全为零的组合等于零向量，所以线性相关；三个向量都在同一个平面里，以它们为列的矩阵不可逆。",
+       "origin": "official"
+      },
+      {
+       "id": "combo",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 1.1。\n\n设 $x_1 w_1 + x_2 w_2 + x_3 w_3 = 0$，并取 $x_1 = 1$。那么 $x_2$ 等于多少？",
+       "answer": [
+        "-2"
+       ],
+       "explain": "$w_1 - 2w_2 + w_3 = 0$，所以 $x_2 = -2$、$x_3 = 1$。",
+       "origin": "official"
+      },
+      {
+       "id": "multiply",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 1.2。\n\n计算 $\\begin{bmatrix} 1 & 2 & 0 \\\\ 2 & 0 & 3 \\\\ 4 & 1 & 1 \\end{bmatrix} \\begin{bmatrix} 3 \\\\ -2 \\\\ 1 \\end{bmatrix}$。（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "-1, 9, 11",
+        "-1,9,11",
+        "-1 9 11"
+       ],
+       "explain": "每一行与向量做点积：$3 - 4 + 0 = -1$，$6 + 0 + 3 = 9$，$12 - 2 + 1 = 11$。",
+       "origin": "official"
+      },
+      {
+       "id": "shape",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 1.3。\n\n一个 3 × 2 矩阵 $A$ 乘以一个 2 × 3 矩阵 $B$，乘积 $AB$ 是几乘几的矩阵？",
+       "options": [
+        "3 × 3",
+        "2 × 2",
+        "3 × 2",
+        "不能相乘"
+       ],
+       "answer": 0,
+       "explain": "$A$ 的列数（2）等于 $B$ 的行数（2），可以相乘；结果的行数取 $A$ 的，列数取 $B$ 的：$(m \\times n)(n \\times p) = m \\times p$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses1-13",
+     "kind": "lecture",
+     "title": "第 2 讲：核心概念概览",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses1-13-notes",
+       "title": "讲座摘要"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=0oBJN8F616U"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=OZxzHcW663g"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/an-overview-of-key-ideas/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/ca8b2f24428c3ab6c74757ae5ff5056b_MIT18_06SCF11_Ses1.13sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/203505b17cb9f1cedc1db2a2d384184f_0oBJN8F616U.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/0013a5b9019fc1d7da3b303c4d395b83_OZxzHcW663g.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 1.3 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "diff",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n差分矩阵 $A = \\begin{bmatrix} 1 & 0 & 0 \\\\ -1 & 1 & 0 \\\\ 0 & -1 & 1 \\end{bmatrix}$。计算 $A \\begin{bmatrix} 1 \\\\ 4 \\\\ 9 \\end{bmatrix}$。（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "1, 3, 5",
+        "1,3,5",
+        "1 3 5"
+       ],
+       "explain": "$Ax = (x_1,\\ x_2 - x_1,\\ x_3 - x_2) = (1, 3, 5)$。",
+       "origin": "official"
+      },
+      {
+       "id": "circular",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$C = \\begin{bmatrix} 1 & 0 & -1 \\\\ -1 & 1 & 0 \\\\ 0 & -1 & 1 \\end{bmatrix}$。$Cx = b$ 什么时候有解？",
+       "options": [
+        "当 $b_1 + b_2 + b_3 = 0$",
+        "对任何 $b$ 都有解",
+        "当 $b = 0$ 才有解",
+        "当 $b_1 = b_2 = b_3$"
+       ],
+       "answer": 0,
+       "explain": "三个方程相加，左边相互抵消得到 0，所以必须有 $b_1 + b_2 + b_3 = 0$。",
+       "origin": "official"
+      },
+      {
+       "id": "inverse-sum",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n差分矩阵 $A$ 的逆 $A^{-1}$ 把 $b$ 变成什么？",
+       "options": [
+        "部分和 $(b_1,\\ b_1 + b_2,\\ b_1 + b_2 + b_3)$",
+        "差分 $(b_1,\\ b_2 - b_1,\\ b_3 - b_2)$",
+        "$(b_3, b_2, b_1)$",
+        "$(-b_1, -b_2, -b_3)$"
+       ],
+       "answer": 0,
+       "explain": "$A^{-1} = \\begin{bmatrix} 1 & 0 & 0 \\\\ 1 & 1 & 0 \\\\ 1 & 1 & 1 \\end{bmatrix}$：差分的逆运算是求和。",
+       "origin": "official"
+      }
+     ],
+     "optional": true
+    },
+    {
+     "id": "ses1-2",
+     "kind": "lecture",
+     "title": "第 3 讲：矩阵消元",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses1-2-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses1-2-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=2"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=QVKj3LADCnA"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=GLFg2UBMAxc"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/elimination-with-matrices/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/0903b4b404284cd14b66ecccea103fd4_MIT18_06SCF11_Ses1.2sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/265e502cbb641058a996fbb83c26e0a8_QVKj3LADCnA.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/b96aab30dca7e88a637e3e98932de472_GLFg2UBMAxc.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/2a96d025346d8845829251cb918caddd_MIT18_06SCF11_Ses1.2prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/43e6b5f1175983c7220ce471d4a93317_MIT18_06SCF11_Ses1.2sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 2.2 至 2.3 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "multiplier",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 2.1。\n\n用消元法解方程组 $2x + 3y = 5$、$6x + 15y = 12$ 时，应该从第二个方程中减去第一个方程的几倍？",
+       "answer": [
+        "3"
+       ],
+       "explain": "$6x \\div 2x = 3$，减去 3 倍就能消去 $6x$。",
+       "origin": "official"
+      },
+      {
+       "id": "pivots",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 2.1。\n\n接上题，消元后得到上三角矩阵 $U$。它的两个主元依次是多少？（用逗号分隔，例如 `1, 2`。）",
+       "answer": [
+        "2, 6",
+        "2,6",
+        "2 6"
+       ],
+       "explain": "$\\begin{bmatrix} 2 & 3 \\\\ 6 & 15 \\end{bmatrix} \\to \\begin{bmatrix} 2 & 3 \\\\ 0 & 6 \\end{bmatrix}$，主元是对角线上的 2 和 6。",
+       "origin": "official"
+      },
+      {
+       "id": "solution",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 2.1。\n\n方程组 $2x + 3y = 5$、$6x + 15y = 12$ 的解是？",
+       "options": [
+        "$x = \\tfrac{13}{4},\\ y = -\\tfrac{1}{2}$",
+        "$x = 1,\\ y = 1$",
+        "$x = \\tfrac{5}{2},\\ y = 0$",
+        "$x = 4,\\ y = -1$"
+       ],
+       "answer": 0,
+       "explain": "消元后 $6y = -3$，所以 $y = -\\tfrac12$；回代到 $2x + 3y = 5$ 得 $x = \\tfrac{13}{4}$。",
+       "origin": "official"
+      },
+      {
+       "id": "inverse-e",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$E_{21} = \\begin{bmatrix} 1 & 0 & 0 \\\\ -3 & 1 & 0 \\\\ 0 & 0 & 1 \\end{bmatrix}$ 从第 2 行减去第 1 行的 3 倍。它的逆矩阵 $E_{21}^{-1}$ 是？",
+       "options": [
+        "$\\begin{bmatrix} 1 & 0 & 0 \\\\ 3 & 1 & 0 \\\\ 0 & 0 & 1 \\end{bmatrix}$",
+        "$\\begin{bmatrix} 1 & 0 & 0 \\\\ -3 & 1 & 0 \\\\ 0 & 0 & 1 \\end{bmatrix}$",
+        "$\\begin{bmatrix} 1 & -3 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\end{bmatrix}$",
+        "$\\begin{bmatrix} -1 & 0 & 0 \\\\ 3 & -1 & 0 \\\\ 0 & 0 & -1 \\end{bmatrix}$"
+       ],
+       "answer": 0,
+       "explain": "要撤销「减去 3 倍」，就把第 1 行的 3 倍加回第 2 行。",
+       "origin": "official"
+      },
+      {
+       "id": "pascal-inverse",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 2.2。\n\n矩阵 $M$ 由几个消元矩阵相乘得到，它把 4 × 4 的帕斯卡矩阵一直化成了单位矩阵 $I$。那么 $M$ 与帕斯卡矩阵是什么关系？",
+       "options": [
+        "$M$ 是帕斯卡矩阵的逆矩阵",
+        "$M$ 等于帕斯卡矩阵",
+        "$M$ 是帕斯卡矩阵的转置",
+        "两者没有关系"
+       ],
+       "answer": 0,
+       "explain": "$MP = I$ 说明 $M = P^{-1}$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses1-3",
+     "kind": "lecture",
+     "title": "第 4 讲：矩阵乘法与逆矩阵",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses1-3-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses1-3-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=3"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=FX4C-JpTFgY"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=zWxhmBCdvFs"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/multiplication-and-inverse-matrices/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/1963da71c4d96e5d14e7939780f79bcc_MIT18_06SCF11_Ses1.3sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/d83ded9024aae1310ab3236a216d34d7_FX4C-JpTFgY.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/f9354bd85c6f923d33f8e8129e30c094_zWxhmBCdvFs.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/8e9ccbcc13300a9bda7f24a684bd16b6_MIT18_06SCF11_Ses1.3prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/d2dc903ca48f3d1ffa1528abde719c94_MIT18_06SCF11_Ses1.3sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 2.4 至 2.5 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "ab-ac",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 3.1。\n\n$A = \\begin{bmatrix} 1 & 2 \\\\ 3 & 4 \\end{bmatrix}$，$B = \\begin{bmatrix} 1 & 0 \\\\ 0 & 0 \\end{bmatrix}$，$C = \\begin{bmatrix} 0 & 0 \\\\ 5 & 6 \\end{bmatrix}$。计算 $A(B + C)$。（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "11, 12, 23, 24",
+        "11,12,23,24",
+        "11 12 23 24"
+       ],
+       "explain": "$B + C = \\begin{bmatrix} 1 & 0 \\\\ 5 & 6 \\end{bmatrix}$，$A(B+C) = \\begin{bmatrix} 11 & 12 \\\\ 23 & 24 \\end{bmatrix}$，与 $AB + AC$ 相同（分配律）。",
+       "origin": "official"
+      },
+      {
+       "id": "u-inverse",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 3.2。\n\n$U = \\begin{bmatrix} 1 & a & b \\\\ 0 & 1 & c \\\\ 0 & 0 & 1 \\end{bmatrix}$ 的逆矩阵 $U^{-1}$ 右上角（第 1 行第 3 列）的元素是？",
+       "options": [
+        "$ac - b$",
+        "$-b$",
+        "$b - ac$",
+        "$ab - c$"
+       ],
+       "answer": 0,
+       "explain": "高斯—若尔当消元得到 $U^{-1} = \\begin{bmatrix} 1 & -a & ac - b \\\\ 0 & 1 & -c \\\\ 0 & 0 & 1 \\end{bmatrix}$。",
+       "origin": "official"
+      },
+      {
+       "id": "inverse-2x2",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n用高斯—若尔当消元法求 $A = \\begin{bmatrix} 1 & 3 \\\\ 2 & 7 \\end{bmatrix}$ 的逆矩阵。（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "7, -3, -2, 1",
+        "7,-3,-2,1",
+        "7 -3 -2 1"
+       ],
+       "explain": "$[A \\mid I] \\to [I \\mid A^{-1}]$，得到 $A^{-1} = \\begin{bmatrix} 7 & -3 \\\\ -2 & 1 \\end{bmatrix}$。",
+       "origin": "official"
+      },
+      {
+       "id": "columns",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n关于乘积 $C = AB$，下面哪个说法是正确的？",
+       "options": [
+        "$C$ 的各列是 $A$ 的各列的线性组合，$C$ 的各行是 $B$ 的各行的线性组合",
+        "$C$ 的各列是 $B$ 的各列的线性组合，$C$ 的各行是 $A$ 的各行的线性组合",
+        "$C$ 的各列是 $A$ 的各行的线性组合",
+        "以上都不对"
+       ],
+       "answer": 0,
+       "explain": "$A$ 乘以 $B$ 的第 $j$ 列得到 $C$ 的第 $j$ 列（$A$ 的列的组合）；$A$ 的第 $i$ 行乘以 $B$ 得到 $C$ 的第 $i$ 行（$B$ 的行的组合）。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses1-4",
+     "kind": "lecture",
+     "title": "第 5 讲：A = LU 分解",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses1-4-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses1-4-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=4"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=MsIvs_6vC38"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=-eA2D_rIcNA"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/factorization-into-a-lu/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/c5961452fbb31f8a0b34ecd0ffc5cdc4_MIT18_06SCF11_Ses1.4sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/6a1ed7a39cbff2dd88de7c559c5373ad_MsIvs_6vC38.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/2bc2e009a682eaa46a198af45d6dc80c_-eA2D_rIcNA.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/0ea3c333ad8f83379b45efd8ffe88729_MIT18_06SCF11_Ses1.4prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/c0a61f86b1cb7c8bcb9d140b4e94bdae_MIT18_06SCF11_Ses1.4sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 2.6 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "l-matrix",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 4.1。\n\n对 $A = \\begin{bmatrix} 1 & 3 & 0 \\\\ 2 & 4 & 0 \\\\ 2 & 0 & 1 \\end{bmatrix}$ 做消元得到 $U$。分解 $A = LU$ 中的 $L$ 是什么？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "1, 0, 0, 2, 1, 0, 2, 3, 1",
+        "1,0,0,2,1,0,2,3,1",
+        "1 0 0 2 1 0 2 3 1"
+       ],
+       "explain": "三次消元的乘数依次是 2（第 2 行减第 1 行）、2（第 3 行减第 1 行）、3（第 3 行减第 2 行），没有行交换时直接填进 $L$：$L = \\begin{bmatrix} 1 & 0 & 0 \\\\ 2 & 1 & 0 \\\\ 2 & 3 & 1 \\end{bmatrix}$。",
+       "origin": "official"
+      },
+      {
+       "id": "u-pivot",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 4.1。\n\n接上题，$U$ 的第二个主元（第 2 行第 2 列）是多少？",
+       "answer": [
+        "-2"
+       ],
+       "explain": "第 2 行减去第 1 行的 2 倍：$(2, 4, 0) - 2(1, 3, 0) = (0, -2, 0)$。",
+       "origin": "official"
+      },
+      {
+       "id": "four-pivots",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 4.2。\n\n要使 $A = \\begin{bmatrix} a & a & a & a \\\\ a & b & b & b \\\\ a & b & c & c \\\\ a & b & c & d \\end{bmatrix}$ 有四个主元，条件是？",
+       "options": [
+        "$a \\ne 0,\\ b \\ne a,\\ c \\ne b,\\ d \\ne c$",
+        "$a, b, c, d$ 都不为 0",
+        "$a < b < c < d$",
+        "$a = b = c = d$"
+       ],
+       "answer": 0,
+       "explain": "消元后 $U$ 的对角线是 $a,\\ b-a,\\ c-b,\\ d-c$，它们都不为 0 时有四个主元。",
+       "origin": "official"
+      },
+      {
+       "id": "product-inverse",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n可逆矩阵乘积 $AB$ 的逆矩阵与转置分别是？",
+       "options": [
+        "$(AB)^{-1} = B^{-1}A^{-1}$，$(AB)^T = B^T A^T$",
+        "$(AB)^{-1} = A^{-1}B^{-1}$，$(AB)^T = A^T B^T$",
+        "$(AB)^{-1} = B^{-1}A^{-1}$，$(AB)^T = A^T B^T$",
+        "$(AB)^{-1} = A^{-1}B^{-1}$，$(AB)^T = B^T A^T$"
+       ],
+       "answer": 0,
+       "explain": "两者都要把顺序倒过来：先撤销后做的那一步。",
+       "origin": "official"
+      },
+      {
+       "id": "cost",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n用消元法把 $n \\times n$ 矩阵分解成 $LU$，大约需要多少次运算？",
+       "options": [
+        "约 $\\tfrac{1}{3}n^3$",
+        "约 $n^2$",
+        "约 $n$",
+        "约 $n!$"
+       ],
+       "answer": 0,
+       "explain": "$1^2 + 2^2 + \\cdots + n^2 \\approx \\tfrac13 n^3$；对右边的 $b$ 做运算只需约 $n^2$ 次。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses1-5",
+     "kind": "lecture",
+     "title": "第 6 讲：转置、置换与向量空间",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses1-5-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses1-5-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=5"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=JibVXBElKL0"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=QQpvGlF_1Qo"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解（普通话）：三维空间的子空间",
+       "url": "https://www.youtube.com/watch?v=VyPIQ_8QqEk"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/transposes-permutations-vector-spaces/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/33b21afab62ea8df6c7bd241240df60d_MIT18_06SCF11_Ses1.5sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/e8776251d7b3c71d9fc1dc8f66a1b048_JibVXBElKL0.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/f90dceb9a6b4958ec32157474a45eda5_QQpvGlF_1Qo.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/32b9793a7998e09296cd6234fe7e9017_MIT18_06SCF11_Ses1.5prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/76bdb83fe7ac8f76eccd5c7c1849c50b_MIT18_06SCF11_Ses1.5sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 2.7 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "symmetric-count",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 5.2。\n\n4 × 4 的**对称**矩阵有多少个元素可以独立选取？",
+       "answer": [
+        "10"
+       ],
+       "explain": "对角线上 4 个，加上对角线上方 $\\binom{4}{2} = 6$ 个，共 10 个；对角线下方由对称性决定。",
+       "origin": "official"
+      },
+      {
+       "id": "skew-count",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 5.2。\n\n4 × 4 的**反对称**矩阵（$A^T = -A$）有多少个元素可以独立选取？",
+       "answer": [
+        "6"
+       ],
+       "explain": "反对称矩阵的对角线必须全是 0，只剩对角线上方的 6 个可以自由选取。",
+       "origin": "official"
+      },
+      {
+       "id": "subspaces",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 5.3。\n\n在所有 2 × 2 矩阵组成的空间里，下面哪一组**不**构成子空间？",
+       "options": [
+        "所有非对称矩阵（$A^T \\ne A$）",
+        "所有对称矩阵（$A^T = A$）",
+        "所有反对称矩阵（$A^T = -A$）",
+        "只含零矩阵的集合"
+       ],
+       "answer": 0,
+       "explain": "$\\begin{bmatrix} 1 & 1 \\\\ 0 & 0 \\end{bmatrix} + \\begin{bmatrix} 0 & 0 \\\\ 1 & 1 \\end{bmatrix}$ 是对称的，非对称矩阵对加法不封闭；而且它不包含零矩阵。",
+       "origin": "official"
+      },
+      {
+       "id": "p-cube",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 5.1。\n\n置换矩阵 $P = \\begin{bmatrix} 0 & 0 & 1 \\\\ 1 & 0 & 0 \\\\ 0 & 1 & 0 \\end{bmatrix}$ 把各行循环移动一位。$P^3$ 等于？",
+       "options": [
+        "$I$",
+        "$P$",
+        "$P^T$",
+        "零矩阵"
+       ],
+       "answer": 0,
+       "explain": "循环移动三次，每一行都回到原来的位置。",
+       "origin": "official"
+      },
+      {
+       "id": "line-subspace",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n下面哪一个是 $\\mathbb{R}^2$ 的子空间？",
+       "options": [
+        "经过原点的一条直线",
+        "不经过原点的一条直线",
+        "所有两个分量都为正数的向量",
+        "第一象限加上第三象限"
+       ],
+       "answer": 0,
+       "explain": "子空间必须包含零向量，并且对加法和数乘封闭。第一象限加第三象限对数乘封闭，但对加法不封闭。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses1-6",
+     "kind": "lecture",
+     "title": "第 7 讲：列空间与零空间",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses1-6-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses1-6-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=6"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=8o5Cmfpeo6g"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=S8DQZjE4V8U"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/column-space-and-nullspace/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/a9361fe289da445a7ca1fe2f88b55ca7_MIT18_06SCF11_Ses1.6sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/7c283d19f8bf10f3c33671c420bd1908_8o5Cmfpeo6g.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/5b4f1c3c69b84147c351605c67c05b2b_S8DQZjE4V8U.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/255ec48e518355a8ef94b086e3a5a247_MIT18_06SCF11_Ses1.6prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/f4ae8cc2b4f36574983dd4c313f106eb_MIT18_06SCF11_Ses1.6sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 3.1 至 3.2 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "solvable",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n线性方程组 $Ax = b$ 什么时候有解？",
+       "options": [
+        "当且仅当 $b$ 属于 $A$ 的列空间",
+        "当且仅当 $b$ 属于 $A$ 的零空间",
+        "当且仅当 $A$ 是方阵",
+        "当且仅当 $b \\ne 0$"
+       ],
+       "answer": 0,
+       "explain": "$Ax$ 是 $A$ 的各列的线性组合，所以 $b$ 必须是这些列的某个组合。",
+       "origin": "official"
+      },
+      {
+       "id": "nullspace",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n$A = \\begin{bmatrix} 1 & 1 & 2 \\\\ 2 & 1 & 3 \\\\ 3 & 1 & 4 \\\\ 4 & 1 & 5 \\end{bmatrix}$ 的零空间是一条直线。写出这条直线上第一个分量为 1 的那个向量。（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "1, 1, -1",
+        "1,1,-1",
+        "1 1 -1"
+       ],
+       "explain": "第 1 列加第 2 列减第 3 列等于零向量，所以 $(1, 1, -1)$ 在零空间中。",
+       "origin": "official"
+      },
+      {
+       "id": "union",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$S$、$T$ 是 $\\mathbb{R}^3$ 的两个子空间。下面哪一个**一定**是子空间？",
+       "options": [
+        "交集 $S \\cap T$",
+        "并集 $S \\cup T$",
+        "两者都一定是",
+        "两者都不一定是"
+       ],
+       "answer": 0,
+       "explain": "交集对线性组合封闭；并集一般不是（例如两条不同直线的并，相加之后会跑出这两条直线）。",
+       "origin": "official"
+      },
+      {
+       "id": "plane",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 6.2。\n\n平面 $x - 3y - z = 12$ 上的点可以写成 $\\begin{bmatrix} x \\\\ y \\\\ z \\end{bmatrix} = \\begin{bmatrix} 12 \\\\ 0 \\\\ 0 \\end{bmatrix} + y \\begin{bmatrix} a \\\\ 1 \\\\ 0 \\end{bmatrix} + z \\begin{bmatrix} b \\\\ 0 \\\\ 1 \\end{bmatrix}$。$a$ 和 $b$ 分别是多少？（用逗号分隔。）",
+       "answer": [
+        "3, 1",
+        "3,1",
+        "3 1"
+       ],
+       "explain": "由 $x = 12 + 3y + z$ 得 $a = 3$、$b = 1$。",
+       "origin": "official"
+      },
+      {
+       "id": "stack",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 6.3。\n\n$C = \\begin{bmatrix} A \\\\ B \\end{bmatrix}$。$N(C)$ 与 $N(A)$、$N(B)$ 的关系是？",
+       "options": [
+        "$N(C) = N(A) \\cap N(B)$",
+        "$N(C) = N(A) \\cup N(B)$",
+        "$N(C) = N(A) + N(B)$",
+        "$N(C) = N(A)$"
+       ],
+       "answer": 0,
+       "explain": "$Cx = 0$ 当且仅当 $Ax = 0$ 且 $Bx = 0$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses1-7",
+     "kind": "lecture",
+     "title": "第 8 讲：求解 Ax = 0：主变量与特解",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses1-7-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses1-7-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=7"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=VqP2tREMvt0"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=3cMyj8EKFGo"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/solving-ax-0-pivot-variables-special-solutions/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/dddb31dfe72d2e2e2fd09e74713b7775_MIT18_06SCF11_Ses1.7sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/11def16763845b3602821117592f4b56_VqP2tREMvt0.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/e48cdbd12025cad3a61600319f38f19e_3cMyj8EKFGo.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/67a97b58e4ee19bfe2ac57ab94cddff8_MIT18_06SCF11_Ses1.7prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/d5e9b3dac09bd41988d0cba7ed021efc_MIT18_06SCF11_Ses1.7sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 3.2 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "rank",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 7.1。\n\n$A = \\begin{bmatrix} 1 & 5 & 7 & 9 \\\\ 0 & 4 & 1 & 7 \\\\ 2 & -2 & 11 & -3 \\end{bmatrix}$ 的秩是多少？",
+       "answer": [
+        "2"
+       ],
+       "explain": "消元后第三行变成全零，只剩 2 个主元。",
+       "origin": "official"
+      },
+      {
+       "id": "free-count",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 7.1。\n\n接上题，$Ax = 0$ 有几个特解（零空间的维数是多少）？",
+       "answer": [
+        "2"
+       ],
+       "explain": "$n - r = 4 - 2 = 2$：自由变量 $x_3$、$x_4$ 各对应一个特解。",
+       "origin": "official"
+      },
+      {
+       "id": "special",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 7.1。\n\n接上题，$A$ 的行最简形是 $R = \\begin{bmatrix} 1 & 0 & 23/4 & 1/4 \\\\ 0 & 1 & 1/4 & 7/4 \\\\ 0 & 0 & 0 & 0 \\end{bmatrix}$。取 $x_3 = 1$、$x_4 = 0$ 得到的特解是？",
+       "options": [
+        "$\\left(-\\tfrac{23}{4}, -\\tfrac{1}{4}, 1, 0\\right)$",
+        "$\\left(\\tfrac{23}{4}, \\tfrac{1}{4}, 1, 0\\right)$",
+        "$\\left(-\\tfrac{1}{4}, -\\tfrac{7}{4}, 0, 1\\right)$",
+        "$(1, 0, 0, 0)$"
+       ],
+       "answer": 0,
+       "explain": "由 $x_1 + \\tfrac{23}{4}x_3 + \\tfrac14 x_4 = 0$、$x_2 + \\tfrac14 x_3 + \\tfrac74 x_4 = 0$，代入 $x_3 = 1$、$x_4 = 0$。",
+       "origin": "official"
+      },
+      {
+       "id": "lecture-special",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n$A = \\begin{bmatrix} 1 & 2 & 2 & 2 \\\\ 2 & 4 & 6 & 8 \\\\ 3 & 6 & 8 & 10 \\end{bmatrix}$ 的主列是第 1、3 列。取自由变量 $x_2 = 0$、$x_4 = 1$，求对应的特解。（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "2, 0, -2, 1",
+        "2,0,-2,1",
+        "2 0 -2 1"
+       ],
+       "explain": "由 $2x_3 + 4x_4 = 0$ 得 $x_3 = -2$；由 $x_1 + 2x_2 + 2x_3 + 2x_4 = 0$ 得 $x_1 = 2$。",
+       "origin": "official"
+      },
+      {
+       "id": "rank-zero",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 7.2。\n\n$B = \\begin{bmatrix} 1 & 1 \\\\ 1 & 1 \\end{bmatrix}$。下面哪个 $A_2$ 能使 $\\operatorname{rank}(A_2 B) = 0$？",
+       "options": [
+        "$\\begin{bmatrix} 1 & -1 \\\\ 1 & -1 \\end{bmatrix}$",
+        "$\\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix}$",
+        "$\\begin{bmatrix} 1 & 1 \\\\ 1 & 1 \\end{bmatrix}$",
+        "$\\begin{bmatrix} 2 & 0 \\\\ 0 & 0 \\end{bmatrix}$"
+       ],
+       "answer": 0,
+       "explain": "$\\begin{bmatrix} 1 & -1 \\\\ 1 & -1 \\end{bmatrix}\\begin{bmatrix} 1 & 1 \\\\ 1 & 1 \\end{bmatrix} = 0$，零矩阵的秩是 0。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses1-8",
+     "kind": "lecture",
+     "title": "第 9 讲：求解 Ax = b：行最简形 R",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses1-8-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses1-8-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=8"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=9Q1q7s1jTzU"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=fjsPjh0B2tU"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/solving-ax-b-row-reduced-form-r/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/f5a74578196a8afc2fd2ba8581acb17f_MIT18_06SCF11_Ses1.8sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/6a682e0506398c57dc7d2fa81a36fb01_9Q1q7s1jTzU.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/8080e0a1cd5d6d144eb363675ff2ce1e_fjsPjh0B2tU.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/78fb9d04e3b75be152197bb83fea3d13_MIT18_06SCF11_Ses1.8prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/d85abdc57e0c75fbb35cb9e25263294f_MIT18_06SCF11_Ses1.8sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 3.3 至 3.4 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "condition",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$A = \\begin{bmatrix} 1 & 2 & 2 & 2 \\\\ 2 & 4 & 6 & 8 \\\\ 3 & 6 & 8 & 10 \\end{bmatrix}$。$Ax = b$ 有解的条件是？",
+       "options": [
+        "$b_3 = b_1 + b_2$",
+        "$b_1 = b_2 = b_3$",
+        "$b = 0$",
+        "对任何 $b$ 都有解"
+       ],
+       "answer": 0,
+       "explain": "$A$ 的第三行是前两行之和，所以 $b$ 的分量也要满足同样的关系。",
+       "origin": "official"
+      },
+      {
+       "id": "particular",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n接上题，取 $b = (1, 5, 6)$，令自由变量 $x_2 = x_4 = 0$，求特解 $x_p$。（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "-2, 0, 3/2, 0",
+        "-2, 0, 1.5, 0",
+        "-2,0,3/2,0",
+        "-2,0,1.5,0"
+       ],
+       "explain": "消元后 $x_1 + 2x_3 = 1$、$2x_3 = 3$，所以 $x_3 = 3/2$、$x_1 = -2$。",
+       "origin": "official"
+      },
+      {
+       "id": "count",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要的小结表。\n\n$m \\times n$ 矩阵 $A$ 的秩 $r = m < n$（行满秩）。$Ax = b$ 有多少个解？",
+       "options": [
+        "对每个 $b$ 都有无穷多个解",
+        "恰好一个解",
+        "0 个或 1 个解",
+        "0 个或无穷多个解"
+       ],
+       "answer": 0,
+       "explain": "行满秩时 $R = [I\\ F]$ 没有零行，每个 $b$ 都有解；又有 $n - m > 0$ 个自由变量，所以解有无穷多个。",
+       "origin": "official"
+      },
+      {
+       "id": "rd",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 8.2。\n\n$U = \\begin{bmatrix} 1 & 2 & 3 \\\\ 0 & 0 & 4 \\end{bmatrix}$，$c = (5, 8)$。取自由变量 $x_2 = 1$，求 $Ux = c$ 的解。（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "-3, 1, 2",
+        "-3,1,2",
+        "-3 1 2"
+       ],
+       "explain": "$[U\\ c] \\to [R\\ d] = \\left[\\begin{array}{ccc|c} 1 & 2 & 0 & -1 \\\\ 0 & 0 & 1 & 2 \\end{array}\\right]$，所以 $x_3 = 2$、$x_1 = -1 - 2x_2 = -3$。",
+       "origin": "official"
+      },
+      {
+       "id": "false",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 8.1。\n\n下面哪个说法是**正确**的？",
+       "options": [
+        "$x_p + x_n$（$x_n$ 是零空间中任意向量）也是 $Ax = b$ 的特解",
+        "完全解是 $x_p$ 与 $x_n$ 的任意线性组合",
+        "$Ax = b$ 至多有一个特解",
+        "$A$ 可逆时，零空间中没有任何向量"
+       ],
+       "answer": 0,
+       "explain": "完全解中 $x_p$ 的系数必须是 1；特解不唯一；零空间里总有零向量。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses1-9",
+     "kind": "lecture",
+     "title": "第 10 讲：线性无关、基与维数",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses1-9-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses1-9-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=9"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=yjBerM5jWsc"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=MMWqGD4Urso"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/independence-basis-and-dimension/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/0bbc30e3f1d7933ea07a2d2e9ab050d9_MIT18_06SCF11_Ses1.9sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/265592b34ca558541dcce602b51d550a_yjBerM5jWsc.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/0d432adcd7958f5dbedecccd20ec1efc_MMWqGD4Urso.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/562c31026033b44a05491b57834a5a0e_MIT18_06SCF11_Ses1.9prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/793cbea8c118cf3b30ba2944a5c61dee_MIT18_06SCF11_Ses1.9sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 3.5 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "max-independent",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 9.1。\n\n向量 $v_1 = (1, -1, 0, 0)$、$v_2 = (1, 0, -1, 0)$、$v_3 = (1, 0, 0, -1)$、$v_4 = (0, 1, -1, 0)$、$v_5 = (0, 1, 0, -1)$、$v_6 = (0, 0, 1, -1)$ 中，最多能找出几个线性无关的向量？",
+       "answer": [
+        "3"
+       ],
+       "explain": "$v_4 = v_2 - v_1$，$v_5 = v_3 - v_1$，$v_6 = v_3 - v_2$；而 $v_1, v_2, v_3$ 有三个主元，线性无关。",
+       "origin": "official"
+      },
+      {
+       "id": "plane-basis",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 9.2。\n\n下面哪一组是平面 $x - 2y + 3z = 0$ 的一组基？",
+       "options": [
+        "$(2, 1, 0)$ 和 $(-3, 0, 1)$",
+        "$(1, -2, 3)$",
+        "$(1, 0, 0)$ 和 $(0, 1, 0)$",
+        "$(2, 1, 0)$、$(-3, 0, 1)$ 和 $(1, -2, 3)$"
+       ],
+       "answer": 0,
+       "explain": "平面是 $\\begin{bmatrix} 1 & -2 & 3 \\end{bmatrix}$ 的零空间，两个特解构成一组基；$(1, -2, 3)$ 是垂直于平面的方向。",
+       "origin": "official"
+      },
+      {
+       "id": "normal",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 9.2。\n\n写出一个垂直于平面 $x - 2y + 3z = 0$ 的非零向量。（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "1, -2, 3",
+        "1,-2,3",
+        "1 -2 3",
+        "-1, 2, -3",
+        "-1,2,-3"
+       ],
+       "explain": "平面方程的系数 $(1, -2, 3)$ 就是法向量。",
+       "origin": "official"
+      },
+      {
+       "id": "null-dim",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n$A = \\begin{bmatrix} 1 & 2 & 3 & 1 \\\\ 1 & 1 & 2 & 1 \\\\ 1 & 2 & 3 & 1 \\end{bmatrix}$ 的秩是 2。它的零空间的维数是多少？",
+       "answer": [
+        "2"
+       ],
+       "explain": "$n - r = 4 - 2 = 2$。",
+       "origin": "official"
+      },
+      {
+       "id": "basis-r3",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$\\mathbb{R}^n$ 中的 $n$ 个向量什么时候构成 $\\mathbb{R}^n$ 的一组基？",
+       "options": [
+        "以它们为列的矩阵可逆",
+        "它们都不是零向量",
+        "它们两两不相等",
+        "它们的和是零向量"
+       ],
+       "answer": 0,
+       "explain": "可逆意味着各列线性无关并且张成整个空间。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses1-10",
+     "kind": "lecture",
+     "title": "第 11 讲：四个基本子空间",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses1-10-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses1-10-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=10"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=nHlE7EgJFds"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=D8u1LV9CnCk"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/the-four-fundamental-subspaces/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/62a9db9eeab190694d40afe4734068ca_MIT18_06SCF11_Ses1.10sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/afe0e43e133e663fbea3a48fb8372bfa_nHlE7EgJFds.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/69f8d92836fa1181356ea9d7f04fd816_D8u1LV9CnCk.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/1036f9ef2f53425811d3ab8176b4b4d7_MIT18_06SCF11_Ses1.10prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/68f4777bbcac272c9184347a9849333a_MIT18_06SCF11_Ses1.10sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 3.6 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "dims",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$A$ 是秩为 $r$ 的 $m \\times n$ 矩阵。四个基本子空间 $C(A)$、$N(A)$、$C(A^T)$、$N(A^T)$ 的维数依次是？",
+       "options": [
+        "$r,\\ n - r,\\ r,\\ m - r$",
+        "$r,\\ m - r,\\ r,\\ n - r$",
+        "$m,\\ n,\\ m,\\ n$",
+        "$r,\\ n,\\ r,\\ m$"
+       ],
+       "answer": 0,
+       "explain": "列空间和行空间的维数都是 $r$；零空间在 $\\mathbb{R}^n$ 中，维数 $n - r$；左零空间在 $\\mathbb{R}^m$ 中，维数 $m - r$。",
+       "origin": "official"
+      },
+      {
+       "id": "where",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$A$ 是 $m \\times n$ 矩阵。零空间 $N(A)$ 和左零空间 $N(A^T)$ 分别是哪个空间的子空间？",
+       "options": [
+        "$N(A) \\subseteq \\mathbb{R}^n$，$N(A^T) \\subseteq \\mathbb{R}^m$",
+        "$N(A) \\subseteq \\mathbb{R}^m$，$N(A^T) \\subseteq \\mathbb{R}^n$",
+        "都在 $\\mathbb{R}^n$ 中",
+        "都在 $\\mathbb{R}^m$ 中"
+       ],
+       "answer": 0,
+       "explain": "$Ax = 0$ 中 $x$ 有 $n$ 个分量；$A^T y = 0$ 中 $y$ 有 $m$ 个分量。",
+       "origin": "official"
+      },
+      {
+       "id": "inequality",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 10.1。\n\n秩为 $r$ 的 $m \\times n$ 矩阵 $A$，存在某些 $b$ 使 $Ax = b$ 无解。下面哪个结论一定成立？",
+       "options": [
+        "$r < m$",
+        "$r < n$",
+        "$r = n$",
+        "$m < n$"
+       ],
+       "answer": 0,
+       "explain": "有 $b$ 不在列空间中，说明列空间不是整个 $\\mathbb{R}^m$，所以 $r < m$；于是左零空间维数 $m - r > 0$。",
+       "origin": "official"
+      },
+      {
+       "id": "row-space",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 10.2。\n\n$A^T y = d$ 何时有解？",
+       "options": [
+        "当 $d$ 属于 $A$ 的行空间",
+        "当 $d$ 属于 $A$ 的列空间",
+        "当 $d$ 属于 $A$ 的零空间",
+        "当 $d$ 属于左零空间"
+       ],
+       "answer": 0,
+       "explain": "行空间 $C(A^T)$ 正是所有 $A^T y$ 构成的空间。",
+       "origin": "official"
+      },
+      {
+       "id": "diag-dim",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n所有 3 × 3 **对角矩阵**组成的子空间 $D$ 的维数是多少？",
+       "answer": [
+        "3"
+       ],
+       "explain": "对角线上的 3 个元素可以自由选取；例如 diag(1,0,0)、diag(0,1,0)、diag(0,0,1) 就是一组基。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses1-11",
+     "kind": "lecture",
+     "title": "第 12 讲：矩阵空间、秩 1 矩阵与小世界图",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses1-11-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses1-11-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=11"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=2IdtqGM6KWU"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=BaBoztM9Q1w"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/matrix-spaces-rank-1-small-world-graphs/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/732789d4b5c1247ccab5faf13b6f29d2_MIT18_06SCF11_Ses1.11sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/0165be6d5715e8b1d4b77bef22e614d5_2IdtqGM6KWU.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/7db51b0ebe096ee57bb0e6bcf9a1b43d_BaBoztM9Q1w.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/8bcdd1d9795d55865119bb010765a021_MIT18_06SCF11_Ses1.11prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/f203b1ebf66c210c62e5730a4b9f9f6d_MIT18_06SCF11_Ses1.11sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 3.3、8.2 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "dim-s",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n所有 3 × 3 **对称**矩阵组成的子空间 $S$ 的维数是多少？",
+       "answer": [
+        "6"
+       ],
+       "explain": "对角线上 3 个、右上方 3 个可以自由选取，左下方由对称性决定。",
+       "origin": "official"
+      },
+      {
+       "id": "sum",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$S$ 是 3 × 3 对称矩阵组成的子空间，$U$ 是 3 × 3 上三角矩阵组成的子空间。$S + U$ 和 $S \\cap U$ 分别是？",
+       "options": [
+        "$S + U$ 是所有 3 × 3 矩阵，$S \\cap U$ 是所有对角矩阵",
+        "$S + U$ 是对称矩阵，$S \\cap U$ 是零矩阵",
+        "$S + U = S \\cup U$，$S \\cap U$ 是对角矩阵",
+        "$S + U$ 是上三角矩阵，$S \\cap U$ 是对称矩阵"
+       ],
+       "answer": 0,
+       "explain": "维数验证：$\\dim S + \\dim U = 6 + 6 = 12 = \\dim(S+U) + \\dim(S \\cap U) = 9 + 3$。",
+       "origin": "official"
+      },
+      {
+       "id": "rank4",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n所有秩为 4 的 5 × 17 矩阵（再加上零矩阵）组成的集合是不是子空间？",
+       "options": [
+        "不是，两个秩为 4 的矩阵之和的秩不一定是 4",
+        "是，因为它包含零矩阵",
+        "是，因为秩 4 小于 5",
+        "不是，因为 5 × 17 矩阵不能相加"
+       ],
+       "answer": 0,
+       "explain": "子空间必须对加法封闭；两个秩 4 矩阵相加可能得到秩更小或更大的矩阵。",
+       "origin": "official"
+      },
+      {
+       "id": "null-a",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n$\\mathbb{R}^4$ 中满足 $v_1 + v_2 + v_3 + v_4 = 0$ 的向量组成的子空间，维数是多少？",
+       "answer": [
+        "3"
+       ],
+       "explain": "它是 $A = [1\\ 1\\ 1\\ 1]$ 的零空间，$n - r = 4 - 1 = 3$。",
+       "origin": "official"
+      },
+      {
+       "id": "ax-zero",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 11.2。\n\n$A = \\begin{bmatrix} 1 & 0 & -1 \\\\ -1 & 1 & 0 \\\\ 0 & -1 & 1 \\end{bmatrix}$。所有满足 $AX = 0$ 的 3 × 3 矩阵 $X$ 组成的空间维数是多少？",
+       "options": [
+        "3",
+        "6",
+        "1",
+        "9"
+       ],
+       "answer": 0,
+       "explain": "$A$ 的零空间由 $(1, 1, 1)$ 张成，$X$ 的每一列都必须是它的倍数，三列各有一个自由参数。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses1-12",
+     "kind": "lecture",
+     "title": "第 13 讲：图、网络与关联矩阵",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses1-12-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses1-12-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=12"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=6-wh6yvk6uc"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=h0m2tsmSPTI"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/graphs-networks-incidence-matrices/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/d71b25b942dd3dec0ede49d712deb4b0_MIT18_06SCF11_Ses1.12sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/3f8e0016948ea0224d2cd16dd4f4e80c_6-wh6yvk6uc.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/789f87ed894d05254c8bb49f122d57e4_h0m2tsmSPTI.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/13115844908c991f11d52f44f29ecc11_MIT18_06SCF11_Ses1.12prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/1bbfcb718126a0a8ef8755b84922c536_MIT18_06SCF11_Ses1.12sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 8.2 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "rank",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n一个连通图有 4 个节点、5 条边，它的关联矩阵 $A$（5 × 4）的秩是多少？",
+       "answer": [
+        "3"
+       ],
+       "explain": "零空间由 $(1, 1, 1, 1)$ 张成（各节点电势相同），维数是 1，所以秩是 $4 - 1 = 3$。",
+       "origin": "official"
+      },
+      {
+       "id": "loops",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n接上题，图中独立回路的个数（左零空间 $N(A^T)$ 的维数）是多少？",
+       "answer": [
+        "2"
+       ],
+       "explain": "$m - r = 5 - 3 = 2$；也可以用欧拉公式：节点数 − 边数 + 回路数 = 1。",
+       "origin": "official"
+      },
+      {
+       "id": "euler",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n连通图的欧拉公式是？",
+       "options": [
+        "节点数 − 边数 + 回路数 = 1",
+        "节点数 + 边数 − 回路数 = 2",
+        "边数 = 节点数 − 1",
+        "回路数 = 节点数 × 边数"
+       ],
+       "answer": 0,
+       "explain": "回路数 = 边数 − 秩 = 边数 − (节点数 − 1)。",
+       "origin": "official"
+      },
+      {
+       "id": "kcl",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n基尔霍夫电流定律用关联矩阵 $A$ 和边上的电流 $y$ 写出来是？",
+       "options": [
+        "$A^T y = 0$",
+        "$Ay = 0$",
+        "$y = Ax$",
+        "$A^T A y = y$"
+       ],
+       "answer": 0,
+       "explain": "$A^T$ 的每一行对应一个节点，$A^T y = 0$ 说明流入和流出每个节点的电流平衡。",
+       "origin": "official"
+      },
+      {
+       "id": "potential",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 12.2。\n\n正方形图中电流 $f = (1, 0, -1, 0)$ 从节点 1 流入、从节点 3 流出，节点 3 接地（$x_3 = 0$）。解得的节点 1 的电势 $x_1$ 是多少？",
+       "answer": [
+        "3/4",
+        "0.75"
+       ],
+       "explain": "解 $A^T C A x = f$ 得 $x = (3/4, 1/4, 0, 1/4)$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses1-14",
+     "kind": "lecture",
+     "title": "第 14 讲：考试 1 复习",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses1-14-notes",
+       "title": "讲座摘要"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=13"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=l88D4r74gtM"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=AMLekTJR5_U"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/exam-1-review/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/b547dd4153ccc350860df8f43085c2d6_MIT18_06SCF11_Ses1.14sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/ae051c7b15bd20481cbab408d5fca486_l88D4r74gtM.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/0f5a0643c2eaa5667603aa39ec807f70_AMLekTJR5_U.pdf"
+      }
+     ],
+     "practice": [
+      {
+       "id": "span-dim",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要的例题 1。\n\n$u$、$v$、$w$ 是 $\\mathbb{R}^7$ 中的非零向量。它们张成的子空间的维数可能是？",
+       "options": [
+        "1、2 或 3",
+        "0、1、2 或 3",
+        "只能是 3",
+        "1 到 7 都有可能"
+       ],
+       "answer": 0,
+       "explain": "基至多有三个向量；向量非零，所以维数不可能是 0。",
+       "origin": "official"
+      },
+      {
+       "id": "rank-c",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要的例题 2。\n\n$R$ 是秩为 3 的 5 × 3 行最简形矩阵，$C = \\begin{bmatrix} R & R \\\\ R & 0 \\end{bmatrix}$（10 × 6）。$C^T$ 的零空间的维数是多少？",
+       "answer": [
+        "4"
+       ],
+       "explain": "$C$ 的秩是 6，$\\dim N(C^T) = m - r = 10 - 6 = 4$。",
+       "origin": "official"
+      },
+      {
+       "id": "find-a",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要的例题 3。\n\n$Ax = (2, 4, 2)$ 的完全解是 $x = (2, 0, 0) + c(1, 1, 0) + d(0, 0, 1)$。$A$ 的秩是多少？",
+       "options": [
+        "1",
+        "2",
+        "3",
+        "0"
+       ],
+       "answer": 0,
+       "explain": "零空间是 2 维的，$A$ 是 3 × 3 的，所以秩是 $3 - 2 = 1$。",
+       "origin": "official"
+      },
+      {
+       "id": "b-squared",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要的简答题 3。\n\n如果 $B^2 = 0$，是否一定有 $B = 0$？",
+       "options": [
+        "不一定，例如 $B = \\begin{bmatrix} 0 & 1 \\\\ 0 & 0 \\end{bmatrix}$",
+        "一定",
+        "只有 $B$ 是方阵时才一定",
+        "只有 $B$ 是 2 × 2 时才不一定"
+       ],
+       "answer": 0,
+       "explain": "$\\begin{bmatrix} 0 & 1 \\\\ 0 & 0 \\end{bmatrix}^2 = 0$，但它本身不是零矩阵。",
+       "origin": "official"
+      },
+      {
+       "id": "swap-rows",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要的简答题 8。\n\n交换 $A$ 的两行之后，哪两个子空间保持不变？",
+       "options": [
+        "行空间和零空间",
+        "列空间和左零空间",
+        "列空间和零空间",
+        "四个子空间都不变"
+       ],
+       "answer": 0,
+       "explain": "行变换不改变行的所有组合，也不改变 $Ax = 0$ 的解；但会改变列空间。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ex1",
+     "kind": "exam",
+     "title": "考试 1",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ex1-problems",
+       "title": "试卷与解答"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/ax-b-and-the-four-subspaces/exam-1/"
+      },
+      {
+       "kind": "exams",
+       "label": "试卷原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/170cb8d5b8ee2a2c170d611f87d0525d_MIT18_06SCF11_ex1.pdf"
+      },
+      {
+       "kind": "exams",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/ae27336edabea99bcde8649185987f5b_MIT18_06SCF11_ex1s.pdf"
+      }
+     ],
+     "practice": [
+      {
+       "id": "q1-r",
+       "type": "choice",
+       "prompt": "改编自考试 1 第 1 题。\n\n$Ax = (1, 1, 1)$ 无解，$Ax = (0, 1, 0)$ 恰好有一个解。$A$ 的形状和秩可能是？",
+       "options": [
+        "$m = 3$，$r = n = 1$ 或 $r = n = 2$",
+        "$m = 3$，$r = n = 3$",
+        "$n = 3$，$r = m = 2$",
+        "$m = 3$，$n = 4$，$r = 2$"
+       ],
+       "answer": 0,
+       "explain": "唯一解 ⇒ $r = n$；有右端无解 ⇒ $r < m = 3$。",
+       "origin": "official"
+      },
+      {
+       "id": "q2-inv",
+       "type": "text",
+       "prompt": "改编自考试 1 第 2 题。\n\n3 × 3 矩阵 $A$ 依次经过 $E_{21}$（第 2 行减第 1 行的 4 倍）、$E_{31}$（第 3 行减第 1 行的 3 倍）、$E_{23}$（第 2 行减第 3 行）化成 $I$。$A^{-1} = E_{23}E_{31}E_{21}$ 是？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "1, 0, 0, -1, 1, -1, -3, 0, 1",
+        "1,0,0,-1,1,-1,-3,0,1",
+        "1 0 0 -1 1 -1 -3 0 1"
+       ],
+       "explain": "把三步变换依次作用在 $I$ 上。",
+       "origin": "official"
+      },
+      {
+       "id": "q2-a",
+       "type": "text",
+       "prompt": "改编自考试 1 第 2 题。\n\n同一题，原来的矩阵 $A$ 是？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "1, 0, 0, 4, 1, 1, 3, 0, 1",
+        "1,0,0,4,1,1,3,0,1",
+        "1 0 0 4 1 1 3 0 1"
+       ],
+       "explain": "$A = E_{21}^{-1}E_{31}^{-1}E_{23}^{-1}$：按相反顺序把逆变换作用在 $I$ 上。",
+       "origin": "official"
+      },
+      {
+       "id": "q3-c",
+       "type": "text",
+       "prompt": "改编自考试 1 第 3 题。\n\n$A = \\begin{bmatrix} 1 & 1 & 2 & 4 \\\\ 3 & c & 2 & 8 \\\\ 0 & 0 & 2 & 2 \\end{bmatrix}$。$c$ 等于多少时 $A$ 的秩只有 2？",
+       "answer": [
+        "3"
+       ],
+       "explain": "消元后第二行是 $(0, c - 3, -4, -4)$；$c = 3$ 时第二个主元移到第 3 列，第三行消成全零。",
+       "origin": "official"
+      },
+      {
+       "id": "q3-null",
+       "type": "text",
+       "prompt": "改编自考试 1 第 3 题。\n\n同一个矩阵，$c \\ne 3$ 时零空间由哪个向量张成（最后一个分量取 1）？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "-2, 0, -1, 1",
+        "-2,0,-1,1",
+        "-2 0 -1 1"
+       ],
+       "explain": "$R = \\begin{bmatrix} 1 & 0 & 0 & 2 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 1 \\end{bmatrix}$，令自由变量 $x_4 = 1$。",
+       "origin": "official"
+      },
+      {
+       "id": "q4-null",
+       "type": "text",
+       "prompt": "改编自考试 1 第 4 题。\n\n3 × 5 矩阵的零空间的维数至少是多少？",
+       "answer": [
+        "2"
+       ],
+       "explain": "秩 $r \\le 3$，零空间维数 $5 - r \\ge 2$。",
+       "origin": "official"
+      },
+      {
+       "id": "q4-span",
+       "type": "choice",
+       "prompt": "改编自考试 1 第 4 题。\n\n所有 3 × 3 行最简形矩阵张成的子空间是？",
+       "options": [
+        "所有上三角矩阵",
+        "所有对角矩阵",
+        "所有 3 × 3 矩阵",
+        "所有对称矩阵"
+       ],
+       "answer": 0,
+       "explain": "行最简形都是上三角的，而且六个行最简形就能张成全部上三角矩阵（6 维）。",
+       "origin": "official"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "unit-2",
+   "title": "单元 2：最小二乘、行列式与特征值",
+   "items": [
+    {
+     "id": "ses2-1",
+     "kind": "lecture",
+     "title": "第 15 讲：正交向量与正交子空间",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses2-1-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses2-1-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=14"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=YzZUIYRCE38"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=h9aDgvW59TU"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/orthogonal-vectors-and-subspaces/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/fdce42d9c8d8dc4eac7a9db3c1978e18_MIT18_06SCF11_Ses2.1sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/74adfa397142e097801f8cb09f729046_YzZUIYRCE38.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/e9e49c6aba80b11d7936b0f1d8e83ee3_h9aDgvW59TU.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/31faf1ce3bab94b78feccf05107b9f93_MIT18_06SCF11_Ses2.1prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/05fd63b14b76d5ad7ce9cee1ee16186c_MIT18_06SCF11_Ses2.1sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 4.1 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "complements",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$m \\times n$ 矩阵 $A$ 的行空间与哪个子空间在 $\\mathbb{R}^n$ 中互为正交补？",
+       "options": [
+        "零空间 $N(A)$",
+        "列空间 $C(A)$",
+        "左零空间 $N(A^T)$",
+        "整个 $\\mathbb{R}^m$"
+       ],
+       "answer": 0,
+       "explain": "$Ax = 0$ 说明 $x$ 与每一行正交；而且两者维数之和 $r + (n - r) = n$。",
+       "origin": "official"
+      },
+      {
+       "id": "ata",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$A^T A$ 什么时候可逆？",
+       "options": [
+        "当且仅当 $A$ 的各列线性无关",
+        "当且仅当 $A$ 是方阵",
+        "当且仅当 $A$ 的各行线性无关",
+        "总是可逆"
+       ],
+       "answer": 0,
+       "explain": "$N(A^T A) = N(A)$，所以 $A^T A$ 可逆当且仅当 $N(A) = \\{0\\}$。",
+       "origin": "official"
+      },
+      {
+       "id": "ata-value",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n$A = \\begin{bmatrix} 1 & 1 \\\\ 1 & 2 \\\\ 1 & 5 \\end{bmatrix}$。计算 $A^T A$。（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "3, 8, 8, 30",
+        "3,8,8,30",
+        "3 8 8 30"
+       ],
+       "explain": "$A^T A = \\begin{bmatrix} 3 & 8 \\\\ 8 & 30 \\end{bmatrix}$：$1+1+1 = 3$，$1+2+5 = 8$，$1+4+25 = 30$。",
+       "origin": "official"
+      },
+      {
+       "id": "fredholm",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 16.1。\n\n方程 $x_1 - x_2 = 1$、$x_2 - x_3 = 1$、$x_1 - x_3 = 1$ 分别乘以 $y_1 = 1$、$y_2 = 1$、$y_3 = ?$ 再相加，可以得到 $0 = 1$。$y_3$ 是多少？",
+       "answer": [
+        "-1"
+       ],
+       "explain": "左边 $(x_1 - x_2) + (x_2 - x_3) - (x_1 - x_3) = 0$，右边 $1 + 1 - 1 = 1$。",
+       "origin": "official"
+      },
+      {
+       "id": "rank-one",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 16.2。\n\n给定 $\\mathbb{R}^2$ 中的非零向量 $r$、$c$，下面哪个矩阵的行空间由 $r$ 张成、列空间由 $c$ 张成？",
+       "options": [
+        "$A = c\\,r^T$",
+        "$A = r\\,c^T$",
+        "$A = r^T c$",
+        "$A = c + r$"
+       ],
+       "answer": 0,
+       "explain": "$cr^T$ 的每一列都是 $c$ 的倍数，每一行都是 $r^T$ 的倍数。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses2-2",
+     "kind": "lecture",
+     "title": "第 16 讲：子空间投影",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses2-2-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses2-2-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=15"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=Y_Ac6KiQ1t0"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=t-n4a18AW08"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/projections-onto-subspaces/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/00e9c8f0eafedeab21a3d079a17ed3d8_MIT18_06SCF11_Ses2.2sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/cb182109450623ef94def421583f1bb4_Y_Ac6KiQ1t0.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/0f9710135b3fbcb08477ed8534c07229_MIT18_06SCF11_Ses2.2prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/6b76996d7b439496fa84345340096418_MIT18_06SCF11_Ses2.2sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 4.2 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "p-line",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n把 $b$ 投影到由 $a$ 确定的直线上，投影矩阵 $P$ 是？",
+       "options": [
+        "$\\dfrac{aa^T}{a^T a}$",
+        "$\\dfrac{a^T a}{aa^T}$",
+        "$\\dfrac{a^T b}{a^T a}$",
+        "$aa^T$"
+       ],
+       "answer": 0,
+       "explain": "$p = a\\dfrac{a^T b}{a^T a} = \\dfrac{aa^T}{a^T a}b$。",
+       "origin": "official"
+      },
+      {
+       "id": "p-props",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n投影矩阵 $P$ 一定满足的两个性质是？",
+       "options": [
+        "$P^T = P$ 且 $P^2 = P$",
+        "$P^T = P^{-1}$ 且 $P^2 = I$",
+        "$P$ 可逆且 $P^2 = P$",
+        "$P^T = -P$ 且 $P^2 = 0$"
+       ],
+       "answer": 0,
+       "explain": "投影两次和投影一次结果相同；投影矩阵是对称的。",
+       "origin": "official"
+      },
+      {
+       "id": "p-entry",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n把 $b = (2, 0)$ 投影到 $a = (1, 1)$ 所在的直线上，投影 $p$ 是什么？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "1, 1",
+        "1,1",
+        "1 1"
+       ],
+       "explain": "$x = \\dfrac{a^T b}{a^T a} = \\dfrac{2}{2} = 1$，所以 $p = 1 \\cdot a = (1, 1)$。",
+       "origin": "official"
+      },
+      {
+       "id": "proj-b",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 15.1。\n\n$A$ 是去掉最后一列的 4 × 4 单位矩阵（4 × 3）。把 $b = (1, 2, 3, 4)$ 投影到 $A$ 的列空间上，结果是？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "1, 2, 3, 0",
+        "1,2,3,0",
+        "1 2 3 0"
+       ],
+       "explain": "列空间是前三个坐标构成的空间，投影就是把第四个坐标变成 0。",
+       "origin": "official"
+      },
+      {
+       "id": "i-minus-p",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 15.2。\n\n$P$ 投影到 $A$ 的列空间上，那么 $I - P$ 投影到哪个子空间上？",
+       "options": [
+        "$A$ 的左零空间 $N(A^T)$",
+        "$A$ 的零空间 $N(A)$",
+        "$A$ 的行空间",
+        "整个空间"
+       ],
+       "answer": 0,
+       "explain": "$b = Pb + (I - P)b$，$(I - P)b = e$ 与列空间垂直，属于左零空间。",
+       "origin": "official"
+      },
+      {
+       "id": "normal-eq",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要的最小二乘例子。\n\n对数据点 $(1, 1)$、$(2, 2)$、$(3, 2)$ 拟合直线 $b = C + Dt$，$A = \\begin{bmatrix} 1 & 1 \\\\ 1 & 2 \\\\ 1 & 3 \\end{bmatrix}$，$b = (1, 2, 2)$。计算 $A^T b$。（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "5, 11",
+        "5,11",
+        "5 11"
+       ],
+       "explain": "$A^T b = (1 + 2 + 2,\\ 1 + 4 + 6) = (5, 11)$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses2-3",
+     "kind": "lecture",
+     "title": "第 17 讲：投影矩阵与最小二乘",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses2-3-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses2-3-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=16"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=osh80YCg_GM"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=AmQcoopBUTk"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/projection-matrices-and-least-squares/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/198bde3a6536b62989b6cc09495575c1_MIT18_06SCF11_Ses2.3sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/0874a421068b100dbc6aa592d0ab6d10_osh80YCg_GM.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/79bfc67661f7d63dec8228fb2856002c_AmQcoopBUTk.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/33fdb9f7b7787e26752169e249def994_MIT18_06SCF11_Ses2.3prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/815ad23f78e11c1a7d282022fc2db3a9_MIT18_06SCF11_Ses2.3sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 4.3 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "lecture-line",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n对点 $(1, 1)$、$(2, 2)$、$(3, 2)$ 做最小二乘拟合，最近的直线是？",
+       "options": [
+        "$b = \\tfrac{2}{3} + \\tfrac{1}{2}t$",
+        "$b = 1 + \\tfrac12 t$",
+        "$b = \\tfrac{1}{2} + \\tfrac{2}{3}t$",
+        "$b = t$"
+       ],
+       "answer": 0,
+       "explain": "正规方程 $3\\hat C + 6\\hat D = 5$、$6\\hat C + 14\\hat D = 11$，解得 $\\hat D = \\tfrac12$、$\\hat C = \\tfrac23$。",
+       "origin": "official"
+      },
+      {
+       "id": "fit-917",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 16.1。\n\n数据点 $(t, b) = (-1, 7)$、$(1, 7)$、$(2, 21)$。最小二乘直线 $b = C + Dt$ 中的 $C$ 和 $D$ 分别是多少？（用逗号分隔。）",
+       "answer": [
+        "9, 4",
+        "9,4",
+        "9 4"
+       ],
+       "explain": "$A^T A = \\begin{bmatrix} 3 & 2 \\\\ 2 & 6 \\end{bmatrix}$，$A^T b = (35, 42)$，解得 $\\hat x = (9, 4)$。",
+       "origin": "official"
+      },
+      {
+       "id": "error",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 16.2。\n\n接上题，误差向量 $e = b - p$ 是多少？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "2, -6, 4",
+        "2,-6,4",
+        "2 -6 4"
+       ],
+       "explain": "$p = A\\hat{x} = (5, 13, 17)$，$e = (7, 7, 21) - (5, 13, 17) = (2, -6, 4)$。",
+       "origin": "official"
+      },
+      {
+       "id": "which-space",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 16.5。\n\n最小二乘问题中，误差 $e$、投影 $p$、解 $\\hat{x}$ 分别属于哪个子空间？",
+       "options": [
+        "$e \\in N(A^T)$，$p \\in C(A)$，$\\hat{x} \\in C(A^T)$",
+        "$e \\in C(A)$，$p \\in N(A^T)$，$\\hat{x} \\in N(A)$",
+        "$e \\in N(A)$，$p \\in C(A^T)$，$\\hat{x} \\in C(A)$",
+        "三者都在 $C(A)$ 中"
+       ],
+       "answer": 0,
+       "explain": "$e$ 垂直于列空间；$p = A\\hat{x}$ 在列空间中；$A$ 列满秩时 $\\hat{x}$ 在行空间（这时是整个 $\\mathbb{R}^n$）中。",
+       "origin": "official"
+      },
+      {
+       "id": "symmetric-t",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 16.6。\n\n在 $t = -2, -1, 0, 1, 2$ 时测得 $b = 4, 2, -1, 0, 0$。最佳拟合直线 $C + Dt$ 中的 $C$ 和 $D$ 分别是多少？（用逗号分隔。）",
+       "answer": [
+        "1, -1",
+        "1,-1",
+        "1 -1"
+       ],
+       "explain": "$t$ 对称，$A^T A = \\begin{bmatrix} 5 & 0 \\\\ 0 & 10 \\end{bmatrix}$ 是对角的，$A^T b = (5, -10)$，所以 $C = 1$、$D = -1$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses2-4",
+     "kind": "lecture",
+     "title": "第 18 讲：正交矩阵与 Gram-Schmidt 正交化",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses2-4-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses2-4-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=17"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=0MtwqhIwdrI"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=HEQuN0QELSQ"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/orthogonal-matrices-and-gram-schmidt/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/7ac32be444c25e48590f47573833ccc6_MIT18_06SCF11_Ses2.4sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/356f454e5c0db220bad1383cd1c54c66_0MtwqhIwdrI.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/c3f237b70703a56e061e9d16139ffbde_HEQuN0QELSQ.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/b0aca3af754666dff0ab394cf36afaec_MIT18_06SCF11_Ses2.4prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/e1f9595692038807071733916a514cbd_MIT18_06SCF11_Ses2.4sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 4.4 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "orth-inv",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$Q$ 是正交矩阵（各列标准正交的方阵）。$Q^{-1}$ 等于？",
+       "options": [
+        "$Q^T$",
+        "$Q$",
+        "$-Q$",
+        "$Q^2$"
+       ],
+       "answer": 0,
+       "explain": "$Q^T Q = I$，方阵时就有 $Q^T = Q^{-1}$。",
+       "origin": "official"
+      },
+      {
+       "id": "proj-q",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$Q$ 的各列标准正交（不一定是方阵）。投影到 $Q$ 的列空间上的矩阵是？",
+       "options": [
+        "$QQ^T$",
+        "$Q^TQ$",
+        "$I$",
+        "$Q^{-1}$"
+       ],
+       "answer": 0,
+       "explain": "$P = Q(Q^TQ)^{-1}Q^T$，而 $Q^TQ = I$，所以 $P = QQ^T$；只有 $Q$ 是方阵时才等于 $I$。",
+       "origin": "official"
+      },
+      {
+       "id": "gs-b",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n对 $a = (1, 1, 1)$、$b = (1, 0, 2)$ 做 Gram-Schmidt：$A = a$，$B = b - \\dfrac{A^T b}{A^T A}A$。求 $B$。（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "0, -1, 1",
+        "0,-1,1",
+        "0 -1 1"
+       ],
+       "explain": "$A^T b = 3$，$A^T A = 3$，所以 $B = (1, 0, 2) - (1, 1, 1) = (0, -1, 1)$。",
+       "origin": "official"
+      },
+      {
+       "id": "gs-b4",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 17.2。\n\n对 $a = (1, -1, 0, 0)$、$b = (0, 1, -1, 0)$ 做 Gram-Schmidt，得到的 $B$ 是？",
+       "options": [
+        "$\\left(\\tfrac12, \\tfrac12, -1, 0\\right)$",
+        "$(0, 1, -1, 0)$",
+        "$\\left(-\\tfrac12, \\tfrac12, -1, 0\\right)$",
+        "$(1, 0, -1, 0)$"
+       ],
+       "answer": 0,
+       "explain": "$\\dfrac{A^T b}{A^T A} = -\\tfrac12$，$B = b + \\tfrac12 a = \\left(\\tfrac12, \\tfrac12, -1, 0\\right)$。",
+       "origin": "official"
+      },
+      {
+       "id": "qr",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\nGram-Schmidt 过程对应的矩阵分解 $A = QR$ 中，$R$ 是什么样的矩阵？",
+       "options": [
+        "上三角矩阵，$R = Q^T A$",
+        "下三角矩阵，$R = Q^T A$",
+        "对角矩阵",
+        "正交矩阵"
+       ],
+       "answer": 0,
+       "explain": "后面的 $q_i$ 都与前面的 $a_j$ 垂直，所以 $R$ 的对角线以下全是 0。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses2-5",
+     "kind": "lecture",
+     "title": "第 19 讲：行列式的性质",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses2-5-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses2-5-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=18"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=srxexLishgY"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=55AoWKZZtww"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/properties-of-determinants/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/5dd3f8ec0a398fd74264fef3fd591f81_MIT18_06SCF11_Ses2.5sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/e004880d8554094799e4c0945f2c5fa8_srxexLishgY.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/746b62a30e41b19c396700071b8786ce_55AoWKZZtww.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/49d4fb1121ae389543b03fbb446a6012_MIT18_06SCF11_Ses2.5prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/4898a00edcd5ddfa9a545446ff6c2e88_MIT18_06SCF11_Ses2.5sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 5.1 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "swap",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要（性质 2）。\n\n交换矩阵的两行，行列式怎样变化？",
+       "options": [
+        "变号",
+        "不变",
+        "变成 0",
+        "变成倒数"
+       ],
+       "answer": 0,
+       "explain": "这是行列式的基本性质之一。由它可以推出：有两行相同的矩阵，行列式为 0。",
+       "origin": "official"
+      },
+      {
+       "id": "det-2a",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要（性质 9）。\n\n$A$ 是 3 × 3 矩阵，$\\det A = 5$。$\\det(2A)$ 是多少？",
+       "answer": [
+        "40"
+       ],
+       "explain": "$\\det(2A) = 2^n \\det A = 2^3 \\times 5 = 40$：每一行都乘了 2。",
+       "origin": "official"
+      },
+      {
+       "id": "det-inv",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要（性质 9）。\n\n$\\det A = 4$。$\\det A^{-1}$ 是多少？",
+       "answer": [
+        "1/4",
+        "0.25"
+       ],
+       "explain": "$\\det A^{-1} \\cdot \\det A = \\det I = 1$。",
+       "origin": "official"
+      },
+      {
+       "id": "row-sum",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 18.1。\n\n方阵 $A$ 的每一行元素之和都是 1。下面哪个结论一定成立？",
+       "options": [
+        "$\\det(A - I) = 0$",
+        "$\\det A = 1$",
+        "$\\det A = 0$",
+        "$A = I$"
+       ],
+       "answer": 0,
+       "explain": "$(A - I)(1, \\ldots, 1)^T = 0$，所以 $A - I$ 奇异。$\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}$ 说明 $\\det A$ 不一定是 1。",
+       "origin": "official"
+      },
+      {
+       "id": "vandermonde",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 18.2。\n\n计算范德蒙行列式 $\\det \\begin{bmatrix} 1 & 1 & 1 \\\\ 1 & 2 & 4 \\\\ 1 & 3 & 9 \\end{bmatrix}$。",
+       "answer": [
+        "2"
+       ],
+       "explain": "$a = 1$、$b = 2$、$c = 3$，$(b - a)(c - a)(c - b) = 1 \\times 2 \\times 1 = 2$。",
+       "origin": "official"
+      },
+      {
+       "id": "triangular",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要（性质 7）。\n\n$\\det \\begin{bmatrix} 2 & 7 & -3 \\\\ 0 & 3 & 5 \\\\ 0 & 0 & -1 \\end{bmatrix}$ 是多少？",
+       "answer": [
+        "-6"
+       ],
+       "explain": "三角矩阵的行列式是对角元的乘积：$2 \\times 3 \\times (-1) = -6$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses2-6",
+     "kind": "lecture",
+     "title": "第 20 讲：行列式公式与代数余子式",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses2-6-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses2-6-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=19"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=23LLB9mNJvc"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=B17h10EF59g"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解（普通话）：行列式",
+       "url": "https://www.youtube.com/watch?v=ZyYGJc9jNno"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/determinant-formulas-and-cofactors/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/cc79f04d92ee282758780bac2ec5e403_MIT18_06SCF11_Ses2.6sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/9b2324e23193d05afe3a6f1a555f60f5_23LLB9mNJvc.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/ebf27cc8b4bcaf3d8678bc5159f59d3e_B17h10EF59g.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/d4004842b468da7628c422e2e403ba2c_MIT18_06SCF11_Ses2.6prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/022524a65ff095097fdce7857c87bedf_MIT18_06SCF11_Ses2.6sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 5.2 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "terms",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n用大公式计算 5 × 5 矩阵的行列式，一共有多少项（每项对应一个排列）？",
+       "answer": [
+        "120",
+        "5!"
+       ],
+       "explain": "$n! = 5! = 120$。",
+       "origin": "official"
+      },
+      {
+       "id": "perm4",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 19.1。\n\n$\\det \\begin{bmatrix} 0 & 0 & 0 & 1 \\\\ 1 & 0 & 0 & 0 \\\\ 0 & 1 & 0 & 0 \\\\ 0 & 0 & 1 & 0 \\end{bmatrix}$ 是多少？",
+       "answer": [
+        "-1"
+       ],
+       "explain": "这是一个置换矩阵，变回单位矩阵需要三次行交换（奇数次），所以行列式是 −1。",
+       "origin": "official"
+      },
+      {
+       "id": "cofactor-sign",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n代数余子式 $C_{ij}$ 等于去掉第 $i$ 行、第 $j$ 列后的行列式乘以什么？",
+       "options": [
+        "$(-1)^{i+j}$",
+        "$(-1)^{i}$",
+        "$(-1)^{ij}$",
+        "$1$"
+       ],
+       "answer": 0,
+       "explain": "$i + j$ 为偶数时取正号，为奇数时取负号。",
+       "origin": "official"
+      },
+      {
+       "id": "tridiag",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n元素全为 1 的 $n \\times n$ 三对角矩阵 $A_n$ 满足 $|A_n| = |A_{n-1}| - |A_{n-2}|$，且 $|A_1| = 1$、$|A_2| = 0$。$|A_5|$ 是多少？",
+       "answer": [
+        "0"
+       ],
+       "explain": "$|A_3| = -1$，$|A_4| = -1$，$|A_5| = |A_4| - |A_3| = 0$；这个数列每六项重复一次。",
+       "origin": "official"
+      },
+      {
+       "id": "pascal",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 19.2。\n\n4 × 4 对称帕斯卡矩阵的行列式是 1。把它右下角的 20 改成 19，行列式变成多少？",
+       "options": [
+        "0",
+        "1",
+        "−1",
+        "19"
+       ],
+       "answer": 0,
+       "explain": "右下角元素乘以它的代数余子式（3 × 3 帕斯卡矩阵的行列式 = 1），元素减 1，行列式也减 1。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses2-7",
+     "kind": "lecture",
+     "title": "第 21 讲：克拉默法则、逆矩阵与体积",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses2-7-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses2-7-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=20"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=QNpj-gOXW9M"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=qEBi0K5wfOs"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解（普通话）：行列式和体积",
+       "url": "https://www.youtube.com/watch?v=ZuWAwCEMeWE"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/cramers-rule-inverse-matrix-and-volume/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/f6e46da0d783d8f9c0a25c407c76166a_MIT18_06SCF11_Ses2.7sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/fb1488040869b7b3359e17ebcb3139e3_QNpj-gOXW9M.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/ebbf9697dc8dd2c5dcb46065c13f9876_qEBi0K5wfOs.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/d91543439c69ed9a21cf24981ab4ba98_MIT18_06SCF11_Ses2.7prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/3a6198ee2541298bec4f5810f996bf42_MIT18_06SCF11_Ses2.7sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 5.3 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "inverse-formula",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n用代数余子式矩阵 $C$ 表示，$A^{-1}$ 等于？",
+       "options": [
+        "$\\dfrac{1}{\\det A} C^T$",
+        "$\\dfrac{1}{\\det A} C$",
+        "$(\\det A)\\, C^T$",
+        "$C^{-1}$"
+       ],
+       "answer": 0,
+       "explain": "关键是转置：$A$ 第一行的代数余子式放进 $A^{-1}$ 的第一列。",
+       "origin": "official"
+      },
+      {
+       "id": "cramer",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要（克拉默法则）。\n\n用克拉默法则解 $\\begin{bmatrix} 2 & 1 \\\\ 1 & 3 \\end{bmatrix} \\begin{bmatrix} x_1 \\\\ x_2 \\end{bmatrix} = \\begin{bmatrix} 3 \\\\ 4 \\end{bmatrix}$，$x_1$ 等于多少？",
+       "answer": [
+        "1"
+       ],
+       "explain": "$\\det A = 5$，$\\det B_1 = \\begin{vmatrix} 3 & 1 \\\\ 4 & 3 \\end{vmatrix} = 5$，所以 $x_1 = 5/5 = 1$。",
+       "origin": "official"
+      },
+      {
+       "id": "triangle",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n顶点在 $(0, 0)$、$(4, 0)$、$(0, 3)$ 的三角形面积是多少？",
+       "answer": [
+        "6"
+       ],
+       "explain": "$\\tfrac12 |ad - bc| = \\tfrac12 |4 \\cdot 3 - 0 \\cdot 0| = 6$。",
+       "origin": "official"
+      },
+      {
+       "id": "det-cofactor",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 20.1。\n\n$A = \\begin{bmatrix} 1 & 1 & 4 \\\\ 1 & 2 & 2 \\\\ 1 & 2 & 5 \\end{bmatrix}$ 的行列式是多少？",
+       "answer": [
+        "3"
+       ],
+       "explain": "$AC^T = 3I$，所以 $\\det A = 3$。",
+       "origin": "official"
+      },
+      {
+       "id": "change-entry",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 20.1。\n\n接上题，把 $a_{13} = 4$ 改成 100，行列式会怎样？",
+       "options": [
+        "不变，因为这个位置的代数余子式是 0",
+        "变成原来的 25 倍",
+        "增加 96",
+        "变成 0"
+       ],
+       "answer": 0,
+       "explain": "$\\det A = \\sum_j a_{1j}C_{1j}$，而 $C_{13} = 0$，所以 $a_{13}$ 的值不影响行列式。",
+       "origin": "official"
+      },
+      {
+       "id": "jacobian",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 20.2。\n\n从直角坐标到球坐标 $(\\rho, \\phi, \\theta)$ 的雅可比行列式是？",
+       "options": [
+        "$\\rho^2 \\sin\\phi$",
+        "$\\rho \\sin\\phi$",
+        "$\\rho^2 \\cos\\phi$",
+        "$\\rho^2$"
+       ],
+       "answer": 0,
+       "explain": "按最后一行展开偏导数矩阵的行列式，化简得 $\\rho^2\\sin\\phi$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses2-8",
+     "kind": "lecture",
+     "title": "第 22 讲：特征值与特征向量",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses2-8-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses2-8-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=21"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=cdZnhQjJu4I"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=mVeuZzJdd1w"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/eigenvalues-and-eigenvectors/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/1999c9f4accdbef05571a1014438f8dd_MIT18_06SCF11_Ses2.8sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/e55ee86450e5eeff8c331750e8d46448_cdZnhQjJu4I.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/6c525b41e0a7c9f8440dfa4176c877ff_mVeuZzJdd1w.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/45bdf363c6f1a564a61fdf61aa86748c_MIT18_06SCF11_Ses2.8prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/a5b090d92c330788febc5b2092906af9_MIT18_06SCF11_Ses2.8sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 6.1 至 6.2 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "eig-31",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n$A = \\begin{bmatrix} 3 & 1 \\\\ 1 & 3 \\end{bmatrix}$ 的两个特征值是多少？（用逗号分隔，从大到小。）",
+       "answer": [
+        "4, 2",
+        "4,2",
+        "4 2"
+       ],
+       "explain": "$\\lambda^2 - 6\\lambda + 8 = 0$，即 $\\lambda = 4$ 或 $2$；迹 $6 = 4 + 2$，行列式 $8 = 4 \\times 2$。",
+       "origin": "official"
+      },
+      {
+       "id": "trace-det",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n矩阵的所有特征值之**和**与之**积**分别等于？",
+       "options": [
+        "迹（对角元之和）与行列式",
+        "行列式与迹",
+        "秩与迹",
+        "对角元之积与行列式"
+       ],
+       "answer": 0,
+       "explain": "2 × 2 时特征方程是 $\\lambda^2 - \\operatorname{trace}(A)\\lambda + \\det A = 0$。",
+       "origin": "official"
+      },
+      {
+       "id": "rotation",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n把平面旋转 90° 的矩阵 $Q = \\begin{bmatrix} 0 & -1 \\\\ 1 & 0 \\end{bmatrix}$ 的特征值是？",
+       "options": [
+        "$i$ 和 $-i$",
+        "$1$ 和 $-1$",
+        "$0$ 和 $0$",
+        "$1$ 和 $1$"
+       ],
+       "answer": 0,
+       "explain": "$\\det(Q - \\lambda I) = \\lambda^2 + 1$。旋转改变每个非零实向量的方向，所以没有实特征值。",
+       "origin": "official"
+      },
+      {
+       "id": "rank-b",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 21.1。\n\n3 × 3 矩阵 $B$ 的特征值是 0、1、2。$B$ 的秩是多少？",
+       "options": [
+        "2",
+        "3",
+        "1",
+        "无法确定"
+       ],
+       "answer": 0,
+       "explain": "有特征值 0 所以奇异；两个不同的非零特征值保证秩恰好是 2。",
+       "origin": "official"
+      },
+      {
+       "id": "inv-eig",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 21.1。\n\n接上题，$(B^2 + I)^{-1}$ 最小的特征值是多少？",
+       "answer": [
+        "1/5",
+        "0.2"
+       ],
+       "explain": "特征值 $\\lambda$ 变成 $\\dfrac{1}{\\lambda^2 + 1}$：$1,\\ \\tfrac12,\\ \\tfrac15$，最小的是 $\\tfrac15$。",
+       "origin": "official"
+      },
+      {
+       "id": "eig-c",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 21.2。\n\n所有元素都是 2 的 3 × 3 矩阵 $C$，它唯一的非零特征值是多少？",
+       "answer": [
+        "6"
+       ],
+       "explain": "$C$ 的秩是 1，有两个特征值是 0；迹 $= 6$ 等于特征值之和，所以另一个特征值是 6。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses2-9",
+     "kind": "lecture",
+     "title": "第 23 讲：对角化与 A 的幂",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses2-9-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses2-9-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=22"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=13r9QY6cmjc"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=5IGTFgPqlkw"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/diagonalization-and-powers-of-a/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/d05795355f5cbe35356a4a1b39658336_MIT18_06SCF11_Ses2.9sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/d404622e0a39f004d40ef4bea4c52929_13r9QY6cmjc.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/d7fb35f365c2d4686ef3009c878ed90b_5IGTFgPqlkw.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/dde9fec9ef59ca07608a98c8cfdf47e3_MIT18_06SCF11_Ses2.9prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/b7f1b40a20430a1fa7222bdfa8daa126_MIT18_06SCF11_Ses2.9sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 6.2 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "diag",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$A$ 有 $n$ 个线性无关的特征向量，把它们作为 $S$ 的各列。下面哪个等式成立？",
+       "options": [
+        "$A = S\\Lambda S^{-1}$",
+        "$A = S^{-1}\\Lambda S$",
+        "$A = \\Lambda S$",
+        "$A = S\\Lambda$"
+       ],
+       "answer": 0,
+       "explain": "$AS = S\\Lambda$，两边右乘 $S^{-1}$ 即得。",
+       "origin": "official"
+      },
+      {
+       "id": "power-zero",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n可对角化的矩阵 $A$ 满足 $A^k \\to 0$（$k \\to \\infty$），当且仅当？",
+       "options": [
+        "所有特征值的绝对值都小于 1",
+        "所有特征值都小于 1",
+        "行列式小于 1",
+        "迹小于 1"
+       ],
+       "answer": 0,
+       "explain": "$A^k = S\\Lambda^k S^{-1}$，每个 $\\lambda_i^k \\to 0$ 需要 $|\\lambda_i| < 1$。",
+       "origin": "official"
+      },
+      {
+       "id": "fib-eig",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n斐波那契矩阵 $\\begin{bmatrix} 1 & 1 \\\\ 1 & 0 \\end{bmatrix}$ 较大的特征值约等于多少？（保留三位小数。）",
+       "answer": [
+        "1.618"
+       ],
+       "explain": "$\\lambda = \\dfrac{1 + \\sqrt{5}}{2} \\approx 1.618$，它决定了 $F_k$ 的增长速度。",
+       "origin": "official"
+      },
+      {
+       "id": "not-diag",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$\\begin{bmatrix} 2 & 1 \\\\ 0 & 2 \\end{bmatrix}$ 能不能对角化？",
+       "options": [
+        "不能，它只有一个线性无关的特征向量",
+        "能，因为它是三角矩阵",
+        "能，因为特征值都是 2",
+        "不能，因为它不可逆"
+       ],
+       "answer": 0,
+       "explain": "$A - 2I = \\begin{bmatrix} 0 & 1 \\\\ 0 & 0 \\end{bmatrix}$ 的零空间只有一维。",
+       "origin": "official"
+      },
+      {
+       "id": "eigvecs",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 22.1。\n\n$A = \\begin{bmatrix} 4 & 0 \\\\ 1 & 2 \\end{bmatrix}$ 的特征向量是？",
+       "options": [
+        "$\\lambda = 4$ 对应 $(2, 1)$，$\\lambda = 2$ 对应 $(0, 1)$",
+        "$\\lambda = 4$ 对应 $(1, 0)$，$\\lambda = 2$ 对应 $(0, 1)$",
+        "$\\lambda = 4$ 对应 $(0, 1)$，$\\lambda = 2$ 对应 $(2, 1)$",
+        "$\\lambda = 4$ 对应 $(1, 2)$，$\\lambda = 2$ 对应 $(1, 0)$"
+       ],
+       "answer": 0,
+       "explain": "$(A - 4I)x = 0$ 给出 $y = 2z$；$(A - 2I)x = 0$ 给出 $y = 0$。",
+       "origin": "official"
+      },
+      {
+       "id": "markov-eig",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 22.2。\n\n$A = \\begin{bmatrix} 0.6 & 0.9 \\\\ 0.4 & 0.1 \\end{bmatrix}$ 的两个特征值是？（用逗号分隔，从大到小。）",
+       "answer": [
+        "1, -0.3",
+        "1,-0.3",
+        "1 -0.3",
+        "1, -.3"
+       ],
+       "explain": "每列之和为 1，所以有特征值 1；迹 0.7 减去 1 得另一个特征值 −0.3。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses2-10",
+     "kind": "lecture",
+     "title": "第 24 讲：微分方程与 exp(At)",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses2-10-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses2-10-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=23"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=IZqwi0wJovM"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=FzncDO1eSNI"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解（普通话）：微分方程指数矩阵(At)",
+       "url": "https://www.youtube.com/watch?v=fiSp3Ss-Yo8"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/differential-equations-and-exp-at/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/9dc6bf7f9d4bba51bc9f5c9091bd8d52_MIT18_06SCF11_Ses2.10sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/2f7dd57cfc78b436934383c9673c73b1_IZqwi0wJovM.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/a5f152ce863bb363fa7ba97e6c66a867_FzncDO1eSNI.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/be691a8976e7e7b946834654669c24d7_MIT18_06SCF11_Ses2.10prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/c055bbb4ebda19fceecf04c9c3f05cc4_MIT18_06SCF11_Ses2.10sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 6.3 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "steady",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$\\dfrac{du}{dt} = Au$，$A = \\begin{bmatrix} -1 & 2 \\\\ 1 & -2 \\end{bmatrix}$，$u(0) = (1, 0)$。当 $t \\to \\infty$ 时 $u(t)$ 趋于？",
+       "options": [
+        "$\\left(\\tfrac23, \\tfrac13\\right)$",
+        "$(0, 0)$",
+        "$(1, 0)$",
+        "无穷大"
+       ],
+       "answer": 0,
+       "explain": "特征值 0 和 −3；$e^{-3t}$ 那一项衰减，只剩 $\\tfrac13(2, 1)$。",
+       "origin": "official"
+      },
+      {
+       "id": "stability",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$\\dfrac{du}{dt} = Au$ 的解对所有初值都趋于 0 的条件是？",
+       "options": [
+        "$A$ 的所有特征值实部都小于 0",
+        "$A$ 的所有特征值都小于 1",
+        "$A$ 的迹小于 0",
+        "$A$ 的行列式大于 0"
+       ],
+       "answer": 0,
+       "explain": "$e^{\\lambda t} \\to 0$ 需要 $\\operatorname{Re}\\lambda < 0$。迹为负不够：$\\begin{bmatrix} -2 & 0 \\\\ 0 & 1 \\end{bmatrix}$ 会发散。",
+       "origin": "official"
+      },
+      {
+       "id": "two-by-two",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n2 × 2 矩阵 $A$ 满足什么条件时，$du/dt = Au$ 的解一定稳定？",
+       "options": [
+        "行列式为正且迹为负",
+        "行列式为负且迹为负",
+        "行列式为正",
+        "迹为负"
+       ],
+       "answer": 0,
+       "explain": "两个特征值之积为正、和为负，说明两者（或复特征值的实部）都为负。",
+       "origin": "official"
+      },
+      {
+       "id": "exp-diag",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$A = S\\Lambda S^{-1}$ 时，$e^{At}$ 等于？",
+       "options": [
+        "$Se^{\\Lambda t}S^{-1}$",
+        "$e^{S}e^{\\Lambda t}e^{S^{-1}}$",
+        "$S^{-1}e^{\\Lambda t}S$",
+        "$e^{\\Lambda t}$"
+       ],
+       "answer": 0,
+       "explain": "代入幂级数，每一项 $(At)^n = S\\Lambda^n S^{-1}t^n$。",
+       "origin": "official"
+      },
+      {
+       "id": "skew",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 23.1。\n\n$A$ 是反对称矩阵（$A^T = -A$），$u' = Au$。$\\|u(t)\\|$ 怎样随时间变化？",
+       "options": [
+        "保持不变",
+        "指数增长",
+        "指数衰减",
+        "周期性地在 0 和 $\\|u(0)\\|$ 之间变化"
+       ],
+       "answer": 0,
+       "explain": "$\\dfrac{d}{dt}\\|u\\|^2 = 2u^T A u = 0$，因为反对称矩阵的二次型恒为 0。",
+       "origin": "official"
+      },
+      {
+       "id": "exp-entry",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 23.2。\n\n$A = \\begin{bmatrix} 1 & 1 \\\\ 0 & 3 \\end{bmatrix}$。$e^{At}$ 右下角的元素是什么？（用 `e^(3t)` 这样的写法。）",
+       "answer": [
+        "e^(3t)",
+        "e^{3t}",
+        "e^3t",
+        "exp(3t)"
+       ],
+       "explain": "$e^{At} = \\begin{bmatrix} e^t & \\tfrac12(e^{3t} - e^t) \\\\ 0 & e^{3t} \\end{bmatrix}$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses2-11",
+     "kind": "lecture",
+     "title": "第 25 讲：马尔可夫矩阵与傅里叶级数",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses2-11-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses2-11-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=24"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=lGGDIGizcQ0"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=wuyAeWE3iIM"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/markov-matrices-fourier-series/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/c8a22883b5e0cc402b3df9c1d754ef5b_MIT18_06SCF11_Ses2.11sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/356a14ba7120b532a1f9419c704614a1_lGGDIGizcQ0.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/38dac0802ac9da6da8f11d68371a8dc9_wuyAeWE3iIM.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/bba3c75ae696682ccadae215474141b5_MIT18_06SCF11_Ses2.11prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/2d5daa1e2d4014040f317ebb8d92d1c0_MIT18_06SCF11_Ses2.11sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 8.3、8.5 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "markov-one",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n为什么马尔可夫矩阵（元素非负、每列之和为 1）一定有特征值 1？",
+       "options": [
+        "$A - I$ 的每列之和为 0，所以各行相加得到零行，$A - I$ 奇异",
+        "因为它的行列式是 1",
+        "因为它的迹是 1",
+        "因为它是对称矩阵"
+       ],
+       "answer": 0,
+       "explain": "各行之和为零行说明 $A - I$ 的行线性相关。",
+       "origin": "official"
+      },
+      {
+       "id": "cal-steady",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n加州和马萨诸塞州的人口按 $\\begin{bmatrix} .9 & .2 \\\\ .1 & .8 \\end{bmatrix}$ 迁移，总人口 1000。很长时间之后，加州有多少人？",
+       "answer": [
+        "2000/3",
+        "666.67",
+        "666.7",
+        "667"
+       ],
+       "explain": "稳态向量是特征值 1 的特征向量 $(2, 1)$，加州占 $\\tfrac23$，即 $\\tfrac{2000}{3} \\approx 666.7$。",
+       "origin": "official"
+      },
+      {
+       "id": "second-eig",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n$\\begin{bmatrix} .9 & .2 \\\\ .1 & .8 \\end{bmatrix}$ 的另一个特征值（不是 1 的那个）是多少？",
+       "answer": [
+        "0.7",
+        ".7"
+       ],
+       "explain": "迹 $= 1.7 = 1 + \\lambda_2$。",
+       "origin": "official"
+      },
+      {
+       "id": "fourier-a1",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n傅里叶级数 $f(x) = a_0 + a_1\\cos x + b_1\\sin x + \\cdots$ 中，系数 $a_1$ 等于？",
+       "options": [
+        "$\\dfrac{1}{\\pi}\\displaystyle\\int_0^{2\\pi} f(x)\\cos x\\,dx$",
+        "$\\displaystyle\\int_0^{2\\pi} f(x)\\cos x\\,dx$",
+        "$\\dfrac{1}{2\\pi}\\displaystyle\\int_0^{2\\pi} f(x)\\,dx$",
+        "$f(0)$"
+       ],
+       "answer": 0,
+       "explain": "两边乘 $\\cos x$ 再积分，由正交性只剩 $a_1\\int_0^{2\\pi}\\cos^2 x\\,dx = a_1\\pi$。",
+       "origin": "official"
+      },
+      {
+       "id": "b-class",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 24.2。\n\n全 1 的 3 × 3 矩阵 $B$ 属于下面哪一类？",
+       "options": [
+        "可对角化矩阵",
+        "投影矩阵",
+        "马尔可夫矩阵",
+        "正交矩阵"
+       ],
+       "answer": 0,
+       "explain": "$B$ 对称，所以可对角化；但 $B^2 = 3B$，不是投影；列和为 3，不是马尔可夫矩阵。",
+       "origin": "official"
+      },
+      {
+       "id": "complete",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 24.3。\n\n把 $\\begin{bmatrix} .7 & .1 & .2 \\\\ .1 & .6 & .3 \\\\ a & b & c \\end{bmatrix}$ 补全成马尔可夫矩阵，第三行 $a, b, c$ 是？（用逗号分隔。）",
+       "answer": [
+        "0.2, 0.3, 0.5",
+        ".2, .3, .5",
+        "0.2,0.3,0.5",
+        ".2,.3,.5"
+       ],
+       "explain": "每一列之和必须是 1：$1 - .7 - .1 = .2$，$1 - .1 - .6 = .3$，$1 - .2 - .3 = .5$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses2-12",
+     "kind": "lecture",
+     "title": "第 26 讲：考试 2 复习",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses2-12-notes",
+       "title": "讲座摘要"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=25"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=QuZL5IKpO_U"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=pz3zyUO2gpM"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解（普通话）：第二次考试例题",
+       "url": "https://www.youtube.com/watch?v=ThxvK9t7DNo"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/exam-2-review/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/5500c16aff18ebcc312df763e8f85992_MIT18_06SCF11_Ses2.12sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/f29ba440690bf171f209c6fd9ba253d6_QuZL5IKpO_U.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/10c6dd8428b4f011299e3b905bee4c11_pz3zyUO2gpM.pdf"
+      }
+     ],
+     "practice": [
+      {
+       "id": "proj-eigs",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要的例题 1。\n\n$P = \\dfrac{aa^T}{a^T a}$ 是投影到 $a = (2, 1, 2)$ 所在直线上的 3 × 3 矩阵。它的特征值是？",
+       "options": [
+        "0、0、1",
+        "1、1、1",
+        "0、1、1",
+        "9、0、0"
+       ],
+       "answer": 0,
+       "explain": "秩为 1，所以有二重特征值 0；迹为 1，所以第三个特征值是 1。",
+       "origin": "official"
+      },
+      {
+       "id": "repeat-proj",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要的例题 1。\n\n接上题，$u_{k+1} = Pu_k$，$u_0 = (9, 9, 0)$。$u_{10}$ 是多少？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "6, 3, 6",
+        "6,3,6",
+        "6 3 6"
+       ],
+       "explain": "$u_1 = Pu_0 = 3a = (6, 3, 6)$，之后再投影也不变，因为 $P^k = P$。",
+       "origin": "official"
+      },
+      {
+       "id": "best-d",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要的例题 2。\n\n数据点 $(1, 4)$、$(2, 5)$、$(3, 8)$。经过原点的最佳拟合直线 $y = Dt$ 中，$D$ 是多少？（写成分数。）",
+       "answer": [
+        "19/7"
+       ],
+       "explain": "$A^T A\\hat D = A^T b$：$14\\hat D = 4 + 10 + 24 = 38$，$\\hat D = \\tfrac{38}{14} = \\tfrac{19}{7}$。",
+       "origin": "official"
+      },
+      {
+       "id": "det-inv4",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要的例题 4。\n\n4 × 4 矩阵 $A$ 的特征值是 1、2、3、4。$\\operatorname{trace}(A + I)$ 是多少？",
+       "answer": [
+        "14"
+       ],
+       "explain": "$(1 + 2 + 3 + 4) + 4 = 14$。",
+       "origin": "official"
+      },
+      {
+       "id": "a3-eigs",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要的例题 6。\n\n$A_3 = \\begin{bmatrix} 0 & 1 & 0 \\\\ 1 & 0 & 2 \\\\ 0 & 2 & 0 \\end{bmatrix}$ 的特征值是？",
+       "options": [
+        "$0,\\ \\sqrt5,\\ -\\sqrt5$",
+        "$0,\\ 1,\\ 2$",
+        "$1,\\ 2,\\ 3$",
+        "$0,\\ 5,\\ -5$"
+       ],
+       "answer": 0,
+       "explain": "$\\det(A_3 - \\lambda I) = -\\lambda^3 + 5\\lambda$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ex2",
+     "kind": "exam",
+     "title": "考试 2",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ex2-problems",
+       "title": "试卷与解答"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/least-squares-determinants-and-eigenvalues/exam-2/"
+      },
+      {
+       "kind": "exams",
+       "label": "试卷原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/2a49ca623b8057f0b8dbcccc252db815_MIT18_06SCF11_ex2.pdf"
+      },
+      {
+       "kind": "exams",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/c224c7a55a1acaf364d0ff4f01b057b2_MIT18_06SCF11_ex2s.pdf"
+      }
+     ],
+     "practice": [
+      {
+       "id": "q1b",
+       "type": "text",
+       "prompt": "改编自考试 2 第 1 题。\n\n$q_1, q_2, q_3$ 是 $\\mathbb{R}^3$ 中的标准正交向量，$\\det\\begin{bmatrix} q_1 & q_2 & q_3 \\end{bmatrix} = 1$。$\\det\\begin{bmatrix} q_1 + q_2 & q_2 + q_3 & q_3 + q_1 \\end{bmatrix}$ 是多少？",
+       "answer": [
+        "2"
+       ],
+       "explain": "按列线性展开后只剩 $\\det[q_1\\ q_2\\ q_3] + \\det[q_2\\ q_3\\ q_1]$，后者是偶置换，两项都是 1。",
+       "origin": "official"
+      },
+      {
+       "id": "q1c",
+       "type": "text",
+       "prompt": "改编自考试 2 第 1 题。\n\n同上（但 $\\det\\begin{bmatrix} q_1 & q_2 & q_3 \\end{bmatrix}$ 可能是 $\\pm1$），$\\det\\begin{bmatrix} q_1 & q_2 & q_3 \\end{bmatrix} \\cdot \\det\\begin{bmatrix} q_2 & q_3 & q_1 \\end{bmatrix}$ 是多少？",
+       "answer": [
+        "1"
+       ],
+       "explain": "轮换是偶置换，两个行列式相等，乘积是 $(\\pm1)^2 = 1$。",
+       "origin": "official"
+      },
+      {
+       "id": "q2",
+       "type": "text",
+       "prompt": "改编自考试 2 第 2 题。\n\n在 $t = -10, \\ldots, 10$ 共 21 个时刻测量，只有 $t = 0$ 时 $b = 1$，其余都是 0。最小二乘拟合直线 $C + Dt$ 的 $\\widehat{C}$ 是多少？（写成分数）",
+       "answer": [
+        "1/21"
+       ],
+       "explain": "$A^TA = \\begin{bmatrix} 21 & 0 \\\\ 0 & 770 \\end{bmatrix}$，$A^Tb = (1, 0)$，所以 $\\widehat{C} = 1/21$，$\\widehat{D} = 0$。",
+       "origin": "official"
+      },
+      {
+       "id": "q3b",
+       "type": "choice",
+       "prompt": "改编自考试 2 第 3 题。\n\n$Q$ 的各列是由 $A$ 的各列做 Gram-Schmidt 得到的（5 × 3）。投影矩阵 $P_Q$ 与 $P_A$ 的关系、$\\det P_Q$ 分别是？",
+       "options": [
+        "$P_Q = P_A$，$\\det P_Q = 0$",
+        "$P_Q \\ne P_A$，$\\det P_Q = 1$",
+        "$P_Q = P_A$，$\\det P_Q = 1$",
+        "$P_Q = QQ^T \\ne P_A$，$\\det P_Q = 0$"
+       ],
+       "answer": 0,
+       "explain": "两者投影到同一个子空间；5 × 5 的投影矩阵秩只有 3，是奇异的。",
+       "origin": "official"
+      },
+      {
+       "id": "q3c",
+       "type": "choice",
+       "prompt": "改编自考试 2 第 3 题。\n\n新向量 $a_4$ 加入后，Gram-Schmidt 的下一个向量 $q_4$ 是？",
+       "options": [
+        "$\\dfrac{a_4 - P_Aa_4}{\\|a_4 - P_Aa_4\\|}$",
+        "$\\dfrac{P_Qa_4}{\\|P_Qa_4\\|}$",
+        "$a_4$ 减去它在每个 $a_i$ 上的投影，再单位化",
+        "$\\dfrac{a_4}{\\|a_4\\|}$"
+       ],
+       "answer": 0,
+       "explain": "要减去的是在整个列空间上的投影；逐个减去在 $a_i$ 上的投影只在 $a_i$ 互相正交时才对。",
+       "origin": "official"
+      },
+      {
+       "id": "q4b",
+       "type": "text",
+       "prompt": "改编自考试 2 第 4 题。\n\n$A = \\begin{bmatrix} x & x & x & x \\\\ x & 1 & 0 & 0 \\\\ x & 0 & 1 & 0 \\\\ x & 0 & 0 & 1 \\end{bmatrix}$。除 $x = 0$ 外，$x$ 等于多少时 $\\det A = 0$？（写成分数）",
+       "answer": [
+        "1/3"
+       ],
+       "explain": "$\\det A = x(1 - 3x)$。",
+       "origin": "official"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "unit-3",
+   "title": "单元 3：正定矩阵及其应用",
+   "items": [
+    {
+     "id": "ses3-1",
+     "kind": "lecture",
+     "title": "第 27 讲：对称矩阵与正定性",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses3-1-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses3-1-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=26"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=UCc9q_cAhho"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=lpnY5QVjU5w"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/symmetric-matrices-and-positive-definiteness/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/804ab1e53134741d2044d241b50a285e_MIT18_06SCF11_Ses3.1sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/8b7622bf59449df1c89208bb3d10a0a9_UCc9q_cAhho.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/b383d7a883d770987459b09e9c7976a8_lpnY5QVjU5w.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/29d9e3260562a0125d27537cb6baf3d0_MIT18_06SCF11_Ses3.1prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/0b82b456a287d080f8f390727287105e_MIT18_06SCF11_Ses3.1sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 6.4 至 6.5 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "spectral",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n实对称矩阵 $A$ 可以分解成什么形式（谱定理）？",
+       "options": [
+        "$A = Q\\Lambda Q^T$，$Q$ 是正交矩阵",
+        "$A = LU$，$L$ 是对称矩阵",
+        "$A = Q\\Lambda Q$",
+        "$A = S\\Lambda S$"
+       ],
+       "answer": 0,
+       "explain": "对称矩阵有一整组标准正交的特征向量，$Q^{-1} = Q^T$。",
+       "origin": "official"
+      },
+      {
+       "id": "pivot-sign",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n对称矩阵正主元的个数等于？",
+       "options": [
+        "正特征值的个数",
+        "正元素的个数",
+        "秩",
+        "行列式的值"
+       ],
+       "answer": 0,
+       "explain": "这让我们不用解特征方程，就能知道特征值的正负。",
+       "origin": "official"
+      },
+      {
+       "id": "pd-eig",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n$A = \\begin{bmatrix} 5 & 2 \\\\ 2 & 3 \\end{bmatrix}$ 的第二个主元是多少？（写成分数。）",
+       "answer": [
+        "11/5",
+        "2.2"
+       ],
+       "explain": "第二个主元 $= \\det A / 5 = (15 - 4)/5 = 11/5$。两个主元都为正，所以 $A$ 正定。",
+       "origin": "official"
+      },
+      {
+       "id": "det-not-enough",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n下面哪个对称矩阵行列式为正，但**不是**正定矩阵？",
+       "options": [
+        "$\\begin{bmatrix} -1 & 0 \\\\ 0 & -3 \\end{bmatrix}$",
+        "$\\begin{bmatrix} 2 & 1 \\\\ 1 & 2 \\end{bmatrix}$",
+        "$\\begin{bmatrix} 5 & 2 \\\\ 2 & 3 \\end{bmatrix}$",
+        "$\\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix}$"
+       ],
+       "answer": 0,
+       "explain": "行列式为正不够，要所有顺序主子式都为正；$-1 < 0$。",
+       "origin": "official"
+      },
+      {
+       "id": "hidden",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 25.1。\n\n「由 $x^T Ax = \\lambda x^T x$ 得 $\\lambda = \\dfrac{x^T Ax}{x^T x}$ 是实数」这个错误证明的漏洞是？",
+       "options": [
+        "对复向量 $x$，$x^T x$ 可能等于 0（例如 $x = (i, 1)$）",
+        "$Ax = \\lambda x$ 不成立",
+        "$x^T Ax$ 总是 0",
+        "实矩阵不可能有特征向量"
+       ],
+       "answer": 0,
+       "explain": "$x = (i, 1)$ 时 $x^T x = i^2 + 1 = 0$，不能做除法；应该用 $\\bar{x}^T x$。",
+       "origin": "official"
+      },
+      {
+       "id": "groups",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 25.2。\n\n下面哪一类非奇异矩阵**不**构成群（乘积和逆都在类里）？",
+       "options": [
+        "正定对称矩阵",
+        "正交矩阵",
+        "行列式为 1 的矩阵",
+        "固定矩阵 $A$ 的所有 $e^{tA}$"
+       ],
+       "answer": 0,
+       "explain": "两个正定对称矩阵的乘积一般不对称。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses3-2",
+     "kind": "lecture",
+     "title": "第 28 讲：复矩阵与快速傅里叶变换",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses3-2-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses3-2-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=27"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=M0Sa8fLOajA"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=VYS9EYZ3gCo"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/complex-matrices-fast-fourier-transform-fft/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/53f17d47bf99d26fdc472b3177c256a8_MIT18_06SCF11_Ses3.2sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/14f40d4e826079013fc3e260ec0103f0_M0Sa8fLOajA.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/39d6f27b1a470a4f44a6872dbe427ced_VYS9EYZ3gCo.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/ca8938713de08907994e9be8b7c8630a_MIT18_06SCF11_Ses3.2prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/37617dbf24875b2dfaac3e46e6305773_MIT18_06SCF11_Ses3.2sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 10.2 至 10.3 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "length",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n复向量 $z = (1, i)$ 的长度的平方 $z^H z$ 是多少？",
+       "answer": [
+        "2"
+       ],
+       "explain": "$z^H z = \\bar{z}^T z = |1|^2 + |i|^2 = 2$；而 $z^T z = 1 + i^2 = 0$，所以不能用它。",
+       "origin": "official"
+      },
+      {
+       "id": "hermitian",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n埃尔米特矩阵（$A^H = A$）的对角元一定是？",
+       "options": [
+        "实数",
+        "纯虚数",
+        "零",
+        "1"
+       ],
+       "answer": 0,
+       "explain": "$a_{jj} = \\overline{a_{jj}}$，所以对角元等于自己的共轭。",
+       "origin": "official"
+      },
+      {
+       "id": "f4-impulse",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n单位脉冲 $(1, 0, 0, 0)$ 乘以 $F_4$ 得到什么？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "1, 1, 1, 1",
+        "1,1,1,1",
+        "1 1 1 1"
+       ],
+       "explain": "结果是 $F_4$ 的第一列：单个脉冲包含等量的所有频率。",
+       "origin": "official"
+      },
+      {
+       "id": "fft-cost",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n快速傅里叶变换把乘以 $F_n$ 的运算量从约 $n^2$ 降到约多少？",
+       "options": [
+        "$\\tfrac12 n\\log_2 n$",
+        "$n$",
+        "$\\log_2 n$",
+        "$\\tfrac12 n^2$"
+       ],
+       "answer": 0,
+       "explain": "$F_{2n}$ 拆成两个 $F_n$ 加上很便宜的组合，一层层递归下去。",
+       "origin": "official"
+      },
+      {
+       "id": "f2",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 26.1。\n\n$F_2$ 是？",
+       "options": [
+        "$\\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix}$",
+        "$\\begin{bmatrix} 1 & 1 \\\\ 1 & i \\end{bmatrix}$",
+        "$\\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}$",
+        "$\\begin{bmatrix} 1 & -1 \\\\ -1 & 1 \\end{bmatrix}$"
+       ],
+       "answer": 0,
+       "explain": "$w = e^{i2\\pi/2} = -1$。",
+       "origin": "official"
+      },
+      {
+       "id": "d-matrix",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 26.2。\n\n分解 $F_4 = \\begin{bmatrix} I & D \\\\ I & -D \\end{bmatrix}\\begin{bmatrix} F_2 & \\\\ & F_2 \\end{bmatrix}P$ 中的 $D$ 是？",
+       "options": [
+        "$\\begin{bmatrix} 1 & 0 \\\\ 0 & i \\end{bmatrix}$",
+        "$\\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}$",
+        "$\\begin{bmatrix} i & 0 \\\\ 0 & -i \\end{bmatrix}$",
+        "$I$"
+       ],
+       "answer": 0,
+       "explain": "$D$ 由 1 的前两个四次方根 1 和 $i$ 构成。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses3-3",
+     "kind": "lecture",
+     "title": "第 29 讲：正定矩阵与极小值",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses3-3-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses3-3-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=28"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=vF7eyJ2g3kU"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=cfn2ZUuWPd0"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/positive-definite-matrices-and-minima/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/d163e012754258d3b374548504d8a18a_MIT18_06SCF11_Ses3.3sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/8a8c96758f45cd0d32d8b96e73114213_vF7eyJ2g3kU.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/7c7219cb65176015a7442048e3de3a75_cfn2ZUuWPd0.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/fdeb589c9d29a1f60e306667dd886dba_MIT18_06SCF11_Ses3.3prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/a034549dadd99fe2c7278d6412ddc39f_MIT18_06SCF11_Ses3.3sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 6.5 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "borderline",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n$\\begin{bmatrix} 2 & 6 \\\\ 6 & y \\end{bmatrix}$ 正定的条件是 $y$ 大于多少？",
+       "answer": [
+        "18"
+       ],
+       "explain": "行列式检验：$2y - 36 > 0$。$y = 18$ 时是半正定的。",
+       "origin": "official"
+      },
+      {
+       "id": "saddle",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$f(x, y) = 2x^2 + 12xy + 7y^2$ 在原点处是？",
+       "options": [
+        "鞍点",
+        "极小值点",
+        "极大值点",
+        "不是临界点"
+       ],
+       "answer": 0,
+       "explain": "配方得 $2(x + 3y)^2 - 11y^2$，可正可负；对应矩阵 $\\begin{bmatrix} 2 & 6 \\\\ 6 & 7 \\end{bmatrix}$ 的行列式为负。",
+       "origin": "official"
+      },
+      {
+       "id": "complete-square",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n把 $2x^2 + 12xy + 20y^2$ 配方成 $2(x + 3y)^2 + cy^2$，$c$ 是多少？",
+       "answer": [
+        "2"
+       ],
+       "explain": "$2(x+3y)^2 = 2x^2 + 12xy + 18y^2$，剩下 $2y^2$；系数 2 和 2 正是两个主元。",
+       "origin": "official"
+      },
+      {
+       "id": "pivots-3",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$A = \\begin{bmatrix} 2 & -1 & 0 \\\\ -1 & 2 & -1 \\\\ 0 & -1 & 2 \\end{bmatrix}$ 的三个主元是？",
+       "options": [
+        "$2,\\ \\tfrac32,\\ \\tfrac43$",
+        "$2,\\ 2,\\ 2$",
+        "$2,\\ 3,\\ 4$",
+        "$2 - \\sqrt2,\\ 2,\\ 2 + \\sqrt2$"
+       ],
+       "answer": 0,
+       "explain": "顺序主子式是 2、3、4，主元是相邻两个之比：$2$、$3/2$、$4/3$。",
+       "origin": "official"
+      },
+      {
+       "id": "ab-eig",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 27.1。\n\n$A$、$B$ 都是对称正定矩阵。关于 $AB$，下面哪个说法一定正确？",
+       "options": [
+        "$AB$ 的特征值都为正（虽然 $AB$ 不一定对称）",
+        "$AB$ 一定是对称正定矩阵",
+        "$AB$ 一定有负特征值",
+        "$AB$ 一定等于 $BA$"
+       ],
+       "answer": 0,
+       "explain": "$(Bx)^T A(Bx) = \\lambda\\, x^T Bx$，两边的二次型都为正。",
+       "origin": "official"
+      },
+      {
+       "id": "quad-form",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 27.2。\n\n与 $\\begin{bmatrix} 1 & 5 \\\\ 7 & 9 \\end{bmatrix}$ 对应的二次型 $f(x, y) = x^2 + 12xy + 9y^2$。$f(2, -2)$ 是多少？",
+       "answer": [
+        "-8"
+       ],
+       "explain": "$4 - 48 + 36 = -8$，所以这个二次型有时为负。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses3-4",
+     "kind": "lecture",
+     "title": "第 30 讲：相似矩阵与若尔当标准形",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses3-4-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses3-4-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=29"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=TSdXJw83kyA"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=KUuxdk_V7To"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/similar-matrices-and-jordan-form/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/6e1f793f6c25fd39e002c100e278bf1b_MIT18_06SCF11_Ses3.4sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/6dba2d879d4f00b41cdcfca2fde10a3c_TSdXJw83kyA.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/d884415d8533b2bce595c5817459c53f_KUuxdk_V7To.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/dd8682e0d4a5df4ce8b5d65095a63592_MIT18_06SCF11_Ses3.4prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/d3ee9566462755a67ad9d3af243cd17a_MIT18_06SCF11_Ses3.4sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 6.6 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "same-eig",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n如果 $B = M^{-1}AM$，那么 $A$ 与 $B$ 一定有相同的？",
+       "options": [
+        "特征值",
+        "特征向量",
+        "各个元素",
+        "行最简形"
+       ],
+       "answer": 0,
+       "explain": "$Ax = \\lambda x$ 推出 $B(M^{-1}x) = \\lambda(M^{-1}x)$：特征值相同，特征向量变成 $M^{-1}x$。",
+       "origin": "official"
+      },
+      {
+       "id": "ata-pd",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$m \\times n$ 矩阵 $A$ 满足什么条件时，$A^T A$ 是正定的？",
+       "options": [
+        "$A$ 的秩是 $n$（各列线性无关）",
+        "$A$ 是方阵",
+        "$m > n$",
+        "$A$ 的秩是 $m$"
+       ],
+       "answer": 0,
+       "explain": "$x^T A^T A x = |Ax|^2$，只有 $Ax = 0 \\Rightarrow x = 0$ 时才严格为正。",
+       "origin": "official"
+      },
+      {
+       "id": "only-self",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n与 $\\begin{bmatrix} 4 & 0 \\\\ 0 & 4 \\end{bmatrix}$ 相似的矩阵有哪些？",
+       "options": [
+        "只有它自己",
+        "所有特征值为 4、4 的 2 × 2 矩阵",
+        "$\\begin{bmatrix} 4 & 1 \\\\ 0 & 4 \\end{bmatrix}$ 和它自己",
+        "所有迹为 8 的矩阵"
+       ],
+       "answer": 0,
+       "explain": "$M^{-1}(4I)M = 4I$。",
+       "origin": "official"
+      },
+      {
+       "id": "blocks",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n一个 6 × 6 矩阵只有 3 个线性无关的特征向量。它的若尔当矩阵有几个若尔当块？",
+       "answer": [
+        "3"
+       ],
+       "explain": "每个若尔当块对应一个特征向量；对角线上方共有 $6 - 3 = 3$ 个 1。",
+       "origin": "official"
+      },
+      {
+       "id": "j-vs-k",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 28.1。\n\n$J$ 由两个 2 × 2 的若尔当块组成，$K$ 由一个 3 × 3 的块和一个 1 × 1 的块组成，特征值全是 0。它们相似吗？",
+       "options": [
+        "不相似，因为若尔当块的大小不同",
+        "相似，因为特征值相同",
+        "相似，因为特征向量个数相同",
+        "相似，因为秩相同"
+       ],
+       "answer": 0,
+       "explain": "满足 $JM = MK$ 的 $M$ 第一列全为零，不可能可逆。",
+       "origin": "official"
+      },
+      {
+       "id": "33-vs-31",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 28.2。\n\n$\\begin{bmatrix} 3 & 0 \\\\ 0 & 3 \\end{bmatrix}$ 与 $\\begin{bmatrix} 3 & 1 \\\\ 0 & 3 \\end{bmatrix}$ 相似吗？",
+       "options": [
+        "不相似，前者有两个线性无关的特征向量，后者只有一个",
+        "相似，特征值都是 3、3",
+        "相似，迹和行列式都相同",
+        "无法判断"
+       ],
+       "answer": 0,
+       "explain": "相似矩阵的线性无关特征向量个数相同。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses3-5",
+     "kind": "lecture",
+     "title": "第 31 讲：奇异值分解",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses3-5-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses3-5-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=30"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=TX_vooSnhm8"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=pSbafxDHdgE"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/singular-value-decomposition/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/d273f75ee2552a5c3c35ccab37e5edce_MIT18_06SCF11_Ses3.5sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/6d3cc0942a8d806901fa2d66843652c6_TX_vooSnhm8.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/2ee97af6c631e8b1263af52999dc5336_pSbafxDHdgE.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/bcb9475b6b6b0e5a600daf900aa8ead0_MIT18_06SCF11_Ses3.5prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/6c64bb0a0ede9ba88977078db4563ea0_MIT18_06SCF11_Ses3.5sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 6.7 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "svd-v",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n在 SVD $A = U\\Sigma V^T$ 中，$V$ 的各列是哪个矩阵的特征向量？",
+       "options": [
+        "$A^T A$",
+        "$AA^T$",
+        "$A$",
+        "$A + A^T$"
+       ],
+       "answer": 0,
+       "explain": "$A^T A = V\\Sigma^2 V^T$；同理 $U$ 的各列是 $AA^T$ 的特征向量。",
+       "origin": "official"
+      },
+      {
+       "id": "sigma-4433",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n$A = \\begin{bmatrix} 4 & 4 \\\\ -3 & 3 \\end{bmatrix}$，$A^T A = \\begin{bmatrix} 25 & 7 \\\\ 7 & 25 \\end{bmatrix}$。$A$ 最大的奇异值 $\\sigma_1$ 是多少？（用 `4√2` 或 `sqrt(32)` 这样的写法，或者写小数 5.657。）",
+       "answer": [
+        "4√2",
+        "4sqrt(2)",
+        "4*sqrt(2)",
+        "sqrt(32)",
+        "√32",
+        "5.657",
+        "5.66"
+       ],
+       "explain": "$A^T A$ 的特征值是 32 和 18，$\\sigma_1 = \\sqrt{32} = 4\\sqrt2$。",
+       "origin": "official"
+      },
+      {
+       "id": "sigma-rank1",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n$A = \\begin{bmatrix} 4 & 3 \\\\ 8 & 6 \\end{bmatrix}$ 的秩为 1。它唯一的非零奇异值的平方 $\\sigma_1^2$ 是多少？",
+       "answer": [
+        "125"
+       ],
+       "explain": "$A^T A = \\begin{bmatrix} 80 & 60 \\\\ 60 & 45 \\end{bmatrix}$ 秩为 1，非零特征值等于迹 $125$。",
+       "origin": "official"
+      },
+      {
+       "id": "spaces",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n秩为 $r$ 的 $m \\times n$ 矩阵的 SVD 中，$v_{r+1}, \\ldots, v_n$ 是哪个子空间的标准正交基？",
+       "options": [
+        "零空间",
+        "行空间",
+        "列空间",
+        "左零空间"
+       ],
+       "answer": 0,
+       "explain": "$Av_i = \\sigma_i u_i$，而 $i > r$ 时 $\\sigma_i = 0$，所以 $Av_i = 0$。",
+       "origin": "official"
+      },
+      {
+       "id": "fib-svd",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 29.1。\n\n斐波那契矩阵 $\\begin{bmatrix} 1 & 1 \\\\ 1 & 0 \\end{bmatrix}$ 是对称矩阵。它的奇异值是？",
+       "options": [
+        "$\\dfrac{1 + \\sqrt5}{2}$ 和 $\\dfrac{\\sqrt5 - 1}{2}$",
+        "$\\dfrac{1 + \\sqrt5}{2}$ 和 $\\dfrac{1 - \\sqrt5}{2}$",
+        "$\\dfrac{3 + \\sqrt5}{2}$ 和 $\\dfrac{3 - \\sqrt5}{2}$",
+        "1 和 0"
+       ],
+       "answer": 0,
+       "explain": "对称矩阵的奇异值是特征值的绝对值；$\\dfrac{3 \\pm \\sqrt5}{2}$ 是奇异值的平方。",
+       "origin": "official"
+      },
+      {
+       "id": "orth-cols",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 29.2。\n\n$A$ 的各列 $w_i$ 互相正交，长度为 $\\sigma_i$。它的 SVD 中 $V$ 是？",
+       "options": [
+        "单位矩阵 $I$",
+        "$A$ 本身",
+        "$A^T$",
+        "对角矩阵 $\\Sigma$"
+       ],
+       "answer": 0,
+       "explain": "$A^T A$ 已经是对角矩阵 $\\Sigma^2$，所以 $V = I$，$U$ 的各列是 $w_i/\\sigma_i$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses3-6",
+     "kind": "lecture",
+     "title": "第 32 讲：线性变换及其矩阵",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses3-6-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses3-6-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=31"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=Ts3o2I8_Mxc"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=2uDvRUowBzg"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/linear-transformations-and-their-matrices/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/cc829145eee5220b2024424bcb14c263_MIT18_06SCF11_Ses3.6sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/89bed67324333da7912bb81212cd512f_Ts3o2I8_Mxc.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/e70c3934dc6123a02195e95efe70cffa_2uDvRUowBzg.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/8e710a09fcfdfd7994083468222efea9_MIT18_06SCF11_Ses3.6prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/7fef2f26857398d5a96029f416f07261_MIT18_06SCF11_Ses3.6sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 7.1 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "not-linear",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n下面哪个变换**不是**线性变换？",
+       "options": [
+        "$T(v) = v + v_0$（$v_0 \\ne 0$，平移整个平面）",
+        "把平面绕原点旋转 45°",
+        "投影到过原点的一条直线上",
+        "$T(v) = Av$（$A$ 是任意矩阵）"
+       ],
+       "answer": 0,
+       "explain": "线性变换必须满足 $T(0) = 0$；平移把 0 变成 $v_0$。",
+       "origin": "official"
+      },
+      {
+       "id": "reflect",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n$A = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}$，变换 $v \\mapsto Av$ 在几何上是？",
+       "options": [
+        "关于 $x$ 轴的反射",
+        "关于 $y$ 轴的反射",
+        "旋转 90°",
+        "投影到 $x$ 轴"
+       ],
+       "answer": 0,
+       "explain": "$x$ 分量不变，$y$ 分量变号。",
+       "origin": "official"
+      },
+      {
+       "id": "basis-enough",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n要对 $\\mathbb{R}^n$ 中所有 $v$ 确定线性变换 $T(v)$，最少需要知道什么？",
+       "options": [
+        "$T$ 在一组基 $v_1, \\ldots, v_n$ 上的值",
+        "$T$ 在一个非零向量上的值",
+        "$T$ 在 $\\mathbb{R}^n$ 每个向量上的值",
+        "$T(0)$"
+       ],
+       "answer": 0,
+       "explain": "$v = \\sum c_i v_i$，所以 $T(v) = \\sum c_i T(v_i)$。",
+       "origin": "official"
+      },
+      {
+       "id": "deriv-matrix",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n求导变换 $T(c_1 + c_2x + c_3x^2) = c_2 + 2c_3x$，输入基 $1, x, x^2$，输出基 $1, x$。它的 2 × 3 矩阵是？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "0, 1, 0, 0, 0, 2",
+        "0,1,0,0,0,2",
+        "0 1 0 0 0 2"
+       ],
+       "explain": "$A = \\begin{bmatrix} 0 & 1 & 0 \\\\ 0 & 0 & 2 \\end{bmatrix}$：第 $i$ 列是 $T(v_i)$ 的坐标。",
+       "origin": "official"
+      },
+      {
+       "id": "compose",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n先做 $T_1: v \\mapsto A_1v$，再做 $T_2: w \\mapsto A_2w$，复合变换的矩阵是？",
+       "options": [
+        "$A_2A_1$",
+        "$A_1A_2$",
+        "$A_1 + A_2$",
+        "$A_1^{-1}A_2$"
+       ],
+       "answer": 0,
+       "explain": "$T_2(T_1(v)) = A_2(A_1v)$；矩阵乘法就是从这里来的。",
+       "origin": "official"
+      },
+      {
+       "id": "double",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 30.1。\n\n把每个点到原点的距离加倍、方向不变的变换 $T(r, \\theta) = (2r, \\theta)$ 是线性的。它在标准基下的矩阵是？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "2, 0, 0, 2",
+        "2,0,0,2",
+        "2 0 0 2"
+       ],
+       "explain": "$T(x, y) = (2x, 2y)$，矩阵是 $2I$。",
+       "origin": "official"
+      },
+      {
+       "id": "fix-zero",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 30.2。\n\n$T\\begin{bmatrix} x \\\\ y \\end{bmatrix} = \\begin{bmatrix} x \\\\ |y| \\end{bmatrix}$ 保持零向量不动。它是线性变换吗？",
+       "options": [
+        "不是，例如 $T((1,1) + (1,-1)) = (2,0)$，而 $T(1,1) + T(1,-1) = (2,2)$",
+        "是，因为它保持零向量不动",
+        "是，因为它保持向量长度",
+        "无法判断"
+       ],
+       "answer": 0,
+       "explain": "$T(0) = 0$ 是线性的必要条件，不是充分条件。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses3-7",
+     "kind": "lecture",
+     "title": "第 33 讲：基变换与图像压缩",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses3-7-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses3-7-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=32"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=0h43aV4aH7I"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=rMv2rDiOTsI"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/change-of-basis-image-compression/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/7ce6815ffe9ec37129e581485494acde_MIT18_06SCF11_Ses3.7sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/2c2725cfd10398f6bd17434648b447fc_0h43aV4aH7I.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/69b441b154a30aeebf1fc42fff8001ce_rMv2rDiOTsI.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/253f93ba4904c5d757f6be7e16b9aeea_MIT18_06SCF11_Ses3.7prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/59b81b79eaab5acab8135f0dbe502955_MIT18_06SCF11_Ses3.7sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 7.2 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "good-basis",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n在图像压缩中，好的基需要满足哪两条？",
+       "options": [
+        "乘以基矩阵和它的逆都很快；只用少数几个基向量就能近似图像",
+        "基向量的元素都是正数；基向量个数越多越好",
+        "必须是标准基；必须是特征向量",
+        "基矩阵必须是对角矩阵；系数都必须是整数"
+       ],
+       "answer": 0,
+       "explain": "例如傅里叶基（有 FFT）和小波基。",
+       "origin": "official"
+      },
+      {
+       "id": "coeff",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\n新基的基向量是矩阵 $W$ 的各列。旧坐标 $x$ 与新坐标 $c$ 的关系是 $x = Wc$。如果 $W$ 的各列标准正交，那么 $c$ 等于？（用 `W^T x` 这样的写法）",
+       "answer": [
+        "W^T x",
+        "W^Tx",
+        "Wᵀx",
+        "Wᵀ x",
+        "W'x"
+       ],
+       "explain": "$c = W^{-1}x$；各列标准正交时 $W^{-1} = W^T$，不用求逆。",
+       "origin": "official"
+      },
+      {
+       "id": "similar",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n同一个线性变换 $T$ 在两组基下的矩阵 $A$ 和 $B$ 之间是什么关系？",
+       "options": [
+        "相似：$B = M^{-1}AM$，$M$ 是基变换矩阵",
+        "相等：$A = B$",
+        "互为转置：$B = A^T$",
+        "互逆：$B = A^{-1}$"
+       ],
+       "answer": 0,
+       "explain": "特征向量基下的矩阵就是对角矩阵 $\\Lambda$。",
+       "origin": "official"
+      },
+      {
+       "id": "jpeg-block",
+       "type": "text",
+       "prompt": "改编自本讲讲座摘要。\n\nJPEG 把图像分成边长为 8 像素的小块。每块有多少个像素（也就是多少个系数）？",
+       "answer": [
+        "64"
+       ],
+       "explain": "8 × 8 = 64。",
+       "origin": "official"
+      },
+      {
+       "id": "haar-length",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 31.1。\n\n哈尔小波基向量 $(1, 1, -1, -1, 0, 0, 0, 0)$ 要变成单位向量，应该除以多少？",
+       "answer": [
+        "2"
+       ],
+       "explain": "它的长度是 $\\sqrt{1 + 1 + 1 + 1} = 2$。",
+       "origin": "official"
+      },
+      {
+       "id": "sym-basis",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 31.2。\n\n用基 $\\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix}, \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}, \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}, \\begin{bmatrix} 0 & 1 \\\\ -1 & 0 \\end{bmatrix}$ 表示一个对称矩阵时，哪个基向量的系数一定是 0？",
+       "options": [
+        "$\\begin{bmatrix} 0 & 1 \\\\ -1 & 0 \\end{bmatrix}$",
+        "$\\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix}$",
+        "$\\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}$",
+        "$\\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix}$"
+       ],
+       "answer": 0,
+       "explain": "前三个都是对称矩阵，只有最后一个是反对称的。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses3-8",
+     "kind": "lecture",
+     "title": "第 34 讲：左逆、右逆与伪逆",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses3-8-notes",
+       "title": "讲座摘要"
+      },
+      {
+       "id": "ses3-8-problems",
+       "title": "习题与解答"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=34"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=Go2aLo7ZOlU"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=hSRcHTafkjE"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/left-and-right-inverses-pseudoinverse/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/0550c89b69c99e97dcbf52074e293308_MIT18_06SCF11_Ses3.8sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/ef47fdd70952bd981a883c20138e03c4_Go2aLo7ZOlU.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/fb51b340570267316fcc14d0d3a07777_hSRcHTafkjE.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/41c162f1f1c6d4f61e42a556a56b77bf_MIT18_06SCF11_Ses3.8prob.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/65f6a7ea1da9932a2939085151ca23a0_MIT18_06SCF11_Ses3.8sol.pdf"
+      },
+      {
+       "kind": "textbook",
+       "label": "教材 Introduction to Linear Algebra（第 4 或第 5 版）第 7.3 节",
+       "url": "https://math.mit.edu/~gs/linearalgebra/"
+      }
+     ],
+     "practice": [
+      {
+       "id": "left-inv",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n列满秩（$r = n$）的矩阵 $A$ 的左逆是？",
+       "options": [
+        "$(A^T A)^{-1}A^T$",
+        "$A^T(AA^T)^{-1}$",
+        "$A^T$",
+        "$(AA^T)^{-1}$"
+       ],
+       "answer": 0,
+       "explain": "$(A^T A)^{-1}A^T A = I$；$A^T A$ 在列满秩时可逆。",
+       "origin": "official"
+      },
+      {
+       "id": "proj",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n列满秩矩阵 $A$ 乘以它的左逆，$AA^{-1}_{\\text{left}} = A(A^T A)^{-1}A^T$ 是？",
+       "options": [
+        "投影到 $A$ 的列空间上的投影矩阵",
+        "$m \\times m$ 单位矩阵",
+        "投影到零空间上的投影矩阵",
+        "零矩阵"
+       ],
+       "answer": 0,
+       "explain": "只有 $m = n$ 时它才等于 $I$。",
+       "origin": "official"
+      },
+      {
+       "id": "pinv-svd",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n如果 $A = U\\Sigma V^T$，伪逆 $A^+$ 是？",
+       "options": [
+        "$V\\Sigma^+U^T$",
+        "$U\\Sigma^+V^T$",
+        "$V^T\\Sigma^+U$",
+        "$U^T\\Sigma V$"
+       ],
+       "answer": 0,
+       "explain": "$\\Sigma^+$ 是 $n \\times m$ 矩阵，对角线上是 $1/\\sigma_1, \\ldots, 1/\\sigma_r$。",
+       "origin": "official"
+      },
+      {
+       "id": "one-to-one",
+       "type": "choice",
+       "prompt": "改编自本讲讲座摘要。\n\n为什么 $x \\mapsto Ax$ 从行空间到列空间是一一对应的？",
+       "options": [
+        "若 $Ax = Ay$，则 $x - y$ 同时在行空间和零空间中，只能是 0",
+        "因为行空间和列空间的维数都是 $n$",
+        "因为 $A$ 一定可逆",
+        "因为 $A^T A$ 一定可逆"
+       ],
+       "answer": 0,
+       "explain": "行空间与零空间正交，交集只有零向量。",
+       "origin": "official"
+      },
+      {
+       "id": "right-inv",
+       "type": "text",
+       "prompt": "改编自本讲官方习题 32.1。\n\n$A = \\begin{bmatrix} 1 & 0 & 1 \\\\ 0 & 1 & 0 \\end{bmatrix}$。用 $A^T(AA^T)^{-1}$ 求出的右逆是 3 × 2 矩阵，它的六个元素是？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "0.5, 0, 0, 1, 0.5, 0",
+        "1/2, 0, 0, 1, 1/2, 0",
+        ".5, 0, 0, 1, .5, 0",
+        "0.5,0,0,1,0.5,0",
+        "1/2,0,0,1,1/2,0"
+       ],
+       "explain": "$AA^T = \\begin{bmatrix} 2 & 0 \\\\ 0 & 1 \\end{bmatrix}$，右逆是 $\\begin{bmatrix} 1/2 & 0 \\\\ 0 & 1 \\\\ 1/2 & 0 \\end{bmatrix}$。",
+       "origin": "official"
+      },
+      {
+       "id": "which-inv",
+       "type": "choice",
+       "prompt": "改编自本讲官方习题 32.2。\n\n$A = \\begin{bmatrix} 4 & 3 \\\\ 8 & 6 \\end{bmatrix}$ 有哪种逆？",
+       "options": [
+        "只有伪逆",
+        "左逆和右逆都有",
+        "只有左逆",
+        "都没有"
+       ],
+       "answer": 0,
+       "explain": "$\\det A = 0$，所以没有左逆或右逆；伪逆 $A^+ = \\frac{1}{125}\\begin{bmatrix} 4 & 8 \\\\ 3 & 6 \\end{bmatrix}$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ses3-9",
+     "kind": "lecture",
+     "title": "第 35 讲：考试 3 复习",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ses3-9-notes",
+       "title": "讲座摘要"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=33"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=HgC1l_6ySkc"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=OsHY7ycgbaE"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/exam-3-review/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/7285f40986020f97ebe138acc914c66c_MIT18_06SCF11_Ses3.9sum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "讲座文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/246e18f190adc4a5ebed3bf57b0a70c6_HgC1l_6ySkc.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "习题讲解文字稿（PDF，英文）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/75b06674c5c0542b51d73280140fbce0_OsHY7ycgbaE.pdf"
+      }
+     ],
+     "practice": [
+      {
+       "id": "skew-eig",
+       "type": "choice",
+       "prompt": "改编自本讲复习课例题 1。\n\n反对称矩阵（$A^T = -A$）的实矩阵，它的特征值一定是？",
+       "options": [
+        "纯虚数或 0",
+        "正实数",
+        "负实数",
+        "绝对值为 1 的实数"
+       ],
+       "answer": 0,
+       "explain": "例题中 $A$ 的特征值是 $0$、$\\pm\\sqrt2\\,i$，所以 $du/dt = Au$ 的解既不增长也不衰减。",
+       "origin": "official"
+      },
+      {
+       "id": "period",
+       "type": "text",
+       "prompt": "改编自本讲复习课例题 1。\n\n$e^{\\sqrt2\\,it}$ 第一次回到 1 时，$t$ 等于多少？（用 `π√2` 或小数 4.443 这样的写法）",
+       "answer": [
+        "π√2",
+        "√2π",
+        "pi*sqrt(2)",
+        "sqrt(2)*pi",
+        "4.443",
+        "4.44",
+        "π*√2"
+       ],
+       "explain": "$\\sqrt2\\,t = 2\\pi$，$t = 2\\pi/\\sqrt2 = \\pi\\sqrt2$。",
+       "origin": "official"
+      },
+      {
+       "id": "pd-c",
+       "type": "choice",
+       "prompt": "改编自本讲复习课例题 2。\n\n3 × 3 实对称矩阵的特征值是 $0$、$c$、$2$。$c$ 取什么值时它是正定的？",
+       "options": [
+        "任何值都不行",
+        "$c > 0$",
+        "$c \\ge 0$",
+        "$c > 2$"
+       ],
+       "answer": 0,
+       "explain": "特征值 0 不是正的；$c \\ge 0$ 时只是半正定。",
+       "origin": "official"
+      },
+      {
+       "id": "proj-c",
+       "type": "choice",
+       "prompt": "改编自本讲复习课例题 2。\n\n同一个矩阵（特征向量互相正交），$c$ 取什么值时 $\\tfrac12 A$ 可能是投影矩阵？",
+       "options": [
+        "$c = 0$ 或 $c = 2$",
+        "$c = 1$",
+        "$c = 0$ 或 $c = 1$",
+        "任何实数"
+       ],
+       "answer": 0,
+       "explain": "$\\tfrac12 A$ 的特征值是 $0$、$c/2$、$1$，投影矩阵的特征值只能是 0 和 1。",
+       "origin": "official"
+      },
+      {
+       "id": "neg-sigma",
+       "type": "choice",
+       "prompt": "改编自本讲复习课例题 3。\n\nSVD 中可能出现 $\\Sigma = \\begin{bmatrix} 3 & 0 \\\\ 0 & -5 \\end{bmatrix}$ 吗？",
+       "options": [
+        "不可能，奇异值永远不是负的",
+        "可能，说明 $A$ 有负特征值",
+        "可能，说明 $A$ 不可逆",
+        "可能，只要 $U$ 和 $V$ 是正交矩阵"
+       ],
+       "answer": 0,
+       "explain": "奇异值是 $A^TA$ 的特征值的**非负**平方根；符号可以挪进 $U$ 的列里。",
+       "origin": "official"
+      },
+      {
+       "id": "sym-orth",
+       "type": "choice",
+       "prompt": "改编自本讲复习课例题 4。\n\n既对称又正交的矩阵，它的特征值只能是？",
+       "options": [
+        "1 或 $-1$",
+        "1",
+        "0 或 1",
+        "任意实数"
+       ],
+       "answer": 0,
+       "explain": "对称 ⇒ 实数；正交 ⇒ $|\\lambda| = 1$。所以 $\\tfrac12(A + I)$ 是投影矩阵。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "ex3",
+     "kind": "exam",
+     "title": "考试 3",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "ex3-problems",
+       "title": "试卷与解答"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/positive-definite-matrices-and-applications/exam-3/"
+      },
+      {
+       "kind": "exams",
+       "label": "试卷原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/067b49baff2de3b7133794b52b824d36_MIT18_06SCF11_ex3.pdf"
+      },
+      {
+       "kind": "exams",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/92b86aaa4f5f4cce178c69faeb52039e_MIT18_06SCF11_ex3s.pdf"
+      }
+     ],
+     "practice": [
+      {
+       "id": "q1a",
+       "type": "choice",
+       "prompt": "改编自考试 3 第 1 题。\n\n方阵 $A$ 的全部奇异值都等于 1。$A$ 一定是？",
+       "options": [
+        "正交矩阵",
+        "对称矩阵",
+        "对角矩阵",
+        "正定矩阵"
+       ],
+       "answer": 0,
+       "explain": "$\\Sigma = I$，$A = UV^T$ 是正交矩阵的乘积；$A^TA = I$。",
+       "origin": "official"
+      },
+      {
+       "id": "q1c",
+       "type": "choice",
+       "prompt": "改编自考试 3 第 1 题。\n\n$B = H\\Lambda H^T$，$H$ 是正交矩阵，$\\Lambda = \\operatorname{diag}(0, 1, 2, 3)$。$C = (B + I)^{-1}$ 是？",
+       "options": [
+        "对称正定矩阵",
+        "奇异的对称矩阵",
+        "正交矩阵",
+        "半正定但不正定的矩阵"
+       ],
+       "answer": 0,
+       "explain": "$C = H(\\Lambda + I)^{-1}H^T$，特征值是 $1, 1/2, 1/3, 1/4$，都为正；而 $B$ 有特征值 0，是半正定的。",
+       "origin": "official"
+      },
+      {
+       "id": "q2a",
+       "type": "text",
+       "prompt": "改编自考试 3 第 2 题。\n\n$A = \\begin{bmatrix} -1 & 2 & 4 \\\\ 0 & 0 & 5 \\\\ 0 & 0 & 1 \\end{bmatrix}$ 对应于 $\\lambda = 1$ 的特征向量（最后一个分量取 1）是？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "7, 5, 1",
+        "7,5,1",
+        "7 5 1"
+       ],
+       "explain": "解 $(A - I)x = 0$：由第二行 $-x_2 + 5x_3 = 0$ 得 $x_2 = 5$，再由第一行 $-2x_1 + 2x_2 + 4x_3 = 0$ 得 $x_1 = 7$。",
+       "origin": "official"
+      },
+      {
+       "id": "q2b",
+       "type": "choice",
+       "prompt": "改编自考试 3 第 2 题。\n\n同一个 $A$（特征值 $-1, 0, 1$）。下面哪个说法正确？",
+       "options": [
+        "$A^{1001} = A$，但 $A^{1000} \\ne I$",
+        "$A^{1000} = I$",
+        "$A^{1001} = -A$",
+        "$A^{1000} = 0$"
+       ],
+       "answer": 0,
+       "explain": "$\\Lambda^{1001} = \\Lambda$；$\\Lambda^{1000} = \\operatorname{diag}(1, 0, 1) \\ne I$。",
+       "origin": "official"
+      },
+      {
+       "id": "q2c",
+       "type": "text",
+       "prompt": "改编自考试 3 第 2 题。\n\n同一个 $A$（秩为 2），$A^TA$ 有几个正特征值？",
+       "answer": [
+        "2"
+       ],
+       "explain": "$A^TA$ 半正定、秩为 2：两个正特征值，一个零特征值。",
+       "origin": "official"
+      },
+      {
+       "id": "q3c",
+       "type": "choice",
+       "prompt": "改编自考试 3 第 3 题。\n\n$A$ 有标准正交的特征向量 $q_i$ 和正特征值 $\\lambda_i$，$b = \\sum c_iq_i$。$A^{-1}b$ 在 $q_1$ 上的系数 $d_1$ 是？",
+       "options": [
+        "$\\dfrac{q_1^Tb}{\\lambda_1}$",
+        "$\\lambda_1q_1^Tb$",
+        "$q_1^Tb$",
+        "$\\dfrac{\\lambda_1}{q_1^Tb}$"
+       ],
+       "answer": 0,
+       "explain": "$c_1 = q_1^Tb$，而 $A^{-1}$ 把 $q_1$ 方向乘以 $1/\\lambda_1$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "final-review",
+     "kind": "lecture",
+     "title": "第 36 讲：期末复习",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "final-review-notes",
+       "title": "讲座摘要"
+      }
+     ],
+     "videos": [
+      {
+       "kind": "video",
+       "label": "哔哩哔哩：讲座视频（中英双语字幕）",
+       "url": "https://www.bilibili.com/video/BV1zx411g7gq/?p=35"
+      },
+      {
+       "kind": "video",
+       "label": "讲座视频（官方 YouTube）",
+       "url": "https://www.youtube.com/watch?v=RWvi4Vx4CDc"
+      },
+      {
+       "kind": "video",
+       "label": "习题讲解视频（官方，英文）",
+       "url": "https://www.youtube.com/watch?v=4PnArrxCZLE"
+      }
+     ],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/final-course-review/"
+      },
+      {
+       "kind": "notes",
+       "label": "讲座摘要原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/89e753b45eed437828821e585bed0e59_MIT18_06SCF11_FinalRevsum.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "Lecture Video Transcript (PDF)",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/67e85afc79dece185c29098155875c49_RWvi4Vx4CDc.pdf"
+      },
+      {
+       "kind": "other",
+       "label": "Recitation Video Transcript (PDF)",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/4e0d9f449b9a58e1548520a930d834f0_4PnArrxCZLE.pdf"
+      }
+     ],
+     "practice": [
+      {
+       "id": "mnr",
+       "type": "choice",
+       "prompt": "改编自本讲复习课例题 1。\n\n$Ax = (1, 0, 0)$ 无解，$Ax = (0, 1, 0)$ 恰好有一个解。下面哪个结论正确？",
+       "options": [
+        "$m = 3$，$r = n$，$1 \\le n < 3$",
+        "$m = 3$，$n = 3$，$r = 3$",
+        "$m = 3$，$r < n$",
+        "$n = 3$，$r = m$"
+       ],
+       "answer": 0,
+       "explain": "有唯一解 ⇒ 零空间只有 0 ⇒ $r = n$；有右端无解 ⇒ $r < m = 3$。",
+       "origin": "official"
+      },
+      {
+       "id": "aat-pd",
+       "type": "choice",
+       "prompt": "改编自本讲复习课例题 1。\n\n在上题条件下（$m = 3$，$r = n < 3$），$AA^T$ 是？",
+       "options": [
+        "半正定但不正定（秩小于 3）",
+        "正定",
+        "可逆",
+        "负定"
+       ],
+       "answer": 0,
+       "explain": "$AA^T$ 是秩为 $r < 3$ 的 3 × 3 矩阵，有特征值 0；而 $A^TA$ 是可逆的。",
+       "origin": "official"
+      },
+      {
+       "id": "markov-eig",
+       "type": "text",
+       "prompt": "改编自本讲复习课例题 3。\n\n马尔可夫矩阵 $A = \\begin{bmatrix} .2 & .4 & .3 \\\\ .4 & .2 & .3 \\\\ .4 & .4 & .4 \\end{bmatrix}$ 的特征值是 0、1 和多少？",
+       "answer": [
+        "-0.2",
+        "-.2",
+        "−0.2",
+        "-1/5"
+       ],
+       "explain": "迹是 0.8，所以第三个特征值是 0.8 − 0 − 1 = −0.2。",
+       "origin": "official"
+      },
+      {
+       "id": "markov-limit",
+       "type": "text",
+       "prompt": "改编自本讲复习课例题 3。\n\n同一个矩阵，$u_k = A^ku(0)$，$u(0) = (0, 10, 0)$。$\\lim_{k\\to\\infty} u_k$ 是？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "3, 3, 4",
+        "3,3,4",
+        "3 3 4"
+       ],
+       "explain": "$\\lambda = 1$ 的特征向量是 $(3, 3, 4)$；各分量之和保持 10。",
+       "origin": "official"
+      },
+      {
+       "id": "build-a",
+       "type": "text",
+       "prompt": "改编自本讲复习课例题 4。\n\n求特征值为 0、3，对应特征向量为 $(1, 2)$、$(2, 1)$ 的 2 × 2 矩阵 $A = S\\Lambda S^{-1}$。（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "4, -2, 2, -1",
+        "4,-2,2,-1",
+        "4 -2 2 -1"
+       ],
+       "explain": "$A = \\begin{bmatrix} 4 & -2 \\\\ 2 & -1 \\end{bmatrix}$；验证 $A(1, 2) = 0$，$A(2, 1) = (6, 3)$。",
+       "origin": "official"
+      },
+      {
+       "id": "ls-proj",
+       "type": "text",
+       "prompt": "改编自本讲复习课例题 5。\n\n$A = \\begin{bmatrix} 1 & 0 \\\\ 1 & 1 \\\\ 1 & 2 \\end{bmatrix}$，$b = (3, 4, 1)$，最小二乘解 $(\\hat c, \\hat d) = (11/3, -1)$。$b$ 在列空间上的投影 $p$ 是？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "11/3, 8/3, 5/3",
+        "11/3,8/3,5/3",
+        "11/3 8/3 5/3"
+       ],
+       "explain": "$p = \\tfrac{11}{3}(1, 1, 1) - (0, 1, 2)$。",
+       "origin": "official"
+      }
+     ]
+    },
+    {
+     "id": "final-ex",
+     "kind": "exam",
+     "title": "期末考试",
+     "periods": 3,
+     "pages": [
+      {
+       "id": "final-ex-problems",
+       "title": "试卷与解答"
+      }
+     ],
+     "videos": [],
+     "links": [
+      {
+       "kind": "website",
+       "label": "OCW 本讲页面",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/pages/final-exam/"
+      },
+      {
+       "kind": "exams",
+       "label": "试卷原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/245582e7bf822b1a99289385d4b1fe1c_MIT18_06SCF11_final_ex.pdf"
+      },
+      {
+       "kind": "exams",
+       "label": "解答原文（PDF）",
+       "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/03fa86c672cab6cce168955824c92f6e_MIT18_06SCF11_final_exs.pdf"
+      }
+     ],
+     "practice": [
+      {
+       "id": "q1-rref",
+       "type": "text",
+       "prompt": "改编自期末考试第 1 题。\n\n3 × 4 矩阵 $A$ 的零空间由特解 $(1, 1, 1, 0)$ 和 $(-2, -1, 0, 1)$ 张成。行最简形 $R$ 的第一行是？（矩阵或向量请按行从上到下、用逗号分隔填写各个数，例如 `1, 2, 3`。）",
+       "answer": [
+        "1, 0, -1, 2",
+        "1,0,-1,2",
+        "1 0 -1 2"
+       ],
+       "explain": "$R = \\begin{bmatrix} 1 & 0 & -1 & 2 \\\\ 0 & 1 & -1 & 1 \\\\ 0 & 0 & 0 & 0 \\end{bmatrix}$：$*$ 是特解中主变量分量的相反数。",
+       "origin": "official"
+      },
+      {
+       "id": "q1-left",
+       "type": "text",
+       "prompt": "改编自期末考试第 1 题。\n\n同一个 $A$，左零空间 $N(A^T)$ 的维数是多少？",
+       "answer": [
+        "1"
+       ],
+       "explain": "$m - r = 3 - 2 = 1$。",
+       "origin": "official"
+      },
+      {
+       "id": "q3-rank",
+       "type": "choice",
+       "prompt": "改编自期末考试第 3 题。\n\n$A$ 是秩为 $r$ 的 $m \\times n$ 矩阵，$\\begin{bmatrix} A & A \\end{bmatrix}$ 的零空间的维数是？",
+       "options": [
+        "$2n - r$",
+        "$n - r$",
+        "$2(n - r)$",
+        "$2n - 2r$"
+       ],
+       "answer": 0,
+       "explain": "$\\begin{bmatrix} A & A \\end{bmatrix}$ 是 $m \\times 2n$ 矩阵，秩仍是 $r$。",
+       "origin": "official"
+      },
+      {
+       "id": "q4-left",
+       "type": "choice",
+       "prompt": "改编自期末考试第 4 题。\n\n5 × 3 矩阵 $A$ 各列线性无关，$B = (A^TA)^{-1}A^T$。下面哪个正确？",
+       "options": [
+        "$BA = I_3$，但 $AB \\ne I_5$",
+        "$AB = I_5$，但 $BA \\ne I_3$",
+        "$AB = I_5$ 且 $BA = I_3$",
+        "$AB$ 和 $BA$ 都不是单位矩阵"
+       ],
+       "answer": 0,
+       "explain": "$AB$ 是秩为 3 的 5 × 5 投影矩阵。",
+       "origin": "official"
+      },
+      {
+       "id": "q5-rayleigh",
+       "type": "choice",
+       "prompt": "改编自期末考试第 5 题。\n\n对称正定矩阵 $A$ 的瑞利商 $x^TAx / x^Tx$ 在什么时候最大？",
+       "options": [
+        "$x$ 是最大特征值对应的特征向量时",
+        "$x$ 是最小特征值对应的特征向量时",
+        "$x = (1, 1, \\ldots, 1)$ 时",
+        "对所有 $x$ 都一样"
+       ],
+       "answer": 0,
+       "explain": "比值等于 $\\sum c_i^2\\lambda_i / \\sum c_i^2$，最大值就是最大特征值。",
+       "origin": "official"
+      },
+      {
+       "id": "q7-det",
+       "type": "text",
+       "prompt": "改编自期末考试第 7 题。\n\n4 × 4 循环置换矩阵 $C$ 的特征值是 $1, -1, i, -i$。$\\det(C + 2I)$ 是多少？",
+       "answer": [
+        "15"
+       ],
+       "explain": "$(1 + 2)(-1 + 2)(i + 2)(-i + 2) = 3 \\cdot 1 \\cdot 5 = 15$。",
+       "origin": "official"
+      },
+      {
+       "id": "q8-proj",
+       "type": "text",
+       "prompt": "改编自期末考试第 8 题。\n\n$A = \\begin{bmatrix} 1 & 0 \\\\ 3 & 0 \\\\ 0 & -1 \\\\ 0 & -3 \\end{bmatrix}$。投影矩阵 $P$ 左上角的元素是多少？（写成小数或分数）",
+       "answer": [
+        "0.1",
+        "1/10",
+        ".1"
+       ],
+       "explain": "$A^TA = 10I$，$P = \\frac{1}{10}AA^T$，左上角是 $\\frac{1}{10} \\cdot 1$。",
+       "origin": "official"
+      },
+      {
+       "id": "q9-d5",
+       "type": "text",
+       "prompt": "改编自期末考试第 9 题。\n\n三对角矩阵 $A_n$（主对角线 3，上方 2，下方 1）的行列式满足 $D_n = 3D_{n-1} - 2D_{n-2}$，$D_1 = 3$，$D_2 = 7$。$D_5$ 是多少？",
+       "answer": [
+        "63"
+       ],
+       "explain": "$D_3 = 15$，$D_4 = 31$，$D_5 = 63$；一般地 $D_n = 2^{n+1} - 1$。（官方解答误算成 207。）",
+       "origin": "official"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "titleEn": "MIT 18.06SC Linear Algebra, Fall 2011"
 }

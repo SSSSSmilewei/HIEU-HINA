@@ -1,6 +1,7 @@
 import hljs from "highlight.js/lib/common";
 import { Marked } from "marked";
 import DOMPurify from "dompurify";
+import katex from "katex";
 
 /**
  * Markdown → HTML（讲义、介绍、练手题）。这个模块按需加载（import("./markdown")），不进首屏。
@@ -73,9 +74,53 @@ function cjkStrong(md: string): string {
   return md.replace(/\*\*(?=\S)([^*\n]+?)(?<=\S)\*\*/g, (m, inner: string) => (/[　-〿＀-￯“”‘’（）《》]/.test(m) ? `\u0001${inner}\u0002` : m));
 }
 
+/**
+ * 数学公式：行内 \(…\) 或 $…$，独立 \[…\] 或 $$…$$（独占成段）。
+ * 解析时先换成占位的 <span>，DOMPurify 过滤之后再换成 KaTeX 生成的 HTML
+ * （KaTeX 的输出要用 style 属性，不能交给 DOMPurify；它只由公式文本生成，trust 关闭，不会产生链接和脚本）。
+ * $…$ 采用 Pandoc 的规则：开头的 $ 后面不是空白，结尾的 $ 前面不是空白、后面不是数字，所以「$15」「$ ls」不会被误认成公式。
+ */
+let formulas: { tex: string; display: boolean }[] = [];
+const mathPlaceholder = (tex: string, display: boolean) => {
+  formulas.push({ tex, display });
+  return `<span class="math-ph" id="math-ph-${formulas.length - 1}"></span>`;
+};
+const mathExtensions = [
+  {
+    name: "blockMath",
+    level: "block" as const,
+    start: (src: string) => src.match(/^ {0,3}(\$\$|\\\[)/m)?.index,
+    tokenizer(src: string) {
+      const m = /^ {0,3}(?:\$\$([\s\S]+?)\$\$|\\\[([\s\S]+?)\\\])[ \t]*(?:\n|$)/.exec(src);
+      if (m) return { type: "blockMath", raw: m[0], text: (m[1] ?? m[2]).trim() };
+    },
+    renderer: (t: { text: string }) => `<div class="math-block">${mathPlaceholder(t.text, true)}</div>\n`,
+  },
+  {
+    name: "inlineMath",
+    level: "inline" as const,
+    start: (src: string) => src.match(/\$|\\[(\[]/)?.index,
+    tokenizer(src: string) {
+      const m = /^\$\$([^$]+?)\$\$/.exec(src) ?? /^\\\[([\s\S]+?)\\\]/.exec(src);
+      if (m) return { type: "inlineMath", raw: m[0], text: m[1].trim(), display: true };
+      const p = /^\\\(([\s\S]+?)\\\)/.exec(src) ?? /^\$(?=\S)([^$\n]*?\S)\$(?!\d)/.exec(src);
+      if (p) return { type: "inlineMath", raw: p[0], text: p[1].trim(), display: false };
+    },
+    renderer: (t: { text: string; display?: boolean }) => mathPlaceholder(t.text, !!t.display),
+  },
+];
+
+function fillMath(html: string): string {
+  return html.replace(/<span class="math-ph" id="math-ph-(\d+)"><\/span>/g, (_, i) => {
+    const f = formulas[Number(i)];
+    return f ? katex.renderToString(f.tex, { displayMode: f.display, throwOnError: false, output: "html", trust: false, strict: "ignore" }) : "";
+  });
+}
+
 function makeMarked() {
   const ids = new Map<string, number>();
   const m = new Marked({ gfm: true });
+  m.use({ extensions: mathExtensions });
   m.use({
     hooks: {
       preprocess(md) {
@@ -128,10 +173,12 @@ function videos(md: string): string {
 }
 
 export function renderMarkdown(md: string): string {
-  return cleanHtml(marked.parse(videos(md), { async: false }) as string);
+  formulas = [];
+  return fillMath(cleanHtml(marked.parse(videos(md), { async: false }) as string));
 }
 
 /** 行内（选项、短提示），不包 <p> */
 export function renderInline(md: string): string {
-  return cleanHtml(marked.parseInline(cjkStrong(md), { async: false }) as string);
+  formulas = [];
+  return fillMath(cleanHtml(marked.parseInline(cjkStrong(md), { async: false }) as string));
 }

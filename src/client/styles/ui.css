@@ -2529,8 +2529,18 @@ a.unit-title:hover {
 .prose blockquote,
 .prose pre,
 .prose details,
-.prose .table-wrap {
+.prose .table-wrap,
+.prose .math-block {
   margin: 0 0 1em;
+}
+/* 独立公式：居中，太宽时横向滚动 */
+.prose .math-block {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
+}
+.prose .katex {
+  font-size: 1.1em;
 }
 .prose ul,
 .prose ol {

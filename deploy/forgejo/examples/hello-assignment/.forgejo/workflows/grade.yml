@@ -1,0 +1,13 @@
+# 自动判分：每次推送都跑一遍测试。
+# 只用 Python 自带的 unittest，不需要联网装依赖，断网也能判。
+name: 判分
+on: [push]
+
+jobs:
+  grade:
+    runs-on: docker
+    steps:
+      # DEFAULT_ACTIONS_URL=self，这一步从本机的 actions/checkout 取
+      - uses: actions/checkout@v4
+      - name: 运行测试
+        run: python3 -m unittest discover -v -s tests -t .

@@ -236,11 +236,11 @@ describe("选课接口", () => {
   test("只有链接的课：加入、手动标记学完", async () => {
     const { call, member } = setup();
     await member("lin", "250101001", "林同学");
-    expect((await call("lin", "PUT", "/api/courses/cs61a/enrollment", { status: "active" })).data.ok).toBe(true);
+    expect((await call("lin", "PUT", "/api/courses/cs161/enrollment", { status: "active" })).data.ok).toBe(true);
     const next = await call("lin", "GET", "/api/learning/next");
-    expect(next.data.items[0]).toMatchObject({ slug: "cs61a", hosted: false, next: null });
-    expect((await call("lin", "PUT", "/api/courses/cs61a/enrollment", { status: "done" })).data.status).toBe("done");
-    expect((await call("lin", "GET", "/api/courses/cs61a")).data.enrollment.status).toBe("done");
+    expect(next.data.items[0]).toMatchObject({ slug: "cs161", hosted: false, next: null });
+    expect((await call("lin", "PUT", "/api/courses/cs161/enrollment", { status: "done" })).data.status).toBe("done");
+    expect((await call("lin", "GET", "/api/courses/cs161")).data.enrollment.status).toBe("done");
     expect((await call("lin", "GET", "/api/learning/next")).data.items).toEqual([]);
   });
 });
