@@ -1,35 +1,38 @@
-import { useEffect, useMemo, useState } from "react";
+import { lazy, useEffect, useMemo, useState } from "react";
 import { api } from "./api";
 import { playHandoff } from "./handoff";
 import { BrandMark, Shell } from "./components/Shell";
-import { AdminMembersPage } from "./pages/admin/Members";
-import { AdminNoticesPage } from "./pages/admin/Notices";
-import { AdminSettingsPage } from "./pages/admin/Settings";
-import { AdminTodayPage } from "./pages/admin/Today";
+import { PageContent } from "./components/PageContent";
 import { StartPage } from "./pages/Start";
-import { AboutPage } from "./pages/About";
-import { AdminApplicationsPage } from "./pages/AdminApplications";
-import { AdminPinsPage } from "./pages/AdminPins";
-import { AttendancePage } from "./pages/Attendance";
-import { BlockPage, SiteGraphPage } from "./pages/Blocks";
-import { CoursePage } from "./pages/Course";
-import { CoursesPage } from "./pages/Courses";
-import { FormatPage } from "./pages/Format";
-import { LessonPage } from "./pages/Lesson";
-import { LevelPage } from "./pages/Level";
-import { LevelMapPage } from "./pages/LevelMap";
 import { HomePage } from "./pages/Home";
 import { LoginPage, PasswordPage } from "./pages/Login";
 import { Onboarding, needsOnboarding } from "./components/Onboarding";
 import { NoticeGate } from "./components/NoticeGate";
-import { NoticesPage } from "./pages/Notices";
-import { ProfilePage } from "./pages/Profile";
-import { ReportPage } from "./pages/Report";
 import { shouldPlayIntro } from "./intro";
 import { matchPath, navigate, useLocation } from "./router";
 import { MeContext, loginHref, safeNext } from "./session";
 import type { Me } from "./types";
 import { Empty } from "./ui";
+
+const AdminMembersPage = lazy(() => import("./pages/admin/Members").then((m) => ({ default: m.AdminMembersPage })));
+const AdminNoticesPage = lazy(() => import("./pages/admin/Notices").then((m) => ({ default: m.AdminNoticesPage })));
+const AdminSettingsPage = lazy(() => import("./pages/admin/Settings").then((m) => ({ default: m.AdminSettingsPage })));
+const AdminTodayPage = lazy(() => import("./pages/admin/Today").then((m) => ({ default: m.AdminTodayPage })));
+const AboutPage = lazy(() => import("./pages/About").then((m) => ({ default: m.AboutPage })));
+const AdminApplicationsPage = lazy(() => import("./pages/AdminApplications").then((m) => ({ default: m.AdminApplicationsPage })));
+const AdminPinsPage = lazy(() => import("./pages/AdminPins").then((m) => ({ default: m.AdminPinsPage })));
+const AttendancePage = lazy(() => import("./pages/Attendance").then((m) => ({ default: m.AttendancePage })));
+const CoursePage = lazy(() => import("./pages/Course").then((m) => ({ default: m.CoursePage })));
+const CoursesPage = lazy(() => import("./pages/Courses").then((m) => ({ default: m.CoursesPage })));
+const FormatPage = lazy(() => import("./pages/Format").then((m) => ({ default: m.FormatPage })));
+const BlockPage = lazy(() => import("./pages/BlockDetail").then((m) => ({ default: m.BlockPage })));
+const SiteGraphPage = lazy(() => import("./pages/BlockDetail").then((m) => ({ default: m.SiteGraphPage })));
+const LessonPage = lazy(() => import("./pages/Lesson").then((m) => ({ default: m.LessonPage })));
+const LevelPage = lazy(() => import("./pages/Level").then((m) => ({ default: m.LevelPage })));
+const LevelMapPage = lazy(() => import("./pages/LevelMap").then((m) => ({ default: m.LevelMapPage })));
+const NoticesPage = lazy(() => import("./pages/Notices").then((m) => ({ default: m.NoticesPage })));
+const ProfilePage = lazy(() => import("./pages/Profile").then((m) => ({ default: m.ProfilePage })));
+const ReportPage = lazy(() => import("./pages/Report").then((m) => ({ default: m.ReportPage })));
 
 function Boot() {
   return (
@@ -132,7 +135,9 @@ export function App() {
   if (path === "/about") {
     return (
       <MeContext.Provider value={ctx}>
-        <AboutPage />
+        <PageContent key={path} fallback={<Boot />}>
+          <AboutPage />
+        </PageContent>
       </MeContext.Provider>
     );
   }
@@ -142,7 +147,7 @@ export function App() {
       {me.role && (onboarding ? <Onboarding onDone={() => setOnboarding(false)} /> : <NoticeGate />)}
       <Shell me={me}>
         <div key={path} className="page-wrap">
-          {page}
+          <PageContent>{page}</PageContent>
         </div>
       </Shell>
     </MeContext.Provider>
