@@ -1,0 +1,48 @@
+name: Web
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/web.yml"
+      - "content/**"
+      - "intro/**"
+      - "public/**"
+      - "scripts/**"
+      - "src/**"
+      - "tests/**"
+      - "package*.json"
+      - "tsconfig*.json"
+      - "wrangler.jsonc"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Web 和 Worker 检查
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.4"
+      - name: 安装锁定依赖
+        run: npm ci --registry=https://registry.npmjs.org/ --replace-registry-host=registry.npmmirror.com
+      - name: 运行测试
+        run: npm test
+      - name: 检查 TypeScript
+        run: npx tsc --noEmit -p .
+      - name: 检查 Worker 类型
+        run: npm run typecheck
+      - name: 构建 Web
+        run: npm run build

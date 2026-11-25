@@ -49,6 +49,16 @@ const outputs = Object.keys(result.metafile.outputs).map((p) => p.replace(/\\/g,
 const js = outputs.find((p) => /assets\/app-[^/]+\.js$/.test(p));
 const css = outputs.find((p) => /assets\/app-[^/]+\.css$/.test(p));
 const rel = (p) => `/${p.slice(p.indexOf("assets/"))}`;
+// 只预加载入口的静态依赖，避免分块后逐层发现依赖；业务页面仍按需加载。
+const initialChunks = new Set();
+function collectInitialChunks(path) {
+  for (const item of result.metafile.outputs[path]?.imports ?? []) {
+    if (item.external || item.kind !== "import-statement" || !item.path.endsWith(".js") || initialChunks.has(item.path)) continue;
+    initialChunks.add(item.path);
+    collectInitialChunks(item.path);
+  }
+}
+collectInitialChunks(js);
 
 // 第二段内联脚本：从开场动画「进入平台」跳过来时（动画在 sessionStorage 留了 hiana.intro.handoff），
 // 先用一整屏白色接住动画的最后一帧，等页面画好再由 src/client/handoff.ts 揭开；6 秒后无论如何都揭开，免得卡住。
@@ -70,6 +80,7 @@ writeFileSync(
 <link rel="preload" href="/fonts/sarasa/gothic-400.0.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/sarasa/gothic-400.1.woff2" as="font" type="font/woff2" crossorigin>
 ${css ? `<link rel="stylesheet" href="${rel(css)}">` : ""}
+${[...initialChunks].map((p) => `<link rel="modulepreload" href="${rel(p)}">`).join("\n")}
 <script type="module" src="${rel(js)}"></script>
 </head>
 <body>
@@ -81,4 +92,5 @@ ${css ? `<link rel="stylesheet" href="${rel(css)}">` : ""}
 );
 
 const size = (p) => (result.metafile.outputs[p]?.bytes / 1024).toFixed(0);
-console.log(`前端已打包：${rel(js)} (${size(js)} KB)${css ? `，${rel(css)} (${size(css)} KB)` : ""}，${courses.length} 门课、${pageCount} 页讲义、${blockCount} 个知识块`);
+const initialSize = ([js, ...initialChunks].reduce((sum, p) => sum + result.metafile.outputs[p].bytes, 0) / 1024).toFixed(0);
+console.log(`前端已打包：${rel(js)} (${size(js)} KB)，首屏 JS 合计 ${initialSize} KB${css ? `，${rel(css)} (${size(css)} KB)` : ""}，${courses.length} 门课、${pageCount} 页讲义、${blockCount} 个知识块`);

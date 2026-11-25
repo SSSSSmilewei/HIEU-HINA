@@ -13,6 +13,7 @@ import { hasLevels } from "../../shared/levels";
 import { refreshLearning } from "../courseMeta";
 import { Dialog, Empty, ErrorBox, Ring, Seg, Skeleton, useConfirm, useTitle, useToast } from "../ui";
 import { Stars } from "./Courses";
+import { BackLink } from "../components/BackLink";
 
 const PACE_KEY = "hiana-pace";
 function readPace(slug: string): number {
@@ -535,14 +536,5 @@ function Peers({ names }: { names: string[] }) {
       {names.slice(0, 3).join("、")}
       {names.length > 3 ? ` 等 ${names.length} 人` : ""}也在学
     </span>
-  );
-}
-
-export function BackLink() {
-  return (
-    <Link to="/courses" className="back-link">
-      <Icon name="arrowLeft" size={16} stroke={2} />
-      学习
-    </Link>
   );
 }
