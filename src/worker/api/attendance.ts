@@ -7,6 +7,7 @@ import {
   attendanceMinutes,
   attendanceTotals,
   autoClose,
+  cnTime,
   dailyCode,
   eveningState,
   listAttendance,
@@ -145,7 +146,8 @@ export function attendanceRoutes(api: Router) {
       )
         .bind(ev.day)
         .all<{ id: string; kind: string; in_at: number; out_at: number | null; status: string; in_photo: string | null; out_photo: string | null; name: string; student_no: string }>(),
-      c.env.DB.prepare("SELECT COUNT(*) AS n FROM users WHERE status = 'active' AND role = 'member'").first<{ n: number }>(),
+      // 能签到的人：在用的校内账号（含校内的管理员；校外账号不签到）
+      c.env.DB.prepare("SELECT COUNT(*) AS n FROM users WHERE status = 'active' AND kind = 'campus'").first<{ n: number }>(),
     ]);
     return json({
       today: ev.day,
@@ -195,10 +197,11 @@ export function attendanceRoutes(api: Router) {
     await autoClose(c.env.DB, rule, now);
     const [rows, members] = await Promise.all([
       listAttendance(c.env.DB, from, to, kind),
-      c.env.DB.prepare("SELECT student_no, name, class_name FROM users WHERE status = 'active' AND kind = 'campus' ORDER BY student_no").all<{
+      c.env.DB.prepare("SELECT student_no, name, class_name, created_at FROM users WHERE status = 'active' AND kind = 'campus' ORDER BY student_no").all<{
         student_no: string;
         name: string;
         class_name: string | null;
+        created_at: number;
       }>(),
     ]);
     const people = new Map<string, { studentNo: string; name: string; className: string; evening: number; venue: number; minutes: number }>();
@@ -233,7 +236,9 @@ export function attendanceRoutes(api: Router) {
         // 今晚的晚自习还没结束，先不算缺勤
         if (d === today && now <= eveningState(rule, now).endsAt) continue;
         const came = new Set(rows.filter((r) => r.day === d && r.kind === "evening").map((r) => r.student_no));
-        absent.push({ day: d, names: members.results.filter((m) => !came.has(m.student_no)).map((m) => `${m.name}（${m.student_no}）`) });
+        // 那天晚自习结束时还没注册的人不算缺勤
+        const endsAt = eveningState(rule, cnTime(d, "12:00")).endsAt;
+        absent.push({ day: d, names: members.results.filter((m) => m.created_at <= endsAt && !came.has(m.student_no)).map((m) => `${m.name}（${m.student_no}）`) });
       }
     }
     return json({ from, to, kind: kind ?? null, rule: { days: rule.days, window: rule.window }, records, people: [...people.values()], absent });

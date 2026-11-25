@@ -1,3 +1,4 @@
+import { addDays } from "../src/shared/heatmap";
 import { describe, expect, test } from "bun:test";
 import { memoryD1 } from "../scripts/local-d1";
 import type { Env } from "../src/worker/env";
@@ -193,6 +194,10 @@ describe("接口", () => {
     expect((await call("admin", "GET", `/api/files/${rec.sign}`)).headers.get("content-type")).toBe("image/png");
     expect(report.data.people.find((p: { name: string }) => p.name === "林同学")).toMatchObject({ evening: 1, venue: 0 });
     expect((await call("lin", "GET", "/api/admin/attendance/report")).status).toBe(403);
+    // 注册之前的晚自习不算缺勤（大家都是刚注册的，过去两周的缺勤名单应该都是空的）
+    const past = await call("admin", "GET", `/api/admin/attendance/report?from=${addDays(state.data.today, -14)}&to=${addDays(state.data.today, -1)}`);
+    expect(past.data.absent.length).toBeGreaterThan(0);
+    expect(past.data.absent.every((a: { names: string[] }) => a.names.length === 0)).toBe(true);
     expect(String((await call("admin", "GET", `/api/admin/attendance.csv?from=${state.data.today}&to=${state.data.today}`)).data)).toContain("有,有,有");
 
     // 没动静名单里只有陈同学
@@ -323,5 +328,13 @@ describe("接口", () => {
   test("非 /api 路径交给静态资源", async () => {
     const { env } = setup();
     expect(await (await worker.fetch(new Request("http://localhost/profile"), env)).text()).toBe("index");
+  });
+});
+
+describe("路由", () => {
+  test("路径里有不合法的百分号编码时回 400，而不是让 Worker 出错", async () => {
+    const env = { DB: memoryD1(), ASSETS: { fetch: async () => new Response("index") }, SESSION_SECRET: "test-session-secret-0123456789abcdef" } as unknown as Env;
+    const res = await worker.fetch(new Request("http://localhost/api/files/a/b/%E0%A4%A"), env);
+    expect(res.status).toBe(400);
   });
 });
