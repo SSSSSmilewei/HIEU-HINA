@@ -1,4 +1,6 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { type Graph, type GraphNode, blockGraph, preOf, siteGraph } from "../../shared/blockGraph";
+import { KnowledgeGraph, type Layout } from "../components/KnowledgeGraph";
 import { type Block, type BlockNode, type BlockSummary, type CourseProgress, blockPeriods, blockRatio, kindOf, nextCourse, nodeRatio } from "../../shared/blocks";
 import { periodsToHours } from "../../shared/courses";
 import { useApi } from "../api";
@@ -12,8 +14,10 @@ import type { CourseSummary } from "../types";
 import { ErrorBox, Skeleton, SkeletonCards, useTitle } from "../ui";
 
 /**
- * 知识块：一个方向的思维导图（格式见 shared/blocks.ts）。
- * 宽屏横向展开成导图，手机上是竖着的大纲树。进度来自 /api/courses（游客没有进度）。
+ * 知识块：一个方向的路线图（格式见 shared/blocks.ts）。
+ * 上面是 Obsidian 式的网状图谱（分组、课程、概念，先修关系画成箭头），点一个节点在旁边看详情；
+ * 下面是大纲（宽屏横向展开，手机上竖着）。/blocks 是全站大图：所有知识块画在一起，同一门课合并成一个点。
+ * 进度来自 /api/courses（游客没有进度）。
  */
 
 export const BLOCKS_INDEX = "/data/blocks/index.json";
@@ -45,6 +49,10 @@ export function BlockCards({ limit }: { limit?: number }) {
   if (error && !data) return <ErrorBox error={error} onRetry={reload} />;
   if (!data) return <SkeletonCards n={4} h={120} />;
   return (
+    <div className="stack" style={{ gap: 12 }}>
+      <Link to="/blocks" className="small" style={{ alignSelf: "flex-start" }}>
+        查看全站知识图谱：所有知识块画在一张图里
+      </Link>
     <div className="grid-cards block-cards">
       <StartBlockCard />
       {data.slice(0, limit).map((b) => {
@@ -64,6 +72,7 @@ export function BlockCards({ limit }: { limit?: number }) {
           </Link>
         );
       })}
+    </div>
     </div>
   );
 }
@@ -88,6 +97,7 @@ export function BlockPage({ slug }: { slug: string }) {
   const ratio = blockRatio(block, progress);
   const next = nextCourse(block, progress);
   const signedIn = !!me.role;
+  const graph = blockGraph(block);
   const nextBlocks = (block.next ?? []).map((s) => all?.find((b) => b.slug === s)).filter((b): b is BlockSummary => !!b);
 
   return (
@@ -124,7 +134,10 @@ export function BlockPage({ slug }: { slug: string }) {
 
       {block.intro && <Prose source={block.intro} />}
 
-      <section className="section" aria-label="路线">
+      <GraphSection graph={graph} progress={progress} title="知识图谱" />
+
+      <section className="section" aria-label="大纲">
+        <h2 className="h2">大纲</h2>
         <div className="mindmap" role="tree" aria-label={block.title}>
           <div className="mm-root">
             <span className="mm-root-title">{block.title.replace(/知识块$/, "")}</span>
@@ -195,6 +208,21 @@ function MapNode({ n, progress }: { n: BlockNode; progress: CourseProgress }) {
     );
   }
 
+  if (kind === "concept") {
+    return (
+      <li className="mm-item" role="treeitem" aria-selected={false}>
+        <div className={cls}>
+          <span className="mm-title">{n.title}</span>
+          {n.note && <span className="mm-note">{n.note}</span>}
+          <span className="mm-meta small sub">
+            <span className="tag">概念</span>
+            {n.optional && <span className="tag">选学</span>}
+          </span>
+        </div>
+      </li>
+    );
+  }
+
   const kids = n.children ?? [];
   return (
     <li className="mm-item" role="treeitem" aria-selected={false} aria-expanded>
@@ -213,5 +241,172 @@ function MapNode({ n, progress }: { n: BlockNode; progress: CourseProgress }) {
         ))}
       </ul>
     </li>
+  );
+}
+
+// ---------------------------------------------------------------- 图谱
+
+const KIND_LABEL: Record<GraphNode["kind"], string> = { block: "知识块", group: "分组", course: "课程", concept: "概念", link: "站外资源" };
+
+function ratioFor(n: GraphNode, progress: CourseProgress): number | null {
+  if (n.kind === "block" || !n.node) return null;
+  return nodeRatio(n.node, progress);
+}
+
+function GraphSection({ graph, progress, title }: { graph: Graph; progress: CourseProgress; title: string }) {
+  const [selected, setSelected] = useState<string | null>(null);
+  const [layout, setLayout] = useState<Layout>("network");
+  const node = graph.nodes.find((n) => n.id === selected) ?? null;
+  return (
+    <section className="section kg-section" aria-label={title}>
+      <div className="row wrap" style={{ gap: 8, justifyContent: "space-between" }}>
+        <h2 className="h2">{title}</h2>
+        <div className="row" style={{ gap: 4 }} role="group" aria-label="布局">
+          <button type="button" className={`btn btn-sm${layout === "network" ? " btn-primary" : ""}`} onClick={() => setLayout("network")} aria-pressed={layout === "network"}>
+            网络
+          </button>
+          <button type="button" className={`btn btn-sm${layout === "tree" ? " btn-primary" : ""}`} onClick={() => setLayout("tree")} aria-pressed={layout === "tree"}>
+            层次
+          </button>
+        </div>
+      </div>
+      <p className="small sub">拖动空白处平移，滚轮或双指缩放，点一个节点查看详情。虚线箭头表示先修：箭头指向的内容要在箭头起点之后学。</p>
+      <div className="kg-wrap">
+        <KnowledgeGraph graph={graph} ratioOf={(n) => ratioFor(n, progress)} selected={selected} onSelect={setSelected} layout={layout} />
+        <aside className="kg-detail card" aria-live="polite">
+          {node ? <NodeDetail graph={graph} node={node} progress={progress} onSelect={setSelected} /> : <Legend />}
+        </aside>
+      </div>
+    </section>
+  );
+}
+
+function Legend() {
+  return (
+    <div className="stack small" style={{ gap: 8 }}>
+      <strong>图例</strong>
+      <span className="row" style={{ gap: 8 }}><i className="kg-swatch kg-swatch-block" />知识块</span>
+      <span className="row" style={{ gap: 8 }}><i className="kg-swatch kg-swatch-group" />分组（阶段）</span>
+      <span className="row" style={{ gap: 8 }}><i className="kg-swatch kg-swatch-course" />课程（学完变成实心强调色）</span>
+      <span className="row" style={{ gap: 8 }}><i className="kg-swatch kg-swatch-concept" />概念：这个方向要研究明白什么</span>
+      <span className="row" style={{ gap: 8 }}><i className="kg-swatch kg-swatch-link" />站外资源</span>
+      <span className="sub">点一个节点，这里显示它的说明、出处和先修关系。</span>
+    </div>
+  );
+}
+
+function NodeDetail({ graph, node, progress, onSelect }: { graph: Graph; node: GraphNode; progress: CourseProgress; onSelect: (id: string) => void }) {
+  const n = node.node;
+  const r = ratioFor(node, progress);
+  const { before, after } = preOf(graph, node.id);
+  const parent = graph.nodes.find((m) => m.id === node.parent);
+  return (
+    <div className="stack" style={{ gap: 10 }}>
+      <span className="small sub">
+        {KIND_LABEL[node.kind]}
+        {node.optional ? " · 选学" : ""}
+        {parent && parent.kind !== "block" ? ` · 属于「${parent.label}」` : ""}
+      </span>
+      <strong className="kg-detail-title">{node.label}</strong>
+      {node.kind === "block" && (
+        <Link to={`/blocks/${node.block}`} className="btn btn-sm" style={{ alignSelf: "flex-start" }}>
+          打开这个知识块
+        </Link>
+      )}
+      {n?.note && <p className="small">{n.note}</p>}
+      {n?.body && <Prose source={n.body} className="prose prose-sm" />}
+      {n?.course && (
+        <div className="stack small" style={{ gap: 6 }}>
+          {r !== null && <span className="num">{r >= 1 ? "已学完" : r > 0 ? `在学，完成 ${Math.round(r * 100)}%` : "还没开始"}</span>}
+          {n.periods ? <span className="sub num">{hoursText(n.periods)}</span> : null}
+          {n.itemTitles && <span className="sub">重点：{n.itemTitles.join("、")}</span>}
+          <Link to={`/courses/${n.course}`} className="btn btn-sm btn-primary" style={{ alignSelf: "flex-start" }}>
+            打开课程
+          </Link>
+        </div>
+      )}
+      {n?.link && (
+        <a className="btn btn-sm" href={n.link.url} target={/^https?:/.test(n.link.url) ? "_blank" : undefined} rel="noreferrer" style={{ alignSelf: "flex-start" }}>
+          打开{n.link.label}
+        </a>
+      )}
+      {n?.children && n.pick && <span className="small sub">{n.children.length} 个里选 {n.pick} 个</span>}
+      {before.length > 0 && (
+        <div className="stack small" style={{ gap: 4 }}>
+          <span className="sub">先学</span>
+          {before.map((b) => (
+            <button key={b.id} type="button" className="kg-jump" onClick={() => onSelect(b.id)}>
+              {b.label}
+            </button>
+          ))}
+        </div>
+      )}
+      {after.length > 0 && (
+        <div className="stack small" style={{ gap: 4 }}>
+          <span className="sub">学完可以接着学</span>
+          {after.map((b) => (
+            <button key={b.id} type="button" className="kg-jump" onClick={() => onSelect(b.id)}>
+              {b.label}
+            </button>
+          ))}
+        </div>
+      )}
+      {n?.sources && n.sources.length > 0 && (
+        <div className="stack small" style={{ gap: 4 }}>
+          <span className="sub">出处</span>
+          <ul className="kg-sources">
+            {n.sources.map((s) => (
+              <li key={s.url}>
+                <a href={s.url} target="_blank" rel="noreferrer">
+                  {s.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** /blocks：全站知识图谱 */
+export function SiteGraphPage() {
+  const { data: index, error, reload } = useApi<BlockSummary[]>(BLOCKS_INDEX);
+  const [blocks, setBlocks] = useState<Block[] | null>(null);
+  const { progress } = useCourseProgress();
+  useTitle("全站知识图谱");
+  const slugs = index?.map((b) => b.slug).join(",");
+  // biome-ignore lint/correctness/useExhaustiveDependencies: slugs 代表 index
+  useEffect(() => {
+    if (!index) return;
+    let live = true;
+    Promise.all(
+      index.map((b) =>
+        fetch(`/data/blocks/${b.slug}.json`).then((r) => {
+          if (!r.ok) throw new Error(`读取知识块 ${b.slug} 失败`);
+          return r.json() as Promise<Block>;
+        }),
+      ),
+    ).then(
+      (bs) => live && setBlocks(bs),
+      () => live && setBlocks([]),
+    );
+    return () => {
+      live = false;
+    };
+  }, [slugs]);
+  const graph = useMemo(() => (blocks ? siteGraph(blocks) : null), [blocks]);
+  if (error && !index) return <div className="page"><ErrorBox error={error} onRetry={reload} /></div>;
+  return (
+    <div className="page block-page">
+      <header className="page-head block-head">
+        <BackLink />
+        <div className="stack" style={{ gap: 6 }}>
+          <h1 className="h1">全站知识图谱</h1>
+          <p className="sub pretty">所有知识块画在一张图里。同一门课只画一次，所以几个方向共用的基础课会连着好几个知识块；知识块之间的箭头指向「学完以后可以去」的方向。</p>
+        </div>
+      </header>
+      {graph ? <GraphSection graph={graph} progress={progress} title="图谱" /> : <Skeleton h={560} />}
+    </div>
   );
 }

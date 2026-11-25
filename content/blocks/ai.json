@@ -7,48 +7,134 @@
   "intro": "人工智能最容易卡在数学上，所以先把线性代数和概率补上。机器学习和深度学习各挑一门系统学完，再按兴趣选视觉、语言或强化学习。\n\n想先尝尝鲜，可以先看 **CS50AI** 或者 Karpathy 的 **从零到英雄**。",
   "nodes": [
     {
+      "id": "goal",
+      "title": "机器学习要研究明白什么",
+      "note": "为什么先学数学，再学机器学习和深度学习",
+      "body": "机器学习研究的是：**根据一批数据，找到一个函数，使它在没见过的数据上也表现良好**（称为泛化）。弄懂这件事需要三类数学：\n\n- **线性代数**：数据和模型参数都用向量、矩阵表示，模型的计算大多是矩阵运算。\n- **概率与统计**：描述数据的不确定性，定义「模型有多好」（似然、损失）。\n- **微积分**：用梯度下降调整参数，使损失变小。\n\n因此路线是：数学 → 机器学习（模型、损失函数、优化、过拟合与正则化）→ 深度学习（多层神经网络、反向传播、卷积、注意力机制）→ 选一个应用方向（视觉、语言、强化学习等）深入。",
+      "sources": [
+        {
+          "label": "Deisenroth 等《Mathematics for Machine Learning》（免费在线版）",
+          "url": "https://mml-book.github.io/"
+        },
+        {
+          "label": "Goodfellow、Bengio、Courville《Deep Learning》（免费在线版）",
+          "url": "https://www.deeplearningbook.org/"
+        },
+        {
+          "label": "《动手学深度学习》（Dive into Deep Learning）",
+          "url": "https://d2l.ai/"
+        }
+      ]
+    },
+    {
       "title": "① 先尝尝鲜",
       "optional": true,
       "children": [
-        { "course": "cs50ai", "note": "搜索、知识、概率、优化、学习、神经网络，Python 写着玩" },
-        { "course": "nn-zero-to-hero", "note": "从头手写一个 GPT" }
-      ]
+        {
+          "course": "cs50ai",
+          "note": "搜索、知识、概率、优化、学习、神经网络，Python 写着玩"
+        },
+        {
+          "course": "nn-zero-to-hero",
+          "note": "从头手写一个 GPT"
+        }
+      ],
+      "id": "taste"
     },
     {
       "title": "② 数学",
       "children": [
-        { "course": "mitla", "note": "线性代数：矩阵就是一切" },
-        { "title": "概率", "pick": 1, "children": [ { "course": "cs70" }, { "course": "6-042j" } ] }
+        {
+          "course": "mitla",
+          "note": "线性代数：矩阵就是一切"
+        },
+        {
+          "title": "概率",
+          "pick": 1,
+          "children": [
+            {
+              "course": "cs70"
+            },
+            {
+              "course": "6-042j"
+            }
+          ]
+        }
+      ],
+      "id": "math",
+      "pre": [
+        "goal"
       ]
     },
     {
       "title": "③ 机器学习",
       "pick": 1,
       "children": [
-        { "course": "ml", "note": "吴恩达，入门首选" },
-        { "course": "cs229", "note": "推导更多" },
-        { "course": "lhy-ml", "note": "李宏毅，中文" }
+        {
+          "course": "ml",
+          "note": "吴恩达，入门首选"
+        },
+        {
+          "course": "cs229",
+          "note": "推导更多"
+        },
+        {
+          "course": "lhy-ml",
+          "note": "李宏毅，中文"
+        }
+      ],
+      "id": "ml",
+      "pre": [
+        "math"
       ]
     },
     {
       "title": "④ 深度学习",
       "pick": 1,
       "children": [
-        { "course": "cs230" },
-        { "course": "mit6-7960" },
-        { "course": "cmu11-785" }
+        {
+          "course": "cs230"
+        },
+        {
+          "course": "mit6-7960"
+        },
+        {
+          "course": "cmu11-785"
+        }
+      ],
+      "id": "dl",
+      "pre": [
+        "ml"
       ]
     },
     {
       "title": "⑤ 选一个方向",
       "pick": 1,
       "children": [
-        { "course": "cs231", "note": "计算机视觉" },
-        { "course": "cs224n", "note": "自然语言处理" },
-        { "course": "cs285", "note": "强化学习" },
-        { "course": "cmu10-414", "note": "深度学习系统：自己写一个框架" }
+        {
+          "course": "cs231",
+          "note": "计算机视觉"
+        },
+        {
+          "course": "cs224n",
+          "note": "自然语言处理"
+        },
+        {
+          "course": "cs285",
+          "note": "强化学习"
+        },
+        {
+          "course": "cmu10-414",
+          "note": "深度学习系统：自己写一个框架"
+        }
+      ],
+      "id": "field",
+      "pre": [
+        "dl"
       ]
     }
   ],
-  "next": ["kaoyan"]
+  "next": [
+    "kaoyan"
+  ]
 }

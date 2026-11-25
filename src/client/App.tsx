@@ -11,7 +11,7 @@ import { AboutPage } from "./pages/About";
 import { AdminApplicationsPage } from "./pages/AdminApplications";
 import { AdminPinsPage } from "./pages/AdminPins";
 import { AttendancePage } from "./pages/Attendance";
-import { BlockPage } from "./pages/Blocks";
+import { BlockPage, SiteGraphPage } from "./pages/Blocks";
 import { CoursePage } from "./pages/Course";
 import { CoursesPage } from "./pages/Courses";
 import { FormatPage } from "./pages/Format";
@@ -46,7 +46,7 @@ function Redirect({ to }: { to: string }) {
 
 /** 游客也能看的页面；其余页面要登录。 */
 function guestCanSee(path: string): boolean {
-  return path === "/" || path === "/about" || path === "/honors" || path.startsWith("/courses") || path.startsWith("/blocks/") || path === "/notices" || path === "/start";
+  return path === "/" || path === "/about" || path === "/honors" || path.startsWith("/courses") || path.startsWith("/blocks") || path === "/notices" || path === "/start";
 }
 
 export function App() {
@@ -117,6 +117,7 @@ export function App() {
   else if (path === "/start") page = <StartPage />;
   else if (path === "/courses") page = <CoursesPage />;
   else if (path === "/courses/format") page = <FormatPage />;
+  else if (path === "/blocks") page = <SiteGraphPage />;
   else if (block) page = <BlockPage key={block.slug} slug={block.slug} />;
   else if (levelMap) page = <LevelMapPage key={levelMap.slug} slug={levelMap.slug} />;
   else if (levelPage) page = <LevelPage key={`${levelPage.chapter}/${levelPage.level}`} slug={levelPage.slug} chapter={levelPage.chapter} level={levelPage.level} />;

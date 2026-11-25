@@ -7,40 +7,138 @@
   "intro": "嵌入式要同时懂软件和硬件：C 语言和指针要熟，要知道 CPU 怎么执行指令、内存怎么组织，还要会和操作系统打交道。\n\n下面的课都是“原理”。动手还得配一块开发板（STM32、ESP32、树莓派都行），边学边做。",
   "nodes": [
     {
+      "id": "goal",
+      "title": "从电路到程序的层次",
+      "note": "嵌入式开发要同时在这几层工作",
+      "body": "计算机是一层一层抽象搭起来的：\n\n1. 晶体管组成**逻辑门**，逻辑门组成加法器、寄存器、存储器等**部件**；\n2. 部件组成能够执行指令的**处理器**，处理器能执行哪些指令由**指令集**规定，指令集是硬件和软件的分界线；\n3. **编译器**把 C 程序翻译成指令，**操作系统**管理处理器、内存和外部设备，给程序提供运行环境。\n\n嵌入式开发要直接面对其中好几层：用 C 语言操作寄存器和内存，理解处理器如何执行指令、中断如何发生，在资源有限的硬件上运行操作系统或裸机程序。所以先把 C 语言学熟，再弄懂门电路与处理器，最后理解程序和操作系统在机器上如何运行。",
+      "sources": [
+        {
+          "label": "Nand2Tetris：从与非门到俄罗斯方块（官方网站）",
+          "url": "https://www.nand2tetris.org/"
+        },
+        {
+          "label": "Bryant、O'Hallaron《深入理解计算机系统》（CS:APP）官方网站",
+          "url": "https://csapp.cs.cmu.edu/"
+        },
+        {
+          "label": "Arpaci-Dusseau《Operating Systems: Three Easy Pieces》（免费在线版）",
+          "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/"
+        }
+      ]
+    },
+    {
       "title": "① C 语言要熟",
       "pick": 1,
       "children": [
-        { "course": "cs50x", "items": ["w1-lecture", "w1-pset", "w2-lecture", "w2-pset", "w3-lecture", "w3-pset", "w4-lecture", "w4-pset", "w5-lecture", "w5-pset"], "note": "CS50x 的 C 语言部分（第 1–5 周）" },
-        { "course": "duke-coursera-intro-c", "note": "杜克的 C 语言专项，更系统" }
+        {
+          "course": "cs50x",
+          "items": [
+            "w1-lecture",
+            "w1-pset",
+            "w2-lecture",
+            "w2-pset",
+            "w3-lecture",
+            "w3-pset",
+            "w4-lecture",
+            "w4-pset",
+            "w5-lecture",
+            "w5-pset"
+          ],
+          "note": "CS50x 的 C 语言部分（第 1–5 周）"
+        },
+        {
+          "course": "duke-coursera-intro-c",
+          "note": "杜克的 C 语言专项，更系统"
+        }
+      ],
+      "id": "c",
+      "pre": [
+        "goal"
       ]
     },
     {
       "title": "② 从门电路到计算机",
       "children": [
-        { "course": "n2t", "note": "从与非门搭出一台计算机，最好玩的一门" },
-        { "title": "数字电路与体系结构", "pick": 1, "children": [ { "course": "ddca" }, { "course": "cs61c" } ] }
+        {
+          "course": "n2t",
+          "note": "从与非门搭出一台计算机，最好玩的一门"
+        },
+        {
+          "title": "数字电路与体系结构",
+          "pick": 1,
+          "children": [
+            {
+              "course": "ddca"
+            },
+            {
+              "course": "cs61c"
+            }
+          ]
+        }
+      ],
+      "id": "hw",
+      "pre": [
+        "c"
       ]
     },
     {
       "title": "③ 程序在机器上怎么跑",
       "children": [
-        { "course": "csapp", "note": "深入理解计算机系统" },
-        { "title": "操作系统", "pick": 1, "children": [ { "course": "mit6-s081", "note": "xv6，实验很硬" }, { "course": "njuos", "note": "中文，蒋炎岩" } ] }
+        {
+          "course": "csapp",
+          "note": "深入理解计算机系统"
+        },
+        {
+          "title": "操作系统",
+          "pick": 1,
+          "children": [
+            {
+              "course": "mit6-s081",
+              "note": "xv6，实验很硬"
+            },
+            {
+              "course": "njuos",
+              "note": "中文，蒋炎岩"
+            }
+          ]
+        }
+      ],
+      "id": "sys",
+      "pre": [
+        "hw"
       ]
     },
     {
       "title": "电子与信号",
       "optional": true,
       "children": [
-        { "course": "ee16", "note": "电路、线性代数和控制" },
-        { "course": "signals-and-systems-avo", "note": "信号与系统" }
-      ]
+        {
+          "course": "ee16",
+          "note": "电路、线性代数和控制"
+        },
+        {
+          "course": "signals-and-systems-avo",
+          "note": "信号与系统"
+        }
+      ],
+      "id": "ee"
     },
     {
       "title": "④ 端侧 AI",
       "optional": true,
-      "children": [ { "course": "eml", "note": "TinyML：在单片机上跑模型" } ]
+      "children": [
+        {
+          "course": "eml",
+          "note": "TinyML：在单片机上跑模型"
+        }
+      ],
+      "id": "tinyml",
+      "pre": [
+        "sys"
+      ]
     }
   ],
-  "next": ["ai"]
+  "next": [
+    "ai"
+  ]
 }

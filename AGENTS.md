@@ -40,7 +40,11 @@
 
 ### 知识块（2026-10-29）
 - 格式 `hiana-block@1`（`src/shared/blocks.ts` 计算，`blockSchema.ts` 校验），源文件 `content/blocks/`，构建时补上课程名和课时（`scripts/blocks.mjs`），引用不存在的课或条目会构建失败。
-- 四个：新手、人工智能、嵌入式、考研。网页 `/blocks/<slug>`（宽屏导图、手机大纲树），课程页和首页有卡片；App 课程页有卡片和大纲页。
+- 五个：新手、人工智能、嵌入式、考研、计算机系统（2026-11-26 新增）。网页 `/blocks/<slug>`，课程页和首页有卡片；App 课程页有卡片和大纲页。
+- **图谱（2026-11-26）**：知识块页面上方是 Obsidian 式网状图（`components/KnowledgeGraph.tsx`，SVG 手写，布局算法改编自负责人朋友的 [ai-learning-atlas](https://github.com/AITopia-Shao/ai-learning-atlas)，已获作者同意），下方是原来的导图，改叫「大纲」。可以切换网络和层次两种布局，支持拖动、缩放，点节点后旁边显示说明、出处和先修关系。`/blocks` 是全站大图，同一门课合并成一个点。点和线的计算在 `src/shared/blockGraph.ts`（测试 `tests/blockGraph.test.ts`）。
+  - 格式加了四个可选字段（只做加法，旧数据照常能用）：`id`、`pre`（先修，引用同一知识块里的 id；不能引用不存在的 id，也不能绕成圈）、`body`（有 `body` 没有 `children` 的节点是**概念节点**，讲清楚这个方向要研究明白什么）、`sources`（出处）。
+  - 概念节点的内容可以引用站外资料，但出处必须权威（官方课程主页、标准教材、ACM/IEEE 课程指南），用语清晰、严谨（负责人 2026-11-26 要求）。
+  - App 还不认识概念节点，会把它显示成一个没有子项的分组标题，不会出错。
 - 课程格式补了三处：模块 `group`（单元）、条目类型 `section`（讨论课）、条目 `optional`（选学）；练手题 `origin`（official / review）。
 
 ### 账号
