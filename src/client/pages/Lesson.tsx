@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AssignmentEntry, useHasAssignment } from "../components/AssignmentEntry";
+import { ExamEntry } from "../components/ExamEntry";
 import { ITEM_KIND_LABEL } from "../../shared/light";
 import type { Item } from "../../shared/package";
 import { PinBoard } from "../components/Pins";
@@ -86,6 +87,7 @@ export function LessonPage({ slug, page }: { slug: string; page: string }) {
       </header>
 
       <AssignmentEntry course={slug} item={item.id} />
+      <ExamEntry course={slug} item={item.id} />
 
       {item.pages.length > 1 && (
         <nav ref={tabs} className="page-tabs" aria-label="这一项的页面">

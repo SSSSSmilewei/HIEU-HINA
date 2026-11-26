@@ -4,6 +4,7 @@ import type { JudgeResult } from "../../shared/judge";
 import type { Env } from "../env";
 import { type Ctx, HttpError, json, type Router } from "../http";
 import { requireUser } from "./common";
+import { activeExam } from "./exams";
 
 /**
  * OJ 里的 AI（故事 4.1）。规矩：测试判对错，AI 管理解和表达；AI 不给完整答案。
@@ -41,8 +42,9 @@ async function loadProblem(env: Env, id: string): Promise<ProblemLite | null> {
   return parts.length === 3 ? (data.problems?.find((p) => p.id === parts[2]) ?? null) : data;
 }
 
-/** 每人每天的次数 */
+/** 每人每天的次数；考试进行中不能用 AI（故事 3.5） */
 async function useQuota(db: D1Database, uid: string, now: number) {
+  if (await activeExam(db, uid, now)) throw new HttpError(403, "测验进行中，不能使用 AI 助教。交卷之后就可以用了");
   const day = cnDate(now);
   const row = await db.prepare("SELECT count FROM oj_ai_usage WHERE user_id = ? AND day = ?").bind(uid, day).first<{ count: number }>();
   if ((row?.count ?? 0) >= OJ_AI_DAILY_LIMIT) throw new HttpError(429, `今天请 AI 的次数用完了（每天 ${OJ_AI_DAILY_LIMIT} 次），明天再来，或者先在讨论区问问同学`);

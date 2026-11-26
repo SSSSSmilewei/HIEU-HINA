@@ -455,6 +455,24 @@ export const MIGRATIONS: string[][] = [
     )`,
     `CREATE INDEX IF NOT EXISTS oj_reviews_by_user ON oj_reviews(user_id, problem)`,
   ],
+  // v19：限时测验（故事 3.5）。一次作答一行：开始时记截止时间，作答随时保存，交卷（或过了截止时间）后判分
+  [
+    `CREATE TABLE IF NOT EXISTS exam_attempts (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      exam TEXT NOT NULL,
+      started_at INTEGER NOT NULL,
+      deadline INTEGER NOT NULL,
+      answers TEXT NOT NULL DEFAULT '{}',
+      saved_at INTEGER,
+      submitted_at INTEGER,
+      score REAL,
+      max_score REAL,
+      passed INTEGER,
+      detail TEXT
+    )`,
+    `CREATE INDEX IF NOT EXISTS exam_attempts_by_user ON exam_attempts(user_id, exam, started_at)`,
+  ],
 ];
 
 // 每个数据库连接只迁移一次（Worker 里通常只有一个；测试里每个用例一个内存库）

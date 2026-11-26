@@ -1,0 +1,17 @@
+{
+  "format": "hiana-problem@1",
+  "id": "cs61a-fa25-mt1-patterned",
+  "title": "有规律的数（CS61A 2025 秋季期中 1）",
+  "titleEn": "Saja Boys (CS 61A Fall 2025 Midterm 1)",
+  "kind": "function",
+  "languages": ["python"],
+  "difficulty": "medium",
+  "statement": "**定义**：一个正整数是「有规律的」（patterned），是指它的每一个奇数数字，前面（左边）某处都有一个比它大的偶数数字。例如 4123827 是有规律的：奇数 7 前面有 8（偶数，比 7 大），3 和 1 前面都有 4。\n\n实现 `patterned(n)`：参数是正整数 `n`，有规律返回 `True`，否则返回 `False`。\n\n要求：只从右往左把 `n` 的各位数字过一遍；不要用 `str`、`len`、`[` 或 `]`。\n",
+  "statementEn": "Implement patterned, which takes a positive integer n. It returns True if n is patterned and False otherwise. Your implementation should iterate through the digits of n just once.",
+  "editable": ["patterned.py"],
+  "focus": { "file": "patterned.py", "symbol": "patterned" },
+  "tests": { "kind": "ok", "question": "patterned" },
+  "timeMs": 2000,
+  "memoryMb": 256,
+  "tags": ["CS61A", "考试题"]
+}

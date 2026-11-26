@@ -1,0 +1,169 @@
+{
+  "format": "hiana-exam@1",
+  "id": "cs61a-fa25-mt1",
+  "course": "cs61a",
+  "item": "exam-midterm",
+  "title": "期中测验 1（改编自 2025 秋季期中考试 1）",
+  "source": "UC Berkeley CS 61A 2025 秋季 期中考试 1（Midterm 1）",
+  "license": "题目 © UC Berkeley CS 61A（2025 秋季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文改编 海纳协会",
+  "minutes": 80,
+  "pass": 0.7,
+  "certificate": false,
+  "intro": "范围：函数、控制、高阶函数、lambda 表达式、环境（对应讲义第 1 章）。\n\n- 限时 80 分钟，点「开始」后计时，到时自动交卷；作答每隔几秒自动保存，刷新页面不会丢。\n- 可以看讲义和自己的笔记，**不能**用 AI，也不要和别人讨论；测验进行中，作业台的 AI 助教会停用。\n- 填空题写一个 Python 表达式或一行代码即可，判分时忽略多余空格。\n- 改编说明：原卷第 2 题的环境图是图片，站内暂不收；原卷 A+ 附加题（0 分）不收；增加了第 4 大题「完整写出 patterned」，由判题服务按官方 doctest 判分。\n\n交卷后能看到每题得分、标准答案和讲解，可以重考，成绩取最好的一次。",
+  "sections": [
+    {
+      "title": "第 1 大题：Python 会做什么（6 分）",
+      "intro": "假设下面的代码已经运行完，没有出错：\n\n```python\nabout = 6-7\nabout, face = 6, about * 7\n\ndef make_something(f):\n    if f(about):\n        f = lambda k: about\n    def something(about):\n        return print(f(about) or print(about))\n    return something\n\nf = lambda x: 10 * x\n```\n\n写出在交互式解释器里求值下面的表达式时**显示**的全部内容，每行一个；什么都不显示就不填。例如求值 `print(5)` 显示 `5`。",
+      "questions": [
+        {
+          "id": "q1a",
+          "type": "text",
+          "multiline": true,
+          "points": 2,
+          "prompt": "求值 `print(print(face))` 会显示什么？",
+          "accept": ["-7\nNone"],
+          "explain": "第二行同时赋值：右边先全部求值，此时 `about` 还是 `6-7 = -1`，所以 `face = -1 * 7 = -7`，然后 `about = 6`。内层 `print(face)` 显示 `-7` 并返回 `None`，外层再显示 `None`。"
+        },
+        {
+          "id": "q1b",
+          "type": "text",
+          "multiline": true,
+          "points": 4,
+          "prompt": "求值 `make_something(print)(8)` 会显示什么？",
+          "accept": ["6\n8\n8\nNone"],
+          "explain": "调用 `make_something(print)` 时，`f(about)` 即 `print(6)`，显示 `6`，返回 `None`（假值），所以 `f` 仍是 `print`。调用 `something(8)`：`f(8)` 即 `print(8)` 显示 `8`，返回 `None`；`None or print(8)` 再显示 `8` 并得到 `None`；最外层 `print(None)` 显示 `None`。"
+        }
+      ]
+    },
+    {
+      "title": "第 2 大题：有规律的数（8 分）",
+      "intro": "**定义**：一个正整数是「有规律的」（patterned），是指它的每一个奇数数字，前面（左边）某处都有一个比它大的偶数数字。例如 4123827 是有规律的：奇数 7 前面有 8，3 和 1 前面都有 4。\n\n实现 `patterned(n)`：有规律返回 `True`，否则返回 `False`。只能把 `n` 的各位数字过一遍；名字 `odd` 始终绑定 0 到 9 之间的整数。\n\n```python\ndef patterned(n):\n    \"\"\"\n    >>> patterned(4123827)\n    True\n    >>> patterned(2468)     # 没有奇数数字\n    True\n    >>> patterned(1)        # 没有偶数数字\n    False\n    >>> patterned(238)      # 3 前面没有比它大的偶数（8 在它后面）\n    False\n    \"\"\"\n    odd = 0       # 提示：用 odd 记住之后要用到的一个数字\n    while n:\n        n, last = n // 10, n % 10\n        if last % 2 == 1:\n            ______(a)\n        elif ______(b):\n            ______(c)\n    return ______(d)\n```\n\n注意：数字是从右往左取的，所以「前面」的数字会在「后面」才取到。",
+      "questions": [
+        {
+          "id": "q2a",
+          "type": "choice",
+          "points": 2,
+          "prompt": "空 (a) 填什么？",
+          "choices": ["return False", "return max(n) > last", "return n % 10 > last", "return n % 2 == 0 and n % 10 > last", "odd = 0", "odd = last", "odd = n % 10", "odd = max(n % 10, last)", "odd = max(odd, last)"],
+          "answer": 8,
+          "explain": "`odd` 记录「还没找到更大偶数的奇数里最大的那个」。遇到奇数 `last`，只要记住更大的那个：`odd = max(odd, last)`。"
+        },
+        {
+          "id": "q2b",
+          "type": "text",
+          "points": 2,
+          "prompt": "空 (b) 填什么？（不能用 `str`、`len`、`[`、`]`）",
+          "accept": ["last > odd", "odd < last", "last>odd", "odd<last"],
+          "explain": "走到这里 `last` 是偶数。它在左边，比所有待匹配的奇数都大时（`last > odd`），这些奇数就都满足了。"
+        },
+        {
+          "id": "q2c",
+          "type": "choice",
+          "points": 2,
+          "prompt": "空 (c) 填什么？",
+          "choices": ["return False", "return max(n) > last", "return n % 10 > last", "return n % 2 == 0 and n % 10 > last", "odd = 0", "odd = last", "odd = n % 10", "odd = max(n % 10, last)", "odd = max(odd, last)"],
+          "answer": 4,
+          "explain": "待匹配的奇数都被这个更大的偶数满足了，清零：`odd = 0`。"
+        },
+        {
+          "id": "q2d",
+          "type": "choice",
+          "points": 2,
+          "prompt": "空 (d) 填什么？",
+          "choices": ["True", "False", "odd == 0", "odd > 0", "last == 0", "last > 0", "last % 2 == 0", "last % 2 == 1"],
+          "answer": 2,
+          "explain": "所有数字都看完后，没有剩下待匹配的奇数（`odd == 0`）才是有规律的。"
+        }
+      ]
+    },
+    {
+      "title": "第 3 大题：上升序列（16 分）",
+      "intro": "**定义**：上升序列（up-sequence）是一列正整数，每一项都比前一项大。上升序列的「下一项函数」`f` 接收非负整数 `t`：如果 `t` 是序列中某一项（不是最后一项），`f(t)` 返回它的下一项；如果 `t` 是最后一项，或者不在序列里，返回 `0`；`f(0)` 返回第一项。\n\n例如 `fifty_evens` 是序列 2, 4, 6, …, 100 的下一项函数：\n\n```python\ndef fifty_evens(t):\n    if t % 2 == 0 and t < 100:\n        return t + 2\n    return 0\n```\n\n完全平方数（无限序列 1, 4, 9, 16, …）的下一项函数：\n\n```python\ndef next_square(t):\n    sqrt_t = t ** 0.5\n    if sqrt_t == round(sqrt_t):         # t 是完全平方数\n        return (round(sqrt_t) + 1) ** 2\n    return 0\n```",
+      "questions": [
+        {
+          "id": "q3a1",
+          "type": "text",
+          "points": 2,
+          "prompt": "`sum_sequence(f)` 接收一个有限上升序列的下一项函数，返回所有项的和。\n\n```python\ndef sum_sequence(f):\n    \"\"\"\n    >>> sum_sequence(fifty_evens)  # 2 + 4 + ... + 100\n    2550\n    \"\"\"\n    t = ______(a)\n    total = 0\n    while t:\n        t, total = ______(b), ______(c)\n    return total\n```\n\n空 (a) 填什么？",
+          "accept": ["f(0)"],
+          "explain": "从第一项开始：`f(0)`。"
+        },
+        {
+          "id": "q3a2",
+          "type": "text",
+          "points": 2,
+          "prompt": "接上题，空 (b) 填什么？",
+          "accept": ["f(t)"],
+          "explain": "走到下一项：`f(t)`。序列结束时得到 `0`，循环停止。"
+        },
+        {
+          "id": "q3a3",
+          "type": "choice",
+          "points": 2,
+          "prompt": "接上题，空 (c) 填什么？",
+          "choices": ["total + 1", "total + t", "total + f", "total + fifty_evens", "total + f(t)", "total + fifty_evens(t)"],
+          "answer": 1,
+          "explain": "同时赋值时右边先求值，用的是当前项 `t`：`total + t`。"
+        },
+        {
+          "id": "q3b1",
+          "type": "text",
+          "points": 2,
+          "prompt": "`cap(f, n)` 接收无限上升序列的下一项函数 `f` 和正整数 `n`，返回「只保留不超过 `n` 的项」的有限序列的下一项函数。\n\n```python\ndef cap(f, n):\n    \"\"\"\n    >>> squares_up_to_25 = cap(next_square, 30)\n    >>> squares_up_to_25(16)\n    25\n    >>> squares_up_to_25(25)\n    0\n    >>> cap(next_square, 81)(64)   # 81 在序列里，保留\n    81\n    \"\"\"\n    def capped(t):\n        if ______(d):\n            ______(e)\n        else:\n            return ______(f)\n    return capped\n```\n\n空 (d) 填什么？",
+          "accept": ["f(t) > n", "n < f(t)"],
+          "explain": "下一项超过 `n` 时，序列到此为止：`f(t) > n`。"
+        },
+        {
+          "id": "q3b2",
+          "type": "choice",
+          "points": 2,
+          "prompt": "接上题，空 (e) 填什么？",
+          "choices": ["t = 0", "n += 1", "n -= 1", "t += 1", "t -= 1", "t = f(t)", "t = next_square(t)", "return n", "return t", "return 0"],
+          "answer": 9,
+          "explain": "`t` 是最后一项（或下一项超出范围），按定义返回 `0`。"
+        },
+        {
+          "id": "q3b3",
+          "type": "choice",
+          "points": 2,
+          "prompt": "接上题，空 (f) 填什么？",
+          "choices": ["n", "t", "f", "f(t)", "next_square", "next_square(t)"],
+          "answer": 3,
+          "explain": "没超出范围就照原序列走：`f(t)`。注意要用参数 `f`，不能写死 `next_square`。"
+        },
+        {
+          "id": "q3c1",
+          "type": "text",
+          "points": 2,
+          "prompt": "「上一项函数」`g`：`t` 是序列中第一项以外的某一项时，`g(t)` 返回上一项；`t` 是第一项或不在序列里时返回 `0`；`g(0)` 返回最后一项。\n\n`reverse(f)` 接收有限上升序列的下一项函数，返回同一个序列的上一项函数。可以调用 `max_term(f)`（返回有限序列的最大项，已经实现好）。\n\n```python\ndef reverse(f):\n    \"\"\"\n    >>> rev = reverse(cap(next_square, 30))   # 1, 4, 9, 16, 25 倒着走\n    >>> print(rev(0), rev(25), rev(16), rev(9), rev(4))\n    25 16 9 4 1\n    >>> rev(1)    # 1 是第一项\n    0\n    >>> rev(10)   # 10 不在序列里\n    0\n    \"\"\"\n    def previous(t):\n        if t == 0:\n            return ______(g)\n        x = t - 1\n        while x > 0 and ______(h):\n            x = x - 1\n        return x\n    return previous\n```\n\n空 (g) 填什么？",
+          "accept": ["max_term(f)"],
+          "explain": "`g(0)` 是最后一项，也就是最大的一项：`max_term(f)`。"
+        },
+        {
+          "id": "q3c2",
+          "type": "text",
+          "points": 2,
+          "prompt": "接上题，空 (h) 填什么？",
+          "accept": ["f(x) != t", "t != f(x)", "not f(x) == t"],
+          "explain": "从 `t - 1` 往下找，直到找到下一项正好是 `t` 的 `x`：条件是 `f(x) != t`。找不到时 `x` 减到 `0`，正好返回 `0`。"
+        }
+      ]
+    },
+    {
+      "title": "第 4 大题：完整写出 patterned（4 分，站内增加）",
+      "intro": "不用第 2 大题的框架，自己完整写出 `patterned`。提交后由判题服务用官方 doctest 判分，按通过的用例比例给分。",
+      "questions": [
+        {
+          "id": "q4",
+          "type": "code",
+          "points": 4,
+          "prompt": "在下面写出 `patterned(n)` 的完整实现（不能用 `str`、`len`、`[`、`]`）。",
+          "problem": "cs61a-fa25-mt1-patterned",
+          "file": "patterned.py",
+          "starter": "def patterned(n):\n    \"\"\"Return whether every odd digit of n has a larger even digit somewhere before it.\n\n    >>> patterned(4123827)\n    True\n    >>> patterned(238)\n    False\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n",
+          "explain": "参考写法（官方框架）：\n\n```python\ndef patterned(n):\n    odd = 0\n    while n:\n        n, last = n // 10, n % 10\n        if last % 2 == 1:\n            odd = max(odd, last)\n        elif last > odd:\n            odd = 0\n    return odd == 0\n```"
+        }
+      ]
+    }
+  ]
+}

@@ -31,6 +31,7 @@ const LessonPage = lazy(() => import("./pages/Lesson").then((m) => ({ default: m
 const LevelPage = lazy(() => import("./pages/Level").then((m) => ({ default: m.LevelPage })));
 const LevelMapPage = lazy(() => import("./pages/LevelMap").then((m) => ({ default: m.LevelMapPage })));
 const OjWorkspacePage = lazy(() => import("./pages/OjWorkspace").then((m) => ({ default: m.OjWorkspacePage })));
+const ExamPage = lazy(() => import("./pages/ExamPage").then((m) => ({ default: m.ExamPage })));
 const NoticesPage = lazy(() => import("./pages/Notices").then((m) => ({ default: m.NoticesPage })));
 const ProfilePage = lazy(() => import("./pages/Profile").then((m) => ({ default: m.ProfilePage })));
 const ReportPage = lazy(() => import("./pages/Report").then((m) => ({ default: m.ReportPage })));
@@ -135,6 +136,16 @@ export function App() {
   // 做题界面是全屏的 IDE，不套侧边栏
   const ojProblem = matchPath("/oj/p/:id", path);
   const hw = matchPath("/courses/:slug/hw/:assignment", path) ?? matchPath("/courses/:slug/hw/:assignment/:problem", path);
+  const exam = matchPath("/courses/:slug/exam/:id", path);
+  if (exam) {
+    return (
+      <MeContext.Provider value={ctx}>
+        <PageContent key={path} fallback={<Boot />}>
+          <ExamPage course={exam.slug} id={exam.id} />
+        </PageContent>
+      </MeContext.Provider>
+    );
+  }
   if (ojProblem || hw) {
     return (
       <MeContext.Provider value={ctx}>

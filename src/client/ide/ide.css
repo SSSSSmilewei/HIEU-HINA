@@ -1084,3 +1084,107 @@ html.ide-dragging * {
 .ide-repl-form .ide-wwpd-input {
   flex: 1;
 }
+
+/* 限时测验（故事 3.5） */
+/* .ide 是固定的全屏网格（顶栏 + 内容），测验的内容区自己滚动 */
+.ide-exam-scroll {
+  overflow-y: auto;
+}
+.ide-exam {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 20px 16px 80px;
+}
+.ide-exam-intro .ide-exam-start {
+  margin: 16px 0;
+}
+.ide-exam-timer {
+  min-width: 64px;
+  color: var(--ide-strong);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  text-align: right;
+}
+.ide-exam-timer.is-low {
+  color: var(--ide-bad);
+}
+.ide-exam-section {
+  margin-top: 28px;
+}
+.ide-exam-q {
+  margin: 14px 0;
+  padding: 12px 14px;
+  border: 1px solid var(--ide-line-strong);
+  border-left: 3px solid var(--ide-line-strong);
+  border-radius: 3px;
+  background: var(--ide-pane);
+}
+.ide-exam-q.is-ok {
+  border-left-color: var(--ide-ok);
+}
+.ide-exam-q.is-part {
+  border-left-color: var(--ide-warn);
+}
+.ide-exam-q.is-bad {
+  border-left-color: var(--ide-bad);
+}
+.ide-exam-q-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+}
+.ide-exam-got.is-ok {
+  color: var(--ide-ok);
+}
+.ide-exam-got.is-part {
+  color: var(--ide-warn);
+}
+.ide-exam-got.is-bad {
+  color: var(--ide-bad);
+}
+.ide-exam-line {
+  width: 100%;
+  font-family: var(--font-mono);
+}
+.ide-exam-text,
+.ide-exam-code {
+  width: 100%;
+  resize: vertical;
+}
+.ide-exam-code {
+  min-height: 260px;
+  tab-size: 4;
+}
+.ide-wwpd-choice.is-correct {
+  outline: 1px solid var(--ide-ok);
+}
+.ide-exam-answer,
+.ide-exam-explain {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--ide-line-strong);
+}
+.ide-exam-score {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--ide-line-strong);
+  border-radius: 3px;
+}
+.ide-exam-score strong {
+  font-family: var(--font-mono);
+  font-size: 26px;
+}
+.ide-exam-score.is-ok strong {
+  color: var(--ide-ok);
+}
+.ide-exam-score.is-bad strong {
+  color: var(--ide-bad);
+}
+.ide-exam-end {
+  margin-top: 24px;
+  text-align: right;
+}
