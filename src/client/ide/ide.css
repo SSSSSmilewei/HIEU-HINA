@@ -1047,3 +1047,40 @@ html.ide-dragging * {
   font-size: 16px;
   line-height: 1;
 }
+
+/* Scheme 交互式解释器（故事 3.3） */
+.ide-repl {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  padding: 10px 16px;
+}
+.ide-repl-log {
+  flex: 1;
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+.ide-repl-in {
+  color: var(--ide-accent);
+}
+.ide-repl-out,
+.ide-repl-err {
+  margin: 0 0 6px;
+  white-space: pre-wrap;
+  font-family: var(--font-mono);
+}
+.ide-repl-err {
+  color: var(--ide-bad);
+}
+.ide-repl-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  color: var(--ide-accent);
+}
+.ide-repl-form .ide-wwpd-input {
+  flex: 1;
+}

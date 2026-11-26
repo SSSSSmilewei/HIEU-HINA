@@ -9,6 +9,7 @@ import { type Monaco, loadMonaco } from "./monaco";
 import { AiPanel } from "./AiPanel";
 import { EnvDiagramPanel } from "./EnvDiagram";
 import { HogPlay } from "./HogPlay";
+import { SchemeRepl } from "./SchemeRepl";
 import { WwpdPanel } from "./Wwpd";
 import { fileForLanguage, monacoLanguage, type PublicProblem, type SubmissionBrief, type WorkspaceSource } from "./types";
 import "./ide.css";
@@ -112,8 +113,12 @@ export function Workspace({ source, problemId }: { source: WorkspaceSource; prob
   /** 预测输出题填的答案：题目编号 → 按顺序的每个空 */
   const [answers, setAnswers] = useState<Record<string, string[]>>(() => readJson(`${DRAFT_PREFIX}${scope}:wwpd`, {}));
   const isWwpd = problem.kind === "wwpd";
-  /** 能在浏览器里试玩的项目（故事 3.3）：目前是 Hog */
-  const canPlay = source.kind === "assignment" && source.course === "cs61a" && source.assignment.id === "hog";
+  /** 能在浏览器里试玩的项目（故事 3.3）：Hog 玩一局，Scheme 项目开交互式解释器 */
+  const playKind = source.kind === "assignment" && source.course === "cs61a" && (source.assignment.id === "hog" || source.assignment.id === "scheme") ? source.assignment.id : null;
+  const canPlay = playKind !== null;
+  /** 试玩用的文件：编辑器里现在的代码（含没提交的草稿），不要测试和网页编辑器的文件 */
+  const playFiles = () =>
+    Object.fromEntries(Object.keys(initialFiles).filter((p) => /\.(py|scm)$/.test(p) && !p.startsWith("tests/") && !p.startsWith("editor/")).map((p) => [p, files[p] ?? initialFiles[p] ?? ""]));
   /** 环境图题：和预测输出题一样不写代码，作答存在 answers 里 */
   const isEnv = problem.kind === "envdiagram";
   useEffect(() => {
@@ -424,7 +429,7 @@ export function Workspace({ source, problemId }: { source: WorkspaceSource; prob
             </div>
             <div className="ide-scroll ide-console-body">
               {bottomTab === "play" && canPlay ? (
-                <HogPlay files={Object.fromEntries(Object.keys(initialFiles).filter((p) => /^[^/]+\.py$/.test(p)).map((p) => [p, files[p] ?? initialFiles[p] ?? ""]))} />
+                playKind === "hog" ? <HogPlay files={playFiles()} /> : <SchemeRepl files={playFiles()} />
               ) : bottomTab === "input" ? (
                 <div className="ide-stdin">
                   <label className="ide-check">
