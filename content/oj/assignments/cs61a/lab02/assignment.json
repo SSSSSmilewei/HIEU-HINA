@@ -1,0 +1,576 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "lab02",
+ "title": "实验 2：高阶函数、lambda 表达式",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/lab/lab02/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "lab02",
+ "repoDir": "lab/lab02",
+ "intro": "",
+ "problems": [
+  {
+   "id": "short-circuit",
+   "title": "WWPD: The Truth Will Prevail",
+   "titleEn": "WWPD: The Truth Will Prevail",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\n```\n>>> True and 13\n\n>>> False or 0\n\n>>> not 10\n\n>>> not None\n\n```\n\n```\n>>> True and 1 / 0\n\n>>> True or 1 / 0\n\n>>> -1 and 1 > 0\n\n>>> -1 or 5\n\n>>> (1 + 1) and 1\n\n>>> print(3) or \"\"\n\n```\n\n```\n>>> def f(x):\n...     if x == 0:\n...         return \"zero\"\n...     elif x > 0:\n...         return \"positive\"\n...     else:\n...         return \"\"\n>>> 0 or f(1)\n\n>>> f(0) or f(-1)\n\n>>> f(0) and f(-1)\n\n```\n",
+   "statementEn": "```\n>>> True and 13\n\n>>> False or 0\n\n>>> not 10\n\n>>> not None\n\n```\n\n```\n>>> True and 1 / 0\n\n>>> True or 1 / 0\n\n>>> -1 and 1 > 0\n\n>>> -1 or 5\n\n>>> (1 + 1) and 1\n\n>>> print(3) or \"\"\n\n```\n\n```\n>>> def f(x):\n...     if x == 0:\n...         return \"zero\"\n...     elif x > 0:\n...         return \"positive\"\n...     else:\n...         return \"\"\n>>> 0 or f(1)\n\n>>> f(0) or f(-1)\n\n>>> f(0) and f(-1)\n\n```\n",
+   "editable": [
+    "lab02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "short-circuit"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "True and 13",
+       "want": [
+        {
+         "hash": "7edad8d629f285ca759c95da679fd452"
+        }
+       ]
+      },
+      {
+       "code": "False or 0",
+       "want": [
+        {
+         "hash": "b33f256984c474b4181f5512601c4a70"
+        }
+       ]
+      },
+      {
+       "code": "not 10",
+       "want": [
+        {
+         "hash": "30612a20c5efd351c827ed74fa104597"
+        }
+       ]
+      },
+      {
+       "code": "not None",
+       "want": [
+        {
+         "hash": "2363e0cf1475978bc3373849c76acf77"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "True and 1 / 0  # If this errors, just type Error.",
+       "want": [
+        {
+         "hash": "ab06d135c02ab203238caafbf77976ce"
+        }
+       ]
+      },
+      {
+       "code": "True or 1 / 0  # If this errors, just type Error.",
+       "want": [
+        {
+         "hash": "2363e0cf1475978bc3373849c76acf77"
+        }
+       ]
+      },
+      {
+       "code": "-1 and 1 > 0 # If this errors, just type Error.",
+       "want": [
+        {
+         "hash": "2363e0cf1475978bc3373849c76acf77"
+        }
+       ]
+      },
+      {
+       "code": "-1 or 5",
+       "want": [
+        {
+         "hash": "6b4205ba72f3ab35b0da9ecb25ba19dc"
+        }
+       ]
+      },
+      {
+       "code": "(1 + 1) and 1  # If this errors, just type Error. If this is blank, just type Nothing.",
+       "want": [
+        {
+         "hash": "cf2e1ad2c681425ba709dfa2ee9bde0f"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "print(3) or \"\"",
+       "want": [
+        {
+         "hash": "0f10194daf41a11a30f4adc80d959f28"
+        },
+        {
+         "hash": "c8d065903354f375f887443cb1120aca"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "def f(x):\n    if x == 0:\n        return \"zero\"\n    elif x > 0:\n        return \"positive\"\n    else:\n        return \"\"",
+       "want": []
+      },
+      {
+       "code": "0 or f(1)",
+       "want": [
+        {
+         "hash": "828dc7251d7bf60d6c72dc1d43e8a98f"
+        }
+       ]
+      },
+      {
+       "code": "f(0) or f(-1)",
+       "want": [
+        {
+         "hash": "529cfd7a836a98e3819be429f4f84894"
+        }
+       ]
+      },
+      {
+       "code": "f(0) and f(-1)",
+       "want": [
+        {
+         "hash": "c8d065903354f375f887443cb1120aca"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "hof-wwpd",
+   "title": "WWPD: Higher-Order Functions",
+   "titleEn": "WWPD: Higher-Order Functions",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\n```\n>>> def cake():\n...    print('beets')\n...    def pie():\n...        print('sweets')\n...        return 'cake'\n...    return pie\n>>> chocolate = cake()\n\n>>> chocolate\n\n>>> chocolate()\n\n>>> more_chocolate, more_cake = chocolate(), cake\n\n>>> more_chocolate\n\n>>> def snake(x, y):\n...    if cake == more_cake:\n...        return chocolate\n...    else:\n...        return x + y\n>>> snake(10, 20)\n\n>>> snake(10, 20)()\n\n>>> cake = 'cake'\n>>> snake(10, 20)\n\n```\n",
+   "statementEn": "```\n>>> def cake():\n...    print('beets')\n...    def pie():\n...        print('sweets')\n...        return 'cake'\n...    return pie\n>>> chocolate = cake()\n\n>>> chocolate\n\n>>> chocolate()\n\n>>> more_chocolate, more_cake = chocolate(), cake\n\n>>> more_chocolate\n\n>>> def snake(x, y):\n...    if cake == more_cake:\n...        return chocolate\n...    else:\n...        return x + y\n>>> snake(10, 20)\n\n>>> snake(10, 20)()\n\n>>> cake = 'cake'\n>>> snake(10, 20)\n\n```\n",
+   "editable": [
+    "lab02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "hof-wwpd"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "# If Python displays <function...>, type Function, if it errors type Error, if it displays nothing type Nothing",
+       "want": []
+      },
+      {
+       "code": "def cake():\n   print('beets')\n   def pie():\n       print('sweets')\n       return 'cake'\n   return pie",
+       "want": []
+      },
+      {
+       "code": "chocolate = cake()",
+       "want": [
+        {
+         "hash": "0127137631d037670fa6a894e2d548ee"
+        }
+       ]
+      },
+      {
+       "code": "chocolate",
+       "want": [
+        {
+         "hash": "4f02258d689b15b516174b381ad2aef8"
+        }
+       ]
+      },
+      {
+       "code": "chocolate()",
+       "want": [
+        {
+         "hash": "28f5a700252060ec3bbc4bf4ca744c56"
+        },
+        {
+         "hash": "7fccab88a7c3c0cbffe0142e723d1984"
+        }
+       ]
+      },
+      {
+       "code": "more_chocolate, more_cake = chocolate(), cake",
+       "want": [
+        {
+         "hash": "28f5a700252060ec3bbc4bf4ca744c56"
+        }
+       ]
+      },
+      {
+       "code": "more_chocolate",
+       "want": [
+        {
+         "hash": "7fccab88a7c3c0cbffe0142e723d1984"
+        }
+       ]
+      },
+      {
+       "code": "# Reminder: cake, more_cake, and chocolate were defined/assigned in the code above!",
+       "want": []
+      },
+      {
+       "code": "# It might be helpful to refer to their definitions on the assignment website so you don't have to scroll as much!",
+       "want": []
+      },
+      {
+       "code": "def snake(x, y):\n   if cake == more_cake:\n       return chocolate\n   else:\n       return x + y",
+       "want": []
+      },
+      {
+       "code": "snake(10, 20)",
+       "want": [
+        {
+         "hash": "4f02258d689b15b516174b381ad2aef8"
+        }
+       ]
+      },
+      {
+       "code": "snake(10, 20)()",
+       "want": [
+        {
+         "hash": "28f5a700252060ec3bbc4bf4ca744c56"
+        },
+        {
+         "hash": "7fccab88a7c3c0cbffe0142e723d1984"
+        }
+       ]
+      },
+      {
+       "code": "cake = 'cake'",
+       "want": []
+      },
+      {
+       "code": "snake(10, 20)",
+       "want": [
+        {
+         "hash": "c06666e98ec36af7add28e636f1488ee"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lambda",
+   "title": "WWPD: Lambda",
+   "titleEn": "WWPD: Lambda",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nAs a reminder, the following two lines of code will not display any output in the interactive Python interpreter when executed:\n\n```\n>>> x = None\n>>> x\n>>>\n```\n\n```\n>>> lambda x: x  # A lambda expression with one parameter x\n\n>>> a = lambda x: x  # Assigning the lambda function to the name a\n>>> a(5)\n\n>>> (lambda: 3)()  # Using a lambda expression as an operator in a call expression.\n\n>>> b = lambda x, y: lambda: x + y  # Lambdas can return other lambdas!\n>>> c = b(8, 4)\n>>> c\n\n>>> c()\n\n>>> d = lambda f: f(4)  # They can have functions as arguments as well.\n>>> def square(x):\n...     return x * x\n>>> d(square)\n\n```\n\n```\n>>> higher_order_lambda = lambda f: lambda x: f(x)\n>>> g = lambda x: x * x\n>>> higher_order_lambda(2)(g)  # Which argument belongs to which function call?\n\n>>> higher_order_lambda(g)(2)\n\n>>> call_thrice = lambda f: lambda x: f(f(f(x)))\n>>> call_thrice(lambda y: y + 1)(0)\n\n>>> print_lambda = lambda z: print(z)  # When is the return expression of a lambda expression executed?\n>>> print_lambda\n\n>>> one_thousand = print_lambda(1000)\n\n>>> one_thousand # What did the call to print_lambda return?\n\n```\n",
+   "statementEn": "As a reminder, the following two lines of code will not display any output in the interactive Python interpreter when executed:\n\n```\n>>> x = None\n>>> x\n>>>\n```\n\n```\n>>> lambda x: x  # A lambda expression with one parameter x\n\n>>> a = lambda x: x  # Assigning the lambda function to the name a\n>>> a(5)\n\n>>> (lambda: 3)()  # Using a lambda expression as an operator in a call expression.\n\n>>> b = lambda x, y: lambda: x + y  # Lambdas can return other lambdas!\n>>> c = b(8, 4)\n>>> c\n\n>>> c()\n\n>>> d = lambda f: f(4)  # They can have functions as arguments as well.\n>>> def square(x):\n...     return x * x\n>>> d(square)\n\n```\n\n```\n>>> higher_order_lambda = lambda f: lambda x: f(x)\n>>> g = lambda x: x * x\n>>> higher_order_lambda(2)(g)  # Which argument belongs to which function call?\n\n>>> higher_order_lambda(g)(2)\n\n>>> call_thrice = lambda f: lambda x: f(f(f(x)))\n>>> call_thrice(lambda y: y + 1)(0)\n\n>>> print_lambda = lambda z: print(z)  # When is the return expression of a lambda expression executed?\n>>> print_lambda\n\n>>> one_thousand = print_lambda(1000)\n\n>>> one_thousand # What did the call to print_lambda return?\n\n```\n",
+   "editable": [
+    "lab02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "lambda"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "Which of the following statements describes a difference between a def statement and a lambda expression?",
+     "choices": [
+      "A lambda expression does not automatically bind the function that it returns to a name.",
+      "A lambda expression cannot have more than two parameters.",
+      "A lambda expression cannot return another function.",
+      "A def statement can only have one line in its body."
+     ],
+     "answer": "28893e4c2667b89b674188e063237622"
+    },
+    {
+     "type": "choice",
+     "question": "How many formal parameters does the following lambda expression have?\nlambda a, b: c + d",
+     "choices": [
+      "one",
+      "two",
+      "three",
+      "Not enough information"
+     ],
+     "answer": "2ad3e8f40fd1b51f9a33075a0048a5d6"
+    },
+    {
+     "type": "choice",
+     "question": "When is the return expression of a lambda expression executed?",
+     "choices": [
+      "When the function returned by the lambda expression is called.",
+      "When you assign the lambda expression to a name.",
+      "When the lambda expression is evaluated.",
+      "When you pass the lambda expression into another function."
+     ],
+     "answer": "caa97dd5ae148cd72efcf98ef6f4b913"
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "# If Python displays <function...>, type Function, if it errors type Error, if it displays nothing type Nothing",
+       "want": []
+      },
+      {
+       "code": "lambda x: x  # A lambda expression with one parameter x",
+       "want": [
+        {
+         "hash": "4f02258d689b15b516174b381ad2aef8"
+        }
+       ]
+      },
+      {
+       "code": "a = lambda x: x  # Assigning a lambda function to the name a",
+       "want": []
+      },
+      {
+       "code": "a(5)",
+       "want": [
+        {
+         "hash": "d330e4294a4387ed4475ee0e95da5386"
+        }
+       ]
+      },
+      {
+       "code": "(lambda: 3)()  # Using a lambda expression as an operator in a call exp.",
+       "want": [
+        {
+         "hash": "0f10194daf41a11a30f4adc80d959f28"
+        }
+       ]
+      },
+      {
+       "code": "b = lambda x, y: lambda: x + y # Lambdas can return other lambdas!",
+       "want": []
+      },
+      {
+       "code": "c = b(8, 4)",
+       "want": []
+      },
+      {
+       "code": "c",
+       "want": [
+        {
+         "hash": "4f02258d689b15b516174b381ad2aef8"
+        }
+       ]
+      },
+      {
+       "code": "c()",
+       "want": [
+        {
+         "hash": "bb673dbcb74b8a503ccca3a123f8ac69"
+        }
+       ]
+      },
+      {
+       "code": "d = lambda f: f(4)  # They can have functions as arguments as well",
+       "want": []
+      },
+      {
+       "code": "def square(x):\n    return x * x",
+       "want": []
+      },
+      {
+       "code": "d(square)",
+       "want": [
+        {
+         "hash": "9024755e0e6b1907cc6e80a977eb6fa3"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "# Try drawing an environment diagram if you get stuck!",
+       "want": []
+      },
+      {
+       "code": "higher_order_lambda = lambda f: lambda x: f(x)",
+       "want": []
+      },
+      {
+       "code": "g = lambda x: x * x",
+       "want": []
+      },
+      {
+       "code": "higher_order_lambda(2)(g) # Which argument belongs to which function call?",
+       "want": [
+        {
+         "hash": "ab06d135c02ab203238caafbf77976ce"
+        }
+       ]
+      },
+      {
+       "code": "higher_order_lambda(g)(2)",
+       "want": [
+        {
+         "hash": "ef6b0e7c554b5515158e88d1ee908645"
+        }
+       ]
+      },
+      {
+       "code": "call_thrice = lambda f: lambda x: f(f(f(x)))",
+       "want": []
+      },
+      {
+       "code": "call_thrice(lambda y: y + 1)(0)",
+       "want": [
+        {
+         "hash": "0f10194daf41a11a30f4adc80d959f28"
+        }
+       ]
+      },
+      {
+       "code": "print_lambda = lambda z: print(z) # When is the return expression of a lambda expression executed?",
+       "want": []
+      },
+      {
+       "code": "print_lambda",
+       "want": [
+        {
+         "hash": "4f02258d689b15b516174b381ad2aef8"
+        }
+       ]
+      },
+      {
+       "code": "one_thousand = print_lambda(1000)",
+       "want": [
+        {
+         "hash": "406c98af0b3aa9a2c9dbd76d898bcda3"
+        }
+       ]
+      },
+      {
+       "code": "one_thousand # What did the call to print_lambda return? If it displays nothing, write Nothing",
+       "want": [
+        {
+         "hash": "358b0ae001277273d8cd480ce5dbfb82"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "composite_identity",
+   "title": "Composite Identity Function",
+   "titleEn": "Composite Identity Function",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function that takes in two single-argument functions, `f` and `g`, and returns another **function** that has a single parameter `x`. The returned function should return `True` if `f(g(x))` is equal to `g(f(x))` and `False` otherwise. You can assume the output of `g(x)` is a valid input for `f` and vice versa.\n",
+   "statementEn": "Write a function that takes in two single-argument functions, `f` and `g`, and returns another **function** that has a single parameter `x`. The returned function should return `True` if `f(g(x))` is equal to `g(f(x))` and `False` otherwise. You can assume the output of `g(x)` is a valid input for `f` and vice versa.\n",
+   "editable": [
+    "lab02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "composite_identity"
+   },
+   "focus": {
+    "file": "lab02.py",
+    "symbol": "composite_identity"
+   }
+  },
+  {
+   "id": "count_cond",
+   "title": "Count Cond",
+   "titleEn": "Count Cond",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nConsider the following implementations of `count_fives` and `count_primes` which use the `sum_digits` and `is_prime` functions, which are implemented below:\n\n```\ndef count_fives(n):\n    \"\"\"Return the number of values i from 1 to n (including n)\n    where sum_digits(n * i) is 5.\n\n    >>> count_fives(10)  # Among 10, 20, 30, ..., 100, only 50 (10 * 5) has digit sum 5\n    1\n    >>> count_fives(50)  # 50 (50 * 1), 500 (50 * 10), 1400 (50 * 28), 2300 (50 * 46)\n    4\n    \"\"\"\n    i = 1\n    count = 0\n    while i <= n:\n        if sum_digits(n * i) == 5:\n            count += 1\n        i += 1\n    return count\n\ndef count_primes(n):\n    \"\"\"Return the number of prime numbers up to and including n.\n\n    >>> count_primes(6)   # 2, 3, 5\n    3\n    >>> count_primes(13)  # 2, 3, 5, 7, 11, 13\n    6\n    \"\"\"\n    i = 1\n    count = 0\n    while i <= n:\n        if is_prime(i):\n            count += 1\n        i += 1\n    return count\n```\n\nThe implementations look quite similar! Generalize this logic by writing a function `count_cond`, which takes in a two-argument predicate function `condition(n, i)`. `count_cond` returns a one-argument function that takes in `n`, which counts all the numbers from 1 to `n` that satisfy `condition` when called.\n\n**Note:** When we say `condition` is a predicate function, we mean that it is a function that will return `True` or `False`.\n\n Environment Diagram Practice\n\n**There is no Gradescope submission for this component.**\n\nHowever, we still encourage you to do this problem on paper to develop familiarity with Environment Diagrams, which might appear in an alternate form on the exam.\n",
+   "statementEn": "Consider the following implementations of `count_fives` and `count_primes` which use the `sum_digits` and `is_prime` functions, which are implemented below:\n\n```\ndef count_fives(n):\n    \"\"\"Return the number of values i from 1 to n (including n)\n    where sum_digits(n * i) is 5.\n\n    >>> count_fives(10)  # Among 10, 20, 30, ..., 100, only 50 (10 * 5) has digit sum 5\n    1\n    >>> count_fives(50)  # 50 (50 * 1), 500 (50 * 10), 1400 (50 * 28), 2300 (50 * 46)\n    4\n    \"\"\"\n    i = 1\n    count = 0\n    while i <= n:\n        if sum_digits(n * i) == 5:\n            count += 1\n        i += 1\n    return count\n\ndef count_primes(n):\n    \"\"\"Return the number of prime numbers up to and including n.\n\n    >>> count_primes(6)   # 2, 3, 5\n    3\n    >>> count_primes(13)  # 2, 3, 5, 7, 11, 13\n    6\n    \"\"\"\n    i = 1\n    count = 0\n    while i <= n:\n        if is_prime(i):\n            count += 1\n        i += 1\n    return count\n```\n\nThe implementations look quite similar! Generalize this logic by writing a function `count_cond`, which takes in a two-argument predicate function `condition(n, i)`. `count_cond` returns a one-argument function that takes in `n`, which counts all the numbers from 1 to `n` that satisfy `condition` when called.\n\n**Note:** When we say `condition` is a predicate function, we mean that it is a function that will return `True` or `False`.\n\n Environment Diagram Practice\n\n**There is no Gradescope submission for this component.**\n\nHowever, we still encourage you to do this problem on paper to develop familiarity with Environment Diagrams, which might appear in an alternate form on the exam.\n",
+   "editable": [
+    "lab02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "count_cond"
+   },
+   "focus": {
+    "file": "lab02.py",
+    "symbol": "count_cond"
+   }
+  },
+  {
+   "id": "multiple",
+   "title": "Multiple",
+   "titleEn": "Multiple",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function that takes in two positive integers and returns the smallest positive integer that is a multiple of both.\n\n```\ndef multiple(a, b):\n    \"\"\"Return the smallest number n that is a multiple of both a and b.\n\n    >>> multiple(3, 4)\n    12\n    >>> multiple(14, 21)\n    42\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n",
+   "statementEn": "Write a function that takes in two positive integers and returns the smallest positive integer that is a multiple of both.\n\n```\ndef multiple(a, b):\n    \"\"\"Return the smallest number n that is a multiple of both a and b.\n\n    >>> multiple(3, 4)\n    12\n    >>> multiple(14, 21)\n    42\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n",
+   "editable": [
+    "lab02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "multiple"
+   },
+   "focus": {
+    "file": "lab02.py",
+    "symbol": "multiple"
+   }
+  },
+  {
+   "id": "cycle",
+   "title": "I Heard You Liked Functions...",
+   "titleEn": "I Heard You Liked Functions...",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nDefine a function `cycle` that takes in three functions `f1`, `f2`, and `f3`, as arguments. `cycle` will return another function `g` that should take in an integer argument `n` and return another function `h`. That final function `h` should take in an argument `x` and cycle through applying `f1`, `f2`, and `f3` to `x`, depending on what `n` was. Here's what the final function `h` should do to `x` for a few values of `n`:\n\n- `n = 0`, return `x`\n- `n = 1`, apply `f1` to `x`, or return `f1(x)`\n- `n = 2`, apply `f1` to `x` and then `f2` to the result of that, or return `f2(f1(x))`\n- `n = 3`, apply `f1` to `x`, `f2` to the result of applying `f1`, and then `f3` to the result of applying `f2`, or `f3(f2(f1(x)))`\n- `n = 4`, start the cycle again applying `f1`, then `f2`, then `f3`, then `f1` again, or `f1(f3(f2(f1(x))))`\n- And so forth.\n\n**Hint:** most of the work goes inside the most nested function.\n\n**Hint:** How can you utilize the `%` operator to achieve the cyclic behavior? Try computing `n % 3` for all integers `n` from 0 to 12. What pattern do you notice?\n",
+   "statementEn": "Define a function `cycle` that takes in three functions `f1`, `f2`, and `f3`, as arguments. `cycle` will return another function `g` that should take in an integer argument `n` and return another function `h`. That final function `h` should take in an argument `x` and cycle through applying `f1`, `f2`, and `f3` to `x`, depending on what `n` was. Here's what the final function `h` should do to `x` for a few values of `n`:\n\n- `n = 0`, return `x`\n- `n = 1`, apply `f1` to `x`, or return `f1(x)`\n- `n = 2`, apply `f1` to `x` and then `f2` to the result of that, or return `f2(f1(x))`\n- `n = 3`, apply `f1` to `x`, `f2` to the result of applying `f1`, and then `f3` to the result of applying `f2`, or `f3(f2(f1(x)))`\n- `n = 4`, start the cycle again applying `f1`, then `f2`, then `f3`, then `f1` again, or `f1(f3(f2(f1(x))))`\n- And so forth.\n\n**Hint:** most of the work goes inside the most nested function.\n\n**Hint:** How can you utilize the `%` operator to achieve the cyclic behavior? Try computing `n % 3` for all integers `n` from 0 to 12. What pattern do you notice?\n",
+   "editable": [
+    "lab02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "cycle"
+   },
+   "focus": {
+    "file": "lab02.py",
+    "symbol": "cycle"
+   }
+  }
+ ]
+}

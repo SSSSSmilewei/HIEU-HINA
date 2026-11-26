@@ -1,0 +1,516 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "fa20-lab02",
+ "title": "实验 2：高阶函数，Lambda表达式",
+ "semester": "fa20",
+ "language": "zh",
+ "source": "https://inst.eecs.berkeley.edu/~cs61a/fa20/lab/lab02/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2020 秋季）；中文翻译来自 github.com/chillyhigh/CS61A-CN（MIT 许可）。仅供协会内部学习交流",
+ "item": "lab02",
+ "repoDir": "fa20/lab/lab02",
+ "intro": "",
+ "problems": [
+  {
+   "id": "lambda",
+   "title": "预测输出：Lambda the Free",
+   "titleEn": "WWPD: Lambda the Free",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "对于所有 WWPD 问题，如果你认为答案是 `<function...>`，请输入 `Function`；如果出现错误，请输入 `Error`；如果不会显示任何内容，请输入 `Nothing`。提醒一下，以下两行代码在 Python 解释器中执行时不会显示任何内容：\n\n```\n>>> x = None\n>>> x\n```\n\n```\n>>> lambda x: x  # A lambda expression with one parameter x\n\n>>> a = lambda x: x  # Assigning the lambda function to the name a\n>>> a(5)\n\n>>> (lambda: 3)()  # Using a lambda expression as an operator in a call exp.\n\n>>> b = lambda x: lambda: x  # Lambdas can return other lambdas!\n>>> c = b(88)\n>>> c\n\n>>> c()\n\n>>> d = lambda f: f(4)  # They can have functions as arguments as well.\n>>> def square(x):\n...     return x * x\n>>> d(square)\n\n```\n\n```\n>>> x = None # remember to review the rules of WWPD given above!\n>>> x\n>>> lambda x: x\n\n```\n\n```\n>>> z = 3\n>>> e = lambda x: lambda y: lambda: x + y + z\n>>> e(0)(1)()\n\n>>> f = lambda z: x + z\n>>> f(3)\n\n```\n\n```\n>>> higher_order_lambda = lambda f: lambda x: f(x)\n>>> g = lambda x: x * x\n>>> higher_order_lambda(2)(g)  # Which argument belongs to which function call?\n\n>>> higher_order_lambda(g)(2)\n\n>>> call_thrice = lambda f: lambda x: f(f(f(x)))\n>>> call_thrice(lambda y: y + 1)(0)\n\n>>> print_lambda = lambda z: print(z)  # When is the return expression of a lambda expression executed?\n>>> print_lambda\n\n>>> one_thousand = print_lambda(1000)\n\n>>> one_thousand\n\n```\n",
+   "statementEn": "For all WWPD questions, type `Function` if you believe the answer is `<function...>`, `Error` if it errors, and `Nothing` if nothing is displayed. As a reminder, the following two lines of code will not display anything in the Python interpreter when executed:\n\n```\n>>> x = None\n>>> x\n```\n\n```\n>>> lambda x: x  # A lambda expression with one parameter x\n\n>>> a = lambda x: x  # Assigning the lambda function to the name a\n>>> a(5)\n\n>>> (lambda: 3)()  # Using a lambda expression as an operator in a call exp.\n\n>>> b = lambda x: lambda: x  # Lambdas can return other lambdas!\n>>> c = b(88)\n>>> c\n\n>>> c()\n\n>>> d = lambda f: f(4)  # They can have functions as arguments as well.\n>>> def square(x):\n...     return x * x\n>>> d(square)\n\n```\n\n```\n>>> x = None # remember to review the rules of WWPD given above!\n>>> x\n>>> lambda x: x\n\n```\n\n```\n>>> z = 3\n>>> e = lambda x: lambda y: lambda: x + y + z\n>>> e(0)(1)()\n\n>>> f = lambda z: x + z\n>>> f(3)\n\n```\n\n```\n>>> higher_order_lambda = lambda f: lambda x: f(x)\n>>> g = lambda x: x * x\n>>> higher_order_lambda(2)(g)  # Which argument belongs to which function call?\n\n>>> higher_order_lambda(g)(2)\n\n>>> call_thrice = lambda f: lambda x: f(f(f(x)))\n>>> call_thrice(lambda y: y + 1)(0)\n\n>>> print_lambda = lambda z: print(z)  # When is the return expression of a lambda expression executed?\n>>> print_lambda\n\n>>> one_thousand = print_lambda(1000)\n\n>>> one_thousand\n\n```\n",
+   "editable": [
+    "lab02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "lambda"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "Which of the following statements describes a difference between a def statement\nand a lambda expression?",
+     "choices": [
+      "A lambda expression does not automatically bind the function object that it returns to any name.",
+      "A lambda expression cannot have more than two parameters.",
+      "A lambda expression cannot return another function.",
+      "A def statement can only have one line in its body."
+     ],
+     "answer": "8931dde0069a69c71baf9c4f70650ef1"
+    },
+    {
+     "type": "choice",
+     "question": "How many parameters does the following lambda expression have?\nlambda a, b: c + d",
+     "choices": [
+      "one",
+      "two",
+      "three",
+      "Not enough information"
+     ],
+     "answer": "2ad3e8f40fd1b51f9a33075a0048a5d6"
+    },
+    {
+     "type": "choice",
+     "question": "When is the return expression of a lambda expression executed?",
+     "choices": [
+      "When the function returned by the lambda expression is called.",
+      "When you assign the lambda expression to a name.",
+      "When the lambda expression is evaluated.",
+      "When you pass the lambda expression into another function."
+     ],
+     "answer": "caa97dd5ae148cd72efcf98ef6f4b913"
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "# If Python displays <function...>, type Function, if it errors type Error",
+       "want": []
+      },
+      {
+       "code": "lambda x: x  # A lambda expression with one parameter x",
+       "want": [
+        {
+         "hash": "4f02258d689b15b516174b381ad2aef8"
+        }
+       ]
+      },
+      {
+       "code": "a = lambda x: x  # Assigning a lambda function to the name a",
+       "want": []
+      },
+      {
+       "code": "a(5)",
+       "want": [
+        {
+         "hash": "d330e4294a4387ed4475ee0e95da5386"
+        }
+       ]
+      },
+      {
+       "code": "(lambda: 3)()  # Using a lambda expression as an operator in a call exp.",
+       "want": [
+        {
+         "hash": "0f10194daf41a11a30f4adc80d959f28"
+        }
+       ]
+      },
+      {
+       "code": "b = lambda x: lambda: x  # Lambdas can return other lambdas!",
+       "want": []
+      },
+      {
+       "code": "c = b(88)",
+       "want": []
+      },
+      {
+       "code": "c",
+       "want": [
+        {
+         "hash": "4f02258d689b15b516174b381ad2aef8"
+        }
+       ]
+      },
+      {
+       "code": "c()",
+       "want": [
+        {
+         "hash": "0c194cbdd08370dca576a4d249abbe36"
+        }
+       ]
+      },
+      {
+       "code": "d = lambda f: f(4)  # They can have functions as arguments as well",
+       "want": []
+      },
+      {
+       "code": "def square(x):\n    return x * x",
+       "want": []
+      },
+      {
+       "code": "d(square)",
+       "want": [
+        {
+         "hash": "9024755e0e6b1907cc6e80a977eb6fa3"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "x = None # remember to review the rules of WWPD given above!",
+       "want": []
+      },
+      {
+       "code": "x",
+       "want": []
+      },
+      {
+       "code": "lambda x: x",
+       "want": [
+        {
+         "hash": "4f02258d689b15b516174b381ad2aef8"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "#",
+       "want": []
+      },
+      {
+       "code": "# Pay attention to the scope of variables",
+       "want": []
+      },
+      {
+       "code": "z = 3",
+       "want": []
+      },
+      {
+       "code": "e = lambda x: lambda y: lambda: x + y + z",
+       "want": []
+      },
+      {
+       "code": "e(0)(1)()",
+       "want": [
+        {
+         "hash": "ef6b0e7c554b5515158e88d1ee908645"
+        }
+       ]
+      },
+      {
+       "code": "f = lambda z: x + z",
+       "want": []
+      },
+      {
+       "code": "f(3)",
+       "want": [
+        {
+         "hash": "ab06d135c02ab203238caafbf77976ce"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "# Try drawing an environment diagram if you get stuck!",
+       "want": []
+      },
+      {
+       "code": "higher_order_lambda = lambda f: lambda x: f(x)",
+       "want": []
+      },
+      {
+       "code": "g = lambda x: x * x",
+       "want": []
+      },
+      {
+       "code": "higher_order_lambda(2)(g) # Which argument belongs to which function call?",
+       "want": [
+        {
+         "hash": "ab06d135c02ab203238caafbf77976ce"
+        }
+       ]
+      },
+      {
+       "code": "higher_order_lambda(g)(2)",
+       "want": [
+        {
+         "hash": "ef6b0e7c554b5515158e88d1ee908645"
+        }
+       ]
+      },
+      {
+       "code": "call_thrice = lambda f: lambda x: f(f(f(x)))",
+       "want": []
+      },
+      {
+       "code": "call_thrice(lambda y: y + 1)(0)",
+       "want": [
+        {
+         "hash": "0f10194daf41a11a30f4adc80d959f28"
+        }
+       ]
+      },
+      {
+       "code": "print_lambda = lambda z: print(z)",
+       "want": []
+      },
+      {
+       "code": "print_lambda",
+       "want": [
+        {
+         "hash": "4f02258d689b15b516174b381ad2aef8"
+        }
+       ]
+      },
+      {
+       "code": "one_thousand = print_lambda(1000)",
+       "want": [
+        {
+         "hash": "406c98af0b3aa9a2c9dbd76d898bcda3"
+        }
+       ]
+      },
+      {
+       "code": "one_thousand",
+       "want": [
+        {
+         "hash": "358b0ae001277273d8cd480ce5dbfb82"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "hof-wwpd",
+   "title": "预测输出：高阶函数",
+   "titleEn": "WWPD: Higher Order Functions",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "对于所有 WWPD 问题，如果你认为答案是 `<function...>`，请输入 `Function`；如果出现错误，请输入 `Error`；如果不会显示任何内容，请输入 `Nothing`。\n\n```\n>>> def even(f):\n...     def odd(x):\n...         if x < 0:\n...             return f(-x)\n...         return f(x)\n...     return odd\n>>> steven = lambda x: x\n>>> stewart = even(steven)\n>>> stewart\n\n>>> stewart(61)\n\n>>> stewart(-4)\n\n```\n\n```\n>>> def cake():\n...    print('beets')\n...    def pie():\n...        print('sweets')\n...        return 'cake'\n...    return pie\n>>> chocolate = cake()\n\n>>> chocolate\n\n>>> chocolate()\n\n>>> more_chocolate, more_cake = chocolate(), cake\n\n>>> more_chocolate\n\n>>> def snake(x, y):\n...    if cake == more_cake:\n...        return chocolate\n...    else:\n...        return x + y\n>>> snake(10, 20)\n\n>>> snake(10, 20)()\n\n>>> cake = 'cake'\n>>> snake(10, 20)\n\n```\n",
+   "statementEn": "For all WWPD questions, type `Function` if you believe the answer is `<function...>`, `Error` if it errors, and `Nothing` if nothing is displayed.\n\n```\n>>> def even(f):\n...     def odd(x):\n...         if x < 0:\n...             return f(-x)\n...         return f(x)\n...     return odd\n>>> steven = lambda x: x\n>>> stewart = even(steven)\n>>> stewart\n\n>>> stewart(61)\n\n>>> stewart(-4)\n\n```\n\n```\n>>> def cake():\n...    print('beets')\n...    def pie():\n...        print('sweets')\n...        return 'cake'\n...    return pie\n>>> chocolate = cake()\n\n>>> chocolate\n\n>>> chocolate()\n\n>>> more_chocolate, more_cake = chocolate(), cake\n\n>>> more_chocolate\n\n>>> def snake(x, y):\n...    if cake == more_cake:\n...        return chocolate\n...    else:\n...        return x + y\n>>> snake(10, 20)\n\n>>> snake(10, 20)()\n\n>>> cake = 'cake'\n>>> snake(10, 20)\n\n```\n",
+   "editable": [
+    "lab02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "hof-wwpd"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "def even(f):\n    def odd(x):\n        if x < 0:\n            return f(-x)\n        return f(x)\n    return odd",
+       "want": []
+      },
+      {
+       "code": "steven = lambda x: x",
+       "want": []
+      },
+      {
+       "code": "stewart = even(steven)",
+       "want": []
+      },
+      {
+       "code": "stewart",
+       "want": [
+        {
+         "hash": "4f02258d689b15b516174b381ad2aef8"
+        }
+       ]
+      },
+      {
+       "code": "stewart(61)",
+       "want": [
+        {
+         "hash": "fca276f013f718468273f07db52f3ab7"
+        }
+       ]
+      },
+      {
+       "code": "stewart(-4)",
+       "want": [
+        {
+         "hash": "ef6b0e7c554b5515158e88d1ee908645"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "def cake():\n   print('beets')\n   def pie():\n       print('sweets')\n       return 'cake'\n   return pie",
+       "want": []
+      },
+      {
+       "code": "chocolate = cake()",
+       "want": [
+        {
+         "hash": "0127137631d037670fa6a894e2d548ee"
+        }
+       ]
+      },
+      {
+       "code": "chocolate",
+       "want": [
+        {
+         "hash": "4f02258d689b15b516174b381ad2aef8"
+        }
+       ]
+      },
+      {
+       "code": "chocolate()",
+       "want": [
+        {
+         "hash": "28f5a700252060ec3bbc4bf4ca744c56"
+        },
+        {
+         "hash": "7fccab88a7c3c0cbffe0142e723d1984"
+        }
+       ]
+      },
+      {
+       "code": "more_chocolate, more_cake = chocolate(), cake",
+       "want": [
+        {
+         "hash": "28f5a700252060ec3bbc4bf4ca744c56"
+        }
+       ]
+      },
+      {
+       "code": "more_chocolate",
+       "want": [
+        {
+         "hash": "7fccab88a7c3c0cbffe0142e723d1984"
+        }
+       ]
+      },
+      {
+       "code": "def snake(x, y):\n   if cake == more_cake:\n       return chocolate\n   else:\n       return x + y",
+       "want": []
+      },
+      {
+       "code": "snake(10, 20)",
+       "want": [
+        {
+         "hash": "4f02258d689b15b516174b381ad2aef8"
+        }
+       ]
+      },
+      {
+       "code": "snake(10, 20)()",
+       "want": [
+        {
+         "hash": "28f5a700252060ec3bbc4bf4ca744c56"
+        },
+        {
+         "hash": "7fccab88a7c3c0cbffe0142e723d1984"
+        }
+       ]
+      },
+      {
+       "code": "cake = 'cake'",
+       "want": []
+      },
+      {
+       "code": "snake(10, 20)",
+       "want": [
+        {
+         "hash": "c06666e98ec36af7add28e636f1488ee"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "lambda_curry2",
+   "title": "Lambda 和柯里化",
+   "titleEn": "Lambdas and Currying",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "我们可以利用 lambda 表达式将多参数函数转换为一系列单参数的高阶函数。例如，我们可以将函数 `f(x, y)` 写成另一个函数 `g(x)(y)`。这被称为**柯里化**。在处理只接受单参数函数的函数时，这非常有用。稍后我们将看到一些例子。\n\n编写一个函数 `lambda_curry2`，它将使用 lambda 对任何两个参数的函数进行柯里化。有关柯里化的更多详细信息，请参阅[课本](https://composingprograms.netlify.app/1/6#_1-6-6-%E6%9F%AF%E9%87%8C%E5%8C%96)。\n\n**你的解答应只在 return 语句那一行上。**你可以先在没有这个限制的情况下编写它，之后再将其修改为一行。\n",
+   "statementEn": "We can transform multiple-argument functions into a chain of single-argument, higher order functions by taking advantage of lambda expressions. For example, we can write a function `f(x, y)` as a different function `g(x)(y)`. This is known as **currying**. It's useful when dealing with functions that take only single-argument functions. We will see some examples of these later on.\n\nWrite a function `lambda_curry2` that will curry any two argument function using lambdas. Refer to the [textbook](http://composingprograms.com/pages/16-higher-order-functions.html#currying) for more details about currying.\n\n**Your solution to this problem should fit entirely on the return line.** You can try writing it first without this restriction, but rewrite it after in one line.\n",
+   "editable": [
+    "lab02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "lambda_curry2"
+   },
+   "focus": {
+    "file": "lab02.py",
+    "symbol": "lambda_curry2"
+   }
+  },
+  {
+   "id": "count_cond",
+   "title": "数数伯爵 (Count van Count)",
+   "titleEn": "Count van Count",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "考虑以下 `count_factors` 和 `count_primes` 函数的实现：\n\n```\ndef count_factors(n):\n    \"\"\"Return the number of positive factors that n has.\n    >>> count_factors(6)\n    4   # 1, 2, 3, 6\n    >>> count_factors(4)\n    3   # 1, 2, 4\n    \"\"\"\n    i, count = 1, 0\n    while i <= n:\n        if n % i == 0:\n            count += 1\n        i += 1\n    return count\n\ndef count_primes(n):\n    \"\"\"Return the number of prime numbers up to and including n.\n    >>> count_primes(6)\n    3   # 2, 3, 5\n    >>> count_primes(13)\n    6   # 2, 3, 5, 7, 11, 13\n    \"\"\"\n    i, count = 1, 0\n    while i <= n:\n        if is_prime(i):\n            count += 1\n        i += 1\n    return count\n\ndef is_prime(n):\n    return count_factors(n) == 2 # only factors are 1 and n\n```\n\n这两个函数的实现看起来非常相似！请你编写一个函数 `count_cond` 来泛化这个逻辑，该函数接受一个带有两个参数的条件判断函数 `condition(n, i)`。`count_cond` 返回一个单参数函数，该函数接受 `n`，并计算从 1 到 `n` 的所有满足 `condition` 的数字。\n",
+   "statementEn": "Consider the following implementations of `count_factors` and `count_primes`:\n\n```\ndef count_factors(n):\n    \"\"\"Return the number of positive factors that n has.\n    >>> count_factors(6)\n    4   # 1, 2, 3, 6\n    >>> count_factors(4)\n    3   # 1, 2, 4\n    \"\"\"\n    i, count = 1, 0\n    while i <= n:\n        if n % i == 0:\n            count += 1\n        i += 1\n    return count\n\ndef count_primes(n):\n    \"\"\"Return the number of prime numbers up to and including n.\n    >>> count_primes(6)\n    3   # 2, 3, 5\n    >>> count_primes(13)\n    6   # 2, 3, 5, 7, 11, 13\n    \"\"\"\n    i, count = 1, 0\n    while i <= n:\n        if is_prime(i):\n            count += 1\n        i += 1\n    return count\n\ndef is_prime(n):\n    return count_factors(n) == 2 # only factors are 1 and n\n```\n\nThe implementations look quite similar! Generalize this logic by writing a function `count_cond`, which takes in a two-argument predicate function `condition(n, i)`. `count_cond` returns a one-argument function that takes in `n`, which counts all the numbers from 1 to `n` that satisfy `condition` when called.\n",
+   "editable": [
+    "lab02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "count_cond"
+   },
+   "focus": {
+    "file": "lab02.py",
+    "symbol": "count_cond"
+   }
+  },
+  {
+   "id": "composite_identity",
+   "title": "复合恒等函数",
+   "titleEn": "Composite Identity Function",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个函数，该函数接收两个单参数函数 `f` 和 `g`，并返回另一个**函数**，该函数接受一个参数 `x`。 如果 `f(g(x))` 等于 `g(f(x))`，则返回函数应返回 `True`。 可以假设 `g(x)` 的输出是 `f` 的有效输入，反之亦然。 请尝试使用下面定义的 `compose1` 函数来练习更多高阶函数。\n",
+   "statementEn": "Write a function that takes in two single-argument functions, `f` and `g`, and returns another **function** that has a single parameter `x`. The returned function should return `True` if `f(g(x))` is equal to `g(f(x))`. You can assume the output of `g(x)` is a valid input for `f` and vice versa. Try to use the `compose1` function defined below for more HOF practice.\n",
+   "editable": [
+    "lab02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "composite_identity"
+   },
+   "focus": {
+    "file": "lab02.py",
+    "symbol": "composite_identity"
+   }
+  },
+  {
+   "id": "cycle",
+   "title": "我听说你喜欢函数……",
+   "titleEn": "I Heard You Liked Functions...",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "定义一个函数 `cycle`，该函数接收三个函数 `f1`、`f2` 和 `f3` 作为参数。 `cycle` 将返回另一个函数，该函数接受一个整数参数 `n`，并返回最终的函数。 这个最终函数接受一个参数 `x`，并根据 `n` 的值循环对 `x` 应用 `f1`、`f2` 和 `f3`。 以下是不同 `n` 值时，最终函数对 `x` 的操作方式：\n\n- `n = 0`，返回 `x`\n- `n = 1`，对 `x` 应用 `f1`，即返回 `f1(x)`\n- `n = 2`，先对 `x` 应用 `f1`，再对结果应用 `f2`，即返回 `f2(f1(x))`\n- `n = 3`，依次对 `x` 应用 `f1`、`f2` 和 `f3`，即返回 `f3(f2(f1(x)))`\n- `n = 4`，重新开始循环，依次应用 `f1`、`f2`、`f3`，然后再次应用 `f1`，即返回 `f1(f3(f2(f1(x))))`\n- 以此类推。\n\n*提示*: 主要的逻辑应放在最内层的函数中。\n",
+   "statementEn": "Define a function `cycle` that takes in three functions `f1`, `f2`, `f3`, as arguments. `cycle` will return another function that should take in an integer argument `n` and return another function. That final function should take in an argument `x` and cycle through applying `f1`, `f2`, and `f3` to `x`, depending on what `n` was. Here's what the final function should do to `x` for a few values of `n`:\n\n- `n = 0`, return `x`\n- `n = 1`, apply `f1` to `x`, or return `f1(x)`\n- `n = 2`, apply `f1` to `x` and then `f2` to the result of that, or return `f2(f1(x))`\n- `n = 3`, apply `f1` to `x`, `f2` to the result of applying `f1`, and then `f3` to the result of applying `f2`, or `f3(f2(f1(x)))`\n- `n = 4`, start the cycle again applying `f1`, then `f2`, then `f3`, then `f1` again, or `f1(f3(f2(f1(x))))`\n- And so forth.\n\n*Hint*: most of the work goes inside the most nested function.\n",
+   "editable": [
+    "lab02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "cycle"
+   },
+   "focus": {
+    "file": "lab02.py",
+    "symbol": "cycle"
+   }
+  }
+ ]
+}

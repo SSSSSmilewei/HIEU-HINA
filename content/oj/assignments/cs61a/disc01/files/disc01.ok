@@ -1,0 +1,10 @@
+{
+    "name": "Discussion 1",
+    "src": [
+        "fizzbuzz.py",
+        "is_prime.py",
+        "ordered_digits.py",
+        "repeating.py",
+        "unique_digits.py"
+    ]
+}

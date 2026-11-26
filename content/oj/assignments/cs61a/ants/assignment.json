@@ -1,0 +1,1198 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "ants",
+ "title": "项目 3：Ants（蚂蚁大战蜜蜂）",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/proj/ants/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "proj-ants",
+ "repoDir": "proj/ants",
+ "intro": "",
+ "problems": [
+  {
+   "id": "00",
+   "title": "Problem 0 (0 pt)",
+   "titleEn": "Problem 0 (0 pt)",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nAnswer a set of conceptual questions after you have read the *entire* `ants.py` file by running this `ok` command:\n\nIf you get stuck while answering these questions, you can try reading through `ants.py` again or asking questions on Ed.\n\n**A note on unlocking tests**: If you'd like to review the unlocking questions after you have completed the unlocking test, you can navigate to the `tests` folder (within the `ants` folder). For example, after unlocking Problem 0, you can review the unlocking test at `tests/00.py`.\n",
+   "statementEn": "Answer a set of conceptual questions after you have read the *entire* `ants.py` file by running this `ok` command:\n\nIf you get stuck while answering these questions, you can try reading through `ants.py` again or asking questions on Ed.\n\n**A note on unlocking tests**: If you'd like to review the unlocking questions after you have completed the unlocking test, you can navigate to the `tests` folder (within the `ants` folder). For example, after unlocking Problem 0, you can review the unlocking test at `tests/00.py`.\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "00"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "What is the significance of an Insect's health attribute? Does this\nvalue change? If so, how?",
+     "choices": [
+      "It represents health protecting the insect, so the insect can only\nbe damaged when its health reaches 0",
+      "It represents the strength of an insect against attacks, which\ndoesn't change throughout the game",
+      "It represents the amount of health the insect has left, so the\ninsect is eliminated when it reaches 0"
+     ],
+     "answer": "3c1938b66de6e3576c7794432ca0d1f8"
+    },
+    {
+     "type": "choice",
+     "question": "Which of the following is a class attribute of the Insect class?",
+     "choices": [
+      "damage",
+      "health",
+      "place",
+      "bees"
+     ],
+     "answer": "94e2e146454b38059092b5bbfd866e20"
+    },
+    {
+     "type": "choice",
+     "question": "Is the health attribute of the Ant class an instance attribute or class attribute? Why?",
+     "choices": [
+      "instance, each Ant instance needs its own health value",
+      "instance, each Ant starts out with a different amount of health",
+      "class, Ants of the same subclass all have the same amount of starting health",
+      "class, when one Ant gets damaged, all ants receive the same amount of damage"
+     ],
+     "answer": "f6d580bd3e0db93da86510c934fd4554"
+    },
+    {
+     "type": "choice",
+     "question": "Is the damage attribute of an Ant subclass (such as ThrowerAnt) an\ninstance or class attribute? Why?",
+     "choices": [
+      "instance, each Ant does damage to bees at different rates",
+      "instance, the damage an Ant depends on where the Ant is",
+      "class, all Ants of the same subclass deal the same damage",
+      "class, all Ants deal the same damage"
+     ],
+     "answer": "6a4a860840218ef3b1d91d54643165f5"
+    },
+    {
+     "type": "choice",
+     "question": "Which class do both Ant and Bee inherit from?",
+     "choices": [
+      "Insect",
+      "Place",
+      "Bee",
+      "Ant"
+     ],
+     "answer": "74e7fc66df4557e00fbf0948791e4841"
+    },
+    {
+     "type": "choice",
+     "question": "What do instances of Ant and instances of Bee have in common? Please choose the most correct answer.",
+     "choices": [
+      "Ants and Bees both have the attributes health, damage, and place\nand the methods reduce_health and action",
+      "Ants and Bees both have the attribute damage and the methods\nreduce_health and action",
+      "Ants and Bees both take the same action each turn",
+      "Ants and Bees have nothing in common"
+     ],
+     "answer": "2f58d2097027c9718255dd5a02944c22"
+    },
+    {
+     "type": "choice",
+     "question": "How many insects can be in a single Place at any given time in the\ngame (before Problem 8)?",
+     "choices": [
+      "There can be one Ant and many Bees in a single Place",
+      "There can be one Bee and many Ants in a single Place",
+      "There is no limit on the number of insects of any type in a single Place",
+      "Only one insect can be in a single Place at a time"
+     ],
+     "answer": "4eed0239468d72e9a26a9a6f2968e76f"
+    },
+    {
+     "type": "choice",
+     "question": "What does a Bee do during one of its turns?",
+     "choices": [
+      "The bee moves to the next place, then stings the ant in that place",
+      "The bee flies to the nearest Ant and attacks it",
+      "The bee stings the ant in its place or moves to the next place if there is no ant in its place",
+      "The bee stings the ant in its place and then moves to the next place"
+     ],
+     "answer": "f072f225a70eba63759fe0172bad833c"
+    },
+    {
+     "type": "choice",
+     "question": "When is the game lost?",
+     "choices": [
+      "When the bees enter the colony",
+      "When the colony runs out of food",
+      "When any bee reaches the end of the tunnel or when the Queen Ant is killed",
+      "When any bee reaches the end of the tunnel and the Queen Ant is killed",
+      "When no ants are left on the map"
+     ],
+     "answer": "2470e48297cf873324ff3695472094b1"
+    }
+   ]
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "**Part A**: Currently, there is no cost for placing any type of `Ant`, and so there is no challenge to the game. The base class `Ant` has a `food_cost` of zero. Override this class attribute for `HarvesterAnt` and `ThrowerAnt` according to the \"Food Cost\" column in the table below.\n\n   **Class** **Food Cost** **Initial Health**\n `HarvesterAnt` 2 1\n `ThrowerAnt` 3 1\n\n**Part B**: Now that placing an `Ant` costs food, we need to be able to gather more food! To fix this issue, implement the `HarvesterAnt` class. A `HarvesterAnt` is a type of `Ant` that increases `gamestate.food` by 1 as its `action`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "id": "01-concept",
+   "title": "Problem 1 (0.5 pt) · 先回答几个问题",
+   "titleEn": "Problem 1 (0.5 pt) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "01"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "What is the purpose of the food_cost attribute?",
+     "choices": [
+      "Placing an ant into the colony will decrease the colony's total\navailable food by that ant's food_cost",
+      "Each turn, each Ant in the colony eats food_cost food from the\ncolony's total available food",
+      "Each turn, each Ant in the colony adds food_cost food to the\ncolony's total available food"
+     ],
+     "answer": "b11e19127a1cf83e285f83984cae6d4f"
+    },
+    {
+     "type": "choice",
+     "question": "What type of attribute is food_cost?",
+     "choices": [
+      "class, all Ants of the same subclass cost the same to place",
+      "class, all Ants cost the same to place no matter what type of Ant it is",
+      "instance, the food_cost of an Ant depends on the location it is placed",
+      "instance, the food_cost of an Ant is randomized upon initialization"
+     ],
+     "answer": "2d3f4f6f9e9a083f23302e78084d5448"
+    }
+   ]
+  },
+  {
+   "id": "01",
+   "title": "Problem 1 (0.5 pt)",
+   "titleEn": "Problem 1 (0.5 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\n**Part A**: Currently, there is no cost for placing any type of `Ant`, and so there is no challenge to the game. The base class `Ant` has a `food_cost` of zero. Override this class attribute for `HarvesterAnt` and `ThrowerAnt` according to the \"Food Cost\" column in the table below.\n\n   **Class** **Food Cost** **Initial Health**\n `HarvesterAnt` 2 1\n `ThrowerAnt` 3 1\n\n**Part B**: Now that placing an `Ant` costs food, we need to be able to gather more food! To fix this issue, implement the `HarvesterAnt` class. A `HarvesterAnt` is a type of `Ant` that increases `gamestate.food` by 1 as its `action`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "statementEn": "**Part A**: Currently, there is no cost for placing any type of `Ant`, and so there is no challenge to the game. The base class `Ant` has a `food_cost` of zero. Override this class attribute for `HarvesterAnt` and `ThrowerAnt` according to the \"Food Cost\" column in the table below.\n\n   **Class** **Food Cost** **Initial Health**\n `HarvesterAnt` 2 1\n `ThrowerAnt` 3 1\n\n**Part B**: Now that placing an `Ant` costs food, we need to be able to gather more food! To fix this issue, implement the `HarvesterAnt` class. A `HarvesterAnt` is a type of `Ant` that increases `gamestate.food` by 1 as its `action`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "01"
+   }
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "In this problem, you'll complete `Place.__init__` by adding code that tracks entrances. Right now, a `Place` keeps track only of its `exit`. We would like a `Place` to keep track of its `entrance` as well. A `Place` needs to track only one `entrance`. Tracking entrances will be useful when an `Ant` needs to see what `Bee`s are in front of it in the tunnel.\n\nHowever, simply passing an entrance to a `Place` constructor will be problematic; we would need to have both the `exit` and the `entrance` before creating a `Place`! (It's a [chicken or the egg](https://en.wikipedia.org/wiki/Chicken_or_the_egg) problem.) To get around this problem, we will keep track of entrances in the following way instead. `Place.__init__` should use this logic:\n\n- A newly created `Place` always starts with its `entrance` set to `None`.\n- If the `Place` has an `exit`, then the `exit`'s `entrance` is set to that `Place`.\n\n**Hint:** Remember that when the `__init__` method is called, the first parameter, `self`, is bound to the newly created object.\n\n**Hint:** Try drawing out two `Place`s next to each other if things get confusing. In the GUI, a place's `entrance` is to its right while the `exit` is to its left.\n\n**Hint:** Remember that `Place`s are not stored in a list, so you can't index into anything to access them. This means that you **can't** do something like `colony[index + 1]` to access an adjacent `Place`. How *can* you move from one place to another?\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "id": "02-concept",
+   "title": "Problem 2 (0.5 pt) · 先回答几个问题",
+   "titleEn": "Problem 2 (0.5 pt) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "02"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "What does a Place represent in the game?",
+     "choices": [
+      "A single tile that an Ant can be placed on and that connects to\nother Places",
+      "The entire space where the game takes place",
+      "The tunnel that bees travel through",
+      "Where the bees start out in the game"
+     ],
+     "answer": "ba9d5316d8a8cf38d31424fc9bc51ea9"
+    },
+    {
+     "type": "choice",
+     "question": "p is a Place whose entrance is q and exit is r (q and r are not None). When is p.entrance first set to a non-None value?",
+     "choices": [
+      "When p is constructed",
+      "When q is constructed",
+      "Never, it is always set to None"
+     ],
+     "answer": "010db6ca237fafb71ab37bd963f06870"
+    },
+    {
+     "type": "choice",
+     "question": "p is a Place whose entrance is q and exit is r (q and r are not None). When is p.exit first set to a non-None value?",
+     "choices": [
+      "When p is constructed",
+      "When q is constructed",
+      "Never, it is always set to None"
+     ],
+     "answer": "0be706b6821937577f2e07621737dcb7"
+    }
+   ]
+  },
+  {
+   "id": "02",
+   "title": "Problem 2 (0.5 pt)",
+   "titleEn": "Problem 2 (0.5 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nIn this problem, you'll complete `Place.__init__` by adding code that tracks entrances. Right now, a `Place` keeps track only of its `exit`. We would like a `Place` to keep track of its `entrance` as well. A `Place` needs to track only one `entrance`. Tracking entrances will be useful when an `Ant` needs to see what `Bee`s are in front of it in the tunnel.\n\nHowever, simply passing an entrance to a `Place` constructor will be problematic; we would need to have both the `exit` and the `entrance` before creating a `Place`! (It's a [chicken or the egg](https://en.wikipedia.org/wiki/Chicken_or_the_egg) problem.) To get around this problem, we will keep track of entrances in the following way instead. `Place.__init__` should use this logic:\n\n- A newly created `Place` always starts with its `entrance` set to `None`.\n- If the `Place` has an `exit`, then the `exit`'s `entrance` is set to that `Place`.\n\n**Hint:** Remember that when the `__init__` method is called, the first parameter, `self`, is bound to the newly created object.\n\n**Hint:** Try drawing out two `Place`s next to each other if things get confusing. In the GUI, a place's `entrance` is to its right while the `exit` is to its left.\n\n**Hint:** Remember that `Place`s are not stored in a list, so you can't index into anything to access them. This means that you **can't** do something like `colony[index + 1]` to access an adjacent `Place`. How *can* you move from one place to another?\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "statementEn": "In this problem, you'll complete `Place.__init__` by adding code that tracks entrances. Right now, a `Place` keeps track only of its `exit`. We would like a `Place` to keep track of its `entrance` as well. A `Place` needs to track only one `entrance`. Tracking entrances will be useful when an `Ant` needs to see what `Bee`s are in front of it in the tunnel.\n\nHowever, simply passing an entrance to a `Place` constructor will be problematic; we would need to have both the `exit` and the `entrance` before creating a `Place`! (It's a [chicken or the egg](https://en.wikipedia.org/wiki/Chicken_or_the_egg) problem.) To get around this problem, we will keep track of entrances in the following way instead. `Place.__init__` should use this logic:\n\n- A newly created `Place` always starts with its `entrance` set to `None`.\n- If the `Place` has an `exit`, then the `exit`'s `entrance` is set to that `Place`.\n\n**Hint:** Remember that when the `__init__` method is called, the first parameter, `self`, is bound to the newly created object.\n\n**Hint:** Try drawing out two `Place`s next to each other if things get confusing. In the GUI, a place's `entrance` is to its right while the `exit` is to its left.\n\n**Hint:** Remember that `Place`s are not stored in a list, so you can't index into anything to access them. This means that you **can't** do something like `colony[index + 1]` to access an adjacent `Place`. How *can* you move from one place to another?\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "02"
+   }
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "In order for a `ThrowerAnt` to throw a leaf, it must know which `Bee` to hit. The provided implementation of the `nearest_bee` method in the `ThrowerAnt` class only allows `ThrowerAnt`s to hit `Bee`s in the same `Place`. Your job is to fix it so that a `ThrowerAnt` will `throw_at` the nearest `Bee` in front of it **that is not still in the `Hive`.** This includes `Bee`s that are in the same `Place` as a `ThrowerAnt`\n\n**Hint:** All `Place`s have an `is_hive` attribute, which is set to `True` when that place is the `Hive` and `False` otherwise.\n\nChange `nearest_bee` so that it returns a random `Bee` from the nearest `Place` that contains `Bee`s. Your implementation should follow this logic:\n\n- Start from the `ThrowerAnt`'s current `Place`.\n- If the `Place` contains one or more `Bee`s, return a random one. Otherwise, check the next `Place` in front of it (stored as the current `Place`'s entrance).\n- Repeat this process until a `Bee` is found and returned. If no `Bee` is available to attack, return `None`.\n- Ensure that `Bee`s in the `Hive` are never returned by `nearest_bee`.\n\n**Hint:**: The `random_bee` function provided in `ants.py` returns a random `Bee` from a list of `Bee`s or `None` if the list is empty.\n\n**Hint:**: As a reminder, if there are no `Bee`s present at a `Place`, then the `bees` attribute of that `Place` instance will be an empty list.\n\n**Hint:**: Having trouble visualizing the test cases? Try drawing them out on paper! The sample diagram provided in [Game Layout](https://cs61a.org/proj/ants/index.html#game-layout) shows the first test case for this problem.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "id": "03-concept",
+   "title": "Problem 3 (1 pt) · 先回答几个问题",
+   "titleEn": "Problem 3 (1 pt) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "03"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "What Bee should a ThrowerAnt throw at?",
+     "choices": [
+      "The ThrowerAnt finds the nearest place including and in front of its\nown place that has Bees and throws at a random Bee in that place",
+      "The ThrowerAnt finds the nearest place behind its own place\nthat has Bees and throws at a random Bee in that place",
+      "The ThrowerAnt finds the nearest place in either direction that has\nBees and throws at a random Bee in that place",
+      "The ThrowerAnt throws at a random Bee in its own Place"
+     ],
+     "answer": "e3b9ee99ac396e56608b45e886edbec1"
+    },
+    {
+     "type": "choice",
+     "question": "How do you get the Place object in front of another Place object?",
+     "choices": [
+      "The place's entrance instance attribute",
+      "The place's exit instance attribute",
+      "Increment the place by 1",
+      "Decrement the place by 1"
+     ],
+     "answer": "9bd9c23a391f841e8d9e4147c56659a7"
+    },
+    {
+     "type": "choice",
+     "question": "What is the entrance of the first Place in a tunnel (i.e. where do the bees enter from)?",
+     "choices": [
+      "The Hive",
+      "None",
+      "An empty Place"
+     ],
+     "answer": "2ca313dd416803bfaecbcf4a2d1851c1"
+    },
+    {
+     "type": "choice",
+     "question": "How can you determine if a given Place is the Hive?",
+     "choices": [
+      "by using the is_hive attribute of the place instance",
+      "by checking the bees attribute of the place instance",
+      "by checking the ant attribute of the place instance"
+     ],
+     "answer": "7e8d1faa22ac0ad46c7db356d171f71c"
+    },
+    {
+     "type": "choice",
+     "question": "What should nearest_bee return if there is no Bee in the tunnel in front of the ThrowerAnt?",
+     "choices": [
+      "None",
+      "A random Bee in the Hive",
+      "The closest Bee behind the ThrowerAnt"
+     ],
+     "answer": "044ef3c0c6fd739b6260fe6f6cae71dd"
+    }
+   ]
+  },
+  {
+   "id": "03",
+   "title": "Problem 3 (1 pt)",
+   "titleEn": "Problem 3 (1 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nIn order for a `ThrowerAnt` to throw a leaf, it must know which `Bee` to hit. The provided implementation of the `nearest_bee` method in the `ThrowerAnt` class only allows `ThrowerAnt`s to hit `Bee`s in the same `Place`. Your job is to fix it so that a `ThrowerAnt` will `throw_at` the nearest `Bee` in front of it **that is not still in the `Hive`.** This includes `Bee`s that are in the same `Place` as a `ThrowerAnt`\n\n**Hint:** All `Place`s have an `is_hive` attribute, which is set to `True` when that place is the `Hive` and `False` otherwise.\n\nChange `nearest_bee` so that it returns a random `Bee` from the nearest `Place` that contains `Bee`s. Your implementation should follow this logic:\n\n- Start from the `ThrowerAnt`'s current `Place`.\n- If the `Place` contains one or more `Bee`s, return a random one. Otherwise, check the next `Place` in front of it (stored as the current `Place`'s entrance).\n- Repeat this process until a `Bee` is found and returned. If no `Bee` is available to attack, return `None`.\n- Ensure that `Bee`s in the `Hive` are never returned by `nearest_bee`.\n\n**Hint:**: The `random_bee` function provided in `ants.py` returns a random `Bee` from a list of `Bee`s or `None` if the list is empty.\n\n**Hint:**: As a reminder, if there are no `Bee`s present at a `Place`, then the `bees` attribute of that `Place` instance will be an empty list.\n\n**Hint:**: Having trouble visualizing the test cases? Try drawing them out on paper! The sample diagram provided in [Game Layout](https://cs61a.org/proj/ants/index.html#game-layout) shows the first test case for this problem.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "statementEn": "In order for a `ThrowerAnt` to throw a leaf, it must know which `Bee` to hit. The provided implementation of the `nearest_bee` method in the `ThrowerAnt` class only allows `ThrowerAnt`s to hit `Bee`s in the same `Place`. Your job is to fix it so that a `ThrowerAnt` will `throw_at` the nearest `Bee` in front of it **that is not still in the `Hive`.** This includes `Bee`s that are in the same `Place` as a `ThrowerAnt`\n\n**Hint:** All `Place`s have an `is_hive` attribute, which is set to `True` when that place is the `Hive` and `False` otherwise.\n\nChange `nearest_bee` so that it returns a random `Bee` from the nearest `Place` that contains `Bee`s. Your implementation should follow this logic:\n\n- Start from the `ThrowerAnt`'s current `Place`.\n- If the `Place` contains one or more `Bee`s, return a random one. Otherwise, check the next `Place` in front of it (stored as the current `Place`'s entrance).\n- Repeat this process until a `Bee` is found and returned. If no `Bee` is available to attack, return `None`.\n- Ensure that `Bee`s in the `Hive` are never returned by `nearest_bee`.\n\n**Hint:**: The `random_bee` function provided in `ants.py` returns a random `Bee` from a list of `Bee`s or `None` if the list is empty.\n\n**Hint:**: As a reminder, if there are no `Bee`s present at a `Place`, then the `bees` attribute of that `Place` instance will be an empty list.\n\n**Hint:**: Having trouble visualizing the test cases? Try drawing them out on paper! The sample diagram provided in [Game Layout](https://cs61a.org/proj/ants/index.html#game-layout) shows the first test case for this problem.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "03"
+   }
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "A `ThrowerAnt` is a powerful threat to the bees, but it has a high `food_cost`. In this problem, you'll implement two subclasses of `ThrowerAnt` that are less costly but have constraints on the distance they can throw:\n\n- The `LongThrower` can only `throw_at` a `Bee` that is found after following at least 5 `entrance` transitions. In other words, it cannot hit `Bee`s that are in the same `Place` as it or in the first 4 `Place`s in front of it. If there are two `Bee`s, one too close to the `LongThrower` and the other within its range, the `LongThrower` should only throw at the farther `Bee`, which is within its range, instead of trying to hit the closer `Bee`.\n- The `ShortThrower` can only `throw_at` a `Bee` that is found after following at most 3 `entrance` transitions. In other words, it cannot throw at any `Bee`s further than 3 `Place`s in front of it.\n\nNeither of these specialized throwers can `throw_at` a `Bee` that is exactly 4 `Place`s away.\n\n   **Class** **Food Cost** **Initial Health**\n `ShortThrower` 2 1\n `LongThrower` 2 1\n\nTo implement these new throwing ants, your `ShortThrower` and `LongThrower` classes should inherit the `nearest_bee` method from the base `ThrowerAnt` class.\n\nNext, modify the `nearest_bee` method in `ThrowerAnt` to reference the `lower_bound` and `upper_bound` attributes, and only return a `Bee` from a `Place` if that `Place` is within range of the provided bounds. This is necessary because the range of `Place`s in which the `ShortThrower` and `LongThrower` ants can `throw_at` a `Bee` is limited by an `upper_bound` and a `lower_bound`, respectively.\n\nMake sure to give these `lower_bound` and `upper_bound` attributes appropriate values in the `ThrowerAnt` class so that the behavior of `ThrowerAnt` is unchanged. Then, implement the subclasses `LongThrower` and `ShortThrower` with appropriately constrained ranges.\n\nYou should **not** need to repeat any code between `ThrowerAnt`, `ShortThrower`, and `LongThrower`.\n\n**Important:** Make sure your class attributes are called `upper_bound` and `lower_bound` The tests directly reference these attribute names, and will error if you use another name for these attributes.\n\n**Hint:** `float('inf')` returns an infinite positive value represented as a float that can be compared with other numbers.\n\n**Hint:** `lower_bound` and `upper_bound` should mark an inclusive range.\n\nDon't forget to set the `implemented` class attribute of `LongThrower` and `ShortThrower` to `True`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nAfter writing code, test your implementation (rerun the tests for 03 to make sure they still work):\n\n```\npython3 ok -q 03\npython3 ok -q 04\n```\n\n👩🏽‍💻👨🏿‍💻 [Pair programming?](https://cs61a.org/articles/pair-programming.html) Remember to alternate between driver and navigator roles. The driver controls the keyboard; the navigator watches, asks questions, and suggests ideas.\n",
+   "id": "04-concept",
+   "title": "Problem 4 (1 pt) · 先回答几个问题",
+   "titleEn": "Problem 4 (1 pt) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "04 03"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "What class do ShortThrower and LongThrower inherit from?",
+     "choices": [
+      "ThrowerAnt",
+      "ShortThrower",
+      "LongThrower",
+      "Bee"
+     ],
+     "answer": "5fc190eff661b8759ea938b0de913597"
+    },
+    {
+     "type": "choice",
+     "question": "What constraint does a regular ThrowerAnt have on its throwing distance?",
+     "choices": [
+      "A regular ThrowerAnt can only attack Bees at least 3 places away",
+      "A regular ThrowerAnt can only attack Bees at most 3 places away",
+      "A regular ThrowerAnt can only attack Bees at most 5 places away",
+      "There is no restriction on how far a regular ThrowerAnt can throw"
+     ],
+     "answer": "0219746f5d16f1e9137ce1d8ce1f8dd6"
+    },
+    {
+     "type": "choice",
+     "question": "What constraint does a LongThrower have on its throwing distance?",
+     "choices": [
+      "A LongThrower can only attack Bees at least 5 places away",
+      "A LongThrower can only attack Bees at least 3 places away",
+      "A LongThrower can only attack Bees at most 5 places away",
+      "There is no restriction on how far a LongThrower can throw"
+     ],
+     "answer": "beea9dfab31aa4e85a6806393fa9e6ba"
+    },
+    {
+     "type": "choice",
+     "question": "What constraint does a ShortThrower have on its throwing distance?",
+     "choices": [
+      "A ShortThrower can only attack Bees at least 3 places away",
+      "A ShortThrower can only attack Bees at most 3 places away",
+      "A ShortThrower can only attack Bees at most 5 places away",
+      "There is no restriction on how far a ShortThrower can throw"
+     ],
+     "answer": "cd688c2c133ce9e585711715a5b65a81"
+    },
+    {
+     "type": "choice",
+     "question": "With the addition of these new ThrowerAnt subclasses, we must modify\nour definition of nearest_bee. Now what Bee should ThrowerAnts throw\nat?",
+     "choices": [
+      "The closest random Bee in front of it within range",
+      "The closest random Bee behind it within range",
+      "Any Bee in its current Place",
+      "Any Bee within range"
+     ],
+     "answer": "ea3b075df24f8c00463adce1174345d3"
+    },
+    {
+     "type": "choice",
+     "question": "What Bee should a ThrowerAnt throw at?",
+     "choices": [
+      "The ThrowerAnt finds the nearest place including and in front of its\nown place that has Bees and throws at a random Bee in that place",
+      "The ThrowerAnt finds the nearest place behind its own place\nthat has Bees and throws at a random Bee in that place",
+      "The ThrowerAnt finds the nearest place in either direction that has\nBees and throws at a random Bee in that place",
+      "The ThrowerAnt throws at a random Bee in its own Place"
+     ],
+     "answer": "e3b9ee99ac396e56608b45e886edbec1"
+    },
+    {
+     "type": "choice",
+     "question": "How do you get the Place object in front of another Place object?",
+     "choices": [
+      "The place's entrance instance attribute",
+      "The place's exit instance attribute",
+      "Increment the place by 1",
+      "Decrement the place by 1"
+     ],
+     "answer": "9bd9c23a391f841e8d9e4147c56659a7"
+    },
+    {
+     "type": "choice",
+     "question": "What is the entrance of the first Place in a tunnel (i.e. where do the bees enter from)?",
+     "choices": [
+      "The Hive",
+      "None",
+      "An empty Place"
+     ],
+     "answer": "2ca313dd416803bfaecbcf4a2d1851c1"
+    },
+    {
+     "type": "choice",
+     "question": "How can you determine if a given Place is the Hive?",
+     "choices": [
+      "by using the is_hive attribute of the place instance",
+      "by checking the bees attribute of the place instance",
+      "by checking the ant attribute of the place instance"
+     ],
+     "answer": "7e8d1faa22ac0ad46c7db356d171f71c"
+    },
+    {
+     "type": "choice",
+     "question": "What should nearest_bee return if there is no Bee in the tunnel in front of the ThrowerAnt?",
+     "choices": [
+      "None",
+      "A random Bee in the Hive",
+      "The closest Bee behind the ThrowerAnt"
+     ],
+     "answer": "044ef3c0c6fd739b6260fe6f6cae71dd"
+    }
+   ]
+  },
+  {
+   "id": "04",
+   "title": "Problem 4 (1 pt)",
+   "titleEn": "Problem 4 (1 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nA `ThrowerAnt` is a powerful threat to the bees, but it has a high `food_cost`. In this problem, you'll implement two subclasses of `ThrowerAnt` that are less costly but have constraints on the distance they can throw:\n\n- The `LongThrower` can only `throw_at` a `Bee` that is found after following at least 5 `entrance` transitions. In other words, it cannot hit `Bee`s that are in the same `Place` as it or in the first 4 `Place`s in front of it. If there are two `Bee`s, one too close to the `LongThrower` and the other within its range, the `LongThrower` should only throw at the farther `Bee`, which is within its range, instead of trying to hit the closer `Bee`.\n- The `ShortThrower` can only `throw_at` a `Bee` that is found after following at most 3 `entrance` transitions. In other words, it cannot throw at any `Bee`s further than 3 `Place`s in front of it.\n\nNeither of these specialized throwers can `throw_at` a `Bee` that is exactly 4 `Place`s away.\n\n   **Class** **Food Cost** **Initial Health**\n `ShortThrower` 2 1\n `LongThrower` 2 1\n\nTo implement these new throwing ants, your `ShortThrower` and `LongThrower` classes should inherit the `nearest_bee` method from the base `ThrowerAnt` class.\n\nNext, modify the `nearest_bee` method in `ThrowerAnt` to reference the `lower_bound` and `upper_bound` attributes, and only return a `Bee` from a `Place` if that `Place` is within range of the provided bounds. This is necessary because the range of `Place`s in which the `ShortThrower` and `LongThrower` ants can `throw_at` a `Bee` is limited by an `upper_bound` and a `lower_bound`, respectively.\n\nMake sure to give these `lower_bound` and `upper_bound` attributes appropriate values in the `ThrowerAnt` class so that the behavior of `ThrowerAnt` is unchanged. Then, implement the subclasses `LongThrower` and `ShortThrower` with appropriately constrained ranges.\n\nYou should **not** need to repeat any code between `ThrowerAnt`, `ShortThrower`, and `LongThrower`.\n\n**Important:** Make sure your class attributes are called `upper_bound` and `lower_bound` The tests directly reference these attribute names, and will error if you use another name for these attributes.\n\n**Hint:** `float('inf')` returns an infinite positive value represented as a float that can be compared with other numbers.\n\n**Hint:** `lower_bound` and `upper_bound` should mark an inclusive range.\n\nDon't forget to set the `implemented` class attribute of `LongThrower` and `ShortThrower` to `True`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nAfter writing code, test your implementation (rerun the tests for 03 to make sure they still work):\n\n```\npython3 ok -q 03\npython3 ok -q 04\n```\n\n👩🏽‍💻👨🏿‍💻 [Pair programming?](https://cs61a.org/articles/pair-programming.html) Remember to alternate between driver and navigator roles. The driver controls the keyboard; the navigator watches, asks questions, and suggests ideas.\n",
+   "statementEn": "A `ThrowerAnt` is a powerful threat to the bees, but it has a high `food_cost`. In this problem, you'll implement two subclasses of `ThrowerAnt` that are less costly but have constraints on the distance they can throw:\n\n- The `LongThrower` can only `throw_at` a `Bee` that is found after following at least 5 `entrance` transitions. In other words, it cannot hit `Bee`s that are in the same `Place` as it or in the first 4 `Place`s in front of it. If there are two `Bee`s, one too close to the `LongThrower` and the other within its range, the `LongThrower` should only throw at the farther `Bee`, which is within its range, instead of trying to hit the closer `Bee`.\n- The `ShortThrower` can only `throw_at` a `Bee` that is found after following at most 3 `entrance` transitions. In other words, it cannot throw at any `Bee`s further than 3 `Place`s in front of it.\n\nNeither of these specialized throwers can `throw_at` a `Bee` that is exactly 4 `Place`s away.\n\n   **Class** **Food Cost** **Initial Health**\n `ShortThrower` 2 1\n `LongThrower` 2 1\n\nTo implement these new throwing ants, your `ShortThrower` and `LongThrower` classes should inherit the `nearest_bee` method from the base `ThrowerAnt` class.\n\nNext, modify the `nearest_bee` method in `ThrowerAnt` to reference the `lower_bound` and `upper_bound` attributes, and only return a `Bee` from a `Place` if that `Place` is within range of the provided bounds. This is necessary because the range of `Place`s in which the `ShortThrower` and `LongThrower` ants can `throw_at` a `Bee` is limited by an `upper_bound` and a `lower_bound`, respectively.\n\nMake sure to give these `lower_bound` and `upper_bound` attributes appropriate values in the `ThrowerAnt` class so that the behavior of `ThrowerAnt` is unchanged. Then, implement the subclasses `LongThrower` and `ShortThrower` with appropriately constrained ranges.\n\nYou should **not** need to repeat any code between `ThrowerAnt`, `ShortThrower`, and `LongThrower`.\n\n**Important:** Make sure your class attributes are called `upper_bound` and `lower_bound` The tests directly reference these attribute names, and will error if you use another name for these attributes.\n\n**Hint:** `float('inf')` returns an infinite positive value represented as a float that can be compared with other numbers.\n\n**Hint:** `lower_bound` and `upper_bound` should mark an inclusive range.\n\nDon't forget to set the `implemented` class attribute of `LongThrower` and `ShortThrower` to `True`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nAfter writing code, test your implementation (rerun the tests for 03 to make sure they still work):\n\n```\npython3 ok -q 03\npython3 ok -q 04\n```\n\n👩🏽‍💻👨🏿‍💻 [Pair programming?](https://cs61a.org/articles/pair-programming.html) Remember to alternate between driver and navigator roles. The driver controls the keyboard; the navigator watches, asks questions, and suggests ideas.\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "04 03"
+   }
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "Implement the `FireAnt`, which does damage when it receives damage. Specifically, if it is damaged by `damage_taken` health units, it does a damage of `damage_taken` to all `Bee`s in its place (this is called *reflected damage*). If it dies, it does an additional amount of damage, as specified by its `damage` attribute, to all the `Bee`s in its place. The default value for the `damage` attribute in the `FireAnt` class is `3`.\n\nTo implement this, override `FireAnt`'s `reduce_health` method. Your overriden method should call the `reduce_health` method inherited from the superclass (`Ant`) *which inherits from its superclass `Insect`* to reduce the current `FireAnt` instance's `health`. Calling the *inherited* `reduce_health` method on a `FireAnt` instance reduces the insect's `health` by the given `damage_taken` and removes the insect from its place if its `health` reaches zero or lower.\n\n**Hint:** Do *not* call `self.reduce_health`, or you'll end up stuck in a recursive loop. (Can you see why?)\n\nHowever, your method needs to also include the *reflective damage* logic:\n\n- Determine the *reflective damage* amount: start with the `damage_taken` inflicted on the `FireAnt`, and then add `damage` if the ant's `health` has dropped to or below 0.\n- For each `Bee` in the place, damage them with the total *reflective damage* amount by calling its appropriate `reduce_health` method.\n\n**Important:** Remember that when any `Ant` loses all its health, it is removed from its `Place`, so pay careful attention to the order of your logic in `reduce_health`.\n\n   **Class** **Food Cost** **Initial Health**\n `FireAnt` 5 3\n\n**Important**: Damaging a bee may cause it to be removed from its place; when an insect dies, it is removed from its current place. If you iterate over a list, but change the contents of that list at the same time, you [may not visit all the elements](https://docs.python.org/3/tutorial/controlflow.html#for-statements). This can be prevented by making a copy of the list. You can either use a list slice, or use the built-in `list` function to make sure the original list is not affected.\n\n```\n>>> s = [1,2,3,4]\n>>> s[:]\n[1, 2, 3, 4]\n>>> list(s)\n[1, 2, 3, 4]\n>>> (s[:] is not s) and (list(s) is not s)\nTrue\n```\n\nOnce you've finished implementing the `FireAnt`, give it a class attribute `implemented` with the value `True`.\n\n**Note:** Even though you are overriding the superclass's `reduce_health` function (`Ant.reduce_health`), you can still use this method in your implementation by calling it.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nYou can also test your program by playing a game or two! A `FireAnt` should destroy all co-located `Bee`s when it is stung. To start a game with ten food (for easy testing):\n\n```\npython3 gui.py --food 10\n```\n",
+   "id": "05-concept",
+   "title": "Problem 5 (1.5 pt) · 先回答几个问题",
+   "titleEn": "Problem 5 (1.5 pt) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "05"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "How can you obtain the current place of a FireAnt?",
+     "choices": [
+      "By accessing the place instance attribute, which is a Place object",
+      "By accessing the place instance attribute, which is the name of\nsome Place object",
+      "By calling the Place constructor, passing in the FireAnt instance",
+      "By calling the FireAnt constructor"
+     ],
+     "answer": "9b8f7869c0cf94ceb6a862dc352b4df1"
+    },
+    {
+     "type": "choice",
+     "question": "How can you obtain all of the Bees currently in a given place?",
+     "choices": [
+      "By accessing the bees instance attribute, which is a list of Bee\nobjects",
+      "By accessing the bees instance attribute, which is a dictionary of\nBee objects",
+      "By calling the add_insect method on the place instance",
+      "By calling the Bee constructor, passing in the place instance"
+     ],
+     "answer": "81e2e777eb97c4cb836bdcb2fbb428d6"
+    },
+    {
+     "type": "choice",
+     "question": "Can you iterate over a list while mutating it?",
+     "choices": [
+      "Yes, but you should iterate over a copy of the list to avoid skipping\nelements",
+      "Yes, you can mutate a list while iterating over it with no problems",
+      "No, Python doesn't allow list mutation on a list that is being\niterated through"
+     ],
+     "answer": "c95a4e74584be420b1318afb809bb642"
+    }
+   ]
+  },
+  {
+   "id": "05",
+   "title": "Problem 5 (1.5 pt)",
+   "titleEn": "Problem 5 (1.5 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the `FireAnt`, which does damage when it receives damage. Specifically, if it is damaged by `damage_taken` health units, it does a damage of `damage_taken` to all `Bee`s in its place (this is called *reflected damage*). If it dies, it does an additional amount of damage, as specified by its `damage` attribute, to all the `Bee`s in its place. The default value for the `damage` attribute in the `FireAnt` class is `3`.\n\nTo implement this, override `FireAnt`'s `reduce_health` method. Your overriden method should call the `reduce_health` method inherited from the superclass (`Ant`) *which inherits from its superclass `Insect`* to reduce the current `FireAnt` instance's `health`. Calling the *inherited* `reduce_health` method on a `FireAnt` instance reduces the insect's `health` by the given `damage_taken` and removes the insect from its place if its `health` reaches zero or lower.\n\n**Hint:** Do *not* call `self.reduce_health`, or you'll end up stuck in a recursive loop. (Can you see why?)\n\nHowever, your method needs to also include the *reflective damage* logic:\n\n- Determine the *reflective damage* amount: start with the `damage_taken` inflicted on the `FireAnt`, and then add `damage` if the ant's `health` has dropped to or below 0.\n- For each `Bee` in the place, damage them with the total *reflective damage* amount by calling its appropriate `reduce_health` method.\n\n**Important:** Remember that when any `Ant` loses all its health, it is removed from its `Place`, so pay careful attention to the order of your logic in `reduce_health`.\n\n   **Class** **Food Cost** **Initial Health**\n `FireAnt` 5 3\n\n**Important**: Damaging a bee may cause it to be removed from its place; when an insect dies, it is removed from its current place. If you iterate over a list, but change the contents of that list at the same time, you [may not visit all the elements](https://docs.python.org/3/tutorial/controlflow.html#for-statements). This can be prevented by making a copy of the list. You can either use a list slice, or use the built-in `list` function to make sure the original list is not affected.\n\n```\n>>> s = [1,2,3,4]\n>>> s[:]\n[1, 2, 3, 4]\n>>> list(s)\n[1, 2, 3, 4]\n>>> (s[:] is not s) and (list(s) is not s)\nTrue\n```\n\nOnce you've finished implementing the `FireAnt`, give it a class attribute `implemented` with the value `True`.\n\n**Note:** Even though you are overriding the superclass's `reduce_health` function (`Ant.reduce_health`), you can still use this method in your implementation by calling it.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nYou can also test your program by playing a game or two! A `FireAnt` should destroy all co-located `Bee`s when it is stung. To start a game with ten food (for easy testing):\n\n```\npython3 gui.py --food 10\n```\n",
+   "statementEn": "Implement the `FireAnt`, which does damage when it receives damage. Specifically, if it is damaged by `damage_taken` health units, it does a damage of `damage_taken` to all `Bee`s in its place (this is called *reflected damage*). If it dies, it does an additional amount of damage, as specified by its `damage` attribute, to all the `Bee`s in its place. The default value for the `damage` attribute in the `FireAnt` class is `3`.\n\nTo implement this, override `FireAnt`'s `reduce_health` method. Your overriden method should call the `reduce_health` method inherited from the superclass (`Ant`) *which inherits from its superclass `Insect`* to reduce the current `FireAnt` instance's `health`. Calling the *inherited* `reduce_health` method on a `FireAnt` instance reduces the insect's `health` by the given `damage_taken` and removes the insect from its place if its `health` reaches zero or lower.\n\n**Hint:** Do *not* call `self.reduce_health`, or you'll end up stuck in a recursive loop. (Can you see why?)\n\nHowever, your method needs to also include the *reflective damage* logic:\n\n- Determine the *reflective damage* amount: start with the `damage_taken` inflicted on the `FireAnt`, and then add `damage` if the ant's `health` has dropped to or below 0.\n- For each `Bee` in the place, damage them with the total *reflective damage* amount by calling its appropriate `reduce_health` method.\n\n**Important:** Remember that when any `Ant` loses all its health, it is removed from its `Place`, so pay careful attention to the order of your logic in `reduce_health`.\n\n   **Class** **Food Cost** **Initial Health**\n `FireAnt` 5 3\n\n**Important**: Damaging a bee may cause it to be removed from its place; when an insect dies, it is removed from its current place. If you iterate over a list, but change the contents of that list at the same time, you [may not visit all the elements](https://docs.python.org/3/tutorial/controlflow.html#for-statements). This can be prevented by making a copy of the list. You can either use a list slice, or use the built-in `list` function to make sure the original list is not affected.\n\n```\n>>> s = [1,2,3,4]\n>>> s[:]\n[1, 2, 3, 4]\n>>> list(s)\n[1, 2, 3, 4]\n>>> (s[:] is not s) and (list(s) is not s)\nTrue\n```\n\nOnce you've finished implementing the `FireAnt`, give it a class attribute `implemented` with the value `True`.\n\n**Note:** Even though you are overriding the superclass's `reduce_health` function (`Ant.reduce_health`), you can still use this method in your implementation by calling it.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nYou can also test your program by playing a game or two! A `FireAnt` should destroy all co-located `Bee`s when it is stung. To start a game with ten food (for easy testing):\n\n```\npython3 gui.py --food 10\n```\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "05"
+   }
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "We are going to add some protection to our glorious home base by implementing the `WallAnt`, an ant that does nothing each turn. A `WallAnt` is useful because it has a large `health` value.\n\n   **Class** **Food Cost** **Initial Health**\n `WallAnt` 4 4\n\nUnlike with previous ants, we have not provided you with a class statement. Implement the `WallAnt` class from scratch. Give it a class attribute `name` with the value `'Wall'` (so that the graphics work) and a class attribute `implemented` with the value `True` (so that you can use it in a game).\n\n**Hint:**: Make sure you implement the `__init__` method too so the `WallAnt` starts off with the appropriate amount of `health`!\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "id": "06-concept",
+   "title": "Problem 6 (0.5 pt) · 先回答几个问题",
+   "titleEn": "Problem 6 (0.5 pt) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "06"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "What class does WallAnt inherit from?",
+     "choices": [
+      "Ant",
+      "ThrowerAnt",
+      "HungryAnt",
+      "The WallAnt class does not inherit from any class"
+     ],
+     "answer": "64cb170acd2b167609e6df7dd048fd96"
+    },
+    {
+     "type": "choice",
+     "question": "What is a WallAnt's action?",
+     "choices": [
+      "A WallAnt takes no action each turn",
+      "A WallAnt increases its own health by 1 each turn",
+      "A WallAnt reduces its own health by 1 each turn",
+      "A WallAnt attacks all the Bees in its place each turn"
+     ],
+     "answer": "342b4efa1ef6de0defc39dc4fbf1ebf1"
+    },
+    {
+     "type": "choice",
+     "question": "Where do Ant subclasses inherit the action method from?",
+     "choices": [
+      "Ant subclasses inherit the action method from the Insect class",
+      "Ant subclasses inherit the action method from the Ant class",
+      "Ant subclasses do not inherit the action method from any class"
+     ],
+     "answer": "50be1539e31a90ea01dbc6bf87f83b9f"
+    },
+    {
+     "type": "choice",
+     "question": "If a subclass of Ant does not override the action method, what is the\ndefault action?",
+     "choices": [
+      "Nothing",
+      "Throw a leaf at the nearest Bee",
+      "Move to the next place",
+      "Reduce the health of all Bees in its place"
+     ],
+     "answer": "c3962b43bab9946b4984107f5e53e9e7"
+    }
+   ]
+  },
+  {
+   "id": "06",
+   "title": "Problem 6 (0.5 pt)",
+   "titleEn": "Problem 6 (0.5 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWe are going to add some protection to our glorious home base by implementing the `WallAnt`, an ant that does nothing each turn. A `WallAnt` is useful because it has a large `health` value.\n\n   **Class** **Food Cost** **Initial Health**\n `WallAnt` 4 4\n\nUnlike with previous ants, we have not provided you with a class statement. Implement the `WallAnt` class from scratch. Give it a class attribute `name` with the value `'Wall'` (so that the graphics work) and a class attribute `implemented` with the value `True` (so that you can use it in a game).\n\n**Hint:**: Make sure you implement the `__init__` method too so the `WallAnt` starts off with the appropriate amount of `health`!\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "statementEn": "We are going to add some protection to our glorious home base by implementing the `WallAnt`, an ant that does nothing each turn. A `WallAnt` is useful because it has a large `health` value.\n\n   **Class** **Food Cost** **Initial Health**\n `WallAnt` 4 4\n\nUnlike with previous ants, we have not provided you with a class statement. Implement the `WallAnt` class from scratch. Give it a class attribute `name` with the value `'Wall'` (so that the graphics work) and a class attribute `implemented` with the value `True` (so that you can use it in a game).\n\n**Hint:**: Make sure you implement the `__init__` method too so the `WallAnt` starts off with the appropriate amount of `health`!\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "06"
+   }
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "Implement the `HungryAnt`, which will select a random `Bee` from its `Place` and deal damage to the `Bee` equal to the `Bee`'s health, eating it whole. After eating a `Bee`, a `HungryAnt` must spend 3 turns chewing before being able to eat again. While the `HungryAnt` is chewing, it is not able to eat (deal damage to) any `Bee`s. If there is no `Bee` in its place available to eat, the `HungryAnt` will do nothing.\n\nWe have not provided you with a class header. Implement the `HungryAnt` class from scratch. Give it a class attribute `name` with the value `'Hungry'` (so that the graphics work) and a class attribute `implemented` with the value `True` (so that you can use it in a game).\n\n**Hint:** When a `Bee` is eaten, its `health` should be reduced by its `health`.\n\n   **Class** **Food Cost** **Initial Health**\n `HungryAnt` 4 1\n\nGive `HungryAnt` a `chew_cooldown` **class** attribute that stores the number of turns that it will take a `HungryAnt` to chew (set to 3). Also, give each `HungryAnt` an **instance** attribute `cooldown` that counts the number of turns it has left to chew, initialized to 0, since it hasn't eaten anything at the beginning. You can also think of `cooldown` as the number of turns until a `HungryAnt` can eat another `Bee`.\n\nImplement the `action` method of the `HungryAnt`: First, check if it is chewing; if so, decrement its `cooldown`. Otherwise, eat a random `Bee` in its `Place` by reducing the `Bee`'s health to 0. Make sure to set the `cooldown` when a `Bee` is eaten!\n\n**Hint:**: Other than the `action` method, make sure you implement the `__init__` method too in order to define any instance variables and make sure that `HungryAnt` starts off with the appropriate amount of `health`!\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\n👩🏽‍💻👨🏿‍💻 [Pair programming?](https://cs61a.org/articles/pair-programming.html) This would be a good time to switch roles. Switching roles makes sure that you both benefit from the learning experience of being in each role.\n",
+   "id": "07-concept",
+   "title": "Problem 7 (1.5 pt) · 先回答几个问题",
+   "titleEn": "Problem 7 (1.5 pt) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "07"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "Should cooldown be an instance or class attribute? Why?",
+     "choices": [
+      "instance, each HungryAnt instance chews independently of other\nHungryAnt instances",
+      "instance, all HungryAnt instances in the game chew simultaneously",
+      "class, each HungryAnt instance chews independently of other\nHungryAnt instances",
+      "class, all HungryAnt instances in the game chew simultaneously"
+     ],
+     "answer": "9bdaf9d21c5bc25bc5b465def43443fc"
+    },
+    {
+     "type": "choice",
+     "question": "When is a HungryAnt able to eat a Bee?",
+     "choices": [
+      "When it is not chewing, i.e. when its cooldown attribute is 0",
+      "When it is chewing, i.e. when its cooldown attribute is at least 1",
+      "Each turn",
+      "Whenever a Bee is in its place"
+     ],
+     "answer": "de71be3fec0cba010db49e459529fa5e"
+    },
+    {
+     "type": "choice",
+     "question": "When a HungryAnt is able to eat, which Bee does it eat?",
+     "choices": [
+      "A random Bee in the same place as itself",
+      "The closest Bee in front of it",
+      "The closest Bee behind it",
+      "The closest Bee in either direction"
+     ],
+     "answer": "30589d40710d13dfd27efd5cdd28c0f0"
+    }
+   ]
+  },
+  {
+   "id": "07",
+   "title": "Problem 7 (1.5 pt)",
+   "titleEn": "Problem 7 (1.5 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the `HungryAnt`, which will select a random `Bee` from its `Place` and deal damage to the `Bee` equal to the `Bee`'s health, eating it whole. After eating a `Bee`, a `HungryAnt` must spend 3 turns chewing before being able to eat again. While the `HungryAnt` is chewing, it is not able to eat (deal damage to) any `Bee`s. If there is no `Bee` in its place available to eat, the `HungryAnt` will do nothing.\n\nWe have not provided you with a class header. Implement the `HungryAnt` class from scratch. Give it a class attribute `name` with the value `'Hungry'` (so that the graphics work) and a class attribute `implemented` with the value `True` (so that you can use it in a game).\n\n**Hint:** When a `Bee` is eaten, its `health` should be reduced by its `health`.\n\n   **Class** **Food Cost** **Initial Health**\n `HungryAnt` 4 1\n\nGive `HungryAnt` a `chew_cooldown` **class** attribute that stores the number of turns that it will take a `HungryAnt` to chew (set to 3). Also, give each `HungryAnt` an **instance** attribute `cooldown` that counts the number of turns it has left to chew, initialized to 0, since it hasn't eaten anything at the beginning. You can also think of `cooldown` as the number of turns until a `HungryAnt` can eat another `Bee`.\n\nImplement the `action` method of the `HungryAnt`: First, check if it is chewing; if so, decrement its `cooldown`. Otherwise, eat a random `Bee` in its `Place` by reducing the `Bee`'s health to 0. Make sure to set the `cooldown` when a `Bee` is eaten!\n\n**Hint:**: Other than the `action` method, make sure you implement the `__init__` method too in order to define any instance variables and make sure that `HungryAnt` starts off with the appropriate amount of `health`!\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\n👩🏽‍💻👨🏿‍💻 [Pair programming?](https://cs61a.org/articles/pair-programming.html) This would be a good time to switch roles. Switching roles makes sure that you both benefit from the learning experience of being in each role.\n",
+   "statementEn": "Implement the `HungryAnt`, which will select a random `Bee` from its `Place` and deal damage to the `Bee` equal to the `Bee`'s health, eating it whole. After eating a `Bee`, a `HungryAnt` must spend 3 turns chewing before being able to eat again. While the `HungryAnt` is chewing, it is not able to eat (deal damage to) any `Bee`s. If there is no `Bee` in its place available to eat, the `HungryAnt` will do nothing.\n\nWe have not provided you with a class header. Implement the `HungryAnt` class from scratch. Give it a class attribute `name` with the value `'Hungry'` (so that the graphics work) and a class attribute `implemented` with the value `True` (so that you can use it in a game).\n\n**Hint:** When a `Bee` is eaten, its `health` should be reduced by its `health`.\n\n   **Class** **Food Cost** **Initial Health**\n `HungryAnt` 4 1\n\nGive `HungryAnt` a `chew_cooldown` **class** attribute that stores the number of turns that it will take a `HungryAnt` to chew (set to 3). Also, give each `HungryAnt` an **instance** attribute `cooldown` that counts the number of turns it has left to chew, initialized to 0, since it hasn't eaten anything at the beginning. You can also think of `cooldown` as the number of turns until a `HungryAnt` can eat another `Bee`.\n\nImplement the `action` method of the `HungryAnt`: First, check if it is chewing; if so, decrement its `cooldown`. Otherwise, eat a random `Bee` in its `Place` by reducing the `Bee`'s health to 0. Make sure to set the `cooldown` when a `Bee` is eaten!\n\n**Hint:**: Other than the `action` method, make sure you implement the `__init__` method too in order to define any instance variables and make sure that `HungryAnt` starts off with the appropriate amount of `health`!\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\n👩🏽‍💻👨🏿‍💻 [Pair programming?](https://cs61a.org/articles/pair-programming.html) This would be a good time to switch roles. Switching roles makes sure that you both benefit from the learning experience of being in each role.\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "07"
+   }
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "Right now, our ants are quite frail. We'd like to provide a way to help them last longer against the onslaught of the bees. Enter the `ProtectorAnt`.\n\n   **Class** **Food Cost** **Initial Health**\n `ProtectorAnt` 4 2\n\nTo more easily implement the `ProtectorAnt`, we will break up this problem into 3 subparts. In each part, we will making changes in either the `ContainerAnt` class, `Ant` class, or `ProtectorAnt` class.\n\n**Note:** We have separated out Question 8 into three different subparts. We recommend going through the unlocking test for each subpart before writing any code for it. You will be tested on each subpart, with each subpart worth one point, for a total of three points for the entire question.\n\n#### Problem 8a\n\nFirst, we will define and work in a `ContainerAnt` parent class that we will later use for our `ProtectorAnt`.\n\nA `ProtectorAnt` differs from a normal ant because it is a `ContainerAnt`; it can contain another ant and protect it, all in one `Place`. When a `Bee` stings the ant in a `Place` where one ant contains another, only the container is damaged. The ant inside the container can still perform its original action. If the container perishes, the contained ant still remains in the place (and can then be damaged).\n\nEach `ContainerAnt` has an instance attribute `ant_contained` that stores the ant it contains. This ant, `ant_contained`, initially starts off as `None` to indicate that there is no ant being stored yet. Implement the `store_ant` method so that it sets the `ContainerAnt`'s `ant_contained` instance attribute to the `ant` argument passed in. Then implement the `ContainerAnt`'s `action` method. This method will ensure that if our `ContainerAnt` currently contains an ant, `ant_contained`'s action is performed.\n\nIn addition, to ensure that a container and its contained ant can both occupy a `Place` at the same time (a maximum of two ants per `Place`), but only if exactly one is a container, we can create an `can_contain` method.\n\nThere is already an `Ant.can_contain` method, but it always returns `False`. **Override** the method `can_contain` in `ContainerAnt` so that it takes an ant `other` as an argument and returns `True` if:\n\n- This `ContainerAnt` does not already contain another ant.\n- The other ant is not a container.\n\n**Hint:** You may find the `is_container` attribute that each `Ant` has useful for checking if a specific `Ant` is a container.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\n#### Problem 8b\n\nNext, we will be working in the `Ant` class.\n\nModify `Ant.add_to` to allow a container and its contained ant to occupy the same place according to the following rules:\n\n- If the `Ant` originally occupying a place `can_contain` the `Ant` being added, then both `Ant`s occupy the place and the original `Ant` contains the `Ant` being added.\n- If the `Ant` being added `can_contain` the `Ant` originally in the space, then both `Ant`s occupy the place and the `Ant` being added contains the original `Ant`.\n- If neither `Ant` `can_contain` the other, raise the same `AssertionError` as before (the one already present in the starter code).\n\n**Important:** If there are two `Ant`s in a specific `Place`, the `ant` attribute of the `Place` instance should **refer to the container ant**, and the container ant should contain the non-container ant.\n\n**Hint:**: You should also take advantage of the `can_contain` method you wrote and avoid repeating code.\n\n**Note:** If you're getting an \"unreachable code\" warning for `Ant.add_to` via the VSCode Pylance extension, it's fine to ignore this specific warning as the code is actually run (the warning *in this case* is inaccurate).\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\n#### Problem 8c\n\nFinally, we can work on implementing our `ProtectorAnt` class.\n\nAdd a `ProtectorAnt.__init__` that sets the initial amount of health for the `ProtectorAnt`. We do not need to create an `action` method here since the `ProtectorAnt` class inherits it from the `ContainerAnt` class. Also note that the `ProtectorAnt` does not do any damage.\n\nOnce you've finished implementing the `ProtectorAnt`, give it a class attribute `implemented` with the value `True`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "id": "08a-concept",
+   "title": "Problem 8 (1.5 pt) · 先回答几个问题",
+   "titleEn": "Problem 8 (1.5 pt) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "08a 08b 08c"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "Where is the ant contained by a ContainerAnt stored?",
+     "choices": [
+      "In the ContainerAnt's ant_contained instance attribute",
+      "In the ContainerAnt's ant_contained class attribute",
+      "In its place's ant instance attribute",
+      "Nowhere, a ContainerAnt has no knowledge of the ant that it's protecting"
+     ],
+     "answer": "cf13df85d8ffea8b7928c6f0f860c5e1"
+    },
+    {
+     "type": "choice",
+     "question": "How does a ContainerAnt guard its ant?",
+     "choices": [
+      "By protecting the ant from Bees and allowing it to perform its original action",
+      "By attacking Bees that try to attack it",
+      "By increasing the ant's health",
+      "By allowing Bees to pass without attacking"
+     ],
+     "answer": "22a2c7eb1d7adee7ea4eb970d3cc09e9"
+    },
+    {
+     "type": "choice",
+     "question": "When can a second Ant be added to a place that already contains an Ant?",
+     "choices": [
+      "When exactly one of the Ant instances is a container and the\ncontainer ant does not already contain another ant",
+      "When exactly one of the Ant instances is a container",
+      "When both Ant instances are containers",
+      "There can never be two Ant instances in the same place"
+     ],
+     "answer": "7a81f10493cb9dd2a778afa061e3edd5"
+    },
+    {
+     "type": "choice",
+     "question": "If two Ants occupy the same Place, what is stored in that place's ant\ninstance attribute?",
+     "choices": [
+      "The Container Ant",
+      "The Ant being contained",
+      "A list containing both Ants",
+      "Whichever Ant was placed there first"
+     ],
+     "answer": "9ee6782d61a987d40e66726eb2354093"
+    },
+    {
+     "type": "choice",
+     "question": "Which Ant does a ContainerAnt guard?",
+     "choices": [
+      "The Ant instance that is in the same place as itself",
+      "The Ant instance in the place closest to its own place",
+      "A random Ant instance in the gamestate",
+      "All the Ant instances in the gamestate"
+     ],
+     "answer": "c9e4559526ed96dcae3a8a67e48f2539"
+    },
+    {
+     "type": "choice",
+     "question": "Where does a ProtectorAnt directly inherit all of its instance attributes from?",
+     "choices": [
+      "ContainerAnt class",
+      "Insect class",
+      "the ProtectorAnt does not inherit from any other class",
+      "Ant class"
+     ],
+     "answer": "9f40b97857ecfadf1e7ad1c7965f2464"
+    }
+   ]
+  },
+  {
+   "id": "08a",
+   "title": "Problem 8 (1.5 pt)",
+   "titleEn": "Problem 8 (1.5 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nRight now, our ants are quite frail. We'd like to provide a way to help them last longer against the onslaught of the bees. Enter the `ProtectorAnt`.\n\n   **Class** **Food Cost** **Initial Health**\n `ProtectorAnt` 4 2\n\nTo more easily implement the `ProtectorAnt`, we will break up this problem into 3 subparts. In each part, we will making changes in either the `ContainerAnt` class, `Ant` class, or `ProtectorAnt` class.\n\n**Note:** We have separated out Question 8 into three different subparts. We recommend going through the unlocking test for each subpart before writing any code for it. You will be tested on each subpart, with each subpart worth one point, for a total of three points for the entire question.\n\n#### Problem 8a\n\nFirst, we will define and work in a `ContainerAnt` parent class that we will later use for our `ProtectorAnt`.\n\nA `ProtectorAnt` differs from a normal ant because it is a `ContainerAnt`; it can contain another ant and protect it, all in one `Place`. When a `Bee` stings the ant in a `Place` where one ant contains another, only the container is damaged. The ant inside the container can still perform its original action. If the container perishes, the contained ant still remains in the place (and can then be damaged).\n\nEach `ContainerAnt` has an instance attribute `ant_contained` that stores the ant it contains. This ant, `ant_contained`, initially starts off as `None` to indicate that there is no ant being stored yet. Implement the `store_ant` method so that it sets the `ContainerAnt`'s `ant_contained` instance attribute to the `ant` argument passed in. Then implement the `ContainerAnt`'s `action` method. This method will ensure that if our `ContainerAnt` currently contains an ant, `ant_contained`'s action is performed.\n\nIn addition, to ensure that a container and its contained ant can both occupy a `Place` at the same time (a maximum of two ants per `Place`), but only if exactly one is a container, we can create an `can_contain` method.\n\nThere is already an `Ant.can_contain` method, but it always returns `False`. **Override** the method `can_contain` in `ContainerAnt` so that it takes an ant `other` as an argument and returns `True` if:\n\n- This `ContainerAnt` does not already contain another ant.\n- The other ant is not a container.\n\n**Hint:** You may find the `is_container` attribute that each `Ant` has useful for checking if a specific `Ant` is a container.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\n#### Problem 8b\n\nNext, we will be working in the `Ant` class.\n\nModify `Ant.add_to` to allow a container and its contained ant to occupy the same place according to the following rules:\n\n- If the `Ant` originally occupying a place `can_contain` the `Ant` being added, then both `Ant`s occupy the place and the original `Ant` contains the `Ant` being added.\n- If the `Ant` being added `can_contain` the `Ant` originally in the space, then both `Ant`s occupy the place and the `Ant` being added contains the original `Ant`.\n- If neither `Ant` `can_contain` the other, raise the same `AssertionError` as before (the one already present in the starter code).\n\n**Important:** If there are two `Ant`s in a specific `Place`, the `ant` attribute of the `Place` instance should **refer to the container ant**, and the container ant should contain the non-container ant.\n\n**Hint:**: You should also take advantage of the `can_contain` method you wrote and avoid repeating code.\n\n**Note:** If you're getting an \"unreachable code\" warning for `Ant.add_to` via the VSCode Pylance extension, it's fine to ignore this specific warning as the code is actually run (the warning *in this case* is inaccurate).\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\n#### Problem 8c\n\nFinally, we can work on implementing our `ProtectorAnt` class.\n\nAdd a `ProtectorAnt.__init__` that sets the initial amount of health for the `ProtectorAnt`. We do not need to create an `action` method here since the `ProtectorAnt` class inherits it from the `ContainerAnt` class. Also note that the `ProtectorAnt` does not do any damage.\n\nOnce you've finished implementing the `ProtectorAnt`, give it a class attribute `implemented` with the value `True`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "statementEn": "Right now, our ants are quite frail. We'd like to provide a way to help them last longer against the onslaught of the bees. Enter the `ProtectorAnt`.\n\n   **Class** **Food Cost** **Initial Health**\n `ProtectorAnt` 4 2\n\nTo more easily implement the `ProtectorAnt`, we will break up this problem into 3 subparts. In each part, we will making changes in either the `ContainerAnt` class, `Ant` class, or `ProtectorAnt` class.\n\n**Note:** We have separated out Question 8 into three different subparts. We recommend going through the unlocking test for each subpart before writing any code for it. You will be tested on each subpart, with each subpart worth one point, for a total of three points for the entire question.\n\n#### Problem 8a\n\nFirst, we will define and work in a `ContainerAnt` parent class that we will later use for our `ProtectorAnt`.\n\nA `ProtectorAnt` differs from a normal ant because it is a `ContainerAnt`; it can contain another ant and protect it, all in one `Place`. When a `Bee` stings the ant in a `Place` where one ant contains another, only the container is damaged. The ant inside the container can still perform its original action. If the container perishes, the contained ant still remains in the place (and can then be damaged).\n\nEach `ContainerAnt` has an instance attribute `ant_contained` that stores the ant it contains. This ant, `ant_contained`, initially starts off as `None` to indicate that there is no ant being stored yet. Implement the `store_ant` method so that it sets the `ContainerAnt`'s `ant_contained` instance attribute to the `ant` argument passed in. Then implement the `ContainerAnt`'s `action` method. This method will ensure that if our `ContainerAnt` currently contains an ant, `ant_contained`'s action is performed.\n\nIn addition, to ensure that a container and its contained ant can both occupy a `Place` at the same time (a maximum of two ants per `Place`), but only if exactly one is a container, we can create an `can_contain` method.\n\nThere is already an `Ant.can_contain` method, but it always returns `False`. **Override** the method `can_contain` in `ContainerAnt` so that it takes an ant `other` as an argument and returns `True` if:\n\n- This `ContainerAnt` does not already contain another ant.\n- The other ant is not a container.\n\n**Hint:** You may find the `is_container` attribute that each `Ant` has useful for checking if a specific `Ant` is a container.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\n#### Problem 8b\n\nNext, we will be working in the `Ant` class.\n\nModify `Ant.add_to` to allow a container and its contained ant to occupy the same place according to the following rules:\n\n- If the `Ant` originally occupying a place `can_contain` the `Ant` being added, then both `Ant`s occupy the place and the original `Ant` contains the `Ant` being added.\n- If the `Ant` being added `can_contain` the `Ant` originally in the space, then both `Ant`s occupy the place and the `Ant` being added contains the original `Ant`.\n- If neither `Ant` `can_contain` the other, raise the same `AssertionError` as before (the one already present in the starter code).\n\n**Important:** If there are two `Ant`s in a specific `Place`, the `ant` attribute of the `Place` instance should **refer to the container ant**, and the container ant should contain the non-container ant.\n\n**Hint:**: You should also take advantage of the `can_contain` method you wrote and avoid repeating code.\n\n**Note:** If you're getting an \"unreachable code\" warning for `Ant.add_to` via the VSCode Pylance extension, it's fine to ignore this specific warning as the code is actually run (the warning *in this case* is inaccurate).\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\n#### Problem 8c\n\nFinally, we can work on implementing our `ProtectorAnt` class.\n\nAdd a `ProtectorAnt.__init__` that sets the initial amount of health for the `ProtectorAnt`. We do not need to create an `action` method here since the `ProtectorAnt` class inherits it from the `ContainerAnt` class. Also note that the `ProtectorAnt` does not do any damage.\n\nOnce you've finished implementing the `ProtectorAnt`, give it a class attribute `implemented` with the value `True`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "08a 08b 08c"
+   }
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "The `ProtectorAnt` provides great defense, but they say the best defense is a good offense. The `TankAnt` is a `ContainerAnt` that protects an ant in its place and also deals 1 damage to all `Bee`s in its `Place` each turn. Like any `ContainerAnt`, a `TankAnt` allows the ant that it contains to perform its action each turn.\n\n   **Class** **Food Cost** **Initial Health**\n `TankAnt` 6 2\n\nWe have not provided you with a class header. Implement the `TankAnt` class from scratch. Give it a class attribute `name` with the value `'Tank'` (so that the graphics work) and a class attribute `implemented` with the value `True` (so that you can use it in a game).\n\nYou should not need to modify any code outside of the `TankAnt` class. If you find yourself needing to make changes elsewhere, look for a way to write your code for the previous question such that it applies not just to `ProtectorAnt` and `TankAnt` objects, but to `ContainerAnt`s in general.\n\n**Hint:**: The only methods you need to override from `TankAnt`'s parent class are `__init__` and `action`.\n\n**Hint:**: Like with `FireAnt`, it is possible that damaging a bee will cause it to be removed from its place.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "id": "09-concept",
+   "title": "Problem 9 (1 pt) · 先回答几个问题",
+   "titleEn": "Problem 9 (1 pt) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "09"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "Besides costing more to place, what is the only difference between a\nTankAnt and a ProtectorAnt?",
+     "choices": [
+      "A TankAnt does damage to all Bees in its place each turn",
+      "A TankAnt has greater health than a ProtectorAnt",
+      "A TankAnt can contain multiple ants",
+      "A TankAnt increases the damage of the ant it contains"
+     ],
+     "answer": "df9239b5516819d074706715cb1822fe"
+    }
+   ]
+  },
+  {
+   "id": "09",
+   "title": "Problem 9 (1 pt)",
+   "titleEn": "Problem 9 (1 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nThe `ProtectorAnt` provides great defense, but they say the best defense is a good offense. The `TankAnt` is a `ContainerAnt` that protects an ant in its place and also deals 1 damage to all `Bee`s in its `Place` each turn. Like any `ContainerAnt`, a `TankAnt` allows the ant that it contains to perform its action each turn.\n\n   **Class** **Food Cost** **Initial Health**\n `TankAnt` 6 2\n\nWe have not provided you with a class header. Implement the `TankAnt` class from scratch. Give it a class attribute `name` with the value `'Tank'` (so that the graphics work) and a class attribute `implemented` with the value `True` (so that you can use it in a game).\n\nYou should not need to modify any code outside of the `TankAnt` class. If you find yourself needing to make changes elsewhere, look for a way to write your code for the previous question such that it applies not just to `ProtectorAnt` and `TankAnt` objects, but to `ContainerAnt`s in general.\n\n**Hint:**: The only methods you need to override from `TankAnt`'s parent class are `__init__` and `action`.\n\n**Hint:**: Like with `FireAnt`, it is possible that damaging a bee will cause it to be removed from its place.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "statementEn": "The `ProtectorAnt` provides great defense, but they say the best defense is a good offense. The `TankAnt` is a `ContainerAnt` that protects an ant in its place and also deals 1 damage to all `Bee`s in its `Place` each turn. Like any `ContainerAnt`, a `TankAnt` allows the ant that it contains to perform its action each turn.\n\n   **Class** **Food Cost** **Initial Health**\n `TankAnt` 6 2\n\nWe have not provided you with a class header. Implement the `TankAnt` class from scratch. Give it a class attribute `name` with the value `'Tank'` (so that the graphics work) and a class attribute `implemented` with the value `True` (so that you can use it in a game).\n\nYou should not need to modify any code outside of the `TankAnt` class. If you find yourself needing to make changes elsewhere, look for a way to write your code for the previous question such that it applies not just to `ProtectorAnt` and `TankAnt` objects, but to `ContainerAnt`s in general.\n\n**Hint:**: The only methods you need to override from `TankAnt`'s parent class are `__init__` and `action`.\n\n**Hint:**: Like with `FireAnt`, it is possible that damaging a bee will cause it to be removed from its place.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "09"
+   }
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "Let's add water to the colony! Currently there are only two types of places, the `Hive` and a basic `Place`. To make things more interesting, we're going to create a new type of `Place` called `Water`.\n\nOnly an `Insect` that is waterproof can be placed in `Water`. In order to determine whether an `Insect` is waterproof, add a new class attribute to the `Insect` class named `is_waterproof` that is set to `False`. Since `Bee`s can fly, their `is_waterproof` attribute is `True`, overriding the inherited value.\n\nNow, implement the `add_insect` method for `Water`. First, add the `Insect` to the `Place` regardless of whether it is waterproof. Then, if the `Insect` is not waterproof, reduce the `Insect`'s `health` to 0. *Do not repeat code from elsewhere in the program.* Instead, use methods that have already been defined.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nOnce you've finished this problem, play a game that includes water. To access the `wet_layout`, which includes water, add the `--water` option (or `-w` for short) when you start the game.\n\n```\npython3 gui.py --water\n```\n\n👩🏽‍💻👨🏿‍💻 [Pair programming?](https://cs61a.org/articles/pair-programming.html) Remember to alternate between driver and navigator roles. The driver controls the keyboard; the navigator watches, asks questions, and suggests ideas.\n",
+   "id": "10-concept",
+   "title": "Problem 10 (0.5 pt) · 先回答几个问题",
+   "titleEn": "Problem 10 (0.5 pt) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "10"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "What happens when an insect is added to a Water Place?",
+     "choices": [
+      "If the insect is not waterproof, its health is reduced to 0.\nOtherwise, nothing happens.",
+      "The insect's health is reduced to 0.",
+      "Nothing happens.",
+      "The insect goes for a swim."
+     ],
+     "answer": "adaf2d9fa40056824000d27086ae3288"
+    },
+    {
+     "type": "choice",
+     "question": "What type of attribute should \"is_waterproof\" be?",
+     "choices": [
+      "class, all ants of a subclass should either be waterproof or not",
+      "class, all ants should be waterproof",
+      "instance, the is_waterproof attribute depends on the amount of health a given ant has left",
+      "instance, the is_waterproof attribute depends on the given place of an ant"
+     ],
+     "answer": "c2c702fdace349525eb19020c3dde5e2"
+    },
+    {
+     "type": "choice",
+     "question": "What method deals damage to an Insect and removes it from its place\nif its health reaches 0?",
+     "choices": [
+      "reduce_health, in the Insect class",
+      "remove_insect, in the Place class",
+      "sting, in the Bee class",
+      "remove_ant, in the GameState class"
+     ],
+     "answer": "d0b5a58a4030ecd64dc80332c297e8dd"
+    }
+   ]
+  },
+  {
+   "id": "10",
+   "title": "Problem 10 (0.5 pt)",
+   "titleEn": "Problem 10 (0.5 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nLet's add water to the colony! Currently there are only two types of places, the `Hive` and a basic `Place`. To make things more interesting, we're going to create a new type of `Place` called `Water`.\n\nOnly an `Insect` that is waterproof can be placed in `Water`. In order to determine whether an `Insect` is waterproof, add a new class attribute to the `Insect` class named `is_waterproof` that is set to `False`. Since `Bee`s can fly, their `is_waterproof` attribute is `True`, overriding the inherited value.\n\nNow, implement the `add_insect` method for `Water`. First, add the `Insect` to the `Place` regardless of whether it is waterproof. Then, if the `Insect` is not waterproof, reduce the `Insect`'s `health` to 0. *Do not repeat code from elsewhere in the program.* Instead, use methods that have already been defined.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nOnce you've finished this problem, play a game that includes water. To access the `wet_layout`, which includes water, add the `--water` option (or `-w` for short) when you start the game.\n\n```\npython3 gui.py --water\n```\n\n👩🏽‍💻👨🏿‍💻 [Pair programming?](https://cs61a.org/articles/pair-programming.html) Remember to alternate between driver and navigator roles. The driver controls the keyboard; the navigator watches, asks questions, and suggests ideas.\n",
+   "statementEn": "Let's add water to the colony! Currently there are only two types of places, the `Hive` and a basic `Place`. To make things more interesting, we're going to create a new type of `Place` called `Water`.\n\nOnly an `Insect` that is waterproof can be placed in `Water`. In order to determine whether an `Insect` is waterproof, add a new class attribute to the `Insect` class named `is_waterproof` that is set to `False`. Since `Bee`s can fly, their `is_waterproof` attribute is `True`, overriding the inherited value.\n\nNow, implement the `add_insect` method for `Water`. First, add the `Insect` to the `Place` regardless of whether it is waterproof. Then, if the `Insect` is not waterproof, reduce the `Insect`'s `health` to 0. *Do not repeat code from elsewhere in the program.* Instead, use methods that have already been defined.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nOnce you've finished this problem, play a game that includes water. To access the `wet_layout`, which includes water, add the `--water` option (or `-w` for short) when you start the game.\n\n```\npython3 gui.py --water\n```\n\n👩🏽‍💻👨🏿‍💻 [Pair programming?](https://cs61a.org/articles/pair-programming.html) Remember to alternate between driver and navigator roles. The driver controls the keyboard; the navigator watches, asks questions, and suggests ideas.\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "10"
+   }
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "Currently there are no ants that can be placed on `Water`. Implement the `ScubaThrower`, which is a subclass of `ThrowerAnt` that is more costly and waterproof, *but otherwise identical to its base class*. A `ScubaThrower` should not lose its health when placed in `Water`.\n\n   **Class** **Food Cost** **Initial Health**\n `ScubaThrower` 6 1\n\nWe have not provided you with a class header. Implement the `ScubaThrower` class from scratch. Give it a class attribute `name` with the value `'Scuba'` (so that the graphics work) and remember to set the class attribute `implemented` with the value `True` (so that you can use it in a game).\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "id": "11-concept",
+   "title": "Problem 11 (1 pt) · 先回答几个问题",
+   "titleEn": "Problem 11 (1 pt) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "11"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "How is a ScubaThrower different from a regular ThrowerAnt?",
+     "choices": [
+      "It is waterproof, so its health won't be reduced to 0 when it is\nplaced in a Water Place",
+      "It is not waterproof, so its health will be reduced to 0 when it is\nplaced in a Water Place",
+      "It throws water pellets instead of leaves"
+     ],
+     "answer": "6512574582a86c43afdb727fa08dd08a"
+    },
+    {
+     "type": "choice",
+     "question": "Which inherited attributes and/or methods should ScubaThrower\noverride?",
+     "choices": [
+      "name, is_waterproof, food_cost",
+      "food_cost, action, damage",
+      "is_waterproof, action",
+      "name, nearest_bee, is_waterproof"
+     ],
+     "answer": "5efd048fe229d12ce42660f525c96ac1"
+    }
+   ]
+  },
+  {
+   "id": "11",
+   "title": "Problem 11 (1 pt)",
+   "titleEn": "Problem 11 (1 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nCurrently there are no ants that can be placed on `Water`. Implement the `ScubaThrower`, which is a subclass of `ThrowerAnt` that is more costly and waterproof, *but otherwise identical to its base class*. A `ScubaThrower` should not lose its health when placed in `Water`.\n\n   **Class** **Food Cost** **Initial Health**\n `ScubaThrower` 6 1\n\nWe have not provided you with a class header. Implement the `ScubaThrower` class from scratch. Give it a class attribute `name` with the value `'Scuba'` (so that the graphics work) and remember to set the class attribute `implemented` with the value `True` (so that you can use it in a game).\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "statementEn": "Currently there are no ants that can be placed on `Water`. Implement the `ScubaThrower`, which is a subclass of `ThrowerAnt` that is more costly and waterproof, *but otherwise identical to its base class*. A `ScubaThrower` should not lose its health when placed in `Water`.\n\n   **Class** **Food Cost** **Initial Health**\n `ScubaThrower` 6 1\n\nWe have not provided you with a class header. Implement the `ScubaThrower` class from scratch. Give it a class attribute `name` with the value `'Scuba'` (so that the graphics work) and remember to set the class attribute `implemented` with the value `True` (so that you can use it in a game).\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "11"
+   }
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "Finally, implement the `QueenAnt`. A queen is a `ThrowerAnt` that inspires her fellow ants through her bravery. In addition to the standard `ThrowerAnt` action, a `QueenAnt` doubles the damage of all the ants behind her in her tunnel each time she performs an action. However, once an ant's damage has been doubled, it *cannot* be doubled again. Try to think of a way to keep track of whether an ant's damage has already been doubled (Hint: Use an instance attribute!)\n\n**Note:** The *reflected damage* of a `FireAnt` should not be doubled, only the extra damage it deals when its health is reduced to 0.\n\n   **Class** **Food Cost** **Initial Health**\n `QueenAnt` 7 1\n\nHowever, with great power comes great responsibility. If a `QueenAnt` ever has its health reduced to 0, the ants lose. You will need to override `Insect.reduce_health` in `QueenAnt` and call `ants_lose()` in that case in order to signal to the simulator that the game is over. (The ants also still lose if any bee reaches the end of a tunnel.)\n\n**Hint:** For doubling the damage of all ants behind her, you may fill out the `double` method defined in the `Ant` class, then call it from the `QueenAnt` class.\n\n**Hint:** When doubling the ants' damage, keep in mind that there can be more than one ant in a `Place`, like in the case of container ants storing another.\n\n**Hint:** Remember that `QueenAnt`'s `reduce_health` method adds the additional task of calling `ants_lose()` to the superclass's `reduce_health` method. How can we make sure we still do everything from the superclass's method without repeating code?\n\n**Hint:** You can find each `Place` in a tunnel behind a `QueenAnt` by starting at the queen's `place.exit` and then repeatedly moving back to the previous `Place`'s `exit`. The `exit` of a `Place` at the end of a tunnel is `None`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "id": "12-concept",
+   "title": "Problem 12 (1 pt) · 先回答几个问题",
+   "titleEn": "Problem 12 (1 pt) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "12"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "What does a QueenAnt do each turn?",
+     "choices": [
+      "Attacks the nearest bee and doubles the damage of all the ants\nbehind her in her tunnel (that haven't already been doubled)",
+      "Doubles the damage of all the ants behind her in her tunnel (that haven't\nalready been doubled)",
+      "Doubles the damage of all the ants in front of her (that haven't\nalready been doubled)",
+      "Doubles the damage of all the ants in the colony (that haven't\nalready been doubled)"
+     ],
+     "answer": "3d94c275b7767bdd23a9730a67fcf441"
+    },
+    {
+     "type": "choice",
+     "question": "Under what circumstances do Ants lose the game?",
+     "choices": [
+      "If a Bee reaches the end of a tunnel or a QueenAnt dies",
+      "If there are no ants left in the colony",
+      "If a second QueenAnt is placed in the colony",
+      "If a Bee attacks a QueenAnt"
+     ],
+     "answer": "5513089cd61eeda577f95f887b408517"
+    }
+   ]
+  },
+  {
+   "id": "12",
+   "title": "Problem 12 (1 pt)",
+   "titleEn": "Problem 12 (1 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nFinally, implement the `QueenAnt`. A queen is a `ThrowerAnt` that inspires her fellow ants through her bravery. In addition to the standard `ThrowerAnt` action, a `QueenAnt` doubles the damage of all the ants behind her in her tunnel each time she performs an action. However, once an ant's damage has been doubled, it *cannot* be doubled again. Try to think of a way to keep track of whether an ant's damage has already been doubled (Hint: Use an instance attribute!)\n\n**Note:** The *reflected damage* of a `FireAnt` should not be doubled, only the extra damage it deals when its health is reduced to 0.\n\n   **Class** **Food Cost** **Initial Health**\n `QueenAnt` 7 1\n\nHowever, with great power comes great responsibility. If a `QueenAnt` ever has its health reduced to 0, the ants lose. You will need to override `Insect.reduce_health` in `QueenAnt` and call `ants_lose()` in that case in order to signal to the simulator that the game is over. (The ants also still lose if any bee reaches the end of a tunnel.)\n\n**Hint:** For doubling the damage of all ants behind her, you may fill out the `double` method defined in the `Ant` class, then call it from the `QueenAnt` class.\n\n**Hint:** When doubling the ants' damage, keep in mind that there can be more than one ant in a `Place`, like in the case of container ants storing another.\n\n**Hint:** Remember that `QueenAnt`'s `reduce_health` method adds the additional task of calling `ants_lose()` to the superclass's `reduce_health` method. How can we make sure we still do everything from the superclass's method without repeating code?\n\n**Hint:** You can find each `Place` in a tunnel behind a `QueenAnt` by starting at the queen's `place.exit` and then repeatedly moving back to the previous `Place`'s `exit`. The `exit` of a `Place` at the end of a tunnel is `None`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "statementEn": "Finally, implement the `QueenAnt`. A queen is a `ThrowerAnt` that inspires her fellow ants through her bravery. In addition to the standard `ThrowerAnt` action, a `QueenAnt` doubles the damage of all the ants behind her in her tunnel each time she performs an action. However, once an ant's damage has been doubled, it *cannot* be doubled again. Try to think of a way to keep track of whether an ant's damage has already been doubled (Hint: Use an instance attribute!)\n\n**Note:** The *reflected damage* of a `FireAnt` should not be doubled, only the extra damage it deals when its health is reduced to 0.\n\n   **Class** **Food Cost** **Initial Health**\n `QueenAnt` 7 1\n\nHowever, with great power comes great responsibility. If a `QueenAnt` ever has its health reduced to 0, the ants lose. You will need to override `Insect.reduce_health` in `QueenAnt` and call `ants_lose()` in that case in order to signal to the simulator that the game is over. (The ants also still lose if any bee reaches the end of a tunnel.)\n\n**Hint:** For doubling the damage of all ants behind her, you may fill out the `double` method defined in the `Ant` class, then call it from the `QueenAnt` class.\n\n**Hint:** When doubling the ants' damage, keep in mind that there can be more than one ant in a `Place`, like in the case of container ants storing another.\n\n**Hint:** Remember that `QueenAnt`'s `reduce_health` method adds the additional task of calling `ants_lose()` to the superclass's `reduce_health` method. How can we make sure we still do everything from the superclass's method without repeating code?\n\n**Hint:** You can find each `Place` in a tunnel behind a `QueenAnt` by starting at the queen's `place.exit` and then repeatedly moving back to the previous `Place`'s `exit`. The `exit` of a `Place` at the end of a tunnel is `None`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "12"
+   }
+  },
+  {
+   "id": "ec1",
+   "title": "Problem EC 1 (0 pt)",
+   "titleEn": "Problem EC 1 (0 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWe will be implementing a new ant, `SlowThrower`, which inherits from `ThrowerAnt`.\n\n`SlowThrower` throws sticky syrup at a bee, slowing it for 5 turns. When a bee is slowed, it does its regular Bee action when `gamestate.time` is even, and takes no action (does not move or sting) otherwise. If a bee is hit by syrup while it is already slowed, it is slowed for 5 turns starting from the *most recent* time it is hit by syrup. That is, if a bee is hit by syrup, takes 2 turns, and is hit by syrup again, it will now be slowed for 5 turns after the *second* time it is hit by syrup. So it will have been slowed for 7 turns total (not 10!).\n\n   **Class** **Food Cost** **Initial Health**\n `SlowThrower` 6 1\n\nIn order to complete the implementations of this `SlowThrower`, you will need to set its class attributes appropriately and implement the `throw_at` method in `SlowThrower`.\n\n**Important Restriction:** You may *not* modify any code outside the `SlowThrower` class for this problem. That means you may *not* modify the `Bee.action` method directly. Our tests will check for this.\n\n**Hint**: Take a look at `SlowThrower`'s parent class, `ThrowerAnt`. `ThrowerAnt`'s `action` method calls `throw_at`, which is what you should be overriding in `SlowThrower`. What is passed into the `target` parameter in `SlowThrower`'s `throw_at` function and why? What is `target.action` referring to?\n\n**Implementation Hint**: Assign `target.action` to a new function that conditionally calls `Bee.action`. You can create and use an instance attribute to track how many more turns the bee will be slowed. Once the slowing effect is over, `Bee.action` should be called *every* turn again.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nYou can run some provided tests, but they are not exhaustive:\n\nMake sure to test your code! Your code should be able to apply multiple statuses on a target; each new status applies to the current (possibly previously affected) action method of the bee.\n",
+   "statementEn": "We will be implementing a new ant, `SlowThrower`, which inherits from `ThrowerAnt`.\n\n`SlowThrower` throws sticky syrup at a bee, slowing it for 5 turns. When a bee is slowed, it does its regular Bee action when `gamestate.time` is even, and takes no action (does not move or sting) otherwise. If a bee is hit by syrup while it is already slowed, it is slowed for 5 turns starting from the *most recent* time it is hit by syrup. That is, if a bee is hit by syrup, takes 2 turns, and is hit by syrup again, it will now be slowed for 5 turns after the *second* time it is hit by syrup. So it will have been slowed for 7 turns total (not 10!).\n\n   **Class** **Food Cost** **Initial Health**\n `SlowThrower` 6 1\n\nIn order to complete the implementations of this `SlowThrower`, you will need to set its class attributes appropriately and implement the `throw_at` method in `SlowThrower`.\n\n**Important Restriction:** You may *not* modify any code outside the `SlowThrower` class for this problem. That means you may *not* modify the `Bee.action` method directly. Our tests will check for this.\n\n**Hint**: Take a look at `SlowThrower`'s parent class, `ThrowerAnt`. `ThrowerAnt`'s `action` method calls `throw_at`, which is what you should be overriding in `SlowThrower`. What is passed into the `target` parameter in `SlowThrower`'s `throw_at` function and why? What is `target.action` referring to?\n\n**Implementation Hint**: Assign `target.action` to a new function that conditionally calls `Bee.action`. You can create and use an instance attribute to track how many more turns the bee will be slowed. Once the slowing effect is over, `Bee.action` should be called *every* turn again.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nYou can run some provided tests, but they are not exhaustive:\n\nMake sure to test your code! Your code should be able to apply multiple statuses on a target; each new status applies to the current (possibly previously affected) action method of the bee.\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "EC1"
+   }
+  },
+  {
+   "id": "ec2",
+   "title": "Problem EC 2 (0 pt)",
+   "titleEn": "Problem EC 2 (0 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nYou must implement Problem EC 1 (SlowThrower) correctly in order to pass the tests for this problem. We will be implementing a new ant, `ScaryThrower`, which inherits from `ThrowerAnt`.\n\n`ScaryThrower` intimidates a nearby bee, causing it to back away instead of advancing. Here are some rules to keep in mind:\n\n1. If the bee is already right next to the Hive and cannot go back further, it should not move. To check if a bee is next to the Hive, you might find the `is_hive` instance attribute of `Place` useful.\n2. Bees remain scared until they have tried to back away *twice*. So, the back away effect lasts two turns.\n3. Bees cannot try to back away if they are *slowed* and `gamestate.time` is *odd*. This would be a turn they're frozen by SlowThrower!\n4. Once a bee has been scared once, it can't be scared ever again.\n\n   **Class** **Food Cost** **Initial Health**\n `ScaryThrower` 6 1\n\nIn order to complete the implementation of this `ScaryThrower`, you will need to set its class attributes appropriately and implement the `scare` method in `Bee`, which applies the scared status on a particular bee. You may also have to edit some other methods of `Bee` such as action.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nMake sure to test your code! Your code should be able to apply multiple statuses on a target; each new status applies to the current (possibly previously affected) action method of the bee.\n",
+   "statementEn": "You must implement Problem EC 1 (SlowThrower) correctly in order to pass the tests for this problem. We will be implementing a new ant, `ScaryThrower`, which inherits from `ThrowerAnt`.\n\n`ScaryThrower` intimidates a nearby bee, causing it to back away instead of advancing. Here are some rules to keep in mind:\n\n1. If the bee is already right next to the Hive and cannot go back further, it should not move. To check if a bee is next to the Hive, you might find the `is_hive` instance attribute of `Place` useful.\n2. Bees remain scared until they have tried to back away *twice*. So, the back away effect lasts two turns.\n3. Bees cannot try to back away if they are *slowed* and `gamestate.time` is *odd*. This would be a turn they're frozen by SlowThrower!\n4. Once a bee has been scared once, it can't be scared ever again.\n\n   **Class** **Food Cost** **Initial Health**\n `ScaryThrower` 6 1\n\nIn order to complete the implementation of this `ScaryThrower`, you will need to set its class attributes appropriately and implement the `scare` method in `Bee`, which applies the scared status on a particular bee. You may also have to edit some other methods of `Bee` such as action.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nMake sure to test your code! Your code should be able to apply multiple statuses on a target; each new status applies to the current (possibly previously affected) action method of the bee.\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "EC2"
+   }
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "Implement the `NinjaAnt`, which damages all `Bee`s that pass by, but can never be stung.\n\n   **Class** **Food Cost** **Initial Health**\n `NinjaAnt` 5 1\n\nA `NinjaAnt` does not block the path of a `Bee` that flies by. To implement this behavior, first modify the `Ant` class to include a new class attribute `blocks_path` that is set to `True`, then override the value of `blocks_path` to `False` in the `NinjaAnt` class.\n\nSecond, modify the `Bee`'s method `blocked` to return `False` if either there is no `Ant` in the `Bee`'s `place` or if there is an `Ant`, but its `blocks_path` attribute is `False`. Now `Bee`s will just fly past `NinjaAnt`s.\n\nFinally, we want to make the `NinjaAnt` damage all `Bee`s that fly past. Implement the `action` method in `NinjaAnt` to reduce the health of all `Bee`s in the same `place` as the `NinjaAnt` by its `damage` attribute. Similar to the `FireAnt`, you must iterate over a potentially changing list of bees.\n\n**Hint**: Having trouble visualizing the test cases? Try drawing them out on paper! See the example in [Game Layout](https://cs61a.org/proj/ants/index.html#game-layout) for help.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nFor a challenge, try to win a game using only `HarvesterAnt` and `NinjaAnt`.\n",
+   "id": "ec3-concept",
+   "title": "Problem EC 3 (0 pt) · 先回答几个问题",
+   "titleEn": "Problem EC 3 (0 pt) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "EC3"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "Which Ant types have a blocks_path attribute?",
+     "choices": [
+      "All Ant types have a blocks_path attribute that is inherited from\nthe Ant superclass",
+      "Only the NinjaAnt has a blocks_path attribute",
+      "None of the Ant subclasses have a blocks_path attribute",
+      "All Ant types except for NinjaAnt have a blocks_path attribute"
+     ],
+     "answer": "d867280d511300bf4fa42dae8866a575"
+    },
+    {
+     "type": "choice",
+     "question": "What is the value of blocks_path for each Ant subclass?",
+     "choices": [
+      "blocks_path is True for every Ant subclass except NinjaAnt",
+      "blocks_path is False for every Ant subclass except NinjaAnt",
+      "blocks_path is True for all Ants",
+      "blocks_path is False for all Ants"
+     ],
+     "answer": "0a74e2e9020b74e8968cc9a0ed1ef38d"
+    },
+    {
+     "type": "choice",
+     "question": "When is the path of a Bee blocked?",
+     "choices": [
+      "When there is an Ant in the Bee's place",
+      "When there is an Ant whose blocks_path attribute is True in the\nBee's place",
+      "When there is not an NinjaAnt in the Bee's place",
+      "When there are no Ants in the Bee's place"
+     ],
+     "answer": "ad3ed5994969f15b71d99c706bb59339"
+    },
+    {
+     "type": "choice",
+     "question": "What does a NinjaAnt do to each Bee that flies in its place?",
+     "choices": [
+      "Reduces the Bee's health by the NinjaAnt's damage attribute",
+      "Reduces the Bee's health to 0",
+      "Nothing, the NinjaAnt doesn't damage Bees",
+      "Blocks the Bee's path"
+     ],
+     "answer": "94f9395e9fd1d730fd15d335ecdaedd2"
+    }
+   ]
+  },
+  {
+   "id": "ec3",
+   "title": "Problem EC 3 (0 pt)",
+   "titleEn": "Problem EC 3 (0 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the `NinjaAnt`, which damages all `Bee`s that pass by, but can never be stung.\n\n   **Class** **Food Cost** **Initial Health**\n `NinjaAnt` 5 1\n\nA `NinjaAnt` does not block the path of a `Bee` that flies by. To implement this behavior, first modify the `Ant` class to include a new class attribute `blocks_path` that is set to `True`, then override the value of `blocks_path` to `False` in the `NinjaAnt` class.\n\nSecond, modify the `Bee`'s method `blocked` to return `False` if either there is no `Ant` in the `Bee`'s `place` or if there is an `Ant`, but its `blocks_path` attribute is `False`. Now `Bee`s will just fly past `NinjaAnt`s.\n\nFinally, we want to make the `NinjaAnt` damage all `Bee`s that fly past. Implement the `action` method in `NinjaAnt` to reduce the health of all `Bee`s in the same `place` as the `NinjaAnt` by its `damage` attribute. Similar to the `FireAnt`, you must iterate over a potentially changing list of bees.\n\n**Hint**: Having trouble visualizing the test cases? Try drawing them out on paper! See the example in [Game Layout](https://cs61a.org/proj/ants/index.html#game-layout) for help.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nFor a challenge, try to win a game using only `HarvesterAnt` and `NinjaAnt`.\n",
+   "statementEn": "Implement the `NinjaAnt`, which damages all `Bee`s that pass by, but can never be stung.\n\n   **Class** **Food Cost** **Initial Health**\n `NinjaAnt` 5 1\n\nA `NinjaAnt` does not block the path of a `Bee` that flies by. To implement this behavior, first modify the `Ant` class to include a new class attribute `blocks_path` that is set to `True`, then override the value of `blocks_path` to `False` in the `NinjaAnt` class.\n\nSecond, modify the `Bee`'s method `blocked` to return `False` if either there is no `Ant` in the `Bee`'s `place` or if there is an `Ant`, but its `blocks_path` attribute is `False`. Now `Bee`s will just fly past `NinjaAnt`s.\n\nFinally, we want to make the `NinjaAnt` damage all `Bee`s that fly past. Implement the `action` method in `NinjaAnt` to reduce the health of all `Bee`s in the same `place` as the `NinjaAnt` by its `damage` attribute. Similar to the `FireAnt`, you must iterate over a potentially changing list of bees.\n\n**Hint**: Having trouble visualizing the test cases? Try drawing them out on paper! See the example in [Game Layout](https://cs61a.org/proj/ants/index.html#game-layout) for help.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nFor a challenge, try to win a game using only `HarvesterAnt` and `NinjaAnt`.\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "EC3"
+   }
+  },
+  {
+   "id": "ec4",
+   "title": "Problem EC 4 (0 pt)",
+   "titleEn": "Problem EC 4 (0 pt)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWe've been developing this ant for a long time in secret. It's so dangerous that we had to lock it in the super hidden underground vault, but we finally think it is ready to test out on the field. In this problem, you'll be implementing the final ant -- `LaserAnt`, a `ThrowerAnt` with a twist.\n\n   **Class** **Food Cost** **Initial Health**\n `LaserAnt` 10 1\n\nThe `LaserAnt` shoots out a powerful laser, damaging all that dare to stand in its path. Both `Bee`s and `Ant`s, of all types, are at risk of being damaged by `LaserAnt`. When a `LaserAnt` takes its action, it will damage all `Insect`s in its place (excluding itself, but including its container if it has one) and the `Place`s in front of it, excluding the `Hive`.\n\nIf that were it, `LaserAnt` would be too powerful for us to contain. The `LaserAnt` has a base damage of `2`. But, `LaserAnt`'s laser comes with some quirks. The laser is weakened by `0.25` each place it travels away from `LaserAnt`'s place. Additionally, `LaserAnt` has limited battery. Each time `LaserAnt` actually damages an `Insect`, its laser's total damage goes down by `0.0625` (1/16). This reduction is immediate so if there are two `Bee`s in front of `LaserAnt` and on the same tile, it will do less damage to the second `Bee`. If `LaserAnt`'s damage becomes negative due to these restrictions, it simply does 0 damage instead.\n\nThe exact order in which things are damaged within a turn does not matter.\n\nIn order to complete the implementation of this ultimate ant, read through the `LaserAnt` class, set the class attributes appropriately, and implement the following two functions:\n\n1. `insects_in_front` is an instance method, called by the `action` method, that returns a dictionary where each key is an `Insect` and each corresponding value is the distance (in places) that that `Insect` is away from `LaserAnt`. The dictionary should include all `Insects` on the same place or in front of the `LaserAnt`, excluding `LaserAnt` itself.\n2.\n\n`calculate_damage` is an instance method that takes in `distance`, the distance that an insect is away from the `LaserAnt` instance. It returns the damage that the `LaserAnt` instance should afflict based on:\n\n  - The `distance` away from the `LaserAnt` instance that an `Insect` is.\n  - The number of `Insect`s that this `LaserAnt` has already damaged, stored in the `insects_shot` instance attribute.\n\nIn addition to implementing the methods above, you may need to modify, add, or use class or instance attributes in the `LaserAnt` class as needed.\n\n**Important**: If an insect's health is unaffected, its health should *remain as a whole number (integer)*, as it was when the insect was initially created.\n\n**Note**: There are no unlocking tests for this question.\n\n **Acknowledgments:** Tom Magrino and Eric Tzeng developed this project with John DeNero. Many others have contributed to the project as well!\n\nThe artwork was drawn by Alana Tran, Andrew Huang, Emilee Chen, Jessie Salas, Jingyi Li, Katherine Xu, Meena Vempaty, Michelle Chang, and Ryan Davis.\n",
+   "statementEn": "We've been developing this ant for a long time in secret. It's so dangerous that we had to lock it in the super hidden underground vault, but we finally think it is ready to test out on the field. In this problem, you'll be implementing the final ant -- `LaserAnt`, a `ThrowerAnt` with a twist.\n\n   **Class** **Food Cost** **Initial Health**\n `LaserAnt` 10 1\n\nThe `LaserAnt` shoots out a powerful laser, damaging all that dare to stand in its path. Both `Bee`s and `Ant`s, of all types, are at risk of being damaged by `LaserAnt`. When a `LaserAnt` takes its action, it will damage all `Insect`s in its place (excluding itself, but including its container if it has one) and the `Place`s in front of it, excluding the `Hive`.\n\nIf that were it, `LaserAnt` would be too powerful for us to contain. The `LaserAnt` has a base damage of `2`. But, `LaserAnt`'s laser comes with some quirks. The laser is weakened by `0.25` each place it travels away from `LaserAnt`'s place. Additionally, `LaserAnt` has limited battery. Each time `LaserAnt` actually damages an `Insect`, its laser's total damage goes down by `0.0625` (1/16). This reduction is immediate so if there are two `Bee`s in front of `LaserAnt` and on the same tile, it will do less damage to the second `Bee`. If `LaserAnt`'s damage becomes negative due to these restrictions, it simply does 0 damage instead.\n\nThe exact order in which things are damaged within a turn does not matter.\n\nIn order to complete the implementation of this ultimate ant, read through the `LaserAnt` class, set the class attributes appropriately, and implement the following two functions:\n\n1. `insects_in_front` is an instance method, called by the `action` method, that returns a dictionary where each key is an `Insect` and each corresponding value is the distance (in places) that that `Insect` is away from `LaserAnt`. The dictionary should include all `Insects` on the same place or in front of the `LaserAnt`, excluding `LaserAnt` itself.\n2.\n\n`calculate_damage` is an instance method that takes in `distance`, the distance that an insect is away from the `LaserAnt` instance. It returns the damage that the `LaserAnt` instance should afflict based on:\n\n  - The `distance` away from the `LaserAnt` instance that an `Insect` is.\n  - The number of `Insect`s that this `LaserAnt` has already damaged, stored in the `insects_shot` instance attribute.\n\nIn addition to implementing the methods above, you may need to modify, add, or use class or instance attributes in the `LaserAnt` class as needed.\n\n**Important**: If an insect's health is unaffected, its health should *remain as a whole number (integer)*, as it was when the insect was initially created.\n\n**Note**: There are no unlocking tests for this question.\n\n **Acknowledgments:** Tom Magrino and Eric Tzeng developed this project with John DeNero. Many others have contributed to the project as well!\n\nThe artwork was drawn by Alana Tran, Andrew Huang, Emilee Chen, Jessie Salas, Jingyi Li, Katherine Xu, Meena Vempaty, Michelle Chang, and Ryan Davis.\n",
+   "editable": [
+    "ants.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "EC4"
+   }
+  }
+ ]
+}

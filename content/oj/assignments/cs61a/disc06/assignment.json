@@ -1,0 +1,69 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "disc06",
+ "title": "讨论课 6：迭代器、生成器",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/disc/disc06/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "disc06",
+ "repoDir": "disc/disc06",
+ "intro": "讨论课的题目原本是小组在纸上一起做的。这里收了能自动判对错的两类题：写代码的题（用官方 doctest 判，做对之后题目下方显示官方解答），和画环境图的题（先在纸上画，再把每一帧填进来，判题服务实际运行程序后逐帧比对）。口头讨论的题请看讲义页的官方讲义。",
+ "problems": [
+  {
+   "id": "differences",
+   "title": "Something Different",
+   "titleEn": "Something Different",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `differences`, a generator function that takes `t`, a non-empty iterator over numbers. It yields the differences between each pair of adjacent values from `t`. If `t` iterates over a positive finite number of values `n`, then `differences` should yield `n-1` times.\n\n**Discussion Time.** Work together to explain why `differences` will always yield `n-1` times for an iterator `t` over `n` values. If you get stuck, ask a TA for help.\n",
+   "statementEn": "Implement `differences`, a generator function that takes `t`, a non-empty iterator over numbers. It yields the differences between each pair of adjacent values from `t`. If `t` iterates over a positive finite number of values `n`, then `differences` should yield `n-1` times.\n\n**Discussion Time.** Work together to explain why `differences` will always yield `n-1` times for an iterator `t` over `n` values. If you get stuck, ask a TA for help.\n",
+   "editable": [
+    "differences.py"
+   ],
+   "focus": {
+    "file": "differences.py",
+    "symbol": "differences"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "differences"
+   },
+   "hints": [
+    "Add to the following implementation by initializing and updating `previous_x` so that it is always bound to the value of `t` that came before `x`.\n\n```\nfor x in t:\n    yield x - previous_x\n```",
+    "Because it was skilled at knowing when to \"return\" to the recipe and when to \"yield\" to improvisation!"
+   ],
+   "explain": "官方解答：\n\n```python\ndef differences(t):\n    \"\"\"Yield the differences between adjacent values from iterator t.\n\n    >>> list(differences(iter([5, 2, -100, 103])))\n    [-3, -102, 203]\n    >>> next(differences(iter([39, 100])))\n    61\n    \"\"\"\n    last_x = next(t)\n    for x in t:\n        yield x - last_x\n        last_x = x\n```\n"
+  },
+  {
+   "id": "partition_gen",
+   "title": "Partitions",
+   "titleEn": "Partitions",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nTree-recursive generator functions have a similar structure to regular tree-recursive functions. They are useful for iterating over all possibilities. Instead of building a list of results and returning it, just `yield` each result.\n\nYou'll need to identify a *recursive decomposition*: how to express the answer in terms of recursive calls that are simpler. Ask yourself what will be yielded by a recursive call, then how to use those results.\n\n**Definition.** For positive integers `n` and `m`, a *partition* of `n` using parts up to size `m` is an addition expression of positive integers up to `m` in non-decreasing order that sums to `n`.\n\nImplement `partition_gen`, a generator functon that takes positive `n` and `m`. It yields the partitions of `n` using parts up to size `m` as strings.\n\n**Reminder:** For the `partitions` function we studied in lecture ([video](https://youtu.be/DvgT4dnSMVM)), the recursive decomposition was to enumerate all ways of partitioning `n` using at least one `m` and then to enumerate all ways with no `m` (only `m-1` and lower).\n\n**Discussion Time.** Work together to explain why this implementation of `partition_gen` does not include base cases for `n < 0`, `n == 0`, or `m == 0` even though the original implementation of `partitions` from lecture ([video](https://youtu.be/DvgT4dnSMVM?si=MEkqzloqIcbD1-09&t=515)) had all three.\n\n  Optional Question\n\nGenerator problems often appear on exams and often include recursion.\n\nHint: the statement `yield from t` is identical to the following:\n\n```\nfor x in t:\n    yield x\n```\n",
+   "statementEn": "Tree-recursive generator functions have a similar structure to regular tree-recursive functions. They are useful for iterating over all possibilities. Instead of building a list of results and returning it, just `yield` each result.\n\nYou'll need to identify a *recursive decomposition*: how to express the answer in terms of recursive calls that are simpler. Ask yourself what will be yielded by a recursive call, then how to use those results.\n\n**Definition.** For positive integers `n` and `m`, a *partition* of `n` using parts up to size `m` is an addition expression of positive integers up to `m` in non-decreasing order that sums to `n`.\n\nImplement `partition_gen`, a generator functon that takes positive `n` and `m`. It yields the partitions of `n` using parts up to size `m` as strings.\n\n**Reminder:** For the `partitions` function we studied in lecture ([video](https://youtu.be/DvgT4dnSMVM)), the recursive decomposition was to enumerate all ways of partitioning `n` using at least one `m` and then to enumerate all ways with no `m` (only `m-1` and lower).\n\n**Discussion Time.** Work together to explain why this implementation of `partition_gen` does not include base cases for `n < 0`, `n == 0`, or `m == 0` even though the original implementation of `partitions` from lecture ([video](https://youtu.be/DvgT4dnSMVM?si=MEkqzloqIcbD1-09&t=515)) had all three.\n\n  Optional Question\n\nGenerator problems often appear on exams and often include recursion.\n\nHint: the statement `yield from t` is identical to the following:\n\n```\nfor x in t:\n    yield x\n```\n",
+   "editable": [
+    "partition_gen.py"
+   ],
+   "focus": {
+    "file": "partition_gen.py",
+    "symbol": "partition_gen"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "partition_gen"
+   },
+   "hints": [
+    "Hint: For the base case, yield a partition with just one element, `n`. Make sure you yield a string.",
+    "Hint: The first recursive case uses at least one `m`, and so you will need to yield a string that starts with `p` but also includes `m`. The second recursive case only uses parts up to size `m-1`. (You can implement the second case in one line using `yield from`.)"
+   ],
+   "explain": "官方解答：\n\n```python\ndef partition_gen(n, m):\n    \"\"\"Yield the partitions of n using parts up to size m.\n    >>> for partition in sorted(partition_gen(6, 4)):\n    ...     print(partition)\n    1 + 1 + 1 + 1 + 1 + 1\n    1 + 1 + 1 + 1 + 2\n    1 + 1 + 1 + 3\n    1 + 1 + 2 + 2\n    1 + 1 + 4\n    1 + 2 + 3\n    2 + 2 + 2\n    2 + 4\n    3 + 3\n    \"\"\"\n    assert n > 0 and m > 0\n    if n == m:\n        yield str(n)\n    if n - m > 0:\n        for p in partition_gen(n - m, m):\n            yield p + ' + ' + str(m)\n\n\n\n    if m > 1:\n        yield from partition_gen(n, m-1)\n```\n"
+  }
+ ]
+}

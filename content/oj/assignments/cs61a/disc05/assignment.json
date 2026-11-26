@@ -1,0 +1,61 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "disc05",
+ "title": "讨论课 5：树",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/disc/disc05/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "disc05",
+ "repoDir": "disc/disc05",
+ "intro": "讨论课的题目原本是小组在纸上一起做的。这里收了能自动判对错的两类题：写代码的题（用官方 doctest 判，做对之后题目下方显示官方解答），和画环境图的题（先在纸上画，再把每一帧填进来，判题服务实际运行程序后逐帧比对）。口头讨论的题请看讲义页的官方讲义。",
+ "problems": [
+  {
+   "id": "has_path",
+   "title": "Has Path",
+   "titleEn": "Has Path",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `has_path`, which takes a tree `t` and a list `p`. It returns whether there is a path from the root of `t` with labels `p`. For example, `t1` has a path from its root with labels `[3, 5, 6]` but not `[3, 4, 6]` or `[5, 6]`.\n\n**Important**: Before trying to implement this function, discuss these questions from lecture about the recursive call of a tree processing function:\n\n- What small initial choice can I make (such as which branch to explore)?\n- What recursive call should I make for each option?\n-\n\nHow can I combine the results of those recursive calls?\n\n  - What type of values do they return?\n  - What do those return values mean?\n",
+   "statementEn": "Implement `has_path`, which takes a tree `t` and a list `p`. It returns whether there is a path from the root of `t` with labels `p`. For example, `t1` has a path from its root with labels `[3, 5, 6]` but not `[3, 4, 6]` or `[5, 6]`.\n\n**Important**: Before trying to implement this function, discuss these questions from lecture about the recursive call of a tree processing function:\n\n- What small initial choice can I make (such as which branch to explore)?\n- What recursive call should I make for each option?\n-\n\nHow can I combine the results of those recursive calls?\n\n  - What type of values do they return?\n  - What do those return values mean?\n",
+   "editable": [
+    "has_path.py"
+   ],
+   "focus": {
+    "file": "has_path.py",
+    "symbol": "has_path"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "has_path"
+   },
+   "explain": "官方解答：\n\n```python\ndef has_path(t, p):\n    \"\"\"Return whether tree t has a path from the root with labels p.\n\n    >>> t2 = tree(5, [tree(6), tree(7)])\n    >>> t1 = tree(3, [tree(4), t2])\n    >>> has_path(t1, [5, 6])        # This path is not from the root of t1\n    False\n    >>> has_path(t2, [5, 6])        # This path is from the root of t2\n    True\n    >>> has_path(t1, [3, 5])        # This path does not go to a leaf, but that's ok\n    True\n    >>> has_path(t1, [3, 5, 6])     # This path goes to a leaf\n    True\n    >>> has_path(t1, [3, 4, 5, 6])  # There is no path with these labels\n    False\n    \"\"\"\n    if p == [label(t)]:\n        return True\n    elif label(t) != p[0]:\n        return False\n    else:\n        return any([has_path(b, p[1:]) for b in branches(t)])\n\n        for b in branches(t):\n            if has_path(b, p[1:]):\n                return True\n        return False\n```\n"
+  },
+  {
+   "id": "find_path",
+   "title": "Find Path",
+   "titleEn": "Find Path",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `find_path`, which takes a tree `t` with unique labels and a value `x`. It returns a list containing the labels of the nodes along a path from the root of `t` to a node labeled `x`.\n\nIf `x` is not a label in `t`, return `None`. Assume that the labels of `t` are unique.\n\n**Description Time!** When your group has completed this question, it's time to describe why this function does not have a base case that uses `is_leaf`. If you can't figure it out, talk to a TA.\n\n   Optional Question\n",
+   "statementEn": "Implement `find_path`, which takes a tree `t` with unique labels and a value `x`. It returns a list containing the labels of the nodes along a path from the root of `t` to a node labeled `x`.\n\nIf `x` is not a label in `t`, return `None`. Assume that the labels of `t` are unique.\n\n**Description Time!** When your group has completed this question, it's time to describe why this function does not have a base case that uses `is_leaf`. If you can't figure it out, talk to a TA.\n\n   Optional Question\n",
+   "editable": [
+    "find_path.py"
+   ],
+   "focus": {
+    "file": "find_path.py",
+    "symbol": "find_path"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "find_path"
+   },
+   "explain": "官方解答：\n\n```python\ndef find_path(t, x):\n    \"\"\"\n    >>> t2 = tree(5, [tree(6), tree(7)])\n    >>> t1 = tree(3, [tree(4), t2])\n    >>> find_path(t1, 5)\n    [3, 5]\n    >>> find_path(t1, 4)\n    [3, 4]\n    >>> find_path(t1, 6)\n    [3, 5, 6]\n    >>> find_path(t2, 6)\n    [5, 6]\n    >>> print(find_path(t1, 2))\n    None\n    \"\"\"\n    if label(t) == x:\n        return [label(t)]\n    for b in branches(t):\n        path = find_path(b, x)\n        if path:\n            return [label(t)] + path\n    return None\n```\n"
+  }
+ ]
+}

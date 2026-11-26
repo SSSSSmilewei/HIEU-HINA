@@ -1,0 +1,320 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "fa20-lab08",
+ "title": "实验 8：链表，树",
+ "semester": "fa20",
+ "language": "zh",
+ "source": "https://inst.eecs.berkeley.edu/~cs61a/fa20/lab/lab08/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2020 秋季）；中文翻译来自 github.com/chillyhigh/CS61A-CN（MIT 许可）。仅供协会内部学习交流",
+ "item": "lab07",
+ "repoDir": "fa20/lab/lab08",
+ "intro": "",
+ "problems": [
+  {
+   "id": "link",
+   "title": "预测输出：链表",
+   "titleEn": "WWPD: Linked Lists",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "阅读 `lab08.py` 中的 `Link` 类。确保你理解其中的 doctest。\n\n如果你认为答案是 `<function ...>`，请输入 `Function`；如果会报错，输入 `Error`；如果没有任何输出，输入 `Nothing`。\n\n如果遇到困难，尝试在纸上绘制链表的框图（box-and-pointer diagram），或者使用 `python3 -i lab09.py` 将 `Link` 类加载到解释器中进行调试。\n\n```\n>>> from lab08 import *\n>>> link = Link(1000)\n>>> link.first\n\n>>> link.rest is Link.empty\n\n>>> link = Link(1000, 2000)\n\n>>> link = Link(1000, Link())\n\n```\n\n```\n>>> from lab08 import *\n>>> link = Link(1, Link(2, Link(3)))\n>>> link.first\n\n>>> link.rest.first\n\n>>> link.rest.rest.rest is Link.empty\n\n>>> link.first = 9001\n>>> link.first\n\n>>> link.rest = link.rest.rest\n>>> link.rest.first\n\n>>> link = Link(1)\n>>> link.rest = link\n>>> link.rest.rest.rest.rest.first\n\n>>> link = Link(2, Link(3, Link(4)))\n>>> link2 = Link(1, link)\n>>> link2.first\n\n>>> link2.rest.first\n\n```\n\n```\n>>> from lab08 import *\n>>> link = Link(5, Link(6, Link(7)))\n>>> link                  # Look at the __repr__ method of Link\n\n>>> print(link)          # Look at the __str__ method of Link\n\n```\n",
+   "statementEn": "Read over the `Link` class in `lab08.py`. Make sure you understand the doctests.\n\nEnter `Function` if you believe the answer is `<function ...>`, `Error` if it errors, and `Nothing` if nothing is displayed.\n\nIf you get stuck, try drawing out the box-and-pointer diagram for the linked list on a piece of paper or loading the `Link` class into the interpreter with `python3 -i lab09.py`.\n\n```\n>>> from lab08 import *\n>>> link = Link(1000)\n>>> link.first\n\n>>> link.rest is Link.empty\n\n>>> link = Link(1000, 2000)\n\n>>> link = Link(1000, Link())\n\n```\n\n```\n>>> from lab08 import *\n>>> link = Link(1, Link(2, Link(3)))\n>>> link.first\n\n>>> link.rest.first\n\n>>> link.rest.rest.rest is Link.empty\n\n>>> link.first = 9001\n>>> link.first\n\n>>> link.rest = link.rest.rest\n>>> link.rest.first\n\n>>> link = Link(1)\n>>> link.rest = link\n>>> link.rest.rest.rest.rest.first\n\n>>> link = Link(2, Link(3, Link(4)))\n>>> link2 = Link(1, link)\n>>> link2.first\n\n>>> link2.rest.first\n\n```\n\n```\n>>> from lab08 import *\n>>> link = Link(5, Link(6, Link(7)))\n>>> link                  # Look at the __repr__ method of Link\n\n>>> print(link)          # Look at the __str__ method of Link\n\n```\n",
+   "editable": [
+    "lab08.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "link"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "from lab09 import *",
+       "want": []
+      },
+      {
+       "code": "link = Link(1000)",
+       "want": []
+      },
+      {
+       "code": "link.first",
+       "want": [
+        {
+         "hash": "6812c36ce75fc0b1c442b1d56b8c98f1"
+        }
+       ]
+      },
+      {
+       "code": "link.rest is Link.empty",
+       "want": [
+        {
+         "hash": "0528ddea472f19174e0c4eb75b4de3de"
+        }
+       ]
+      },
+      {
+       "code": "link = Link(1000, 2000)",
+       "want": [
+        {
+         "hash": "8a2fd4e4c3c6dcce2dc631af62ee217a"
+        }
+       ]
+      },
+      {
+       "code": "link = Link(1000, Link())",
+       "want": [
+        {
+         "hash": "8a2fd4e4c3c6dcce2dc631af62ee217a"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "from lab09 import *",
+       "want": []
+      },
+      {
+       "code": "link = Link(1, Link(2, Link(3)))",
+       "want": []
+      },
+      {
+       "code": "link.first",
+       "want": [
+        {
+         "hash": "802285b020b27240a3824a7e42f8cc8c"
+        }
+       ]
+      },
+      {
+       "code": "link.rest.first",
+       "want": [
+        {
+         "hash": "9338923f09aac77121029c604f7ce4f3"
+        }
+       ]
+      },
+      {
+       "code": "link.rest.rest.rest is Link.empty",
+       "want": [
+        {
+         "hash": "0528ddea472f19174e0c4eb75b4de3de"
+        }
+       ]
+      },
+      {
+       "code": "link.first = 9001",
+       "want": []
+      },
+      {
+       "code": "link.first",
+       "want": [
+        {
+         "hash": "2f870cb7220a96bf2531180ebc182058"
+        }
+       ]
+      },
+      {
+       "code": "link.rest = link.rest.rest",
+       "want": []
+      },
+      {
+       "code": "link.rest.first",
+       "want": [
+        {
+         "hash": "a6a221ff20ce085ab4bedaca5044f971"
+        }
+       ]
+      },
+      {
+       "code": "link = Link(1)",
+       "want": []
+      },
+      {
+       "code": "link.rest = link",
+       "want": []
+      },
+      {
+       "code": "link.rest.rest.rest.rest.first",
+       "want": [
+        {
+         "hash": "802285b020b27240a3824a7e42f8cc8c"
+        }
+       ]
+      },
+      {
+       "code": "link = Link(2, Link(3, Link(4)))",
+       "want": []
+      },
+      {
+       "code": "link2 = Link(1, link)",
+       "want": []
+      },
+      {
+       "code": "link2.first",
+       "want": [
+        {
+         "hash": "802285b020b27240a3824a7e42f8cc8c"
+        }
+       ]
+      },
+      {
+       "code": "link2.rest.first",
+       "want": [
+        {
+         "hash": "9338923f09aac77121029c604f7ce4f3"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "from lab09 import *",
+       "want": []
+      },
+      {
+       "code": "link = Link(5, Link(6, Link(7)))",
+       "want": []
+      },
+      {
+       "code": "link                  # Look at the __repr__ method of Link",
+       "want": [
+        {
+         "hash": "c4be84510df152813dfac1955471823d"
+        }
+       ]
+      },
+      {
+       "code": "print(link)          # Look at the __str__ method of Link",
+       "want": [
+        {
+         "hash": "9e4aa8611562bf27deef2ea24cf05283"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "convert_link",
+   "title": "转换链表",
+   "titleEn": "Convert Link",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个函数 `convert_link`，它接受一个链表作为输入，并返回一个包含相同元素的 Python 列表。你可以假设输入链表是浅层的，即其中的元素都不是另一个链表。\n\n尝试分别使用迭代和递归两种方法来解决这个问题！\n",
+   "statementEn": "Write a function `convert_link` that takes in a linked list and returns the sequence as a Python list. You may assume that the input list is shallow; none of the elements is another linked list.\n\nTry to find both an iterative and recursive solution for this problem!\n",
+   "editable": [
+    "lab08.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "convert_link"
+   },
+   "focus": {
+    "file": "lab08.py",
+    "symbol": "convert_link"
+   }
+  },
+  {
+   "id": "every_other",
+   "title": "间隔删除",
+   "titleEn": "Every Other",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "实现 `every_other` 函数，该函数接受一个链表 `s`。它会对 `s` 进行原地修改，使得所有奇数索引（基于 0 开始的索引）的元素都从链表中移除。例如：\n\n```\n>>> s = Link('a', Link('b', Link('c', Link('d'))))\n>>> every_other(s)\n>>> s.first\n'a'\n>>> s.rest.first\n'c'\n>>> s.rest.rest is Link.empty\nTrue\n```\n\n如果 `s` 的元素少于两个，则保持不变。\n\n不要返回任何值！`every_other` 应直接修改原链表。\n",
+   "statementEn": "Implement `every_other`, which takes a linked list `s`. It mutates `s` such that all of the odd-indexed elements (using 0-based indexing) are removed from the list. For example:\n\n```\n>>> s = Link('a', Link('b', Link('c', Link('d'))))\n>>> every_other(s)\n>>> s.first\n'a'\n>>> s.rest.first\n'c'\n>>> s.rest.rest is Link.empty\nTrue\n```\n\nIf `s` contains fewer than two elements, `s` remains unchanged.\n\nDo not return anything! `every_other` should mutate the original list.\n",
+   "editable": [
+    "lab08.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "every_other"
+   },
+   "focus": {
+    "file": "lab08.py",
+    "symbol": "every_other"
+   }
+  },
+  {
+   "id": "cumulative_mul",
+   "title": "累积乘积",
+   "titleEn": "Cumulative Mul",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个函数 `cumulative_mul`，该函数会修改树 `t`，使得每个节点的标签变为以该节点为根的子树中所有标签的乘积。\n\n 选做题\n",
+   "statementEn": "Write a function `cumulative_mul` that mutates the Tree `t` so that each node's label becomes the product of all labels in the subtree rooted at the node.\n\n Optional Problems\n",
+   "editable": [
+    "lab08.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "cumulative_mul"
+   },
+   "focus": {
+    "file": "lab08.py",
+    "symbol": "cumulative_mul"
+   }
+  },
+  {
+   "id": "has_cycle",
+   "title": "循环",
+   "titleEn": "Cycles",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "`Link` 类可以表示包含循环的链表。也就是说，一个链表可能包含自身作为子链表。\n\n```\n>>> s = Link(1, Link(2, Link(3)))\n>>> s.rest.rest.rest = s\n>>> s.rest.rest.rest.rest.rest.first\n3\n```\n\n实现 `has_cycle` 函数，判断给定的 `Link` 实例是否包含循环，并返回相应的布尔值。\n\n*提示*：遍历链表，并尝试记录已经访问过的 `Link` 对象。\n\n作为额外的挑战，请实现 `has_cycle_constant` 函数，并且仅使用[常数空间复杂度](https://composingprograms.netlify.app/2/8#_2-8-5-%E5%A2%9E%E9%95%BF%E7%B1%BB%E5%88%AB)。（如果按照上面的提示实现，空间复杂度将是线性的。）该解法代码较短（少于 20 行），但需要一个巧妙的思路。在向他人请教之前，尝试自己找到解决方案：\n",
+   "statementEn": "The `Link` class can represent lists with cycles. That is, a list may contain itself as a sublist.\n\n```\n>>> s = Link(1, Link(2, Link(3)))\n>>> s.rest.rest.rest = s\n>>> s.rest.rest.rest.rest.rest.first\n3\n```\n\nImplement `has_cycle`,that returns whether its argument, a `Link` instance, contains a cycle.\n\n*Hint*: Iterate through the linked list and try keeping track of which `Link` objects you've already seen.\n\nAs an extra challenge, implement `has_cycle_constant` with only [constant space](http://composingprograms.com/pages/28-efficiency.html#growth-categories). (If you followed the hint above, you will use linear space.) The solution is short (less than 20 lines of code), but requires a clever idea. Try to discover the solution yourself before asking around:\n",
+   "editable": [
+    "lab08.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "has_cycle has_cycle_constant"
+   },
+   "focus": {
+    "file": "lab08.py",
+    "symbol": "has_cycle"
+   }
+  },
+  {
+   "id": "reverse_other",
+   "title": "反转奇数层",
+   "titleEn": "Reverse Other",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个函数 `reverse_other`，它会修改树，使得*每隔一层*（即奇数深度）的**标签**被反转。例如，\n\n```\nTree(1, [Tree(2, [Tree(4)]), Tree(3)])\n```\n\n会变成：\n\n```\nTree(1, [Tree(3, [Tree(4)]), Tree(2)])\n```\n\n注意，节点本身*不会*被交换，只有标签会被反转。\n",
+   "statementEn": "Write a function `reverse_other` that mutates the tree such that **labels** on *every other* (odd-depth) level are reversed. For example, `Tree(1,[Tree(2, [Tree(4)]), Tree(3)])` becomes `Tree(1,[Tree(3, [Tree(4)]), Tree(2)])`. Notice that the nodes themselves are *not* reversed; only the labels are.\n",
+   "editable": [
+    "lab08.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "reverse_other"
+   },
+   "focus": {
+    "file": "lab08.py",
+    "symbol": "reverse_other"
+   }
+  }
+ ]
+}

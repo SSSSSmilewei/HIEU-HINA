@@ -1,0 +1,279 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "fa20-lab05",
+ "title": "实验 5：数据抽象, 树",
+ "semester": "fa20",
+ "language": "zh",
+ "source": "https://inst.eecs.berkeley.edu/~cs61a/fa20/lab/lab05/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2020 秋季）；中文翻译来自 github.com/chillyhigh/CS61A-CN（MIT 许可）。仅供协会内部学习交流",
+ "item": "lab04",
+ "repoDir": "fa20/lab/lab05",
+ "intro": "",
+ "problems": [
+  {
+   "id": "couple",
+   "title": "配对",
+   "titleEn": "Couple",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "实现 `couple` 函数，该函数接收两个列表，并返回一个包含嵌套列表的列表， 其中每个嵌套列表包含两个输入序列中相同索引位置的元素配对在一起。 你可以假设两个序列的长度相同。尝试使用列表推导式 (list comprehension) 来实现。\n\n*提示*：内置的 [range](https://www.w3schools.com/python/ref_func_range.asp) 函数可能对你有帮助。\n",
+   "statementEn": "Implement the function `couple`, which takes in two lists and returns a list that contains lists with i-th elements of two sequences coupled together. You can assume the lengths of two sequences are the same. Try using a list comprehension.\n\n*Hint*: You may find the built in [range](https://www.w3schools.com/python/ref_func_range.asp) function helpful.\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "couple"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "couple"
+   }
+  },
+  {
+   "id": "distance",
+   "title": "距离计算",
+   "titleEn": "Distance",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "实现 `distance` 函数，用于计算两个城市对象之间的距离。回顾一下，两个坐标点 `(x1, y1)` 和 `(x2, y2)` 之间的距离可以通过计算 `sqrt((x1 - x2)**2 + (y1 - y2)**2)` 来得到。我们已经为你导入了 `sqrt` 函数以方便使用。请使用城市的纬度和经度作为其坐标，并使用选择器函数来访问这些信息！\n",
+   "statementEn": "We will now implement the function `distance`, which computes the distance between two city objects. Recall that the distance between two coordinate pairs `(x1, y1)` and `(x2, y2)` can be found by calculating the `sqrt` of `(x1 - x2)**2 + (y1 - y2)**2`. We have already imported `sqrt` for your convenience. Use the latitude and longitude of a city as its coordinates; you'll need to use the selectors to access this info!\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "distance"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "distance"
+   }
+  },
+  {
+   "id": "closer_city",
+   "title": "更近的城市",
+   "titleEn": "Closer city",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "接下来，实现 `closer_city` 函数。该函数接收一个纬度、一个经度以及两个城市，并返回相对更接近提供的纬度和经度的城市名称。\n\n你只能使用上面介绍的选择器、构造器以及刚刚定义的 `distance` 函数来完成此问题。\n\n**提示**：你如何利用 `distance` 函数来计算给定位置与两个城市之间的距离呢？\n",
+   "statementEn": "Next, implement `closer_city`, a function that takes a latitude, longitude, and two cities, and returns the name of the city that is relatively closer to the provided latitude and longitude.\n\nYou may only use the selectors and constructors introduced above and the `distance` function you just defined for this question.\n\n**Hint**: How can you use your `distance` function to find the distance between the given location and each of the given cities?\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "closer_city"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "closer_city"
+   }
+  },
+  {
+   "id": "check_city_abstraction",
+   "title": "不要违反抽象屏障！",
+   "titleEn": "Don't violate the abstraction barrier!",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "注意：如果你正确实现了 `distance` 和 `closer_city`，此问题无需编写代码！\n\n在编写使用抽象数据类型（ADT）的函数时，应尽可能使用构造器和选择器，而不是假设 ADT 的具体实现。依赖数据抽象的底层实现被称为*违反抽象屏障*，我们应当尽量避免这样做！\n\n即使你违反了抽象屏障，你的 `distance` 和 `closer_city` 代码仍可能通过 doctest。要检查是否存在此问题，请运行以下命令：\n\n`check_city_abstraction` 函数仅用于 doctest，它会将 `city` 抽象的实现替换为另一种方式，运行前两部分的测试，然后恢复原始实现。\n\n抽象屏障的性质保证了，只要正确使用构造器和选择器，更改 ADT 的实现就不会影响任何依赖该 ADT 的程序的功能。\n\n如果你通过了前面问题的 Ok 测试但未通过本测试，修复方法很简单！只需将任何违反抽象屏障的代码（例如直接创建列表表示城市或对城市对象进行索引）替换为合适的构造器或选择器。\n\n确保你的函数在第一种和第二种 City ADT 实现下都能通过测试，并理解为什么它们应该对两者都有效，然后再继续。\n",
+   "statementEn": "Note: this question has no code-writing component (if you implemented `distance` and `closer_city` correctly!)\n\nWhen writing functions that use an ADT, we should use the constructor(s) and selector(s) whenever possible instead of assuming the ADT's implementation. Relying on a data abstraction's underlying implementation is known as *violating the abstraction barrier*, and we never want to do this!\n\nIt's possible that you passed the doctests for `distance` and `closer_city` even if you violated the abstraction barrier. To check whether or not you did so, run the following command:\n\nThe `check_city_abstraction` function exists only for the doctest, which swaps out the implementations of the `city` abstraction with something else, runs the tests from the previous two parts, then restores the original abstraction.\n\nThe nature of the abstraction barrier guarantees that changing the implementation of an ADT shouldn't affect the functionality of any programs that use that ADT, as long as the constructors and selectors were used properly.\n\nIf you passed the Ok tests for the previous questions but not this one, the fix is simple! Just replace any code that violates the abstraction barrier, i.e. creating a city with a new list object or indexing into a city, with the appropriate constructor or selector.\n\nMake sure that your functions pass the tests with both the first and the second implementations of the City ADT and that you understand why they should work for both before moving on.\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "check_city_abstraction"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "check_city_abstraction"
+   }
+  },
+  {
+   "id": "berry_finder",
+   "title": "寻找浆果！",
+   "titleEn": "Finding Berries!",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "校园里的松鼠需要你的帮助！校园里有很多树，松鼠们想知道哪些树上有浆果。定义函数 `berry_finder`，该函数接受一棵树作为输入，如果树中包含值为 `'berry'` 的节点，则返回 `True`，否则返回 `False`。\n\n*提示：*考虑使用 `for` 循环递归遍历每个分支！\n",
+   "statementEn": "The squirrels on campus need your help! There are a lot of trees on campus and the squirrels would like to know which ones contain berries. Define the function `berry_finder`, which takes in a tree and returns `True` if the tree contains a node with the value `'berry'` and `False` otherwise.\n\n*Hint:* Considering using a for loop to iterate through each of the branches recursively!\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "berry_finder"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "berry_finder"
+   }
+  },
+  {
+   "id": "sprout_leaves",
+   "title": "萌发新叶",
+   "titleEn": "Sprout leaves",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "定义一个函数 `sprout_leaves`，它接受一棵树 `t` 和一个叶子列表 `leaves`。该函数返回一棵新的树，该树与 `t` 相同，但所有原始叶子节点都会新增分支，每个分支对应 `leaves` 中的一个元素。\n\n例如，假设我们有以下树 `t = tree(1, [tree(2), tree(3, [tree(4)])])`：\n\n```\n  1\n / \\\n2   3\n    |\n    4\n```\n\n如果我们调用 `sprout_leaves(t, [5, 6])`，生成的树如下：\n\n```\n       1\n     /   \\\n    2     3\n   / \\    |\n  5   6   4\n         / \\\n        5   6\n```\n",
+   "statementEn": "Define a function `sprout_leaves` that takes in a tree, `t`, and a list of leaves, `leaves`. It produces a new tree that is identical to `t`, but where each old leaf node has new branches, one for each leaf in `leaves`.\n\nFor example, say we have the tree `t = tree(1, [tree(2), tree(3, [tree(4)])])`:\n\n```\n  1\n / \\\n2   3\n    |\n    4\n```\n\nIf we call `sprout_leaves(t, [5, 6])`, the result is the following tree:\n\n```\n       1\n     /   \\\n    2     3\n   / \\    |\n  5   6   4\n         / \\\n        5   6\n```\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "sprout_leaves"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "sprout_leaves"
+   }
+  },
+  {
+   "id": "check_abstraction",
+   "title": "不要违反抽象屏障！",
+   "titleEn": "Don't violate the abstraction barrier!",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "注意：如果你正确实现了 `berry_finder` 和 `sprout_leaves`，那么这个问题不需要编写任何代码！\n\n在编写使用 ADT（抽象数据类型）的函数时，我们应尽可能使用构造函数和选择器，而不是假设 ADT 的具体实现。 依赖数据抽象的底层实现被称为*违反抽象屏障*，而我们应当避免这样做！\n\n即使你违反了抽象屏障，你仍然可能通过 `berry_finder` 和 `sprout_leaves` 的 doctest 测试。 要检查你是否违反了抽象屏障，请运行以下命令：\n\n`check_abstraction` 仅用于 doctest，它会替换 `tree` 抽象的实现，运行前面两个部分的测试， 然后恢复原始抽象。\n\n抽象屏障的核心思想是，即使更改 ADT 的实现，任何正确使用构造函数和选择器的程序都不应受到影响。\n\n如果你通过了前面问题的 Ok 测试但未通过本测试，修复方法很简单！ 只需替换任何违反抽象屏障的代码，例如直接创建一个新的列表对象表示树，或直接索引树的数据结构， 改为使用正确的构造函数或选择器。\n\n确保你的函数能够通过树 ADT 的两种不同实现的测试，并理解为什么它们应该适用于两者，然后再继续下一部分。\n",
+   "statementEn": "Note: this question has no code-writing component (if you implemented `berry_finder` and `sprout_leaves` correctly!)\n\nWhen writing functions that use an ADT, we should use the constructor(s) and selector(s) whenever possible instead of assuming the ADT's implementation. Relying on a data abstraction's underlying implementation is known as *violating the abstraction barrier*, and we never want to do this!\n\nIt's possible that you passed the doctests for `berry_finder` and `sprout_leaves` even if you violated the abstraction barrier. To check whether or not you did so, run the following command:\n\nThe `check_abstraction` function exists only for the doctest, which swaps out the implementations of the `tree` abstraction with something else, runs the tests from the previous two parts, then restores the original abstraction.\n\nThe nature of the abstraction barrier guarantees that changing the implementation of an ADT shouldn't affect the functionality of any programs that use that ADT, as long as the constructors and selectors were used properly.\n\nIf you passed the Ok tests for the previous questions but not this one, the fix is simple! Just replace any code that violates the abstraction barrier, i.e. creating a tree with a new list object or indexing into a tree, with the appropriate constructor or selector.\n\nMake sure that your functions pass the tests with both the first and the second implementations of the Tree ADT and that you understand why they should work for both before moving on.\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "check_abstraction"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "check_abstraction"
+   }
+  },
+  {
+   "id": "coords",
+   "title": "坐标",
+   "titleEn": "Coordinates",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "实现一个函数 `coords`，它接受一个函数 `fn`，一个序列 `seq`， 以及该函数输出的 `lower`（下界）和 `upper`（上界）。`coords` 返回一个包含两个坐标（列表）的列表，使得：\n\n- 每个 (x, y) 对应的坐标表示为 `[x, fn(x)]`\n- x 坐标来自给定的序列\n- 结果仅包含那些 y 坐标在给定上界和下界范围内（包含边界）的坐标对\n\n请查看 doctest 以获取示例。\n\n*注意*：你的答案必须**只有一行代码**。你应该使用列表推导式！\n",
+   "statementEn": "Implement a function `coords` that takes a function `fn`, a sequence `seq`, and a `lower` and `upper` bound on the output of the function. `coords` then returns a list of coordinate pairs (lists) such that:\n\n- Each (x, y) pair is represented as `[x, fn(x)]`\n- The x-coordinates are elements in the sequence\n- The result contains only pairs whose y-coordinate is within the upper and lower bounds (inclusive)\n\nSee the doctest for examples.\n\n*Note*: your answer can only be *one line long*. You should make use of list comprehensions!\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "coords"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "coords"
+   }
+  },
+  {
+   "id": "riffle",
+   "title": "交错洗牌",
+   "titleEn": "Riffle Shuffle",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "[交错洗牌（riffle shuffle）](https://fredhohman.com/card-shuffling/static/images/riffle.gif) 方法常用于洗一副牌（在本题中，是一个序列）。洗完牌后新的排列方式是： 顶部的牌后面接着中间的牌，然后是第二张牌，再接着是中间的下一张牌，以此类推。 假设序列的元素数量为偶数，请编写一个使用列表推导式的表达式来生成洗牌后的序列。\n\n*提示：* 要将此操作写成单行列表推导式，表达式 `k%2` 可能对你有用。 该表达式在偶数时返回 0，在奇数时返回 1。考虑如何利用 `k%2` 的值交替访问列表的前半部分和后半部分。\n",
+   "statementEn": "The familiar [riffle shuffle](https://fredhohman.com/card-shuffling/static/images/riffle.gif) of a deck of cards (or in our case, of a sequence of things) results in a new configuration of cards in which the top card is followed by the middle card, then by the second card, then the card after the middle, and so forth. Assuming the deck (sequence) contains an even number of cards, write a list comprehension that produces the shuffled sequence.\n\n*Hint:* To write this as a single comprehension, you may find the expression `k%2`, which evaluates to 0 on even numbers and 1 on odd numbers, to be useful. Consider how you can use the 0 or 1 returned by `k%2` to alternatively access the beginning and the middle of the list.\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "riffle"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "riffle"
+   }
+  },
+  {
+   "id": "add_trees",
+   "title": "两树之和",
+   "titleEn": "Add trees",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "定义 `add_trees` 函数，该函数接收两棵树作为输入，返回一棵新的树，其中每个对应位置的节点来自两棵树相加的结果。如果某个位置的节点只在一棵树中存在，而在另一棵树中不存在，该节点也应出现在新树中。\n\n*提示*: 你可能想要使用内置的 `zip` 函数来同时遍历多个序列。\n\n*注意*: 如果你觉得这个问题比之前的树问题要难很多，那是完全可以理解的！这个问题确实挺难的，但是你可以做到的！可以和其他同学讨论，再来考虑这个问题。\n",
+   "statementEn": "Define the function `add_trees`, which takes in two trees and returns a new tree where each corresponding node from the first tree is added with the node from the second tree. If a node at any particular position is present in one tree but not the other, it should be present in the new tree as well.\n\n*Hint*: You may want to use the built-in zip function to iterate over multiple sequences at once.\n\n*Note*: If you feel that this one's a lot harder than the previous tree problems, that's totally fine! This is a pretty difficult problem, but you can do it! Talk about it with other students, and come back to it if you need to.\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "add_trees"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "add_trees"
+   }
+  },
+  {
+   "id": "build_successors_table",
+   "title": "后继表",
+   "titleEn": "Successor Tables",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "下面是一个不完整的 `build_successors_table` 函数定义。它的输入是一个单词列表（对应于莎士比亚的文本），输出是一个后继表。（默认情况下，第一个单词是句号 `\".\"` 的后继者）。请参考下面的示例。\n\n注意：有两个需要填写代码的地方，标记为 `\"*** YOUR CODE HERE ***\"`。\n",
+   "statementEn": "Here's an incomplete definition of the `build_successors_table` function. The input is a list of words (corresponding to a Shakespearean text), and the output is a successors table. (By default, the first word is a successor to \".\"). See the example below.\n\nNote: there are two places where you need to write code, denoted by the two `\"*** YOUR CODE HERE ***\"`\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "build_successors_table"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "build_successors_table"
+   }
+  },
+  {
+   "id": "construct_sent",
+   "title": "生成句子",
+   "titleEn": "Construct the Sentence",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "让我们来生成一些句子！假设我们给定了一个起始单词。我们可以在后继表中查找这个单词，找到它的后继单词列表，然后从这个列表中随机选择一个单词作为句子的下一个单词。然后，我们重复这个过程，直到遇到某个终止标点符号。\n\n*提示*：要从列表中随机选择一个单词，可以导入 Python 的 random 库： `import random`，然后使用表达式 `random.choice(my_list)` 进行选择。\n\n现在是一个尝试字符串拼接的好时机。让我们完成 `construct_sent` 函数！\n",
+   "statementEn": "Let's generate some sentences! Suppose we're given a starting word. We can look up this word in our table to find its list of successors, and then randomly select a word from this list to be the next word in the sentence. Then we just repeat until we reach some ending punctuation.\n\n*Hint*: to randomly select from a list, import the Python random library with `import random` and use the expression `random.choice(my_list)`\n\nThis might not be a bad time to play around with adding strings together as well. Let's fill in the `construct_sent` function!\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "construct_sent"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "construct_sent"
+   }
+  }
+ ]
+}

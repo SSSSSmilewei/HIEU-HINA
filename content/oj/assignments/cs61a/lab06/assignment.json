@@ -1,0 +1,103 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "lab06",
+ "title": "实验 6：面向对象编程",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/lab/lab06/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "lab06",
+ "repoDir": "lab/lab06",
+ "intro": "",
+ "problems": [
+  {
+   "id": "bankaccount",
+   "title": "Bank Account",
+   "titleEn": "Bank Account",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nExtend the `BankAccount` class to include a `transactions` attribute. This attribute should be a list that keeps track of each transaction made on the account. Whenever the `deposit` or `withdraw` method is called, a new `Transaction` instance should be created and added to the list, **even if the action is not successful**.\n\nAn instance of the `Transaction` class should have the following attributes:\n\n- `before`: The account balance before the transaction.\n- `after`: The account balance after the transaction.\n- `id`: The transaction ID, which is the number of previous transactions (deposits or withdrawals) made on that account. The transaction IDs for a specific `BankAccount` instance must be unique, but this `id` does not need to be unique across all accounts. In other words, you only need to ensure that no two `Transaction` objects made by the same `BankAccount` have the same `id`.\n\nIn addition, the `Transaction` class should have the following methods:\n\n- `changed()`: Returns `True` if the balance changed (i.e., `before` is different from `after`), otherwise returns `False`.\n- `report()`: Returns a string describing the transaction. The string should start with the transaction ID and describe the change in balance. Take a look at the doctests for the expected output.\n",
+   "statementEn": "Extend the `BankAccount` class to include a `transactions` attribute. This attribute should be a list that keeps track of each transaction made on the account. Whenever the `deposit` or `withdraw` method is called, a new `Transaction` instance should be created and added to the list, **even if the action is not successful**.\n\nAn instance of the `Transaction` class should have the following attributes:\n\n- `before`: The account balance before the transaction.\n- `after`: The account balance after the transaction.\n- `id`: The transaction ID, which is the number of previous transactions (deposits or withdrawals) made on that account. The transaction IDs for a specific `BankAccount` instance must be unique, but this `id` does not need to be unique across all accounts. In other words, you only need to ensure that no two `Transaction` objects made by the same `BankAccount` have the same `id`.\n\nIn addition, the `Transaction` class should have the following methods:\n\n- `changed()`: Returns `True` if the balance changed (i.e., `before` is different from `after`), otherwise returns `False`.\n- `report()`: Returns a string describing the transaction. The string should start with the transaction ID and describe the change in balance. Take a look at the doctests for the expected output.\n",
+   "editable": [
+    "lab06.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "BankAccount"
+   },
+   "focus": {
+    "file": "lab06.py",
+    "symbol": "BankAccount"
+   }
+  },
+  {
+   "id": "server",
+   "title": "Email",
+   "titleEn": "Email",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nAn email system has three classes: `Email`, `Server`, and `Client`. A `Client` can `compose` an email, which it will `send` to the `Server`. The `Server` then delivers it to the `inbox` of another `Client`. To achieve this, a `Server` has a dictionary called `clients` that maps the name of the `Client` to the `Client` instance.\n\nAssume that a `Client` never changes the `Server` that it uses, and it can only compose an `Email` using that `Server`.\n\nFill in the definitions below to finish the implementation! The `Email` class has been completed for you.\n\n**Important**: Before you start, make sure you read the entire code snippet to understand the relationships between the classes, and pay attention to the parameter type of the methods. Think about what variables you have access to in each method and how can you use them to access the other classes and their methods.\n\n**Note:**\n\n- The `sender` parameter from the `__init__(self, msg, sender, recipient_name)` method in the `Email` class is a `Client` instance.\n- The `client` parameter from the `register_client(self, client)` method in the `Server` class is a `Client` instance.\n- The `email` parameter from the `send(self, email)` method in the `Server` class is an `Email` instance.\n\nThere are two `ok` tests for this problem. Both tests must pass in order to receive full credit. You should run them in the order they are presented. The `python3 ok -q Server` test will test the `Server` class implementation, and it does not require a correct implementation of the `Client` class. The `python3 ok -q Client` test will test both the `Server` and `Client` class implementations. So, make sure to test your `Server` class implementation first before testing the `Client` class.\n\nUse Ok to test your code:\n\n```\npython3 ok -q Server\npython3 ok -q Client\n```\n",
+   "statementEn": "An email system has three classes: `Email`, `Server`, and `Client`. A `Client` can `compose` an email, which it will `send` to the `Server`. The `Server` then delivers it to the `inbox` of another `Client`. To achieve this, a `Server` has a dictionary called `clients` that maps the name of the `Client` to the `Client` instance.\n\nAssume that a `Client` never changes the `Server` that it uses, and it can only compose an `Email` using that `Server`.\n\nFill in the definitions below to finish the implementation! The `Email` class has been completed for you.\n\n**Important**: Before you start, make sure you read the entire code snippet to understand the relationships between the classes, and pay attention to the parameter type of the methods. Think about what variables you have access to in each method and how can you use them to access the other classes and their methods.\n\n**Note:**\n\n- The `sender` parameter from the `__init__(self, msg, sender, recipient_name)` method in the `Email` class is a `Client` instance.\n- The `client` parameter from the `register_client(self, client)` method in the `Server` class is a `Client` instance.\n- The `email` parameter from the `send(self, email)` method in the `Server` class is an `Email` instance.\n\nThere are two `ok` tests for this problem. Both tests must pass in order to receive full credit. You should run them in the order they are presented. The `python3 ok -q Server` test will test the `Server` class implementation, and it does not require a correct implementation of the `Client` class. The `python3 ok -q Client` test will test both the `Server` and `Client` class implementations. So, make sure to test your `Server` class implementation first before testing the `Client` class.\n\nUse Ok to test your code:\n\n```\npython3 ok -q Server\npython3 ok -q Client\n```\n",
+   "editable": [
+    "lab06.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "Server Client"
+   },
+   "focus": {
+    "file": "lab06.py",
+    "symbol": "Server"
+   }
+  },
+  {
+   "id": "mint",
+   "title": "Mint",
+   "titleEn": "Mint",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nA mint is a place where coins are made. In this question, you'll implement a `Mint` class that can output a `Coin` with the correct year and worth.\n\n- Each `Mint` instance has a `year` stamp. The `update` method sets the `year` stamp of the instance to the `present_year` class attribute of the `Mint` *class*.\n- The `create` method takes a subclass of `Coin` (*not* an instance!), then creates and returns an instance of that subclass stamped with the `Mint`'s year (which may be different from `Mint.present_year` if it has not been updated.)\n- A `Coin`'s `worth` method returns the `cents` value of the coin plus one extra cent for each year of age beyond 50. A coin's age can be determined by subtracting the coin's year from the `present_year` class attribute of the `Mint` class.\n",
+   "statementEn": "A mint is a place where coins are made. In this question, you'll implement a `Mint` class that can output a `Coin` with the correct year and worth.\n\n- Each `Mint` instance has a `year` stamp. The `update` method sets the `year` stamp of the instance to the `present_year` class attribute of the `Mint` *class*.\n- The `create` method takes a subclass of `Coin` (*not* an instance!), then creates and returns an instance of that subclass stamped with the `Mint`'s year (which may be different from `Mint.present_year` if it has not been updated.)\n- A `Coin`'s `worth` method returns the `cents` value of the coin plus one extra cent for each year of age beyond 50. A coin's age can be determined by subtracting the coin's year from the `present_year` class attribute of the `Mint` class.\n",
+   "editable": [
+    "lab06.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "Mint"
+   },
+   "focus": {
+    "file": "lab06.py",
+    "symbol": "Mint"
+   }
+  },
+  {
+   "id": "virfib",
+   "title": "Next Virahanka Fibonacci Object",
+   "titleEn": "Next Virahanka Fibonacci Object",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the `next` method of the `VirFib` class. For this class, the `value` attribute is a Fibonacci number. The `next` method returns a `VirFib` instance whose `value` is the next Fibonacci number. The `next` method should take only constant time.\n\nNote that in the doctests, nothing is being printed out. Rather, each call to `.next()` returns a `VirFib` instance. The way each `VirFib` instance is displayed is determined by the return value of its `__repr__` method.\n\n*Hint*: Keep track of the previous number by setting a new instance attribute inside `next`. You can create new instance attributes for objects at any point, even outside the `__init__` method.\n",
+   "statementEn": "Implement the `next` method of the `VirFib` class. For this class, the `value` attribute is a Fibonacci number. The `next` method returns a `VirFib` instance whose `value` is the next Fibonacci number. The `next` method should take only constant time.\n\nNote that in the doctests, nothing is being printed out. Rather, each call to `.next()` returns a `VirFib` instance. The way each `VirFib` instance is displayed is determined by the return value of its `__repr__` method.\n\n*Hint*: Keep track of the previous number by setting a new instance attribute inside `next`. You can create new instance attributes for objects at any point, even outside the `__init__` method.\n",
+   "editable": [
+    "lab06.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "VirFib"
+   },
+   "focus": {
+    "file": "lab06.py",
+    "symbol": "VirFib"
+   }
+  }
+ ]
+}

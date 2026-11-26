@@ -1,0 +1,341 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "lab03",
+ "title": "实验 3：递归、Python 列表",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/lab/lab03/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "lab03",
+ "repoDir": "lab/lab03",
+ "intro": "",
+ "problems": [
+  {
+   "id": "lists-wwpd",
+   "title": "WWPD: Lists & Ranges",
+   "titleEn": "WWPD: Lists & Ranges",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nPredict what Python will display when you type the following into the interactive interpreter. Then try it to check your answers.\n\n```\n>>> s = [7//3, 5, [4, 0, 1], 2]\n>>> s[0]\n\n>>> s[2]\n\n>>> s[-1]\n\n>>> len(s)\n\n>>> 4 in s\n\n>>> 4 in s[2]\n\n>>> s[2] + [3 + 2]\n\n>>> 5 in s[2]\n\n>>> s[2] * 2\n\n>>> list(range(3, 6))\n\n>>> range(3, 6)\n\n>>> r = range(3, 6)\n>>> [r[0], r[2]]\n\n>>> range(4)[-1]\n\n```\n",
+   "statementEn": "Predict what Python will display when you type the following into the interactive interpreter. Then try it to check your answers.\n\n```\n>>> s = [7//3, 5, [4, 0, 1], 2]\n>>> s[0]\n\n>>> s[2]\n\n>>> s[-1]\n\n>>> len(s)\n\n>>> 4 in s\n\n>>> 4 in s[2]\n\n>>> s[2] + [3 + 2]\n\n>>> 5 in s[2]\n\n>>> s[2] * 2\n\n>>> list(range(3, 6))\n\n>>> range(3, 6)\n\n>>> r = range(3, 6)\n>>> [r[0], r[2]]\n\n>>> range(4)[-1]\n\n```\n",
+   "editable": [
+    "lab03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "lists-wwpd"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "s = [7//3, 5, [4, 0, 1], 2]",
+       "want": []
+      },
+      {
+       "code": "s[0]",
+       "want": [
+        {
+         "hash": "73a9752b0761167119f7a8667ed17719"
+        }
+       ]
+      },
+      {
+       "code": "s[2]",
+       "want": [
+        {
+         "hash": "1afb89c7c3638fdcfb05bd83099185e5"
+        }
+       ]
+      },
+      {
+       "code": "s[-1]",
+       "want": [
+        {
+         "hash": "73a9752b0761167119f7a8667ed17719"
+        }
+       ]
+      },
+      {
+       "code": "len(s)",
+       "want": [
+        {
+         "hash": "ad741b000d1cc7ef3beaaf650d8f371b"
+        }
+       ]
+      },
+      {
+       "code": "4 in s",
+       "want": [
+        {
+         "hash": "2c0f80cb8568e3a3420d4ba35d62aaf1"
+        }
+       ]
+      },
+      {
+       "code": "4 in s[2]",
+       "want": [
+        {
+         "hash": "89004d33a990b56fa372d4458651bf6c"
+        }
+       ]
+      },
+      {
+       "code": "s[2] + [3 + 2]",
+       "want": [
+        {
+         "hash": "8e7dbe880f94dfb6da893a2d87538fb6"
+        }
+       ]
+      },
+      {
+       "code": "5 in s[2]",
+       "want": [
+        {
+         "hash": "2c0f80cb8568e3a3420d4ba35d62aaf1"
+        }
+       ]
+      },
+      {
+       "code": "s[2] * 2",
+       "want": [
+        {
+         "hash": "67d2e296b226fa45f1c023e600959ff6"
+        }
+       ]
+      },
+      {
+       "code": "list(range(3, 6))",
+       "want": [
+        {
+         "hash": "dd9ca721e5316fb1487def9988d5ca01"
+        }
+       ]
+      },
+      {
+       "code": "range(3, 6)",
+       "want": [
+        {
+         "hash": "92a2e1824db4e21d25feb5639b0fb925"
+        }
+       ]
+      },
+      {
+       "code": "r = range(3, 6)",
+       "want": []
+      },
+      {
+       "code": "[r[0], r[2]]",
+       "want": [
+        {
+         "hash": "a7015b3a9656bcdd8e23b1956be648eb"
+        }
+       ]
+      },
+      {
+       "code": "range(4)[-1]",
+       "want": [
+        {
+         "hash": "c66c489c94f153ccc42909baf6da3202"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "close",
+   "title": "Close",
+   "titleEn": "Close",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `close`, which takes a list of integers `s` and a non-negative integer `k`. It returns how many of the elements of `s` are within `k` of their index. That is, the absolute value of the difference between the element and its index is less than or equal to `k`.\n\nRemember that list is \"zero-indexed\"; the index of the first element is `0`.\n",
+   "statementEn": "Implement `close`, which takes a list of integers `s` and a non-negative integer `k`. It returns how many of the elements of `s` are within `k` of their index. That is, the absolute value of the difference between the element and its index is less than or equal to `k`.\n\nRemember that list is \"zero-indexed\"; the index of the first element is `0`.\n",
+   "editable": [
+    "lab03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "close"
+   },
+   "focus": {
+    "file": "lab03.py",
+    "symbol": "close"
+   }
+  },
+  {
+   "id": "list-comprehensions-wwpd",
+   "title": "WWPD: List Comprehensions",
+   "titleEn": "WWPD: List Comprehensions",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nPredict what Python will display when you type the following into the interactive interpreter. Then try it to check your answers.\n\n```\n>>> [2 * x for x in range(4)]\n\n>>> [y for y in [6, 1, 6, 1] if y > 2]\n\n>>> [[1] + s for s in [[4], [5, 6]]]\n\n>>> [z + 1 for z in range(10) if z % 3 == 0]\n\n```\n",
+   "statementEn": "Predict what Python will display when you type the following into the interactive interpreter. Then try it to check your answers.\n\n```\n>>> [2 * x for x in range(4)]\n\n>>> [y for y in [6, 1, 6, 1] if y > 2]\n\n>>> [[1] + s for s in [[4], [5, 6]]]\n\n>>> [z + 1 for z in range(10) if z % 3 == 0]\n\n```\n",
+   "editable": [
+    "lab03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "list-comprehensions-wwpd"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "[2 * x for x in range(4)]",
+       "want": [
+        {
+         "hash": "40628ea906dbaef22f25b053c4dd1e1e"
+        }
+       ]
+      },
+      {
+       "code": "[y for y in [6, 1, 6, 1] if y > 2]",
+       "want": [
+        {
+         "hash": "8ae6b17af6c622a7cfbec1195f908e66"
+        }
+       ]
+      },
+      {
+       "code": "[[1] + s for s in [[4], [5, 6]]]",
+       "want": [
+        {
+         "hash": "a22a76380a1633184ba1bf89a1bf4c84"
+        }
+       ]
+      },
+      {
+       "code": "[z + 1 for z in range(10) if z % 3 == 0]",
+       "want": [
+        {
+         "hash": "dbf8e492916cf93036bf7fef23a4c3e0"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "close_list",
+   "title": "Close List",
+   "titleEn": "Close List",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `close_list`, which takes a list of integers `s` and a non-negative integer `k`. It returns a list of the elements of `s` that are within `k` of their index. That is, the absolute value of the difference between the element and its index is less than or equal to `k`.\n",
+   "statementEn": "Implement `close_list`, which takes a list of integers `s` and a non-negative integer `k`. It returns a list of the elements of `s` that are within `k` of their index. That is, the absolute value of the difference between the element and its index is less than or equal to `k`.\n",
+   "editable": [
+    "lab03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "close_list"
+   },
+   "focus": {
+    "file": "lab03.py",
+    "symbol": "close_list"
+   }
+  },
+  {
+   "id": "double_eights",
+   "title": "Double Eights",
+   "titleEn": "Double Eights",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a **recursive** function that takes in a positive integer `n` and determines if its digits contain two adjacent `8`s (that is, two `8`s right next to each other).\n\n**Hint:** Start by coming up with a recursive plan: the digits of a number have double eights if either **** (think of something that is straightforward to check) or double eights appear in the rest of the digits.\n\n**Important:** Use recursion; the tests will fail if you use any loops (for, while), the `in` operator, or the `str` function.\n",
+   "statementEn": "Write a **recursive** function that takes in a positive integer `n` and determines if its digits contain two adjacent `8`s (that is, two `8`s right next to each other).\n\n**Hint:** Start by coming up with a recursive plan: the digits of a number have double eights if either **** (think of something that is straightforward to check) or double eights appear in the rest of the digits.\n\n**Important:** Use recursion; the tests will fail if you use any loops (for, while), the `in` operator, or the `str` function.\n",
+   "editable": [
+    "lab03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "double_eights"
+   },
+   "focus": {
+    "file": "lab03.py",
+    "symbol": "double_eights"
+   }
+  },
+  {
+   "id": "make_onion",
+   "title": "Making Onions",
+   "titleEn": "Making Onions",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function `make_onion` that takes in two one-argument functions, `f` and `g`. It returns a function that takes in three arguments: `x`, `y`, and `limit`. The returned function returns `True` if it is possible to reach `y` from `x` using up to `limit` calls to `f` and `g`, and `False` otherwise.\n\nFor example, if `f` adds 1 and `g` doubles, then it is possible to reach 25 from 5 in four calls: `f(g(g(f(5))))`.\n",
+   "statementEn": "Write a function `make_onion` that takes in two one-argument functions, `f` and `g`. It returns a function that takes in three arguments: `x`, `y`, and `limit`. The returned function returns `True` if it is possible to reach `y` from `x` using up to `limit` calls to `f` and `g`, and `False` otherwise.\n\nFor example, if `f` adds 1 and `g` doubles, then it is possible to reach 25 from 5 in four calls: `f(g(g(f(5))))`.\n",
+   "editable": [
+    "lab03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "make_onion"
+   },
+   "focus": {
+    "file": "lab03.py",
+    "symbol": "make_onion"
+   }
+  },
+  {
+   "id": "make_func_repeater",
+   "title": "Function Repeater",
+   "titleEn": "Function Repeater",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nDefine a function `make_fn_repeater` which takes in a one-argument function `f` and an integer `x`. It should return another function which takes in one argument, another integer. This function returns the result of applying `f` to `x` this number of times.\n\nMake sure to use recursion in your solution.\n\n  This is very similar to a homework problem, but recursive. We recommend covering this if you have time, it ties recursion and higher order functions together in an interesting way. Make sure to contrast with self-reference and show why this isn’t that, both in behavior (here a single function call results in a bunch of computation not many function calls) and in implementation (here a call to repeat *calls* repeat rather than returning a new repeat function).\n",
+   "statementEn": "Define a function `make_fn_repeater` which takes in a one-argument function `f` and an integer `x`. It should return another function which takes in one argument, another integer. This function returns the result of applying `f` to `x` this number of times.\n\nMake sure to use recursion in your solution.\n\n  This is very similar to a homework problem, but recursive. We recommend covering this if you have time, it ties recursion and higher order functions together in an interesting way. Make sure to contrast with self-reference and show why this isn’t that, both in behavior (here a single function call results in a bunch of computation not many function calls) and in implementation (here a call to repeat *calls* repeat rather than returning a new repeat function).\n",
+   "editable": [
+    "lab03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "make_func_repeater"
+   },
+   "focus": {
+    "file": "lab03.py",
+    "symbol": "make_func_repeater"
+   }
+  },
+  {
+   "id": "ten_pairs",
+   "title": "Ten-Pairs",
+   "titleEn": "Ten-Pairs",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function that takes a positive integer `n` and returns the number of ten-pairs it contains. A ten-pair is a pair of digits within `n` that sums to 10.\n\nThe number 7,823,952 has 3 ten-pairs. The first and fourth digits sum to 7+3=10, the second and third digits sum to 8+2=10, and the second and last digit sum to 8+2=10.\n\nImportant notes:\n\n- A digit can be part of more than one ten-pair.\n- One 5 does not make a ten-pair with itself.\n\n*Recommended*: Complete and use the helper function `count_digit` to calculate how many times a digit appears in `n`.\n\n**Important:** Use recursion; the tests will fail if you use any loops (for, while).\n",
+   "statementEn": "Write a function that takes a positive integer `n` and returns the number of ten-pairs it contains. A ten-pair is a pair of digits within `n` that sums to 10.\n\nThe number 7,823,952 has 3 ten-pairs. The first and fourth digits sum to 7+3=10, the second and third digits sum to 8+2=10, and the second and last digit sum to 8+2=10.\n\nImportant notes:\n\n- A digit can be part of more than one ten-pair.\n- One 5 does not make a ten-pair with itself.\n\n*Recommended*: Complete and use the helper function `count_digit` to calculate how many times a digit appears in `n`.\n\n**Important:** Use recursion; the tests will fail if you use any loops (for, while).\n",
+   "editable": [
+    "lab03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "ten_pairs"
+   },
+   "focus": {
+    "file": "lab03.py",
+    "symbol": "ten_pairs"
+   }
+  }
+ ]
+}

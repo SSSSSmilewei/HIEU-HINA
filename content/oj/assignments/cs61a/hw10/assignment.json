@@ -1,0 +1,87 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "hw10",
+ "title": "作业 10：SQL",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/hw/hw10/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "hw10",
+ "repoDir": "hw/hw10",
+ "intro": "",
+ "problems": [
+  {
+   "id": "by_parent_height",
+   "title": "By Parent Height",
+   "titleEn": "By Parent Height",
+   "kind": "function",
+   "languages": [
+    "sql"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nCreate a table `by_parent_height` that has a column of the names of all dogs that have a `parent`, ordered by the height of the parent dog from tallest parent to shortest parent.\n\n```\n-- All dogs with parents ordered by decreasing height of their parent\nCREATE TABLE by_parent_height AS\n  SELECT \"REPLACE THIS LINE WITH YOUR SOLUTION\";\n\n```\n\nFor example, `finn` has a parent `ellie` with height 35, and so should appear before `ginger` who has a parent `finn` with height 32. The names of dogs with parents of the same height should appear together in any order. For example, `bella` and `charlie` should both appear at the end, but either one can come before the other.\n\nFor our example tables, the `by_parent_height` table should look like this:\n\n```\n+----------+\n| chil     |\n+----------+\n| hank     |\n| finn     |\n| ace      |\n| daisy    |\n| ginger   |\n| bella    |\n| charlie  |\n+----------+\n```\n",
+   "statementEn": "Create a table `by_parent_height` that has a column of the names of all dogs that have a `parent`, ordered by the height of the parent dog from tallest parent to shortest parent.\n\n```\n-- All dogs with parents ordered by decreasing height of their parent\nCREATE TABLE by_parent_height AS\n  SELECT \"REPLACE THIS LINE WITH YOUR SOLUTION\";\n\n```\n\nFor example, `finn` has a parent `ellie` with height 35, and so should appear before `ginger` who has a parent `finn` with height 32. The names of dogs with parents of the same height should appear together in any order. For example, `bella` and `charlie` should both appear at the end, but either one can come before the other.\n\nFor our example tables, the `by_parent_height` table should look like this:\n\n```\n+----------+\n| chil     |\n+----------+\n| hank     |\n| finn     |\n| ace      |\n| daisy    |\n| ginger   |\n| bella    |\n| charlie  |\n+----------+\n```\n",
+   "editable": [
+    "hw10.sql"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "by_parent_height"
+   }
+  },
+  {
+   "id": "size_of_dogs",
+   "title": "Size of Dogs",
+   "titleEn": "Size of Dogs",
+   "kind": "function",
+   "languages": [
+    "sql"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nThe Fédération Cynologique Internationale classifies a standard poodle as over 45 cm and up to 60 cm. The `sizes` table describes this and other such classifications, where a dog must be over the `min` and less than or equal to the `max` in `height` to qualify as `size`.\n\nCreate a `size_of_dogs` table with two columns, one for each dog's `name` and another for its `size`.\n\n```\n-- The size of each dog\nCREATE TABLE size_of_dogs AS\n  SELECT \"REPLACE THIS LINE WITH YOUR SOLUTION\";\n\n```\n\nThe `size_of_dogs` table should look like this:\n\n```\n+----------+----------+\n| name     | size     |\n+----------+----------+\n| ace      | toy      |\n| bella    | standard |\n| charlie  | standard |\n| daisy    | standard |\n| ellie    | mini     |\n| finn     | mini     |\n| ginger   | toy      |\n| hank     | mini     |\n+----------+----------+\n```\n",
+   "statementEn": "The Fédération Cynologique Internationale classifies a standard poodle as over 45 cm and up to 60 cm. The `sizes` table describes this and other such classifications, where a dog must be over the `min` and less than or equal to the `max` in `height` to qualify as `size`.\n\nCreate a `size_of_dogs` table with two columns, one for each dog's `name` and another for its `size`.\n\n```\n-- The size of each dog\nCREATE TABLE size_of_dogs AS\n  SELECT \"REPLACE THIS LINE WITH YOUR SOLUTION\";\n\n```\n\nThe `size_of_dogs` table should look like this:\n\n```\n+----------+----------+\n| name     | size     |\n+----------+----------+\n| ace      | toy      |\n| bella    | standard |\n| charlie  | standard |\n| daisy    | standard |\n| ellie    | mini     |\n| finn     | mini     |\n| ginger   | toy      |\n| hank     | mini     |\n+----------+----------+\n```\n",
+   "editable": [
+    "hw10.sql"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "size_of_dogs"
+   }
+  },
+  {
+   "id": "sentences",
+   "title": "Sentences",
+   "titleEn": "Sentences",
+   "kind": "function",
+   "languages": [
+    "sql"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nSiblings are pairs of dogs that have the same parent. Create a table that contains a row for each pair of siblings that have the same size classification, with a single column that contains a sentence describing the siblings by their size.\n\n```\n-- [Optional] Filling out this helper table is recommended\nCREATE TABLE siblings AS\n  SELECT \"REPLACE THIS LINE WITH YOUR SOLUTION\";\n\n-- Sentences about siblings that are the same size\nCREATE TABLE sentences AS\n  SELECT \"REPLACE THIS LINE WITH YOUR SOLUTION\";\n\n```\n\nEach sibling pair should appear only once in the output, and siblings should be listed in alphabetical order (e.g. `\"bella and charlie...\"` instead of `\"charlie and bella...\"`), as follows:\n\n```\nsqlite> SELECT * FROM sentences;\nThe two siblings, bella and charlie, have the same size: standard\nThe two siblings, ace and ginger, have the same size: toy\n```\n\n**Hint**: First, create a helper table containing the names of each pair of siblings. This will make comparing the sizes of siblings when constructing the main table easier. Make sure to not pair a child with themselves and do not include duplicate pairs.\n\n**Hint**: If you join a table with itself, use `AS` within the `FROM` clause to give each table an alias.\n\n**Hint**: In order to concatenate two strings into one, use the `||` operator, e.g. `SELECT \"hello\" || \"world\";` will return `helloworld`.\n",
+   "statementEn": "Siblings are pairs of dogs that have the same parent. Create a table that contains a row for each pair of siblings that have the same size classification, with a single column that contains a sentence describing the siblings by their size.\n\n```\n-- [Optional] Filling out this helper table is recommended\nCREATE TABLE siblings AS\n  SELECT \"REPLACE THIS LINE WITH YOUR SOLUTION\";\n\n-- Sentences about siblings that are the same size\nCREATE TABLE sentences AS\n  SELECT \"REPLACE THIS LINE WITH YOUR SOLUTION\";\n\n```\n\nEach sibling pair should appear only once in the output, and siblings should be listed in alphabetical order (e.g. `\"bella and charlie...\"` instead of `\"charlie and bella...\"`), as follows:\n\n```\nsqlite> SELECT * FROM sentences;\nThe two siblings, bella and charlie, have the same size: standard\nThe two siblings, ace and ginger, have the same size: toy\n```\n\n**Hint**: First, create a helper table containing the names of each pair of siblings. This will make comparing the sizes of siblings when constructing the main table easier. Make sure to not pair a child with themselves and do not include duplicate pairs.\n\n**Hint**: If you join a table with itself, use `AS` within the `FROM` clause to give each table an alias.\n\n**Hint**: In order to concatenate two strings into one, use the `||` operator, e.g. `SELECT \"hello\" || \"world\";` will return `helloworld`.\n",
+   "editable": [
+    "hw10.sql"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "sentences"
+   }
+  },
+  {
+   "id": "low_variance",
+   "title": "Low Variance",
+   "titleEn": "Low Variance",
+   "kind": "function",
+   "languages": [
+    "sql"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWe want to create a table that contains the *height range* (defined as the difference between maximum and minimum `height`) of all dogs that share a `fur` type. However, we'll only consider `fur` types where each dog with that `fur` type is within 30% of the average `height` of all dogs with that `fur` type; we call this the *low variance* criterion.\n\nFor example, if the average `height` for short-haired dogs is 10, then in order to be included in our output, all dogs with short hair must have a `height` of at most 13 and at least 7 (*inclusive*).\n\n**Hint**: `MIN`, `MAX`, and `AVG` will be useful here.\n\n**Hint**: You may want to first find the average height and make sure that:\n\n```\n* There are no heights smaller than 0.7 (i.e. 70%) of the average.\n* There are no heights greater than 1.3 (i.e. 130%) of the average.\n```\n\n```\n-- Height range for each fur type where all of the heights differ by no more than 30% from the average height\nCREATE TABLE low_variance AS\n  SELECT \"REPLACE THIS LINE WITH YOUR SOLUTION\";\n\n```\n\nYour output should have two columns, in this order: the `fur` type and the `height_range` for the `fur` types that meet this criteria. For the example tables, it should look like this:\n\n```\n+------------+--------------+\n| fur        | height_range |\n+------------+--------------+\n| Curly      | 1            |\n+------------+--------------+\n```\n\n Submit Assignment\n\nSubmit this assignment by uploading any files you've edited **to the appropriate Gradescope assignment.** [Lab 00](https://cs61a.org/lab/lab00.html) has detailed instructions.\n\nMake sure to submit `hw10.sql` to the autograder!\n",
+   "statementEn": "We want to create a table that contains the *height range* (defined as the difference between maximum and minimum `height`) of all dogs that share a `fur` type. However, we'll only consider `fur` types where each dog with that `fur` type is within 30% of the average `height` of all dogs with that `fur` type; we call this the *low variance* criterion.\n\nFor example, if the average `height` for short-haired dogs is 10, then in order to be included in our output, all dogs with short hair must have a `height` of at most 13 and at least 7 (*inclusive*).\n\n**Hint**: `MIN`, `MAX`, and `AVG` will be useful here.\n\n**Hint**: You may want to first find the average height and make sure that:\n\n```\n* There are no heights smaller than 0.7 (i.e. 70%) of the average.\n* There are no heights greater than 1.3 (i.e. 130%) of the average.\n```\n\n```\n-- Height range for each fur type where all of the heights differ by no more than 30% from the average height\nCREATE TABLE low_variance AS\n  SELECT \"REPLACE THIS LINE WITH YOUR SOLUTION\";\n\n```\n\nYour output should have two columns, in this order: the `fur` type and the `height_range` for the `fur` types that meet this criteria. For the example tables, it should look like this:\n\n```\n+------------+--------------+\n| fur        | height_range |\n+------------+--------------+\n| Curly      | 1            |\n+------------+--------------+\n```\n\n Submit Assignment\n\nSubmit this assignment by uploading any files you've edited **to the appropriate Gradescope assignment.** [Lab 00](https://cs61a.org/lab/lab00.html) has detailed instructions.\n\nMake sure to submit `hw10.sql` to the autograder!\n",
+   "editable": [
+    "hw10.sql"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "low_variance"
+   }
+  }
+ ]
+}

@@ -1,0 +1,362 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "fa20-lab07",
+ "title": "实验 7：迭代器、生成器、面向对象编程",
+ "semester": "fa20",
+ "language": "zh",
+ "source": "https://inst.eecs.berkeley.edu/~cs61a/fa20/lab/lab07/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2020 秋季）；中文翻译来自 github.com/chillyhigh/CS61A-CN（MIT 许可）。仅供协会内部学习交流",
+ "item": "lab06",
+ "repoDir": "fa20/lab/lab07",
+ "intro": "",
+ "problems": [
+  {
+   "id": "scale",
+   "title": "缩放序列",
+   "titleEn": "Scale",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "实现生成器函数 `scale(it, multiplier)`，它会产生可迭代对象 `it` 中的元素， 并将每个元素按 `multiplier` 进行缩放。 作为额外挑战，尝试使用 `yield from` 语句来实现这个函数！\n",
+   "statementEn": "Implement the generator function `scale(it, multiplier)`, which yields elements of the given iterable `it`, scaled by `multiplier`. As an extra challenge, try writing this function using a `yield from` statement!\n",
+   "editable": [
+    "lab07.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "scale"
+   },
+   "focus": {
+    "file": "lab07.py",
+    "symbol": "scale"
+   }
+  },
+  {
+   "id": "hailstone",
+   "title": "冰雹序列",
+   "titleEn": "Hailstone",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个生成器，它输出作业1 中的冰雹序列。\n\n以下是冰雹序列的定义：\n\n1. 选择一个正整数 `n` 作为起始值。\n2. 如果 `n` 是偶数，则将其除以 2。\n3. 如果 `n` 是奇数，则将其乘以 3 并加 1。\n4. 重复此过程，直到 `n` 变为 1。\n\n**注意：** 强烈建议（但不强制要求）使用递归来编写解决方案，以获得额外的练习。 由于 `hailstone` 返回一个生成器，你可以使用 `yield from` 调用 `hailstone`！\n",
+   "statementEn": "Write a generator that outputs the hailstone sequence from homework 1.\n\nHere's a quick reminder of how the hailstone sequence is defined:\n\n1. Pick a positive integer `n` as the start.\n2. If `n` is even, divide it by 2.\n3. If `n` is odd, multiply it by 3 and add 1.\n4. Continue this process until `n` is 1.\n\n**Note:** It is highly encouraged (though not required) to try writing a solution using recursion for some extra practice. Since `hailstone` returns a generator, you can `yield from` a call to `hailstone`!\n",
+   "editable": [
+    "lab07.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "hailstone"
+   },
+   "focus": {
+    "file": "lab07.py",
+    "symbol": "hailstone"
+   }
+  },
+  {
+   "id": "wwpd-car",
+   "title": "汽车类 (Car Class)",
+   "titleEn": "The Car class",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "**注意：** 这些问题涉及继承。要了解继承的概述，请参考课本中的 [继承部分](https://composingprograms.netlify.app/2/5#_2-5-5-%E7%BB%A7%E6%89%BF)。\n\n下面是 `Car` 类的定义，我们将在后续 WWPD（Python 会输出什么？）问题中使用它。 **注意：** 该定义也可以在 `car.py` 文件中找到。\n\n```\nclass Car(object):\n    num_wheels = 4\n    gas = 30\n    headlights = 2\n    size = 'Tiny'\n\n    def __init__(self, make, model):\n        self.make = make\n        self.model = model\n        self.color = 'No color yet. You need to paint me.'\n        self.wheels = Car.num_wheels\n        self.gas = Car.gas\n\n    def paint(self, color):\n        self.color = color\n        return self.make + ' ' + self.model + ' is now ' + color\n\n    def drive(self):\n        if self.wheels < Car.num_wheels or self.gas <= 0:\n            return 'Cannot drive!'\n        self.gas -= 10\n        return self.make + ' ' + self.model + ' goes vroom!'\n\n    def pop_tire(self):\n        if self.wheels > 0:\n            self.wheels -= 1\n\n    def fill_gas(self):\n        self.gas += 20\n        return 'Gas level: ' + str(self.gas)\n```\n\n如果产生错误，请输入 `Error`。如果没有输出，请输入 `Nothing`。\n\n```\n>>> deneros_car = Car('Tesla', 'Model S')\n>>> deneros_car.model\n\n>>> deneros_car.gas = 10\n>>> deneros_car.drive()\n\n>>> deneros_car.drive()\n\n>>> deneros_car.fill_gas()\n\n>>> deneros_car.gas\n\n>>> Car.gas\n\n```\n\n```\n>>> deneros_car = Car('Tesla', 'Model S')\n>>> deneros_car.wheels = 2\n>>> deneros_car.wheels\n\n>>> Car.num_wheels\n\n>>> deneros_car.drive()\n\n>>> Car.drive()\n\n>>> Car.drive(deneros_car)\n\n```\n\n对于以下问题，我们考虑 `MonsterTruck` 类。 **注意**：`MonsterTruck` 类也可以在 `car.py` 中找到。\n\n```\n class MonsterTruck(Car):\n     size = 'Monster'\n\n     def rev(self):\n         print('Vroom! This Monster Truck is huge!')\n\n     def drive(self):\n         self.rev()\n         return Car.drive(self)\n```\n\n```\n>>> deneros_car = MonsterTruck('Monster', 'Batmobile')\n>>> deneros_car.drive()\n\n>>> Car.drive(deneros_car)\n\n>>> MonsterTruck.drive(deneros_car)\n\n>>> Car.rev(deneros_car)\n\n```\n",
+   "statementEn": "**Note:** These questions use inheritance. For an overview of inheritance, see the [inheritance portion](http://composingprograms.com/pages/25-object-oriented-programming.html#inheritance) of Composing Programs\n\nBelow is the definition of a `Car` class that we will be using in the following WWPD questions. **Note:** This definition can also be found in `car.py`.\n\n```\nclass Car(object):\n    num_wheels = 4\n    gas = 30\n    headlights = 2\n    size = 'Tiny'\n\n    def __init__(self, make, model):\n        self.make = make\n        self.model = model\n        self.color = 'No color yet. You need to paint me.'\n        self.wheels = Car.num_wheels\n        self.gas = Car.gas\n\n    def paint(self, color):\n        self.color = color\n        return self.make + ' ' + self.model + ' is now ' + color\n\n    def drive(self):\n        if self.wheels < Car.num_wheels or self.gas <= 0:\n            return 'Cannot drive!'\n        self.gas -= 10\n        return self.make + ' ' + self.model + ' goes vroom!'\n\n    def pop_tire(self):\n        if self.wheels > 0:\n            self.wheels -= 1\n\n    def fill_gas(self):\n        self.gas += 20\n        return 'Gas level: ' + str(self.gas)\n```\n\nIf an error occurs, type Error. If nothing is displayed, type Nothing.\n\n```\n>>> deneros_car = Car('Tesla', 'Model S')\n>>> deneros_car.model\n\n>>> deneros_car.gas = 10\n>>> deneros_car.drive()\n\n>>> deneros_car.drive()\n\n>>> deneros_car.fill_gas()\n\n>>> deneros_car.gas\n\n>>> Car.gas\n\n```\n\n```\n>>> deneros_car = Car('Tesla', 'Model S')\n>>> deneros_car.wheels = 2\n>>> deneros_car.wheels\n\n>>> Car.num_wheels\n\n>>> deneros_car.drive()\n\n>>> Car.drive()\n\n>>> Car.drive(deneros_car)\n\n```\n\nFor the following, we reference the `MonsterTruck` class below. **Note**: The `MonsterTruck` class can also be found in `car.py`.\n\n```\n class MonsterTruck(Car):\n     size = 'Monster'\n\n     def rev(self):\n         print('Vroom! This Monster Truck is huge!')\n\n     def drive(self):\n         self.rev()\n         return Car.drive(self)\n```\n\n```\n>>> deneros_car = MonsterTruck('Monster', 'Batmobile')\n>>> deneros_car.drive()\n\n>>> Car.drive(deneros_car)\n\n>>> MonsterTruck.drive(deneros_car)\n\n>>> Car.rev(deneros_car)\n\n```\n",
+   "editable": [
+    "lab07.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "wwpd-car"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "from car import *",
+       "want": []
+      },
+      {
+       "code": "deneros_car = Car('Tesla', 'Model S')",
+       "want": []
+      },
+      {
+       "code": "deneros_car.model",
+       "want": [
+        {
+         "hash": "d44fbfeedd5748e8ed04de29de968251"
+        }
+       ]
+      },
+      {
+       "code": "deneros_car.gas = 10",
+       "want": []
+      },
+      {
+       "code": "deneros_car.drive()",
+       "want": [
+        {
+         "hash": "08adfbe4efff8d65757aa6e3130e95d6"
+        }
+       ]
+      },
+      {
+       "code": "deneros_car.drive()",
+       "want": [
+        {
+         "hash": "ed7e31d39fdaefb22a23971c5b0eb43d"
+        }
+       ]
+      },
+      {
+       "code": "deneros_car.fill_gas()",
+       "want": [
+        {
+         "hash": "73199fd3939cadd5e1e581b76e26a9e9"
+        }
+       ]
+      },
+      {
+       "code": "deneros_car.gas",
+       "want": [
+        {
+         "hash": "e1b5abca0ce46c01fbc9ffe5da884d06"
+        }
+       ]
+      },
+      {
+       "code": "Car.gas",
+       "want": [
+        {
+         "hash": "cf3b881608904e51c384abfbd72a7cc8"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "from car import *",
+       "want": []
+      },
+      {
+       "code": "deneros_car = Car('Tesla', 'Model S')",
+       "want": []
+      },
+      {
+       "code": "deneros_car.wheels = 2",
+       "want": []
+      },
+      {
+       "code": "deneros_car.wheels",
+       "want": [
+        {
+         "hash": "c9aea858aa12d15d170a9fd7596d70b1"
+        }
+       ]
+      },
+      {
+       "code": "Car.num_wheels",
+       "want": [
+        {
+         "hash": "f2991d685f624ad59b79213e20800653"
+        }
+       ]
+      },
+      {
+       "code": "deneros_car.drive() # Type Error if an error occurs and Nothing if nothing is displayed",
+       "want": [
+        {
+         "hash": "ed7e31d39fdaefb22a23971c5b0eb43d"
+        }
+       ]
+      },
+      {
+       "code": "Car.drive() # Type Error if an error occurs and Nothing if nothing is displayed",
+       "want": [
+        {
+         "hash": "795bceccbca635277a3bbfa64bc9dba0"
+        }
+       ]
+      },
+      {
+       "code": "Car.drive(deneros_car) # Type Error if an error occurs and Nothing if nothing is displayed",
+       "want": [
+        {
+         "hash": "ed7e31d39fdaefb22a23971c5b0eb43d"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "from car import *",
+       "want": []
+      },
+      {
+       "code": "deneros_car = MonsterTruck('Monster', 'Batmobile')",
+       "want": []
+      },
+      {
+       "code": "deneros_car.drive() # Type Error if an error occurs and Nothing if nothing is displayed",
+       "want": [
+        {
+         "hash": "beba7598767b3ddfeb4b0163408184fa"
+        },
+        {
+         "hash": "8a7be733d5923219ef98f4d3a98c169c"
+        }
+       ]
+      },
+      {
+       "code": "Car.drive(deneros_car) # Type Error if an error occurs and Nothing if nothing is displayed",
+       "want": [
+        {
+         "hash": "8a7be733d5923219ef98f4d3a98c169c"
+        }
+       ]
+      },
+      {
+       "code": "MonsterTruck.drive(deneros_car) # Type Error if an error occurs and Nothing if nothing is displayed",
+       "want": [
+        {
+         "hash": "beba7598767b3ddfeb4b0163408184fa"
+        },
+        {
+         "hash": "8a7be733d5923219ef98f4d3a98c169c"
+        }
+       ]
+      },
+      {
+       "code": "Car.rev(deneros_car) # Type Error if an error occurs and Nothing if nothing is displayed",
+       "want": [
+        {
+         "hash": "795bceccbca635277a3bbfa64bc9dba0"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "card",
+   "title": "创建卡牌",
+   "titleEn": "Making Cards",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "要玩卡牌游戏，我们首先需要制作卡牌！让我们先实现 `Card` 类的基本功能。\n\n首先，在 `classes.py` 中实现 `Card` 类的构造方法，该方法接受三个参数：\n\n- 卡牌的 `name`（名称），字符串类型\n- 卡牌的 `attack`（攻击力），整数类型\n- 卡牌的 `defense`（防御力），整数类型\n\n每个 `Card` 实例都应该使用实例属性 `name`、`attack` 和 `defense` 来存储这些值。\n\n你还需要实现 `Card` 类中的 `power` 方法，该方法接收另一张卡牌作为输入， 并计算当前卡牌的战斗力。如果需要回顾战斗力计算方式，请查看规则部分。\n\n使用 Ok 来测试你的代码：\n\n```\npython3 ok -q Card.__init__ --local\npython3 ok -q Card.power --local\n```\n",
+   "statementEn": "To play a card game, we're going to need to have cards, so let's make some! We're gonna implement the basics of the `Card` class first.\n\nFirst, implement the `Card` class constructor in `classes.py`. This constructor takes three arguments:\n\n- the `name` of the card, a string\n- the `attack` stat of the card, an integer\n- the `defense` stat of the card, an integer\n\nEach `Card` instance should keep track of these values using instance attributes called `name`, `attack`, and `defense`.\n\nYou should also implement the `power` method in `Card`, which takes in another card as an input and calculates the current card's power. Check the Rules section if you want a refresher on how power is calculated.\n\nUse Ok to test your code:\n\n```\npython3 ok -q Card.__init__\npython3 ok -q Card.power\n```\n",
+   "editable": [
+    "classes.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "Card.__init__ Card.power"
+   },
+   "focus": {
+    "file": "classes.py",
+    "symbol": "Card"
+   }
+  },
+  {
+   "id": "player",
+   "title": "创建 Player",
+   "titleEn": "Making a Player",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "现在我们已经有了卡牌，并且可以组成卡组，但仍然需要 Player 来使用这些卡牌。 现在，我们将完善 `Player` 类的实现。\n\n每个 `Player` 实例有三个实例属性：\n\n- `name`：Player 的名称。在游戏中，你可以输入自己的名字，名称会被转换为字符串并传递给构造方法。\n- `deck`：`Deck` 类的一个实例。你可以使用其 `.draw()` 方法从中抽取卡牌。\n- `hand`：一个包含 `Card` 实例的列表。每个 Player 应该在游戏开始时从 `deck` 中抽取 5 张卡牌作为起始手牌。 在游戏过程中，手牌中的卡牌可以通过索引进行选择。当 Player 抽取新卡牌时，该卡牌会被添加到列表末尾。\n\n完成 `Player` 类的构造方法，使 `self.hand` 被初始化为 5 张从 `deck` 中抽取的卡牌列表。\n\n接下来，在 `Player` 类中实现 `draw` 和 `play` 方法：\n\n- `draw` 方法用于从 `deck` 中抽取一张卡，并将其加入 Player 的手牌。\n- `play` 方法用于根据给定的索引从 Player 的手牌中移除并返回一张卡。\n\n在实现 `Player.__init__` 和 `Player.draw` 方法时，需要调用 `deck.draw()`。 不必关心该方法的内部实现，直接使用抽象提供的功能即可！\n\n使用 Ok 来测试你的代码：\n\n```\npython3 ok -q Player.__init__ --local\npython3 ok -q Player.draw --local\npython3 ok -q Player.play --local\n```\n\n完成这个问题后，你将获得一个可运行的游戏版本！输入：\n\n```\npython3 cardgame.py\n```\n\n即可开始玩 Magic: The Lambda-ing！\n\n当前版本还没有为不同类型的卡牌实现特殊效果。如果你想让这些效果生效，可以尝试完成下面的可选问题。\n\n 选做题\n\n以下的代码编写问题都将在 `classes.py` 中完成。\n\n对于接下来的部分，**不要**修改代码中已经提供的任何内容。此外，在实现每个方法后，请确保取消注释所有对 `print` 的调用。这些调用用于向用户显示信息，修改它们可能会导致你未能通过测试。\n",
+   "statementEn": "Now that we have cards, we can make a deck, but we still need players to actually use them. We'll now fill in the implementation of the `Player` class.\n\nA `Player` instance has three instance attributes:\n\n- `name` is the player's name. When you play the game, you can enter your name, which will be converted into a string to be passed to the constructor.\n- `deck` is an instance of the `Deck` class. You can draw from it using its `.draw()` method.\n- `hand` is a list of `Card` instances. Each player should start with 5 cards in their hand, drawn from their `deck`. Each card in the hand can be selected by its index in the list during the game. When a player draws a new card from the deck, it is added to the end of this list.\n\nComplete the implementation of the constructor for `Player` so that `self.hand` is set to a list of 5 cards drawn from the player's `deck`.\n\nNext, implement the `draw` and `play` methods in the `Player` class. The `draw` method draws a card from the deck and adds it to the player's hand. The `play` method removes and returns a card from the player's hand at the given index.\n\nCall `deck.draw()` when implementing `Player.__init__` and `Player.draw`. Don't worry about how this function works - leave it all to the abstraction!\n\nUse Ok to test your code:\n\n```\npython3 ok -q Player.__init__\npython3 ok -q Player.draw\npython3 ok -q Player.play\n```\n\nAfter you complete this problem, you'll be able to play a working version of the game! Type\n\n```\npython3 cardgame.py\n```\n\nto start a game of Magic: The Lambda-ing!\n\nThis version doesn't have the effects for different cards, yet - to get those working, try out the optional questions below.\n\n Optional Questions\n\nThe following code-writing questions will all be in `classes.py`.\n\nFor the following sections, do **not** overwrite any lines already provided in the code. Additionally, make sure to uncomment any calls to `print` once you have implemented each method. These are used to display information to the user, and changing them may cause you to fail tests that you would otherwise pass.\n",
+   "editable": [
+    "classes.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "Player.__init__ Player.draw Player.play"
+   },
+   "focus": {
+    "file": "classes.py",
+    "symbol": "Player"
+   }
+  },
+  {
+   "id": "tutorcard",
+   "title": "Tutors: Flummox",
+   "titleEn": "Tutors: Flummox",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "为了使这个卡牌游戏更加有趣，我们的卡牌应该具有一些效果！我们将通过 `effect` 函数来实现这些效果，它接受对手的卡牌、当前玩家和对手玩家作为输入。\n\n实现 Tutors 的 `effect` 方法，使其导致对手丢弃手中的前三张卡牌，并且从对方的牌库中抽取三张新卡。假设对手的手牌中至少有三张卡，并且对方的牌库中至少有三张卡。\n\n记得完成后取消注释中对 `print` 的调用！\n",
+   "statementEn": "To really make this card game interesting, our cards should have effects! We'll do this with the `effect` function for cards, which takes in the opponent card, the current player, and the opponent player.\n\nImplement the `effect` method for Tutors, which causes the opponent to discard the first 3 cards in their hand and then draw 3 new cards. Assume there at least 3 cards in the opponent's hand and at least 3 cards in the opponent's deck.\n\nRemember to uncomment the call to `print` once you're done!\n",
+   "editable": [
+    "classes.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "TutorCard.effect"
+   },
+   "focus": {
+    "file": "classes.py",
+    "symbol": "TutorCard"
+   }
+  },
+  {
+   "id": "tacard",
+   "title": "TAs: Shift",
+   "titleEn": "TAs: Shift",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "现在我们为 TAs 添加一个效果！实现 TAs 的 `effect` 方法，它会交换对手卡牌的攻击力和防御力。\n\n html 复制代码\n",
+   "statementEn": "Let's add an effect for TAs now! Implement the `effect` method for TAs, which swaps the attack and defense of the opponent's card.\n",
+   "editable": [
+    "classes.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "TACard.effect"
+   },
+   "focus": {
+    "file": "classes.py",
+    "symbol": "TACard"
+   }
+  },
+  {
+   "id": "professorcard",
+   "title": "The Professor Arrives",
+   "titleEn": "The Professor Arrives",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "一个新的挑战者出现了！实现 Professor 的 `effect` 方法，它会将对手卡牌的攻击力和防御力加到玩家卡组中的所有卡牌上，然后移除对手卡组中所有与对手卡牌的攻击力或防御力相同的卡牌。\n\n*注意：*当你在遍历列表时修改该列表，可能会遇到问题。试着遍历列表的副本！你可以通过切片来复制列表：\n\n```\n  >>> lst = [1, 2, 3, 4]\n  >>> copy = lst[:]\n  >>> copy\n  [1, 2, 3, 4]\n  >>> copy is lst\n  False\n```\n\n完成这个问题后，我们将拥有一个功能完整的 Magic: The Lambda-ing 游戏！不过，这不必是结束 - 我们鼓励你发挥创意，添加更多卡牌类型、效果，甚至将更多自定义卡牌加入你的卡组！\n",
+   "statementEn": "A new challenger has appeared! Implement the `effect` method for the Professor, who adds the opponent card's attack and defense to all cards in the player's deck and then removes *all* cards in the opponent's deck that have the same attack or defense as the opponent's card.\n\n*Note:* You might run into trouble when you mutate a list as you're iterating through it. Try iterating through a copy instead! You can use slicing to copy a list:\n\n```\n  >>> lst = [1, 2, 3, 4]\n  >>> copy = lst[:]\n  >>> copy\n  [1, 2, 3, 4]\n  >>> copy is lst\n  False\n```\n\nAfter you complete this problem, we'll have a fully functional game of Magic: The Lambda-ing! This doesn't have to be the end, though - we encourage you to get creative with more card types, effects, and even adding more custom cards to your deck!\n",
+   "editable": [
+    "classes.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "ProfessorCard.effect"
+   },
+   "focus": {
+    "file": "classes.py",
+    "symbol": "ProfessorCard"
+   }
+  }
+ ]
+}

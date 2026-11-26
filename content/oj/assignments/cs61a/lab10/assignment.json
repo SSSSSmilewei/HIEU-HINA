@@ -1,0 +1,174 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "lab10",
+ "title": "实验 10：程序即数据、宏",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/lab/lab10/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "lab10",
+ "repoDir": "lab/lab10",
+ "intro": "",
+ "problems": [
+  {
+   "id": "wwsd-quasiquote",
+   "title": "WWSD: Quasiquote",
+   "titleEn": "WWSD: Quasiquote",
+   "kind": "wwpd",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\n```\nscm> '(1 x 3)\n\nscm> (define x 2)\n\nscm> `(1 x 3)\n\nscm> `(1 ,x 3)\n\nscm> `(1 x ,3)\n\nscm> `(1 (,x) 3)\n\nscm> `(1 ,(+ x 2) 3)\n\nscm> (define y 3)\n\nscm> `(x ,(* y x) y)\n\nscm> `(1 ,(cons x (list y 4)) 5)\n\n```\n",
+   "statementEn": "```\nscm> '(1 x 3)\n\nscm> (define x 2)\n\nscm> `(1 x 3)\n\nscm> `(1 ,x 3)\n\nscm> `(1 x ,3)\n\nscm> `(1 (,x) 3)\n\nscm> `(1 ,(+ x 2) 3)\n\nscm> (define y 3)\n\nscm> `(x ,(* y x) y)\n\nscm> `(1 ,(cons x (list y 4)) 5)\n\n```\n",
+   "editable": [
+    "lab10.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "wwsd-quasiquote"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "'(1 x 3)",
+       "want": [
+        {
+         "hash": "9361113117cbf04a77ec19756fb23ed5"
+        }
+       ]
+      },
+      {
+       "code": "(define x 2)",
+       "want": [
+        {
+         "hash": "adfa7f54c8ad7613f4804096e85be4da"
+        }
+       ]
+      },
+      {
+       "code": "`(1 x 3)",
+       "want": [
+        {
+         "hash": "9361113117cbf04a77ec19756fb23ed5"
+        }
+       ]
+      },
+      {
+       "code": "`(1 ,x 3)",
+       "want": [
+        {
+         "hash": "5aa726f3ee5e32f3b1aaf920885bb5df"
+        }
+       ]
+      },
+      {
+       "code": "`(1 x ,3)",
+       "want": [
+        {
+         "hash": "9361113117cbf04a77ec19756fb23ed5"
+        }
+       ]
+      },
+      {
+       "code": "`(1 (,x) 3)",
+       "want": [
+        {
+         "hash": "4bcb7537b268198696b1f28355a012a6"
+        }
+       ]
+      },
+      {
+       "code": "`(1 ,(+ x 2) 3)",
+       "want": [
+        {
+         "hash": "25ce38d7ddca5d758275c538ca626873"
+        }
+       ]
+      },
+      {
+       "code": "(define y 3)",
+       "want": [
+        {
+         "hash": "612417f3d036b486fb3efc75ae7d405e"
+        }
+       ]
+      },
+      {
+       "code": "`(x ,(* y x) y)",
+       "want": [
+        {
+         "hash": "f2e02f7744981f74c682a76f30d8e3d2"
+        }
+       ]
+      },
+      {
+       "code": "`(1 ,(cons x (list y 4)) 5)",
+       "want": [
+        {
+         "hash": "5cfeefea45ed5af3861adddcf1e8d238"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "if-program",
+   "title": "If Program",
+   "titleEn": "If Program",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nIn Scheme, the `if` special form allows us to evaluate one of two expressions based on a predicate. Write a program `if-program` that takes in the following parameters:\n\n1. `predicate` : a quoted expression which will evaluate to the condition in our `if`-expression\n2. `if-true` : a quoted expression which will evaluate to the value we return if `predicate` evaluates to true (`#t`)\n3. `if-false` : a quoted expression which will evaluate to the value we return if `predicate` evaluates to false (`#f`)\n\nThe program returns a Scheme list that represents an `if` expression in the form: `(if <predicate> <if-true> <if-false>)`. Note that we don't want to evaluate the expression (in our program at least).\n\nHere are some doctests to show this:\n\n```\nscm> (define x 1)\nscm> (if-program '(= 0 0) '(+ x 1) 'x)\n(if (= 0 0) (+ x 1) x)\nscm> (eval (if-program '(= 0 0) '(+ x 1) 'x))\n2\nscm> (if-program '(= 1 0) '(print 3) '(print 5))\n(if (= 1 0) (print 3) (print 5))\nscm> (eval (if-program '(= 1 0) '(print 3) '(print 5)))\n5\n```\n",
+   "statementEn": "In Scheme, the `if` special form allows us to evaluate one of two expressions based on a predicate. Write a program `if-program` that takes in the following parameters:\n\n1. `predicate` : a quoted expression which will evaluate to the condition in our `if`-expression\n2. `if-true` : a quoted expression which will evaluate to the value we return if `predicate` evaluates to true (`#t`)\n3. `if-false` : a quoted expression which will evaluate to the value we return if `predicate` evaluates to false (`#f`)\n\nThe program returns a Scheme list that represents an `if` expression in the form: `(if <predicate> <if-true> <if-false>)`. Note that we don't want to evaluate the expression (in our program at least).\n\nHere are some doctests to show this:\n\n```\nscm> (define x 1)\nscm> (if-program '(= 0 0) '(+ x 1) 'x)\n(if (= 0 0) (+ x 1) x)\nscm> (eval (if-program '(= 0 0) '(+ x 1) 'x))\n2\nscm> (if-program '(= 1 0) '(print 3) '(print 5))\n(if (= 1 0) (print 3) (print 5))\nscm> (eval (if-program '(= 1 0) '(print 3) '(print 5)))\n5\n```\n",
+   "editable": [
+    "lab10.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "if-program"
+   }
+  },
+  {
+   "id": "pow",
+   "title": "Exponential Powers",
+   "titleEn": "Exponential Powers",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement a procedure `(pow-expr base exp)` that returns an expression that, when evaluated, raises the number `base` to the power of the nonnegative integer `exp`. The body of `pow-expr` should not perform any multiplication (or exponentiation). Instead, it should just construct an expression containing only the symbols `square` and `*` as well as the number `base` and parentheses. The length of this expression should grow logarithmically with respect to `exp`, rather than linearly.\n\nExamples:\n\n```\nscm> (pow-expr 3 0)\n1\nscm> (pow-expr 3 1)\n(* 3 1)\nscm> (pow-expr 3 5)\n(* 3 (square (square (* 3 1))))\nscm> (pow-expr 3 15)\n(* 3 (square (* 3 (square (* 3 (square (* 3 1)))))))\nscm> (pow-expr 3 16)\n(square (square (square (square (* 3 1)))))\nscm> (eval (pow-expr 3 16))\n43046721\n```\n\n*Hint:*\n\n1. x2y = (xy)2\n2. x2y+1 = x(xy)2\n\nFor example, 316 = (38)2 and 317 = 3 * (38)2.\n\nYou may use the built-in predicates `even?` and `odd?`. Also, the `square` procedure is defined for you.\n\nHere's the [solution to a similar homework problem](https://cs61a.org/hw/sol-hw07/index.html#q1-pow).\n",
+   "statementEn": "Implement a procedure `(pow-expr base exp)` that returns an expression that, when evaluated, raises the number `base` to the power of the nonnegative integer `exp`. The body of `pow-expr` should not perform any multiplication (or exponentiation). Instead, it should just construct an expression containing only the symbols `square` and `*` as well as the number `base` and parentheses. The length of this expression should grow logarithmically with respect to `exp`, rather than linearly.\n\nExamples:\n\n```\nscm> (pow-expr 3 0)\n1\nscm> (pow-expr 3 1)\n(* 3 1)\nscm> (pow-expr 3 5)\n(* 3 (square (square (* 3 1))))\nscm> (pow-expr 3 15)\n(* 3 (square (* 3 (square (* 3 (square (* 3 1)))))))\nscm> (pow-expr 3 16)\n(square (square (square (square (* 3 1)))))\nscm> (eval (pow-expr 3 16))\n43046721\n```\n\n*Hint:*\n\n1. x2y = (xy)2\n2. x2y+1 = x(xy)2\n\nFor example, 316 = (38)2 and 317 = 3 * (38)2.\n\nYou may use the built-in predicates `even?` and `odd?`. Also, the `square` procedure is defined for you.\n\nHere's the [solution to a similar homework problem](https://cs61a.org/hw/sol-hw07/index.html#q1-pow).\n",
+   "editable": [
+    "lab10.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "pow"
+   }
+  },
+  {
+   "id": "repeat-lambda",
+   "title": "Repeat",
+   "titleEn": "Repeat",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nDefine `repeat`, a macro that takes a number `n` and an expression `expr`. Calling `repeat` evaluates `expr` in a local frame `n` times, and its value is the final result. You will find the helper function `repeated-call` useful, which takes a number `n` and a zero-argument procedure `f` and calls `f` `n` number of times.\n\nFor example, `(repeat (+ 2 3) (print 1))` is equivalent to:\n\n`(repeated-call (+ 2 3) (lambda () (print 1)))`\n\nand should evaluate `(print 1)` repeatedly 5 times.\n\nThe following expression should print `four` four times:\n\n`(repeat 2 (repeat 2 (print 'four)))`\n\n```\n(define-macro (repeat n expr)\n  `(repeated-call ,n ___))\n\n; Call zero-argument procedure f n times and return the final result.\n(define (repeated-call n f)\n  (if (= n 1) ___ (begin ___ ___)))\n\n```\n",
+   "statementEn": "Define `repeat`, a macro that takes a number `n` and an expression `expr`. Calling `repeat` evaluates `expr` in a local frame `n` times, and its value is the final result. You will find the helper function `repeated-call` useful, which takes a number `n` and a zero-argument procedure `f` and calls `f` `n` number of times.\n\nFor example, `(repeat (+ 2 3) (print 1))` is equivalent to:\n\n`(repeated-call (+ 2 3) (lambda () (print 1)))`\n\nand should evaluate `(print 1)` repeatedly 5 times.\n\nThe following expression should print `four` four times:\n\n`(repeat 2 (repeat 2 (print 'four)))`\n\n```\n(define-macro (repeat n expr)\n  `(repeated-call ,n ___))\n\n; Call zero-argument procedure f n times and return the final result.\n(define (repeated-call n f)\n  (if (= n 1) ___ (begin ___ ___)))\n\n```\n",
+   "editable": [
+    "lab10.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "repeat-lambda"
+   }
+  }
+ ]
+}

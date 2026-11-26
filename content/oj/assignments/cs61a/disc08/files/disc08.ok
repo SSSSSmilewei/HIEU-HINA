@@ -1,0 +1,9 @@
+{
+    "name": "Discussion 8",
+    "src": [
+        "display.py",
+        "iterate_in_order.py",
+        "overlap.py",
+        "strange_loop.py"
+    ]
+}

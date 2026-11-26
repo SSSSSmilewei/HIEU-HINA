@@ -1,0 +1,83 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "disc02",
+ "title": "讨论课 2：环境图、高阶函数",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/disc/disc02/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "disc02",
+ "repoDir": "disc/disc02",
+ "intro": "讨论课的题目原本是小组在纸上一起做的。这里收了能自动判对错的两类题：写代码的题（用官方 doctest 判，做对之后题目下方显示官方解答），和画环境图的题（先在纸上画，再把每一帧填进来，判题服务实际运行程序后逐帧比对）。口头讨论的题请看讲义页的官方讲义。",
+ "problems": [
+  {
+   "id": "make_keeper",
+   "title": "Make Keeper",
+   "titleEn": "Make Keeper",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `make_keeper`, which takes a positive integer `n` and returns a function `f` that takes as its argument another one-argument function `cond`. When `f` is called on `cond`, it prints out the integers from 1 to `n` (including `n`) for which `cond` returns a true value when called on each of those integers. Each integer is printed on a separate line.\n\n              Call Expressions\n",
+   "statementEn": "Implement `make_keeper`, which takes a positive integer `n` and returns a function `f` that takes as its argument another one-argument function `cond`. When `f` is called on `cond`, it prints out the integers from 1 to `n` (including `n`) for which `cond` returns a true value when called on each of those integers. Each integer is printed on a separate line.\n\n              Call Expressions\n",
+   "editable": [
+    "make_keeper.py"
+   ],
+   "focus": {
+    "file": "make_keeper.py",
+    "symbol": "make_keeper"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "make_keeper"
+   },
+   "hints": [
+    "To return a function `f`, include `def f(cond):` as the first line of the implementation and `return f` as the last. The `f` function should introduce `i = 1` in order to loop through all integers, calling `cond(i)` to determine whether `cond` returns true for each integer."
+   ],
+   "explain": "官方解答：\n\n```python\ndef make_keeper(n):\n    \"\"\"Returns a function that takes one parameter cond and prints\n    out all integers 1..i..n where calling cond(i) returns True.\n\n    >>> def is_even(x): # Even numbers have remainder 0 when divided by 2.\n    ...     return x % 2 == 0\n    >>> make_keeper(5)(is_even)\n    2\n    4\n    >>> make_keeper(5)(lambda x: True)\n    1\n    2\n    3\n    4\n    5\n    >>> make_keeper(5)(lambda x: False)  # Nothing is printed\n    \"\"\"\n    def f(cond):\n        i = 1\n        while i <= n:\n            if cond(i):\n                print(i)\n            i += 1\n    return f\n```\n"
+  },
+  {
+   "id": "silence-of-the-lambda",
+   "title": "环境图：Silence of the Lambda",
+   "titleEn": "Silence of the Lambda",
+   "kind": "envdiagram",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nDraw the environment diagram on paper or a tablet (without having the computer draw it for you)! Then, check your work by stepping through the diagram with PythonTutor. This problem's video contains the solution.\n",
+   "statementEn": "Draw the environment diagram on paper or a tablet (without having the computer draw it for you)! Then, check your work by stepping through the diagram with PythonTutor. This problem's video contains the solution.\n",
+   "editable": [],
+   "tests": {
+    "kind": "envdiagram",
+    "code": "def r(f):\n    k = 2\n    k, m = k + 1, f(k)\n    return n\n\nn = 10\ng = (lambda n: lambda k: print(k * n))(-1)\nr(g)\n"
+   }
+  },
+  {
+   "id": "match_k",
+   "title": "Match Maker",
+   "titleEn": "Match Maker",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nAssume that `find_digit(k)` is correctly implemented. `find_digit` takes in a positive integer `k` and returns a function that takes in a positive integer `x` and returns the `k`th digit from the right of `x`. If `x` has fewer than `k` digits, it returns `0`.\n\nImplement `match_k`, which takes in an integer `k` and returns a function that takes in a variable `x` and returns `True` if all the digits in `x` that are `k` apart are the same.\n\nFor example, `match_k(2)` returns a one argument function that takes in `x` and checks if digits that are 2 away in `x` are the same.\n\n`match_k(2)(1010)` has the value of `x = 1010` and digits 1, 0, 1, 0 going from left to right. `1 == 1` and `0 == 0`, so the `match_k(2)(1010)` results in `True`.\n\n`match_k(2)(2010)` has the value of `x = 2010` and digits 2, 0, 1, 0 going from left to right. `2 != 1` and `0 == 0`, so the `match_k(2)(2010)` results in `False`.\n\n**Important:** You may not use strings or indexing for this problem.\n\nYou may call `find_digit`.\n\n**Tip:** Floor dividing by powers of 10 gets rid of the rightmost digits.\n",
+   "statementEn": "Assume that `find_digit(k)` is correctly implemented. `find_digit` takes in a positive integer `k` and returns a function that takes in a positive integer `x` and returns the `k`th digit from the right of `x`. If `x` has fewer than `k` digits, it returns `0`.\n\nImplement `match_k`, which takes in an integer `k` and returns a function that takes in a variable `x` and returns `True` if all the digits in `x` that are `k` apart are the same.\n\nFor example, `match_k(2)` returns a one argument function that takes in `x` and checks if digits that are 2 away in `x` are the same.\n\n`match_k(2)(1010)` has the value of `x = 1010` and digits 1, 0, 1, 0 going from left to right. `1 == 1` and `0 == 0`, so the `match_k(2)(1010)` results in `True`.\n\n`match_k(2)(2010)` has the value of `x = 2010` and digits 2, 0, 1, 0 going from left to right. `2 != 1` and `0 == 0`, so the `match_k(2)(2010)` results in `False`.\n\n**Important:** You may not use strings or indexing for this problem.\n\nYou may call `find_digit`.\n\n**Tip:** Floor dividing by powers of 10 gets rid of the rightmost digits.\n",
+   "editable": [
+    "match_k.py"
+   ],
+   "focus": {
+    "file": "match_k.py",
+    "symbol": "match_k"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "match_k"
+   },
+   "hints": [
+    "In each iteration, compare the last digit with the one that is `k` positions before it."
+   ],
+   "explain": "官方解答：\n\n```python\ndef match_k(k):\n    \"\"\"Returns a function that checks if digits k apart match.\n\n    >>> match_k(2)(1010)\n    True\n    >>> match_k(2)(2010)\n    False\n    >>> match_k(1)(1010)\n    False\n    >>> match_k(1)(1)\n    True\n    >>> match_k(1)(2111111111111111)\n    False\n    >>> match_k(3)(123123)\n    True\n    >>> match_k(2)(123123)\n    False\n    \"\"\"\n    def check(x):\n        while x // (10 ** k) > 0:\n            if (x % 10) != (x // (10 ** k)) % 10:\n                return False\n            x //= 10\n        return True\n    return check\n```\n"
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+{
+    "name": "Discussion 6",
+    "src": [
+        "differences.py",
+        "partition_gen.py"
+    ]
+}

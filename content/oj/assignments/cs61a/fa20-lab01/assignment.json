@@ -1,0 +1,631 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "fa20-lab01",
+ "title": "实验 1：变量和函数，控制结构",
+ "semester": "fa20",
+ "language": "zh",
+ "source": "https://inst.eecs.berkeley.edu/~cs61a/fa20/lab/lab01/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2020 秋季）；中文翻译来自 github.com/chillyhigh/CS61A-CN（MIT 许可）。仅供协会内部学习交流",
+ "item": "lab01",
+ "repoDir": "fa20/lab/lab01",
+ "intro": "",
+ "problems": [
+  {
+   "id": "control",
+   "title": "预测输出：控制",
+   "titleEn": "WWPD: Control",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "**提示**: 确保你的 `while` 循环的判断条件最终为 False ，不然你的程序将进入死循环。 按 `Ctrl-C` 来停止\n\n```\n>>> def xk(c, d):\n...     if c == 4:\n...         return 6\n...     elif d >= 4:\n...         return 6 + 7 + c\n...     else:\n...         return 25\n>>> xk(10, 10)\n\n>>> xk(10, 6)\n\n>>> xk(4, 6)\n\n>>> xk(0, 0)\n\n```\n\n```\n>>> def how_big(x):\n...     if x > 10:\n...         print('huge')\n...     elif x > 5:\n...         return 'big'\n...     elif x > 0:\n...         print('small')\n...     else:\n...         print(\"nothin\")\n>>> how_big(7)\n\n>>> how_big(12)\n\n>>> how_big(1)\n\n>>> how_big(-1)\n\n```\n\n```\n>>> n = 3\n>>> while n >= 0:\n...     n -= 1\n...     print(n)\n\n```\n\n```\n>>> positive = 28\n>>> while positive:\n...    print(\"positive?\")\n...    positive -= 3\n\n```\n\n```\n>>> positive = -9\n>>> negative = -12\n>>> while negative:\n...    if positive:\n...        print(negative)\n...    positive += 3\n...    negative += 3\n\n```\n",
+   "statementEn": "**Hint**: Make sure your `while` loop conditions eventually evaluate to a false value, or they'll never stop! Typing `Ctrl-C` will stop infinite loops in the interpreter.\n\n```\n>>> def xk(c, d):\n...     if c == 4:\n...         return 6\n...     elif d >= 4:\n...         return 6 + 7 + c\n...     else:\n...         return 25\n>>> xk(10, 10)\n\n>>> xk(10, 6)\n\n>>> xk(4, 6)\n\n>>> xk(0, 0)\n\n```\n\n```\n>>> def how_big(x):\n...     if x > 10:\n...         print('huge')\n...     elif x > 5:\n...         return 'big'\n...     elif x > 0:\n...         print('small')\n...     else:\n...         print(\"nothin\")\n>>> how_big(7)\n\n>>> how_big(12)\n\n>>> how_big(1)\n\n>>> how_big(-1)\n\n```\n\n```\n>>> n = 3\n>>> while n >= 0:\n...     n -= 1\n...     print(n)\n\n```\n\n```\n>>> positive = 28\n>>> while positive:\n...    print(\"positive?\")\n...    positive -= 3\n\n```\n\n```\n>>> positive = -9\n>>> negative = -12\n>>> while negative:\n...    if positive:\n...        print(negative)\n...    positive += 3\n...    negative += 3\n\n```\n",
+   "editable": [
+    "lab01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "control"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "def xk(c, d):\n    if c == 4:\n        return 6\n    elif d >= 4:\n        return 6 + 7 + c\n    else:\n        return 25",
+       "want": []
+      },
+      {
+       "code": "xk(10, 10)",
+       "want": [
+        {
+         "hash": "07fa61723879693a70211246239795ee"
+        }
+       ]
+      },
+      {
+       "code": "xk(10, 6)",
+       "want": [
+        {
+         "hash": "07fa61723879693a70211246239795ee"
+        }
+       ]
+      },
+      {
+       "code": "xk(4, 6)",
+       "want": [
+        {
+         "hash": "3dcab9fe3b2b966fc0dea4bee36cfbe4"
+        }
+       ]
+      },
+      {
+       "code": "xk(0, 0)",
+       "want": [
+        {
+         "hash": "dc549763a66595fb8475050be281005d"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "def how_big(x):\n    if x > 10:\n        print('huge')\n    elif x > 5:\n        return 'big'\n    elif x > 0:\n        print('small')\n    else:\n        print(\"nothin\")",
+       "want": []
+      },
+      {
+       "code": "how_big(7)",
+       "want": [
+        {
+         "hash": "fe4028bb37030ad778842d40ac93e700"
+        }
+       ]
+      },
+      {
+       "code": "how_big(12)",
+       "want": [
+        {
+         "hash": "260c9a22fd4f3d2d25e08b6a0cd9d10e"
+        }
+       ]
+      },
+      {
+       "code": "how_big(1)",
+       "want": [
+        {
+         "hash": "fdb47b226224360303fcfb56870d356a"
+        }
+       ]
+      },
+      {
+       "code": "how_big(-1)",
+       "want": [
+        {
+         "hash": "cb48e98854cd243baeb4f3026f909b64"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "n = 3",
+       "want": []
+      },
+      {
+       "code": "while n >= 0:  # If this loops forever, just type Infinite Loop\n    n -= 1\n    print(n)",
+       "want": [
+        {
+         "hash": "6d6f378f0affa7f84aa38e519e353617"
+        },
+        {
+         "hash": "f26f9ec9ba426ebfdd8a43b22c8c74a0"
+        },
+        {
+         "hash": "b0754f6baafe74512d1be0bd5c8098ed"
+        },
+        {
+         "hash": "8e8a6ea9b75e03aef4652f8a6bc37fba"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "positive = 28",
+       "want": []
+      },
+      {
+       "code": "while positive: # If this loops forever, just type Infinite Loop\n   print(\"positive?\")\n   positive -= 3",
+       "want": [
+        {
+         "hash": "db3915202fb52c6613af5ef28bfc5773"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "positive = -9",
+       "want": []
+      },
+      {
+       "code": "negative = -12",
+       "want": []
+      },
+      {
+       "code": "while negative: # If this loops forever, just type Infinite Loop\n   if positive:\n       print(negative)\n   positive += 3\n   negative += 3",
+       "want": [
+        {
+         "hash": "b3c9c48be5cbc9295c81c3e75d1538d8"
+        },
+        {
+         "hash": "efbd765b468a29852de43786a3d7f2b9"
+        },
+        {
+         "hash": "3c05905385c5bd4c0ab5fe2640db2eed"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "short-circuit",
+   "title": "预测输出：值的真假",
+   "titleEn": "WWPD: Veritasiness",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "```\n>>> True and 13\n\n>>> False or 0\n\n>>> not 10\n\n>>> not None\n\n```\n\n```\n>>> True and 1 / 0 and False\n\n>>> True or 1 / 0 or False\n\n>>> True and 0\n\n>>> False or 1\n\n>>> 1 and 3 and 6 and 10 and 15\n\n>>> -1 and 1 > 0\n\n>>> 0 or False or 2 or 1 / 0\n\n```\n\n```\n>>> not 0\n\n>>> (1 + 1) and 1\n\n>>> 1/0 or True\n\n>>> (True or False) and False\n\n```\n",
+   "statementEn": "```\n>>> True and 13\n\n>>> False or 0\n\n>>> not 10\n\n>>> not None\n\n```\n\n```\n>>> True and 1 / 0 and False\n\n>>> True or 1 / 0 or False\n\n>>> True and 0\n\n>>> False or 1\n\n>>> 1 and 3 and 6 and 10 and 15\n\n>>> -1 and 1 > 0\n\n>>> 0 or False or 2 or 1 / 0\n\n```\n\n```\n>>> not 0\n\n>>> (1 + 1) and 1\n\n>>> 1/0 or True\n\n>>> (True or False) and False\n\n```\n",
+   "editable": [
+    "lab01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "short-circuit"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "True and 13",
+       "want": [
+        {
+         "hash": "72c74b6c7ed80d51f9fa7defbf7ed121"
+        }
+       ]
+      },
+      {
+       "code": "False or 0",
+       "want": [
+        {
+         "hash": "b0754f6baafe74512d1be0bd5c8098ed"
+        }
+       ]
+      },
+      {
+       "code": "not 10",
+       "want": [
+        {
+         "hash": "5dfeeb9ca37d955606d40c6553cd4956"
+        }
+       ]
+      },
+      {
+       "code": "not None",
+       "want": [
+        {
+         "hash": "5154670fa295caf18cafa4245c1358a9"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "True and 1 / 0 and False  # If this errors, just type Error.",
+       "want": [
+        {
+         "hash": "d7b5fd49f83e4ee318af207fc969c9f4"
+        }
+       ]
+      },
+      {
+       "code": "True or 1 / 0 or False  # If this errors, just type Error.",
+       "want": [
+        {
+         "hash": "5154670fa295caf18cafa4245c1358a9"
+        }
+       ]
+      },
+      {
+       "code": "True and 0  # If this errors, just type Error.",
+       "want": [
+        {
+         "hash": "b0754f6baafe74512d1be0bd5c8098ed"
+        }
+       ]
+      },
+      {
+       "code": "False or 1  # If this errors, just type Error.",
+       "want": [
+        {
+         "hash": "f26f9ec9ba426ebfdd8a43b22c8c74a0"
+        }
+       ]
+      },
+      {
+       "code": "1 and 3 and 6 and 10 and 15  # If this errors, just type Error.",
+       "want": [
+        {
+         "hash": "438f344a520081fe8e2d0da944a5240b"
+        }
+       ]
+      },
+      {
+       "code": "-1 and 1 > 0 # If this errors, just type Error.",
+       "want": [
+        {
+         "hash": "5154670fa295caf18cafa4245c1358a9"
+        }
+       ]
+      },
+      {
+       "code": "0 or False or 2 or 1 / 0  # If this errors, just type Error.",
+       "want": [
+        {
+         "hash": "6d6f378f0affa7f84aa38e519e353617"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "not 0",
+       "want": [
+        {
+         "hash": "5154670fa295caf18cafa4245c1358a9"
+        }
+       ]
+      },
+      {
+       "code": "(1 + 1) and 1  # If this errors, just type Error. If this is blank, just type Nothing.",
+       "want": [
+        {
+         "hash": "f26f9ec9ba426ebfdd8a43b22c8c74a0"
+        }
+       ]
+      },
+      {
+       "code": "1/0 or True  # If this errors, just type Error. If this is blank, just type Nothing.",
+       "want": [
+        {
+         "hash": "d7b5fd49f83e4ee318af207fc969c9f4"
+        }
+       ]
+      },
+      {
+       "code": "(True or False) and False  # If this errors, just type Error. If this is blank, just type Nothing.",
+       "want": [
+        {
+         "hash": "5dfeeb9ca37d955606d40c6553cd4956"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "debugging-quiz",
+   "title": "调试测验!",
+   "titleEn": "Debugging Quiz!",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "以下是一个关于本课程中应使用的不同调试技巧的快速测验。你应该参考[此文档](https://inst.eecs.berkeley.edu/~cs61a/fa20/articles/debugging.html)来回答问题！\n\n运行以下命令开始测验：\n",
+   "statementEn": "The following is a quick quiz on different debugging techniques you should use in this class. You should refer to [this document](https://inst.eecs.berkeley.edu/~cs61a/fa20/articles/debugging.html) to answer the questions!\n\nRun the following to run the quiz.\n",
+   "editable": [
+    "lab01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "debugging-quiz"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "In the following traceback, what is the most recent function call?\nTraceback (most recent call last):\n    File \"temp.py\", line 10, in <module>\n      f(\"hi\")\n    File \"temp.py\", line 2, in f\n      return g(x + x, x)\n    File \"temp.py\", line 5, in g\n      return h(x + y * 5)\n    File \"temp.py\", line 8, in h\n      return x + 0\n  TypeError: must be str, not int",
+     "choices": [
+      "f(\"hi\")",
+      "g(x + x, x)",
+      "h(x + y * 5)"
+     ],
+     "answer": "04c227bc171e79bdf2f704618b690d63"
+    },
+    {
+     "type": "choice",
+     "question": "In the following traceback, what is the cause of this error?\nTraceback (most recent call last):\n    File \"temp.py\", line 10, in <module>\n      f(\"hi\")\n    File \"temp.py\", line 2, in f\n      return g(x + x, x)\n    File \"temp.py\", line 5, in g\n      return h(x + y * 5)\n    File \"temp.py\", line 8, in h\n      return x + 0\n  TypeError: must be str, not int",
+     "choices": [
+      "the code attempted to add a string to an integer",
+      "the code looped infinitely",
+      "there was a missing return statement"
+     ],
+     "answer": "e415098d79d97b14a9c3ed4bb799941c"
+    },
+    {
+     "type": "choice",
+     "question": "How do you write a doctest asserting that square(2) == 4?",
+     "choices": [
+      "def square(x):\n    '''\n    doctest: (2, 4)\n    '''\n    return x * x",
+      "def square(x):\n    '''\n    input: 2\n    output: 4\n    '''\n    return x * x",
+      "def square(x):\n    '''\n    square(2)\n    4\n    '''\n    return x * x",
+      "def square(x):\n    '''\n    >>> square(2)\n    4\n    '''\n    return x * x"
+     ],
+     "answer": "379a2d693f94542100c79dcbef881bf2"
+    },
+    {
+     "type": "choice",
+     "question": "When should you use print statements?",
+     "choices": [
+      "For permanant debugging so you can have long term confidence in your code",
+      "To ensure that certain conditions are true at certain points in your code",
+      "To investigate the values of variables at certain points in your code"
+     ],
+     "answer": "f48da7442af11bddcb273308a88a9970"
+    },
+    {
+     "type": "choice",
+     "question": "How do you prevent the ok autograder from interpreting print statements as output?",
+     "choices": [
+      "You don't need to do anything, ok only looks at returned values, not printed values",
+      "Print with 'DEBUG:' at the front of the outputted line",
+      "Print with # at the front of the outputted line"
+     ],
+     "answer": "57309603fab64e9deef8aab56ab89f9b"
+    },
+    {
+     "type": "choice",
+     "question": "What is the best way to open an interactive terminal to investigate a failing test for question sum_digits in assignment lab01?",
+     "choices": [
+      "python3 ok -q sum_digits -i",
+      "python3 ok -q sum_digits --trace",
+      "python3 ok -q sum_digits",
+      "python3 -i lab01.py"
+     ],
+     "answer": "8a0e59465cbd3db201c83bad39a38190"
+    },
+    {
+     "type": "choice",
+     "question": "What is the best way to look at an environment diagram to investigate a failing test for question sum_digits in assignment lab01?",
+     "choices": [
+      "python3 ok -q sum_digits -i",
+      "python3 ok -q sum_digits --trace",
+      "python3 ok -q sum_digits",
+      "python3 -i lab01.py"
+     ],
+     "answer": "6e09ba6ceb51b75e23dd4d881a6f277b"
+    },
+    {
+     "type": "choice",
+     "question": "Which of the following is NOT true?",
+     "choices": [
+      "Code that returns a wrong answer instead of crashing is generally better as it at least works fine",
+      "Testing is very important to ensure robust code",
+      "Debugging is not a substitute for testing",
+      "It is generally bad practice to release code with debugging print statements left in",
+      "It is generally good practice to release code with assertion statements left in"
+     ],
+     "answer": "5c1e38494cf0399527b69ad7bd7037f2"
+    },
+    {
+     "type": "choice",
+     "question": "You get a SyntaxError. What is most likely to have happened?",
+     "choices": [
+      "You had an unmatched parenthesis",
+      "Your indentation mixed tabs and spaces",
+      "You forgot a return statement",
+      "You typed a variable name incorrectly"
+     ],
+     "answer": "7b899f9edfdcffe34120375d36d49ff0"
+    },
+    {
+     "type": "choice",
+     "question": "You get a IndentationError. What is most likely to have happened?",
+     "choices": [
+      "You had an unmatched parenthesis",
+      "Your indentation mixed tabs and spaces",
+      "You forgot a return statement",
+      "You typed a variable name incorrectly"
+     ],
+     "answer": "12da8f0e726f72da45b4fbde67210b74"
+    },
+    {
+     "type": "choice",
+     "question": "You get a TypeError: ... 'NoneType' object is not ... . What is most likely to have happened?",
+     "choices": [
+      "You had an unmatched parenthesis",
+      "Your indentation mixed tabs and spaces",
+      "You forgot a return statement",
+      "You typed a variable name incorrectly"
+     ],
+     "answer": "af7bf6f5e80555885d574f5a2ab3153f"
+    },
+    {
+     "type": "choice",
+     "question": "You get a NameError. What is most likely to have happened?",
+     "choices": [
+      "You had an unmatched parenthesis",
+      "Your indentation mixed tabs and spaces",
+      "You forgot a return statement",
+      "You typed a variable name incorrectly"
+     ],
+     "answer": "1d0b04e3bcf143b57b5f0b67e57c6801"
+    }
+   ]
+  },
+  {
+   "id": "falling",
+   "title": "递减阶乘",
+   "titleEn": "Falling Factorial",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "让我们编写一个函数 `falling`， 它是一个“递减”阶乘函数，接受两个参数 `n` 和 `k`，并返回从 `n` 开始，向下递减的 `k` 个连续数字的乘积。\n",
+   "statementEn": "Let's write a function `falling`, which is a \"falling\" factorial that takes two arguments, `n` and `k`, and returns the product of `k` consecutive numbers, starting from `n` and working downwards.\n",
+   "editable": [
+    "lab01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "falling"
+   },
+   "focus": {
+    "file": "lab01.py",
+    "symbol": "falling"
+   }
+  },
+  {
+   "id": "sum_digits",
+   "title": "数位之和",
+   "titleEn": "Sum Digits",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个函数，该函数接受一个非负整数并计算其各位数字的和。（使用取整除法和取模运算可能会对你有帮助！）\n",
+   "statementEn": "Write a function that takes in a nonnegative integer and sums its digits. (Using floor division and modulo might be helpful here!)\n",
+   "editable": [
+    "lab01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "sum_digits"
+   },
+   "focus": {
+    "file": "lab01.py",
+    "symbol": "sum_digits"
+   }
+  },
+  {
+   "id": "if-statements",
+   "title": "预测输出：条件判断",
+   "titleEn": "WWPD: What If?",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "**提示**: `print` (与 `return` 不同) *不会*导致函数退出！\n\n```\n>>> def ab(c, d):\n...     if c > 5:\n...         print(c)\n...     elif c > 7:\n...         print(d)\n...     print('foo')\n>>> ab(10, 20)\n\n```\n\n```\n>>> def bake(cake, make):\n...     if cake == 0:\n...         cake = cake + 1\n...         print(cake)\n...     if cake == 1:\n...         print(make)\n...     else:\n...         return cake\n...     return make\n>>> bake(0, 29)\n\n>>> bake(1, \"mashed potatoes\")\n\n```\n",
+   "statementEn": "**Hint**: `print` (unlike `return`) does *not* cause the function to exit!\n\n```\n>>> def ab(c, d):\n...     if c > 5:\n...         print(c)\n...     elif c > 7:\n...         print(d)\n...     print('foo')\n>>> ab(10, 20)\n\n```\n\n```\n>>> def bake(cake, make):\n...     if cake == 0:\n...         cake = cake + 1\n...         print(cake)\n...     if cake == 1:\n...         print(make)\n...     else:\n...         return cake\n...     return make\n>>> bake(0, 29)\n\n>>> bake(1, \"mashed potatoes\")\n\n```\n",
+   "editable": [
+    "lab01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "if-statements"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "def ab(c, d):\n    if c > 5:\n        print(c)\n    elif c > 7:\n        print(d)\n    print('foo')",
+       "want": []
+      },
+      {
+       "code": "ab(10, 20)",
+       "want": [
+        {
+         "hash": "32606b4d8bc69544a1579aca287813dc"
+        },
+        {
+         "hash": "076de7ac11ca62f75f649af9dbe4149a"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "def bake(cake, make):\n   if cake == 0:\n       cake = cake + 1\n       print(cake)\n   if cake == 1:\n       print(make)\n   else:\n       return cake\n   return make",
+       "want": []
+      },
+      {
+       "code": "bake(0, 29)",
+       "want": [
+        {
+         "hash": "f26f9ec9ba426ebfdd8a43b22c8c74a0"
+        },
+        {
+         "hash": "886cfa066159edb2578269b4d55d2239"
+        },
+        {
+         "hash": "886cfa066159edb2578269b4d55d2239"
+        }
+       ]
+      },
+      {
+       "code": "bake(1, \"mashed potatoes\")",
+       "want": [
+        {
+         "hash": "18079ca0c56c783746b70728120f3747"
+        },
+        {
+         "hash": "575e1338b070e905f49b16443a77012f"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "double_eights",
+   "title": "双8",
+   "titleEn": "Double Eights",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个函数，该函数接受一个数字，并判断其数字中是否包含两个相邻的 8。\n",
+   "statementEn": "Write a function that takes in a number and determines if the digits contain two adjacent 8s.\n",
+   "editable": [
+    "lab01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "double_eights"
+   },
+   "focus": {
+    "file": "lab01.py",
+    "symbol": "double_eights"
+   }
+  }
+ ]
+}

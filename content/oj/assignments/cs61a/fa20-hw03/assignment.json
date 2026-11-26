@@ -1,0 +1,257 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "fa20-hw03",
+ "title": "作业 3：树, 数据抽象",
+ "semester": "fa20",
+ "language": "zh",
+ "source": "https://inst.eecs.berkeley.edu/~cs61a/fa20/hw/hw03/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2020 秋季）；中文翻译来自 github.com/chillyhigh/CS61A-CN（MIT 许可）。仅供协会内部学习交流",
+ "item": "hw04",
+ "repoDir": "fa20/hw/hw03",
+ "intro": "",
+ "problems": [
+  {
+   "id": "total_weight",
+   "title": "重量",
+   "titleEn": "Weights",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "通过完成 `planet` 构造函数和 `size` 选择器来实现 `planet` 数据抽象，使得一个行星可以用一个包含两个元素的列表表示，其中第一个元素是字符串 `'planet'`，第二个元素是它的大小。 `total_weight` 示例展示了如何使用悬挂模型、悬臂和行星的抽象。\n\n```\ndef mobile(left, right):\n    \"\"\"Construct a mobile from a left arm and a right arm.\"\"\"\n    assert is_arm(left), \"left must be a arm\"\n    assert is_arm(right), \"right must be a arm\"\n    return ['mobile', left, right]\n\ndef is_mobile(m):\n    \"\"\"Return whether m is a mobile.\"\"\"\n    return type(m) == list and len(m) == 3 and m[0] == 'mobile'\n\ndef left(m):\n    \"\"\"Select the left arm of a mobile.\"\"\"\n    assert is_mobile(m), \"must call left on a mobile\"\n    return m[1]\n\ndef right(m):\n    \"\"\"Select the right arm of a mobile.\"\"\"\n    assert is_mobile(m), \"must call right on a mobile\"\n    return m[2]\n```\n\n```\ndef arm(length, mobile_or_planet):\n    \"\"\"Construct a arm: a length of rod with a mobile or planet at the end.\"\"\"\n    assert is_mobile(mobile_or_planet) or is_planet(mobile_or_planet)\n    return ['arm', length, mobile_or_planet]\n\ndef is_arm(s):\n    \"\"\"Return whether s is a arm.\"\"\"\n    return type(s) == list and len(s) == 3 and s[0] == 'arm'\n\ndef length(s):\n    \"\"\"Select the length of a arm.\"\"\"\n    assert is_arm(s), \"must call length on a arm\"\n    return s[1]\n\ndef end(s):\n    \"\"\"Select the mobile or planet hanging at the end of a arm.\"\"\"\n    assert is_arm(s), \"must call end on a arm\"\n    return s[2]\n```\n\n```\ndef planet(size):\n    \"\"\"Construct a planet of some size.\"\"\"\n    assert size > 0\n    \"*** YOUR CODE HERE ***\"\n\ndef size(w):\n    \"\"\"Select the size of a planet.\"\"\"\n    assert is_planet(w), 'must call size on a planet'\n    \"*** YOUR CODE HERE ***\"\n\ndef is_planet(w):\n    \"\"\"Whether w is a planet.\"\"\"\n    return type(w) == list and len(w) == 2 and w[0] == 'planet'\n```\n\n```\ndef total_weight(m):\n    \"\"\"Return the total weight of m, a planet or mobile.\n\n    >>> t, u, v = examples()\n    >>> total_weight(t)\n    3\n    >>> total_weight(u)\n    6\n    >>> total_weight(v)\n    9\n    >>> from construct_check import check\n    >>> # checking for abstraction barrier violations by banning indexing\n    >>> check(HW_SOURCE_FILE, 'total_weight', ['Index'])\n    True\n    \"\"\"\n    if is_planet(m):\n        return size(m)\n    else:\n        assert is_mobile(m), \"must get total weight of a mobile or a planet\"\n        return total_weight(end(left(m))) + total_weight(end(right(m)))\n```\n",
+   "statementEn": "Implement the `planet` data abstraction by completing the `planet` constructor and the `size` selector so that a planet is represented using a two-element list where the first element is the string `'planet'` and the second element is its size. The `total_weight` example is provided to demonstrate use of the mobile, arm, and planet abstractions.\n\n```\ndef mobile(left, right):\n    \"\"\"Construct a mobile from a left arm and a right arm.\"\"\"\n    assert is_arm(left), \"left must be a arm\"\n    assert is_arm(right), \"right must be a arm\"\n    return ['mobile', left, right]\n\ndef is_mobile(m):\n    \"\"\"Return whether m is a mobile.\"\"\"\n    return type(m) == list and len(m) == 3 and m[0] == 'mobile'\n\ndef left(m):\n    \"\"\"Select the left arm of a mobile.\"\"\"\n    assert is_mobile(m), \"must call left on a mobile\"\n    return m[1]\n\ndef right(m):\n    \"\"\"Select the right arm of a mobile.\"\"\"\n    assert is_mobile(m), \"must call right on a mobile\"\n    return m[2]\n```\n\n```\ndef arm(length, mobile_or_planet):\n    \"\"\"Construct a arm: a length of rod with a mobile or planet at the end.\"\"\"\n    assert is_mobile(mobile_or_planet) or is_planet(mobile_or_planet)\n    return ['arm', length, mobile_or_planet]\n\ndef is_arm(s):\n    \"\"\"Return whether s is a arm.\"\"\"\n    return type(s) == list and len(s) == 3 and s[0] == 'arm'\n\ndef length(s):\n    \"\"\"Select the length of a arm.\"\"\"\n    assert is_arm(s), \"must call length on a arm\"\n    return s[1]\n\ndef end(s):\n    \"\"\"Select the mobile or planet hanging at the end of a arm.\"\"\"\n    assert is_arm(s), \"must call end on a arm\"\n    return s[2]\n```\n\n```\ndef planet(size):\n    \"\"\"Construct a planet of some size.\"\"\"\n    assert size > 0\n    \"*** YOUR CODE HERE ***\"\n\ndef size(w):\n    \"\"\"Select the size of a planet.\"\"\"\n    assert is_planet(w), 'must call size on a planet'\n    \"*** YOUR CODE HERE ***\"\n\ndef is_planet(w):\n    \"\"\"Whether w is a planet.\"\"\"\n    return type(w) == list and len(w) == 2 and w[0] == 'planet'\n```\n\n```\ndef total_weight(m):\n    \"\"\"Return the total weight of m, a planet or mobile.\n\n    >>> t, u, v = examples()\n    >>> total_weight(t)\n    3\n    >>> total_weight(u)\n    6\n    >>> total_weight(v)\n    9\n    >>> from construct_check import check\n    >>> # checking for abstraction barrier violations by banning indexing\n    >>> check(HW_SOURCE_FILE, 'total_weight', ['Index'])\n    True\n    \"\"\"\n    if is_planet(m):\n        return size(m)\n    else:\n        assert is_mobile(m), \"must get total weight of a mobile or a planet\"\n        return total_weight(end(left(m))) + total_weight(end(right(m)))\n```\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "total_weight"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "total_weight"
+   }
+  },
+  {
+   "id": "balanced",
+   "title": "平衡性",
+   "titleEn": "Balanced",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "实现 `balanced` 函数，该函数用于判断 `m` 是否是一个平衡的 `mobile`（悬挂结构）。一个 `mobile` 在以下两种条件都满足时被认为是平衡的：\n\n1. 其左侧支臂施加的力矩应等于右侧支臂施加的力矩。 左侧支臂的力矩等于左侧杆的长度乘以该杆上悬挂物体的总重量，右侧同理。 例如，如果左侧支臂的长度为 `5`，且左侧悬挂着一个重量为 `10` 的 `mobile`， 则左侧的力矩为 `50`。\n2. 悬挂在支臂末端的所有 `mobile` 也必须是平衡的。\n\n行星（planets）本身是平衡的，因为它们没有任何悬挂物。\n\n```\ndef balanced(m):\n    \"\"\"Return whether m is balanced.\n\n    >>> t, u, v = examples()\n    >>> balanced(t)\n    True\n    >>> balanced(v)\n    True\n    >>> w = mobile(arm(3, t), arm(2, u))\n    >>> balanced(w)\n    False\n    >>> balanced(mobile(arm(1, v), arm(1, w)))\n    False\n    >>> balanced(mobile(arm(1, w), arm(1, v)))\n    False\n    >>> from construct_check import check\n    >>> # checking for abstraction barrier violations by banning indexing\n    >>> check(HW_SOURCE_FILE, 'balanced', ['Index'])\n    True\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n",
+   "statementEn": "Implement the `balanced` function, which returns whether `m` is a balanced mobile. A mobile is balanced if two conditions are met:\n\n1. The torque applied by its left arm is equal to that applied by its right arm. The torque of the left arm is the length of the left rod multiplied by the total weight hanging from that rod. Likewise for the right. For example, if the left arm has a length of `5`, and there is a `mobile` hanging at the end of the left arm of weight `10`, the torque on the left side of our mobile is `50`.\n2. Each of the mobiles hanging at the end of its arms is balanced.\n\nPlanets themselves are balanced, as there is nothing hanging off of them.\n\n```\ndef balanced(m):\n    \"\"\"Return whether m is balanced.\n\n    >>> t, u, v = examples()\n    >>> balanced(t)\n    True\n    >>> balanced(v)\n    True\n    >>> w = mobile(arm(3, t), arm(2, u))\n    >>> balanced(w)\n    False\n    >>> balanced(mobile(arm(1, v), arm(1, w)))\n    False\n    >>> balanced(mobile(arm(1, w), arm(1, v)))\n    False\n    >>> from construct_check import check\n    >>> # checking for abstraction barrier violations by banning indexing\n    >>> check(HW_SOURCE_FILE, 'balanced', ['Index'])\n    True\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "balanced"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "balanced"
+   }
+  },
+  {
+   "id": "totals_tree",
+   "title": "总重量",
+   "titleEn": "Totals",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "实现 `totals_tree` 函数，该函数接受一个 `mobile`（或 `planet`）， 并返回一个 `tree`，其根节点的值为输入对象的总重量。 对于 `planet`，`totals_tree` 应返回一个叶子节点。 对于 `mobile`，`totals_tree` 应返回一个以该 `mobile` 的总重量为标签的树， 其分支为该 `mobile` 的两个支臂末端对应的 `totals_tree`。\n\n```\ndef totals_tree(m):\n    \"\"\"Return a tree representing the mobile with its total weight at the root.\n\n    >>> t, u, v = examples()\n    >>> print_tree(totals_tree(t))\n    3\n      2\n      1\n    >>> print_tree(totals_tree(u))\n    6\n      1\n      5\n        3\n        2\n    >>> print_tree(totals_tree(v))\n    9\n      3\n        2\n        1\n      6\n        1\n        5\n          3\n          2\n    >>> from construct_check import check\n    >>> # checking for abstraction barrier violations by banning indexing\n    >>> check(HW_SOURCE_FILE, 'totals_tree', ['Index'])\n    True\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n",
+   "statementEn": "Implement `totals_tree`, which takes a `mobile` (or `planet`) and returns a `tree` whose root is the total weight of the input. For a `planet`, `totals_tree` should return a leaf. For a `mobile`, `totals_tree` should return a tree whose label is that `mobile`'s total weight, and whose branches are `totals_tree`s for the ends of its arms.\n\n```\ndef totals_tree(m):\n    \"\"\"Return a tree representing the mobile with its total weight at the root.\n\n    >>> t, u, v = examples()\n    >>> print_tree(totals_tree(t))\n    3\n      2\n      1\n    >>> print_tree(totals_tree(u))\n    6\n      1\n      5\n        3\n        2\n    >>> print_tree(totals_tree(v))\n    9\n      3\n        2\n        1\n      6\n        1\n        5\n          3\n          2\n    >>> from construct_check import check\n    >>> # checking for abstraction barrier violations by banning indexing\n    >>> check(HW_SOURCE_FILE, 'totals_tree', ['Index'])\n    True\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "totals_tree"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "totals_tree"
+   }
+  },
+  {
+   "id": "replace_leaf",
+   "title": "替换叶子 (Replace Leaf)",
+   "titleEn": "Replace Leaf",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "定义 `replace_leaf` 函数，该函数接受一棵树 `t`、一个待查找的值 `find_value`，以及一个替换值 `replace_value`。 `replace_leaf` 返回一棵新树，该树与 `t` 相同，但所有等于 `find_value` 的叶子标签都被替换为 `replace_value`。\n",
+   "statementEn": "Define `replace_leaf`, which takes a tree `t`, a value `find_value`, and a value `replace_value`. `replace_leaf` returns a new tree that's the same as `t` except that every leaf label equal to `find_value` has been replaced with `replace_value`.\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "replace_leaf"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "replace_leaf"
+   }
+  },
+  {
+   "id": "preorder",
+   "title": "前序遍历 (Preorder)",
+   "titleEn": "Preorder",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "定义函数 `preorder`，该函数以一棵树作为参数，并返回一个列表， 其中包含树中所有节点的值，排列顺序与 `print_tree` 打印它们的顺序相同。\n\n下图展示了节点的打印顺序，箭头表示函数调用的顺序。\n\n*注意*：这种遍历树的顺序称为前序遍历（preorder traversal）。\n",
+   "statementEn": "Define the function `preorder`, which takes in a tree as an argument and returns a list of all the entries in the tree in the order that `print_tree` would print them.\n\nThe following diagram shows the order that the nodes would get printed, with the arrows representing function calls.\n\n*Note*: This ordering of the nodes in a tree is called a preorder traversal.\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "preorder"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "preorder"
+   }
+  },
+  {
+   "id": "has_path",
+   "title": "路径匹配 (Has Path)",
+   "titleEn": "Has Path",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写函数 `has_path`，该函数接受一棵树 `t` 和一个字符串 `word`。 如果存在一条从根节点开始的路径，使得路径上的节点标签依次拼出 `word`，则返回 `True`，否则返回 `False`。 （这种数据结构被称为 **字典树（trie）**，它有很多有趣的应用，比如**自动补全**）。 你可以假设树中每个节点的 `label` 恰好是一个字符。\n",
+   "statementEn": "Write a function `has_path` that takes in a tree `t` and a string `word`. It returns `True` if there is a path that starts from the root where the entries along the path spell out the `word`, and `False` otherwise. (This data structure is called a trie, and it has a lot of cool applications!---think autocomplete). You may assume that every node's `label` is exactly one character.\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "has_path"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "has_path"
+   }
+  },
+  {
+   "id": "interval",
+   "title": "区间抽象 (Interval Abstraction)",
+   "titleEn": "Interval Abstraction",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "Alyssa 的程序尚未完成，因为她尚未指定区间抽象的实现。 她已经为你实现了构造函数；请补全选择器（selectors）的实现。\n\n```\ndef interval(a, b):\n    \"\"\"Construct an interval from a to b.\"\"\"\n    return [a, b]\n\ndef lower_bound(x):\n    \"\"\"Return the lower bound of interval x.\"\"\"\n    \"*** YOUR CODE HERE ***\"\n\ndef upper_bound(x):\n    \"\"\"Return the upper bound of interval x.\"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n\n使用 Ok 来解锁并测试你的代码：\n\n```\npython3 ok -q interval -u --local\npython3 ok -q interval --local\n```\n\nLouis Reasoner 还提供了一个区间乘法的实现。但要注意：他的代码存在一些数据抽象违规问题， 请在问题变成一场“火龙卷”之前帮他修复： [https://www.bilibili.com/video/BV18x411i7dj/](https://www.bilibili.com/video/BV18x411i7dj/)\n\n```\ndef mul_interval(x, y):\n    \"\"\"Return the interval that contains the product of any value in x and any\n    value in y.\"\"\"\n    p1 = x[0] * y[0]\n    p2 = x[0] * y[1]\n    p3 = x[1] * y[0]\n    p4 = x[1] * y[1]\n    return [min(p1, p2, p3, p4), max(p1, p2, p3, p4)]\n```\n\n使用 Ok 来解锁并测试你的代码：\n\n```\npython3 ok -q mul_interval -u\npython3 ok -q mul_interval\n```\n",
+   "statementEn": "Alyssa's program is incomplete because she has not specified the implementation of the interval abstraction. She has implemented the constructor for you; fill in the implementation of the selectors.\n\n```\ndef interval(a, b):\n    \"\"\"Construct an interval from a to b.\"\"\"\n    return [a, b]\n\ndef lower_bound(x):\n    \"\"\"Return the lower bound of interval x.\"\"\"\n    \"*** YOUR CODE HERE ***\"\n\ndef upper_bound(x):\n    \"\"\"Return the upper bound of interval x.\"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n\nUse Ok to unlock and test your code:\n\n```\npython3 ok -q interval -u\npython3 ok -q interval\n```\n\nLouis Reasoner has also provided an implementation of interval multiplication. Beware: there are some data abstraction violations, so help him fix his code before someone sets it on fire: [ https://youtu.be/QwoghxwETng ](https://youtu.be/QwoghxwETng)\n\n```\ndef mul_interval(x, y):\n    \"\"\"Return the interval that contains the product of any value in x and any\n    value in y.\"\"\"\n    p1 = x[0] * y[0]\n    p2 = x[0] * y[1]\n    p3 = x[1] * y[0]\n    p4 = x[1] * y[1]\n    return [min(p1, p2, p3, p4), max(p1, p2, p3, p4)]\n```\n\nUse Ok to unlock and test your code:\n\n```\npython3 ok -q mul_interval -u\npython3 ok -q mul_interval\n```\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "interval mul_interval"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "interval"
+   }
+  },
+  {
+   "id": "sub_interval",
+   "title": "区间减法 (Sub Interval)",
+   "titleEn": "Sub Interval",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "参考 Alyssa 的推理方式，实现一个用于区间的减法函数。 如果发现自己在重复代码，尽量复用已有的函数。\n\n```\ndef sub_interval(x, y):\n    \"\"\"Return the interval that contains the difference between any value in x\n    and any value in y.\"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n\n使用 Ok 来解锁并测试你的代码：\n\n```\npython3 ok -q sub_interval -u --local\npython3 ok -q sub_interval --local\n```\n",
+   "statementEn": "Using reasoning analogous to Alyssa's, define a subtraction function for intervals. Try to reuse functions that have already been implemented if you find yourself repeating code.\n\n```\ndef sub_interval(x, y):\n    \"\"\"Return the interval that contains the difference between any value in x\n    and any value in y.\"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n\nUse Ok to unlock and test your code:\n\n```\npython3 ok -q sub_interval -u\npython3 ok -q sub_interval\n```\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "sub_interval"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "sub_interval"
+   }
+  },
+  {
+   "id": "div_interval",
+   "title": "区间除法 (Div Interval)",
+   "titleEn": "Div Interval",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "Alyssa 通过乘以 `y` 的倒数来实现了区间除法。 但是，专家级系统程序员 Ben Bitdiddle 看了一眼后指出， 如果除数区间跨越零，除法的意义就变得不清楚了。 请在 Alyssa 的代码中添加一个 `assert` 语句，以确保不会使用包含零的区间作为除数：\n\n```\ndef div_interval(x, y):\n    \"\"\"Return the interval that contains the quotient of any value in x divided by\n    any value in y. Division is implemented as the multiplication of x by the\n    reciprocal of y.\"\"\"\n    \"*** YOUR CODE HERE ***\"\n    reciprocal_y = interval(1/upper_bound(y), 1/lower_bound(y))\n    return mul_interval(x, reciprocal_y)\n```\n\n使用 Ok 来解锁并测试你的代码：\n\n```\npython3 ok -q div_interval -u --local\npython3 ok -q div_interval --local\n```\n",
+   "statementEn": "Alyssa implements division below by multiplying by the reciprocal of `y`. Ben Bitdiddle, an expert systems programmer, looks over Alyssa's shoulder and comments that it is not clear what it means to divide by an interval that spans zero. Add an `assert` statement to Alyssa's code to ensure that no such interval is used as a divisor:\n\n```\ndef div_interval(x, y):\n    \"\"\"Return the interval that contains the quotient of any value in x divided by\n    any value in y. Division is implemented as the multiplication of x by the\n    reciprocal of y.\"\"\"\n    \"*** YOUR CODE HERE ***\"\n    reciprocal_y = interval(1/upper_bound(y), 1/lower_bound(y))\n    return mul_interval(x, reciprocal_y)\n```\n\nUse Ok to unlock and test your code:\n\n```\npython3 ok -q div_interval -u\npython3 ok -q div_interval\n```\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "div_interval"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "div_interval"
+   }
+  },
+  {
+   "id": "check_par",
+   "title": "并联电阻计算差异 (Par Diff)",
+   "titleEn": "Par Diff",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "经过大量努力，Alyssa P. Hacker 终于完成了她的系统。 数年后，当她早已将其忘得一干二净时，突然接到了用户 Lem E. Tweakit 的狂怒电话。 原来，Lem 发现 [ 并联电阻的计算公式](https://en.wikipedia.org/wiki/Series_and_parallel_circuits#Resistors_2) 可以用两种代数等价的方式表示：\n\n```\npar1(r1, r2) = (r1 * r2) / (r1 + r2)\n```\n\n或者\n\n```\npar2(r1, r2) = 1 / (1/r1 + 1/r2)\n```\n\n他编写了以下两个程序，它们分别使用不同的方法计算 `并联电阻` 公式：\n\n```\ndef par1(r1, r2):\n    return div_interval(mul_interval(r1, r2), add_interval(r1, r2))\n\ndef par2(r1, r2):\n    one = interval(1, 1)\n    rep_r1 = div_interval(one, r1)\n    rep_r2 = div_interval(one, r2)\n    return div_interval(one, add_interval(rep_r1, rep_r2))\n```\n\nLem 抱怨说，Alyssa 的程序在这两种计算方式下得到了不同的结果， 这可是个严重的问题。\n\n请证明 Lem 是对的。尝试在不同的算术表达式上测试系统的行为， 创建一些区间 `r1` 和 `r2`，并展示 `par1` 和 `par2` 确实可能产生不同的结果。\n\n```\ndef check_par():\n    \"\"\"Return two intervals that give different results for parallel resistors.\n\n    >>> r1, r2 = check_par()\n    >>> x = par1(r1, r2)\n    >>> y = par2(r1, r2)\n    >>> lower_bound(x) != lower_bound(y) or upper_bound(x) != upper_bound(y)\n    True\n    \"\"\"\n    r1 = interval(1, 1) # Replace this line!\n    r2 = interval(1, 1) # Replace this line!\n    return r1, r2\n```\n",
+   "statementEn": "After considerable work, Alyssa P. Hacker delivers her finished system. Several years later, after she has forgotten all about it, she gets a frenzied call from an irate user, Lem E. Tweakit. It seems that Lem has noticed that the [formula for parallel resistors](https://en.wikipedia.org/wiki/Series_and_parallel_circuits#Resistors_2) can be written in two algebraically equivalent ways:\n\n```\npar1(r1, r2) = (r1 * r2) / (r1 + r2)\n```\n\nor\n\n```\npar2(r1, r2) = 1 / (1/r1 + 1/r2)\n```\n\nHe has written the following two programs, each of which computes the `parallel_resistors` formula differently::\n\n```\ndef par1(r1, r2):\n    return div_interval(mul_interval(r1, r2), add_interval(r1, r2))\n\ndef par2(r1, r2):\n    one = interval(1, 1)\n    rep_r1 = div_interval(one, r1)\n    rep_r2 = div_interval(one, r2)\n    return div_interval(one, add_interval(rep_r1, rep_r2))\n```\n\nLem complains that Alyssa's program gives different answers for the two ways of computing. This is a serious complaint.\n\nDemonstrate that Lem is right. Investigate the behavior of the system on a variety of arithmetic expressions. Make some intervals `r1` and `r2`, and show that `par1` and `par2` can give different results.\n\n```\ndef check_par():\n    \"\"\"Return two intervals that give different results for parallel resistors.\n\n    >>> r1, r2 = check_par()\n    >>> x = par1(r1, r2)\n    >>> y = par2(r1, r2)\n    >>> lower_bound(x) != lower_bound(y) or upper_bound(x) != upper_bound(y)\n    True\n    \"\"\"\n    r1 = interval(1, 1) # Replace this line!\n    r2 = interval(1, 1) # Replace this line!\n    return r1, r2\n```\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "check_par"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "check_par"
+   }
+  },
+  {
+   "id": "quadratic",
+   "title": "二次函数 (Quadratic)",
+   "titleEn": "Quadratic",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个函数 `quadratic`，返回一个 [二次函数](http://en.wikipedia.org/wiki/Quadratic_function) `f(t)` 在区间 `x` 上的值域：\n\n```\nf(t) = a*t*t + b*t + c\n```\n\n确保你的实现返回的区间最小， 一个不会有多重引用问题的区间。\n\n*提示*：二次函数的导数 `f'(t) = 2*a*t + b`，因此二次函数的极值点为 `-b/(2*a)`：\n\n```\ndef quadratic(x, a, b, c):\n    \"\"\"Return the interval that is the range of the quadratic defined by\n    coefficients a, b, and c, for domain interval x.\n\n    >>> str_interval(quadratic(interval(0, 2), -2, 3, -1))\n    '-3 to 0.125'\n    >>> str_interval(quadratic(interval(1, 3), 2, -3, 1))\n    '0 to 10'\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n",
+   "statementEn": "Write a function `quadratic` that returns the interval of all values `f(t)` such that `t` is in the argument interval `x` and `f(t)` is a [quadratic function](http://en.wikipedia.org/wiki/Quadratic_function):\n\n```\nf(t) = a*t*t + b*t + c\n```\n\nMake sure that your implementation returns the smallest such interval, one that does not suffer from the multiple references problem.\n\n*Hint*: the derivative `f'(t) = 2*a*t + b`, and so the extreme point of the quadratic is `-b/(2*a)`:\n\n```\ndef quadratic(x, a, b, c):\n    \"\"\"Return the interval that is the range of the quadratic defined by\n    coefficients a, b, and c, for domain interval x.\n\n    >>> str_interval(quadratic(interval(0, 2), -2, 3, -1))\n    '-3 to 0.125'\n    >>> str_interval(quadratic(interval(1, 3), 2, -3, 1))\n    '0 to 10'\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "quadratic"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "quadratic"
+   }
+  }
+ ]
+}

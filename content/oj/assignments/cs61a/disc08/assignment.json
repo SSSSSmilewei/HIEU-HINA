@@ -1,0 +1,118 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "disc08",
+ "title": "讨论课 8：链表",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/disc/disc08/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "disc08",
+ "repoDir": "disc/disc08",
+ "intro": "讨论课的题目原本是小组在纸上一起做的。这里收了能自动判对错的两类题：写代码的题（用官方 doctest 判，做对之后题目下方显示官方解答），和画环境图的题（先在纸上画，再把每一帧填进来，判题服务实际运行程序后逐帧比对）。口头讨论的题请看讲义页的官方讲义。",
+ "problems": [
+  {
+   "id": "strange_loop",
+   "title": "Strange Loop",
+   "titleEn": "Strange Loop",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nIn lab, there was a `Link` object with a cycle that represented an infinite repeating list of 1's.\n\n```\n>>> ones = Link(1)\n>>> ones.rest = ones\n>>> [ones.first, ones.rest.first, ones.rest.rest.first, ones.rest.rest.rest.first]\n[1, 1, 1, 1]\n>>> ones.rest is ones\nTrue\n```\n\nImplement `strange_loop`, which takes no arguments and returns a `Link` object `s` for which `s.rest.first.rest` is `s`.\n\nDraw a picture of the linked list you want to create, then write code to create it.\n",
+   "statementEn": "In lab, there was a `Link` object with a cycle that represented an infinite repeating list of 1's.\n\n```\n>>> ones = Link(1)\n>>> ones.rest = ones\n>>> [ones.first, ones.rest.first, ones.rest.rest.first, ones.rest.rest.rest.first]\n[1, 1, 1, 1]\n>>> ones.rest is ones\nTrue\n```\n\nImplement `strange_loop`, which takes no arguments and returns a `Link` object `s` for which `s.rest.first.rest` is `s`.\n\nDraw a picture of the linked list you want to create, then write code to create it.\n",
+   "editable": [
+    "strange_loop.py"
+   ],
+   "focus": {
+    "file": "strange_loop.py",
+    "symbol": "strange_loop"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "strange_loop"
+   },
+   "hints": [
+    "For `s.rest.first.rest` to exist at all, the second element of `s`, called `s.rest.first`, must itself be a linked list.",
+    "Making a cycle requires two steps: making a linked list without a cycle, then modifying it. First create, for example, `s = Link(6, Link(Link(1)))`, then change `s.rest.first.rest` to create the cycle."
+   ],
+   "explain": "官方解答：\n\n```python\ndef strange_loop():\n    \"\"\"Return a Link s for which s.rest.first.rest is s.\n\n    >>> s = strange_loop()\n    >>> s.rest.first.rest is s\n    True\n    \"\"\"\n    s = Link(1, Link(Link(2)))\n    s.rest.first.rest = s\n    return s\n```\n"
+  },
+  {
+   "id": "overlap",
+   "title": "Overlap",
+   "titleEn": "Overlap",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `overlap`, which takes two linked lists of numbers called `s` and `t` that are sorted in increasing order and have no repeated elements within each list. It returns the count of how many numbers appear in both lists.\n\nThis can be done in *linear* time in the combined length of `s` and `t` by always advancing forward in the linked list whose first element is smallest until both first elements are equal (add one to the count and advance both) or one list is empty (time to return).\n",
+   "statementEn": "Implement `overlap`, which takes two linked lists of numbers called `s` and `t` that are sorted in increasing order and have no repeated elements within each list. It returns the count of how many numbers appear in both lists.\n\nThis can be done in *linear* time in the combined length of `s` and `t` by always advancing forward in the linked list whose first element is smallest until both first elements are equal (add one to the count and advance both) or one list is empty (time to return).\n",
+   "editable": [
+    "overlap.py"
+   ],
+   "focus": {
+    "file": "overlap.py",
+    "symbol": "overlap"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "overlap"
+   },
+   "hints": [
+    "```\n    if s is Link.empty or t is Link.empty:\n        return 0\n    if s.first == t.first:\n        return __________________\n    elif s.first < t.first:\n        return __________________\n    elif s.first > t.first:\n        return __________________\n```",
+    "```\n    k = 0\n    while s is not Link.empty and t is not Link.empty:\n        if s.first == t.first:\n            __________________\n        elif s.first < t.first:\n            __________________\n        elif s.first > t.first:\n            __________________\n    return k\n```"
+   ],
+   "explain": "官方解答：\n\n```python\ndef overlap(s, t):\n    \"\"\"For increasing s and t, count the numbers that appear in both.\n\n    >>> a = Link(3, Link(4, Link(6, Link(7, Link(9, Link(10))))))\n    >>> b = Link(1, Link(3, Link(5, Link(7, Link(8)))))\n    >>> overlap(a, b)  # 3 and 7\n    2\n    >>> overlap(a.rest, b)  # just 7\n    1\n    >>> overlap(Link(0, a), Link(0, b))\n    3\n    \"\"\"\n    if s is Link.empty or t is Link.empty:\n        return 0\n    if s.first == t.first:\n        return 1 + overlap(s.rest, t.rest)\n    elif s.first < t.first:\n        return overlap(s.rest, t)\n    elif s.first > t.first:\n        return overlap(s, t.rest)\n\ndef overlap_iterative(s, t):\n    \"\"\"For increasing s and t, count the numbers that appear in both.\n\n    >>> a = Link(3, Link(4, Link(6, Link(7, Link(9, Link(10))))))\n    >>> b = Link(1, Link(3, Link(5, Link(7, Link(8)))))\n    >>> overlap(a, b)  # 3 and 7\n    2\n    >>> overlap(a.rest, b)  # just 7\n    1\n    >>> overlap(Link(0, a), Link(0, b))\n    3\n    \"\"\"\n    res = 0\n    while s is not Link.empty and t is not Link.empty:\n        if s.first == t.first:\n            res += 1\n            s = s.rest\n            t = t.rest\n        elif s.first < t.first:\n            s = s.rest\n        else:\n            t = t.rest\n    return res\n```\n"
+  },
+  {
+   "id": "iterate_in_order",
+   "title": "Iterate in Order",
+   "titleEn": "Iterate in Order",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `iterate_in_order`, which takes two linked lists of numbers called `s` and `t` that are sorted in increasing order and have no repeated elements within each list. It returns a generator that iterates over all items in `s` and `t` in non-decreasing order.\n\n             Extra Challenging Extra Fun\n\nThis last question is similar in complexity to an A+ question on an exam. Feel free to skip it, but it's a fun one, so try it if you have time.\n",
+   "statementEn": "Implement `iterate_in_order`, which takes two linked lists of numbers called `s` and `t` that are sorted in increasing order and have no repeated elements within each list. It returns a generator that iterates over all items in `s` and `t` in non-decreasing order.\n\n             Extra Challenging Extra Fun\n\nThis last question is similar in complexity to an A+ question on an exam. Feel free to skip it, but it's a fun one, so try it if you have time.\n",
+   "editable": [
+    "iterate_in_order.py"
+   ],
+   "focus": {
+    "file": "iterate_in_order.py",
+    "symbol": "iterate_in_order"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "iterate_in_order"
+   },
+   "explain": "官方解答：\n\n```python\ndef iterate_in_order(s, t):\n    \"\"\"For increasing s and t, yields the elements in s and t, in non-decreasing order.\n\n    >>> a = Link(3, Link(4, Link(6, Link(7, Link(9, Link(10))))))\n    >>> b = Link(1, Link(3, Link(5, Link(7, Link(8)))))\n    >>> t = iterate_in_order(a, b)\n    >>> for item in t:\n    ...     print(item)\n    1\n    3\n    3\n    4\n    5\n    6\n    7\n    7\n    8\n    9\n    10\n    >>> t = iterate_in_order(Link.empty, b)\n    >>> for item in t:\n    ...      print(item)\n    1\n    3\n    5\n    7\n    8\n    \"\"\"\n    while s is not Link.empty or t is not Link.empty:\n        if s is Link.empty:\n            yield t.first\n            t = t.rest\n        elif t is Link.empty or s.first <= t.first:\n            yield s.first\n            s = s.rest\n        else:\n            yield t.first\n            t = t.rest\n```\n"
+  },
+  {
+   "id": "display",
+   "title": "Decimal Expansion",
+   "titleEn": "Decimal Expansion",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\n**Definition.** The *decimal expansion* of a fraction `n/d` with `n < d` is an infinite sequence of digits starting with the 0 before the decimal point and followed by digits that represent the tenths, hundredths, and thousands place (and so on) of the number `n/d`. E.g., the decimal expansion of 2/3 is a zero followed by an infinite sequence of 6's: 0.6666666....\n\nImplement `divide`, which takes positive integers `n` and `d` with `n < d`. It returns a linked list with a cycle containing the digits of the infinite decimal expansion of `n/d`. The provided `display` function prints the first `k` digits after the decimal point.\n\nFor example, 1/22 would be represented as `x` below:\n\n```\n>>> 1/22\n0.045454545454545456\n>>> x = Link(0, Link(0, Link(4, Link(5))))\n>>> x.rest.rest.rest.rest = x.rest.rest\n>>> display(x, 20)\n0.04545454545454545454...\n```\n",
+   "statementEn": "**Definition.** The *decimal expansion* of a fraction `n/d` with `n < d` is an infinite sequence of digits starting with the 0 before the decimal point and followed by digits that represent the tenths, hundredths, and thousands place (and so on) of the number `n/d`. E.g., the decimal expansion of 2/3 is a zero followed by an infinite sequence of 6's: 0.6666666....\n\nImplement `divide`, which takes positive integers `n` and `d` with `n < d`. It returns a linked list with a cycle containing the digits of the infinite decimal expansion of `n/d`. The provided `display` function prints the first `k` digits after the decimal point.\n\nFor example, 1/22 would be represented as `x` below:\n\n```\n>>> 1/22\n0.045454545454545456\n>>> x = Link(0, Link(0, Link(4, Link(5))))\n>>> x.rest.rest.rest.rest = x.rest.rest\n>>> display(x, 20)\n0.04545454545454545454...\n```\n",
+   "editable": [
+    "display.py"
+   ],
+   "focus": {
+    "file": "display.py",
+    "symbol": "display"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "display"
+   },
+   "hints": [
+    "Place the division pattern from the example above in a `while` statement:\n\n```\n>>> q, r = 10 * n // d, 10 * n % d\n>>> tail.rest = Link(q)\n>>> tail = tail.rest\n>>> n = r\n```\n\nWhile constructing the decimal expansion, store the `tail` for each `n` in a dictionary keyed by `n`. When some `n` appears a second time, instead of constructing a new `Link`, set its original link as the rest of the previous link. That will form a cycle of the appropriate length."
+   ],
+   "explain": "官方解答：\n\n```python\ndef display(s, k=10):\n    \"\"\"Print the first k digits of infinite linked list s as a decimal.\n\n    >>> s = Link(0, Link(8, Link(3)))\n    >>> s.rest.rest.rest = s.rest.rest\n    >>> display(s)\n    0.8333333333...\n    \"\"\"\n    assert s.first == 0, f'{s.first} is not 0'\n    digits = f'{s.first}.'\n    s = s.rest\n    for _ in range(k):\n        assert s.first >= 0 and s.first < 10, f'{s.first} is not a digit'\n        digits += str(s.first)\n        s = s.rest\n    print(digits + '...')\n```\n"
+  }
+ ]
+}
