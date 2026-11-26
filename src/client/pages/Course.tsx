@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { type CourseMeta, type MetaItem, nextItem, periodsToHours, planCards, progress, weeksToFinish } from "../../shared/courses";
 import { ITEM_KIND_LABEL, LINK_KINDS, LINK_KIND_LABEL } from "../../shared/light";
 import type { Link as PkgLink } from "../../shared/package";
@@ -6,6 +6,7 @@ import { Prose } from "../components/Prose";
 import { type CourseState, useCourse } from "../courseData";
 import { Icon } from "../icons";
 import { downloadJson, exportPackage, forgetPackage, itemHref, removeLocal } from "../library";
+import { loadOjIndex } from "../ojIndex";
 import { Link, navigate, useQuery } from "../router";
 import { useMe } from "../session";
 import { api, useApi } from "../api";
@@ -85,6 +86,7 @@ export function CoursePage({ slug }: { slug: string }) {
           {meta.titleEn && meta.titleEn !== meta.title && <p className="course-en">{meta.titleEn}</p>}
           {meta.summary && <p className="lead pretty">{meta.summary}</p>}
           <Facts c={meta} totalPeriods={p.totalPeriods} />
+          <SeaEntry slug={slug} />
           {hasLevels(slug) && (
             <Link to={`/courses/${slug}/map`} className="btn btn-primary btn-lg level-entry">
               开始闯关：在自己的仓库里写出官方项目
@@ -536,5 +538,23 @@ function Peers({ names }: { names: string[] }) {
       {names.slice(0, 3).join("、")}
       {names.length > 3 ? ` 等 ${names.length} 人` : ""}也在学
     </span>
+  );
+}
+
+/** 有作业台（OJ 作业）的课，显示深海地图入口（故事 3.7） */
+function SeaEntry({ slug }: { slug: string }) {
+  const [has, setHas] = useState(false);
+  useEffect(() => {
+    let alive = true;
+    void loadOjIndex().then((ix) => alive && setHas(ix.assignments.some((a) => a.course === slug)));
+    return () => {
+      alive = false;
+    };
+  }, [slug]);
+  if (!has) return null;
+  return (
+    <Link to={`/courses/${slug}/sea`} className="btn btn-primary btn-lg level-entry">
+      打开深海地图：按周下潜，过关点亮
+    </Link>
   );
 }

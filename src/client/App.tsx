@@ -31,6 +31,7 @@ const LessonPage = lazy(() => import("./pages/Lesson").then((m) => ({ default: m
 const LevelPage = lazy(() => import("./pages/Level").then((m) => ({ default: m.LevelPage })));
 const LevelMapPage = lazy(() => import("./pages/LevelMap").then((m) => ({ default: m.LevelMapPage })));
 const OjWorkspacePage = lazy(() => import("./pages/OjWorkspace").then((m) => ({ default: m.OjWorkspacePage })));
+const SeaMapPage = lazy(() => import("./pages/SeaMap").then((m) => ({ default: m.SeaMapPage })));
 const ExamPage = lazy(() => import("./pages/ExamPage").then((m) => ({ default: m.ExamPage })));
 const NoticesPage = lazy(() => import("./pages/Notices").then((m) => ({ default: m.NoticesPage })));
 const ProfilePage = lazy(() => import("./pages/Profile").then((m) => ({ default: m.ProfilePage })));
@@ -107,6 +108,7 @@ export function App() {
   const lesson = matchPath("/courses/:slug/learn/:page", path);
   const block = matchPath("/blocks/:slug", path);
   const levelMap = matchPath("/courses/:slug/map", path);
+  const seaMap = matchPath("/courses/:slug/sea", path);
   const levelPage = matchPath("/courses/:slug/levels/:chapter/:level", path);
   if (path.startsWith("/admin")) {
     if (!isAdmin) page = <Empty title="这里需要管理员账号" />;
@@ -125,6 +127,7 @@ export function App() {
   else if (path === "/blocks") page = <SiteGraphPage />;
   else if (block) page = <BlockPage key={block.slug} slug={block.slug} />;
   else if (levelMap) page = <LevelMapPage key={levelMap.slug} slug={levelMap.slug} />;
+  else if (seaMap) page = <SeaMapPage key={seaMap.slug} slug={seaMap.slug} />;
   else if (levelPage) page = <LevelPage key={`${levelPage.chapter}/${levelPage.level}`} slug={levelPage.slug} chapter={levelPage.chapter} level={levelPage.level} />;
   else if (course) page = <CoursePage key={course.slug} slug={course.slug} />;
   else if (lesson) page = <LessonPage key={lesson.slug} slug={lesson.slug} page={lesson.page} />;
