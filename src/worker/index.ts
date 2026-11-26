@@ -1,5 +1,6 @@
 import { api } from "./api/index";
 import { ensureSchema, getSetting } from "./db";
+import { drainQueue } from "./forgejo";
 import type { CurrentUser, Env } from "./env";
 import { syncEveryone } from "./heatmap/store";
 import { dispatch, json, parseCookies } from "./http";
@@ -115,6 +116,12 @@ export default {
       ensureSchema(env.DB)
         .then(() => flush(env, { force: true }))
         .catch((err) => console.error(JSON.stringify({ msg: "scheduled flush failed", error: String(err) }))),
+    );
+    // 每 5 分钟：重试没写进学员仓库的提交
+    ctx.waitUntil(
+      ensureSchema(env.DB)
+        .then(() => drainQueue(env))
+        .catch((err) => console.error(JSON.stringify({ msg: "forgejo queue failed", error: String(err) }))),
     );
   },
 };

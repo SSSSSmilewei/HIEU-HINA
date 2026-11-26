@@ -6,6 +6,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildBlocks } from "./blocks.mjs";
 import { buildCourses, writeCatalog } from "./courses.mjs";
+import { buildOj } from "./oj.mjs";
 import { light } from "../src/shared/light.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -38,12 +39,35 @@ const result = await build({
   logLevel: "warning",
 });
 
+// 做题界面的 Monaco 编辑器单独打包：编辑器本体（含样式、图标字体）和它的 worker，打开做题界面时才加载
+const monacoBuild = await build({
+  entryPoints: { monaco: join(root, "src/client/ide/monaco-entry.ts"), "monaco-worker": join(root, "node_modules/monaco-editor/esm/vs/editor/editor.worker.js") },
+  bundle: true,
+  format: "esm",
+  minify: true,
+  target: ["es2022", "safari16"],
+  outdir: join(out, "assets/monaco"),
+  entryNames: "[name]-[hash]",
+  assetNames: "[name]-[hash]",
+  loader: { ".ttf": "file" },
+  metafile: true,
+  logLevel: "warning",
+});
+const monacoOut = Object.keys(monacoBuild.metafile.outputs).map((p) => p.replace(/\\/g, "/"));
+const monacoFile = (re) => {
+  const p = monacoOut.find((x) => re.test(x));
+  if (!p) throw new Error(`Monaco 打包结果里找不到 ${re}`);
+  return `/${p.slice(p.indexOf("assets/"))}`;
+};
+const monacoManifest = { js: monacoFile(/monaco\/monaco-[^/]+\.js$/), css: monacoFile(/monaco\/monaco-[^/]+\.css$/), worker: monacoFile(/monaco-worker-[^/]+\.js$/) };
+
 if (existsSync(join(root, "public"))) cpSync(join(root, "public"), out, { recursive: true });
 // 闯关（content/levels/）：起始代码、官方测试、关卡说明、判题器，原样放到 /levels/，浏览器里的 Pyodide 直接读
 if (existsSync(join(root, "content/levels")))
   cpSync(join(root, "content/levels"), join(out, "levels"), { recursive: true, filter: (src) => !src.includes("__pycache__") });
 const pageCount = buildCourses(root, out, courses);
 const blockCount = buildBlocks(root, out, courses.map(light));
+const oj = buildOj(root, out);
 
 const outputs = Object.keys(result.metafile.outputs).map((p) => p.replace(/\\/g, "/"));
 const js = outputs.find((p) => /assets\/app-[^/]+\.js$/.test(p));
@@ -81,6 +105,7 @@ writeFileSync(
 <link rel="preload" href="/fonts/sarasa/gothic-400.1.woff2" as="font" type="font/woff2" crossorigin>
 ${css ? `<link rel="stylesheet" href="${rel(css)}">` : ""}
 ${[...initialChunks].map((p) => `<link rel="modulepreload" href="${rel(p)}">`).join("\n")}
+<script>window.__HIANA_MONACO__=${JSON.stringify(monacoManifest)}</script>
 <script type="module" src="${rel(js)}"></script>
 </head>
 <body>
@@ -93,4 +118,4 @@ ${[...initialChunks].map((p) => `<link rel="modulepreload" href="${rel(p)}">`).j
 
 const size = (p) => (result.metafile.outputs[p]?.bytes / 1024).toFixed(0);
 const initialSize = ([js, ...initialChunks].reduce((sum, p) => sum + result.metafile.outputs[p].bytes, 0) / 1024).toFixed(0);
-console.log(`前端已打包：${rel(js)} (${size(js)} KB)，首屏 JS 合计 ${initialSize} KB${css ? `，${rel(css)} (${size(css)} KB)` : ""}，${courses.length} 门课、${pageCount} 页讲义、${blockCount} 个知识块`);
+console.log(`前端已打包：${rel(js)} (${size(js)} KB)，首屏 JS 合计 ${initialSize} KB${css ? `，${rel(css)} (${size(css)} KB)` : ""}，${courses.length} 门课、${pageCount} 页讲义、${blockCount} 个知识块、${oj.assignments} 份作业、${oj.problems} 道 OJ 题`);

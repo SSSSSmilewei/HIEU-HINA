@@ -1,0 +1,11 @@
+# 本地 / 学校服务器上起判题沙箱：docker compose -f judge/docker-compose.yml up -d
+# 沙箱只监听 127.0.0.1，判题服务（judge/src/server.ts）在同一台机器上调用它。
+services:
+  sandbox:
+    build: ./sandbox
+    image: hiana-judge-sandbox
+    privileged: true
+    shm_size: 256m
+    ports:
+      - "127.0.0.1:5050:5050"
+    restart: unless-stopped

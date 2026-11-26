@@ -383,6 +383,78 @@ export const MIGRATIONS: string[][] = [
       PRIMARY KEY (user_id, course_slug, level_id)
     )`,
   ],
+  // v16：OJ 判题（2026-11，docs/prd/hiana-oj.md）：每次「提交」一条记录；每人每题第一次通过记一条；「运行」只记次数用来限流
+  [
+    `CREATE TABLE IF NOT EXISTS oj_submissions (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      problem TEXT NOT NULL,
+      language TEXT NOT NULL,
+      files TEXT NOT NULL,
+      verdict TEXT NOT NULL,
+      passed INTEGER NOT NULL,
+      total INTEGER NOT NULL,
+      time_ms INTEGER NOT NULL,
+      memory_kb INTEGER NOT NULL,
+      result TEXT NOT NULL,
+      created_at INTEGER NOT NULL
+    )`,
+    `CREATE INDEX IF NOT EXISTS oj_submissions_by_user ON oj_submissions(user_id, problem, created_at)`,
+    `CREATE INDEX IF NOT EXISTS oj_submissions_by_problem ON oj_submissions(problem, created_at)`,
+    `CREATE TABLE IF NOT EXISTS oj_solved (
+      user_id TEXT NOT NULL,
+      problem TEXT NOT NULL,
+      solved_at INTEGER NOT NULL,
+      PRIMARY KEY (user_id, problem)
+    )`,
+    `CREATE TABLE IF NOT EXISTS oj_hits (
+      who TEXT NOT NULL,
+      at INTEGER NOT NULL
+    )`,
+    `CREATE INDEX IF NOT EXISTS oj_hits_by_who ON oj_hits(who, at)`,
+  ],
+  // v17：学员仓库（Forgejo，故事 2.1）。平台账号 ↔ Forgejo 用户名；哪份作业的起始代码已经提交过；写不进去的提交排队重试
+  [
+    `CREATE TABLE IF NOT EXISTS forgejo_users (
+      user_id TEXT PRIMARY KEY,
+      username TEXT NOT NULL UNIQUE,
+      created_at INTEGER NOT NULL
+    )`,
+    `CREATE TABLE IF NOT EXISTS forgejo_dirs (
+      user_id TEXT NOT NULL,
+      dir TEXT NOT NULL,
+      created_at INTEGER NOT NULL,
+      PRIMARY KEY (user_id, dir)
+    )`,
+    `CREATE TABLE IF NOT EXISTS forgejo_queue (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      payload TEXT NOT NULL,
+      attempts INTEGER NOT NULL,
+      next_at INTEGER NOT NULL,
+      last_error TEXT,
+      created_at INTEGER NOT NULL
+    )`,
+    `CREATE INDEX IF NOT EXISTS forgejo_queue_by_next ON forgejo_queue(next_at)`,
+  ],
+  // v18：OJ 里的 AI（故事 4.1）。每人每天次数；AI 对每次提交的评语和质量分（综合排行用）
+  [
+    `CREATE TABLE IF NOT EXISTS oj_ai_usage (
+      user_id TEXT NOT NULL,
+      day TEXT NOT NULL,
+      count INTEGER NOT NULL,
+      PRIMARY KEY (user_id, day)
+    )`,
+    `CREATE TABLE IF NOT EXISTS oj_reviews (
+      submission_id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      problem TEXT NOT NULL,
+      score INTEGER NOT NULL,
+      review TEXT NOT NULL,
+      created_at INTEGER NOT NULL
+    )`,
+    `CREATE INDEX IF NOT EXISTS oj_reviews_by_user ON oj_reviews(user_id, problem)`,
+  ],
 ];
 
 // 每个数据库连接只迁移一次（Worker 里通常只有一个；测试里每个用例一个内存库）

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AssignmentEntry, useHasAssignment } from "../components/AssignmentEntry";
 import { ITEM_KIND_LABEL } from "../../shared/light";
 import type { Item } from "../../shared/package";
 import { PinBoard } from "../components/Pins";
@@ -27,6 +28,8 @@ export function LessonPage({ slug, page }: { slug: string; page: string }) {
   const [panelHost, setPanelHost] = useState<HTMLElement | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const source = useMemo(() => (pkg && at?.pageId ? () => loadPage(slug, pkg, at.pageId as string) : null), [pkg, slug, at?.pageId]);
+  // 有作业台（OJ 作业）的条目，判题都走作业台，旧的浏览器练手题不再显示
+  const oj = useHasAssignment(slug, item?.id ?? "");
 
   if (pkgError)
     return (
@@ -57,6 +60,7 @@ export function LessonPage({ slug, page }: { slug: string; page: string }) {
   const done = !!state?.done[item.id];
   const solved = new Set(state?.solved[item.id] ?? []);
   const lastPage = !item.pages.length || at.pageId === item.pages[item.pages.length - 1].id;
+  const showPractice = item.practice.length > 0 && oj === false;
 
   return (
     <div className="page lesson-page">
@@ -81,6 +85,8 @@ export function LessonPage({ slug, page }: { slug: string; page: string }) {
         </div>
       </header>
 
+      <AssignmentEntry course={slug} item={item.id} />
+
       {item.pages.length > 1 && (
         <nav ref={tabs} className="page-tabs" aria-label="这一项的页面">
           {item.pages.map((p) => (
@@ -100,7 +106,7 @@ export function LessonPage({ slug, page }: { slug: string; page: string }) {
             </article>
           )}
           <Resources item={item} />
-          {item.practice.length > 0 && lastPage && (
+          {showPractice && lastPage && (
             <section id="practice" aria-labelledby="practice-h" className="stack" style={{ gap: 16 }}>
               <div className="section-head">
                 <h2 id="practice-h" className="h2">
@@ -126,7 +132,7 @@ export function LessonPage({ slug, page }: { slug: string; page: string }) {
           <Icon name="check" size={16} stroke={2.2} />
           {done ? "已完成" : "标记完成"}
         </button>
-        {item.practice.length > 0 && !lastPage && (
+        {showPractice && !lastPage && (
           <Link to={`/courses/${slug}/learn/${item.pages[item.pages.length - 1].id}#practice`} className="btn btn-quiet">
             去练手（{item.practice.length} 题）
           </Link>

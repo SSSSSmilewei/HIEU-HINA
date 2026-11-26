@@ -30,6 +30,7 @@ const SiteGraphPage = lazy(() => import("./pages/BlockDetail").then((m) => ({ de
 const LessonPage = lazy(() => import("./pages/Lesson").then((m) => ({ default: m.LessonPage })));
 const LevelPage = lazy(() => import("./pages/Level").then((m) => ({ default: m.LevelPage })));
 const LevelMapPage = lazy(() => import("./pages/LevelMap").then((m) => ({ default: m.LevelMapPage })));
+const OjWorkspacePage = lazy(() => import("./pages/OjWorkspace").then((m) => ({ default: m.OjWorkspacePage })));
 const NoticesPage = lazy(() => import("./pages/Notices").then((m) => ({ default: m.NoticesPage })));
 const ProfilePage = lazy(() => import("./pages/Profile").then((m) => ({ default: m.ProfilePage })));
 const ReportPage = lazy(() => import("./pages/Report").then((m) => ({ default: m.ReportPage })));
@@ -49,7 +50,7 @@ function Redirect({ to }: { to: string }) {
 
 /** 游客也能看的页面；其余页面要登录。 */
 function guestCanSee(path: string): boolean {
-  return path === "/" || path === "/about" || path === "/honors" || path.startsWith("/courses") || path.startsWith("/blocks") || path === "/notices" || path === "/start";
+  return path === "/" || path === "/about" || path === "/honors" || path.startsWith("/courses") || path.startsWith("/blocks") || path === "/notices" || path === "/start" || path.startsWith("/oj");
 }
 
 export function App() {
@@ -130,6 +131,19 @@ export function App() {
   else if (path === "/notices") page = <NoticesPage />;
   else if (path === "/me") page = <ProfilePage me={me} onLogout={loggedOut} />;
   else page = <Empty title="没有这个页面" />;
+
+  // 做题界面是全屏的 IDE，不套侧边栏
+  const ojProblem = matchPath("/oj/p/:id", path);
+  const hw = matchPath("/courses/:slug/hw/:assignment", path) ?? matchPath("/courses/:slug/hw/:assignment/:problem", path);
+  if (ojProblem || hw) {
+    return (
+      <MeContext.Provider value={ctx}>
+        <PageContent key={path.split("/").slice(0, 5).join("/")} fallback={<Boot />}>
+          {ojProblem ? <OjWorkspacePage problem={ojProblem.id} /> : <OjWorkspacePage course={hw!.slug} assignment={hw!.assignment} problemId={hw!.problem} />}
+        </PageContent>
+      </MeContext.Provider>
+    );
+  }
 
   // 协会页是一整张海报（新生介绍书），不套侧边栏和底栏，自己有顶栏回平台
   if (path === "/about") {

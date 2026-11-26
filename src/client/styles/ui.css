@@ -4925,3 +4925,36 @@ body.pin-mode .pin-board [data-anchor]:hover {
 .prose-sm {
   font-size: 14px;
 }
+
+/* 课程条目页上的作业台入口 */
+.assignment-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.assignment-versions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+.assignment-version {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .assignment-versions {
+    align-items: stretch;
+  }
+  .assignment-version {
+    justify-content: space-between;
+  }
+  .assignment-entry {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
