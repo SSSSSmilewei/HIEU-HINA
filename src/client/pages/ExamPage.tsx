@@ -229,6 +229,22 @@ export function ExamPage({ course, id }: { course: string; id: string }) {
           </section>
         )}
 
+        {meta.certificate && attempt?.submittedAt != null && attempt.passed && (
+          <section className="ide-exam-cert">
+            <div className="ide-exam-cert-title">海纳协会 · 课程完成凭证</div>
+            <p>
+              <strong>{me.member?.name ?? ""}</strong>
+              {me.member?.studentNo ? `（${me.member.studentNo}）` : ""} 完成了 <strong>CS 61A：计算机程序的构造和解释</strong> 的全部学习，并通过结课测验
+            </p>
+            <p className="ide-muted">
+              {meta.title} · 成绩 {attempt.score} / {attempt.maxScore} · {new Date(attempt.submittedAt).toLocaleDateString("zh-CN")}
+            </p>
+            <button className="ide-btn ide-btn-ghost" onClick={() => window.print()}>
+              打印或存成 PDF
+            </button>
+          </section>
+        )}
+
         {!active && !paper && (
           <section className="ide-exam-intro">
             <h1 className="ide-h1">{meta.title}</h1>

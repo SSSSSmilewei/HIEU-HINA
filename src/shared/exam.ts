@@ -24,8 +24,8 @@ const base = {
 };
 
 export const ExamQuestion = z.discriminatedUnion("type", [
-  z.object({ ...base, type: z.literal("choice"), choices: z.array(z.string().min(1).max(2000)).min(2).max(12), answer: z.number().int().min(0) }),
-  z.object({ ...base, type: z.literal("multi"), choices: z.array(z.string().min(1).max(2000)).min(2).max(12), answers: z.array(z.number().int().min(0)).min(1) }),
+  z.object({ ...base, type: z.literal("choice"), choices: z.array(z.string().min(1).max(2000)).min(2).max(20), answer: z.number().int().min(0) }),
+  z.object({ ...base, type: z.literal("multi"), choices: z.array(z.string().min(1).max(2000)).min(2).max(20), answers: z.array(z.number().int().min(0)).min(1) }),
   z.object({ ...base, type: z.literal("text"), multiline: z.boolean().default(false), accept: z.array(z.string().max(4000)).min(1).max(20) }),
   z.object({ ...base, type: z.literal("code"), problem: z.string().regex(/^[a-z0-9_-]+(\/[a-z0-9_-]+\/[a-z0-9_-]+)?$/), file: z.string().min(1).max(100), starter: z.string().max(40_000) }),
 ]);

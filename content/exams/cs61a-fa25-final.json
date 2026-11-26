@@ -1,0 +1,709 @@
+{
+ "format": "hiana-exam@1",
+ "id": "cs61a-fa25-final",
+ "course": "cs61a",
+ "item": "exam-final",
+ "title": "结课测验（改编自 2025 秋季期末考试）",
+ "source": "UC Berkeley CS 61A 2025 秋季 期末考试（Final）",
+ "license": "题目 © UC Berkeley CS 61A（2025 秋季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文改编 海纳协会",
+ "minutes": 170,
+ "pass": 0.7,
+ "certificate": true,
+ "intro": "这是 CS61A 的结课测验，覆盖整门课：函数与高阶函数、环境、递归、序列与迭代器、树与链表、面向对象、异步、Scheme、SQL。**成绩达到 70% 记入协会的课程完成凭证。**\n\n- 限时 170 分钟，开始后计时，到时自动交卷；作答自动保存。\n- 可以看讲义和自己的笔记，**不能**用 AI，也不要和别人讨论。\n- 填空题写一个表达式或一行代码，判分时忽略多余空格；写法和标准答案等价但不一样时可能判错，交卷后可以对照讲解。\n- `Tree`、`Link` 类就是课上和作业里用的那两个。\n- 改编说明：原卷第 9 题（A+ 附加题，0 分）不收；原卷第 8 题的示例表格是图片，这里用文字说明了表结构。\n\n交卷后能看到每题得分、标准答案和讲解，可以重考，成绩取最好的一次。",
+ "sections": [
+  {
+   "title": "第 1 大题：Python 会显示什么（5 分）",
+   "intro": "假设下面的代码已经运行：\n\n```python\nsquare = lambda x: x * x\n\ndef times(a, b, c):\n    x = a\n    f = lambda y: x * y\n    x = b\n    g = (lambda q: lambda r: q * r)(x)\n    x = c\n    print(f(g(x)))\n\ndef delay(s):\n    last = None\n    for x in s:\n        if last:\n            print(x)\n            return last\n        last = x\n\nw = [print, abs, square, print]\n```\n\n写出求值每个表达式时**显示**的全部内容，每行一个；出错写 `ERROR`（出错前显示的内容也要写）。例如 `print(square(5))` 显示 `25`。",
+   "questions": [
+    {
+     "id": "q1a",
+     "type": "text",
+     "points": 2,
+     "prompt": "`times(2, 3, 10)` 显示什么？",
+     "accept": [
+      "300"
+     ],
+     "explain": "`f` 和 `g` 都是在调用时才查名字：`f` 里的 `x` 在 `times` 的帧里查，调用时已经是 `10`；`g` 是外层 lambda 用 `q = 3` 调用后返回的函数。`g(10) = 30`，`f(30) = 10 * 30 = 300`。",
+     "multiline": true
+    },
+    {
+     "id": "q1b",
+     "type": "text",
+     "points": 3,
+     "prompt": "`print(delay(map(lambda f: f(-2), w)))` 显示什么？",
+     "accept": [
+      "-2\n4\n2"
+     ],
+     "explain": "`map` 是惰性的。取第一个：`print(-2)` 显示 `-2`、得到 `None`，`last = None`；取第二个：`abs(-2) = 2`，`last` 仍是假值，所以 `last = 2`；取第三个：`square(-2) = 4`，此时 `last` 为真，显示 `4` 并返回 `last` 即 `2`，外层再显示 `2`。第四个 `print` 根本没被调用。",
+     "multiline": true
+    }
+   ]
+  },
+  {
+   "title": "第 2 大题：复制（5 分）",
+   "intro": "先画环境图（不计分），再回答问题：\n\n```python\ndef copy(s):                 # 第 1 行\n    return s[:1] + s[1:]     # 第 2 行\ninner = [5, [6]]             # 第 3 行\nfirst = copy(inner)          # 第 4 行\nsecond = inner[1]            # 第 5 行\ninner[0] = 7                 # 第 6 行\ninner.append(7)              # 第 7 行\ninner[1].append(7)           # 第 8 行\ninner[1] = 8                 # 第 9 行\nprint(first)                 # 第 10 行\nprint(second)                # 第 11 行\n```",
+   "questions": [
+    {
+     "id": "q2a",
+     "type": "choice",
+     "points": 2,
+     "prompt": "第 10 行 `print(first)` 显示什么？",
+     "choices": [
+      "[5, [6]]",
+      "[5, [6], 7]",
+      "[5, [6], 7, 7]",
+      "[5, [6, 7]]",
+      "[5, [6, 7], 7]",
+      "[7, [6]]",
+      "[7, [6, 7]]",
+      "[7, [6, 7], 7]",
+      "[7, 8]",
+      "[7, 8, 7]",
+      "[[6]]",
+      "[[6, 7]]",
+      "[8]",
+      "[8, 7]"
+     ],
+     "answer": 3,
+     "explain": "`copy` 用切片拼出一个新列表（浅复制）：`first` 是新列表 `[5, <同一个 [6]>]`。第 6、7、9 行改的是 `inner` 自己，不影响 `first`；第 8 行改的是两边共用的内层列表，所以 `first` 变成 `[5, [6, 7]]`。"
+    },
+    {
+     "id": "q2b",
+     "type": "choice",
+     "points": 2,
+     "prompt": "第 11 行 `print(second)` 显示什么？",
+     "choices": [
+      "8",
+      "[6]",
+      "[[6]]",
+      "[6, 7]",
+      "[[6, 7]]",
+      "[[6], 7]",
+      "[8]",
+      "[8, 7]"
+     ],
+     "answer": 3,
+     "explain": "`second` 绑定的是内层列表本身；第 8 行给它加了 `7`，第 9 行只是让 `inner[1]` 改指 `8`，`second` 不受影响。"
+    },
+    {
+     "id": "q2c",
+     "type": "choice",
+     "points": 1,
+     "prompt": "求值 `[sum(s[:i]) for i in range(len(s))]` 的时间，相对于列表 `s` 的长度，增长阶是？（`sum` 和切片都是线性时间）",
+     "choices": [
+      "对数（logarithmic）",
+      "线性（linear）",
+      "平方（quadratic）",
+      "指数（exponential）"
+     ],
+     "answer": 2,
+     "explain": "第 i 次做长度为 i 的切片和求和，总共 0 + 1 + … + (n-1)，是 n² 级别。"
+    }
+   ]
+  },
+  {
+   "title": "第 3 大题：数学分班考（21 分）",
+   "intro": "**定义**：等式（equation）是由数和运算符组成的列表。数是整数或 `'?'`；运算符是 `'+'`、`'-'` 或 `'='`。等式以数开头、以数结尾，数和运算符交替出现，并且恰好有一个 `'='`。",
+   "questions": [
+    {
+     "id": "q3a",
+     "type": "choice",
+     "points": 1,
+     "prompt": "实现 `is_equation(s)`：返回 `s` 是不是等式。\n\n```python\ndef is_equation(s):\n    \"\"\"\n    >>> is_equation([7, '+', 2, '=', '?', '+', 6])\n    True\n    >>> is_equation([-7, '+', 2, '=', '?', '-'])          # 结尾不是数\n    False\n    >>> is_equation([-7, '+', 2, '?', '+', 6, '=', 9])    # 两个数（2 和 ?）相邻\n    False\n    >>> is_equation([-7, '+', 2, '=', '?', '=', 6])       # 不止一个 =\n    False\n    \"\"\"\n    number, equals = True, 0\n    for x in s:\n        ok = (number and (______(a))) or (______(b) ['+', '-', '='])\n        if not ok:\n            return False\n        if x == '=':\n            equals += 1\n        number = not number\n    return ______(c)\n```\n\n空 (a) 填什么？",
+     "choices": [
+      "isinstance(x, int) or x == ?",
+      "isinstance(x, int) and x == ?",
+      "isinstance(x, int) or x == '?'",
+      "isinstance(x, int) and x == '?'"
+     ],
+     "answer": 2,
+     "explain": "该出现数的位置，`x` 是整数或字符串 `'?'` 都行。"
+    },
+    {
+     "id": "q3b",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (b) 填什么？（它后面紧跟着 `['+', '-', '=']`）",
+     "accept": [
+      "not number and x in"
+     ],
+     "explain": "该出现运算符的位置（`not number`），`x` 要在运算符列表里。"
+    },
+    {
+     "id": "q3c",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (c) 填什么？",
+     "accept": [
+      "not number and equals == 1",
+      "equals == 1 and not number"
+     ],
+     "explain": "最后一个是数（下一个该是运算符，所以 `number` 为假），并且恰好一个 `=`。"
+    },
+    {
+     "id": "q3d",
+     "type": "choice",
+     "points": 1,
+     "prompt": "**定义**：整数列表 `answers` 满足一个等式，是指每个 `?` 恰好对应一个整数，按顺序把 `?` 换成这些整数后，`=` 两边的值相等。\n\n实现 `tally`，配合 `evaluate` 使用（列表的 `count` 方法返回某个值出现的次数）：\n\n```python\ndef evaluate(equation, answers):\n    \"\"\"\n    >>> evaluate([7, '-', 2, '=', '?', '+', 4], [1])        # 7 - 2 == 1 + 4\n    True\n    >>> evaluate([7, '-', '?', '=', '?', '-', 4], [2, 9])  # 7 - 2 == 9 - 4\n    True\n    \"\"\"\n    assert is_equation(equation) and len(answers) == equation.count('?')\n    eq_iter, ans_iter = iter(equation), iter(answers)\n    return tally(eq_iter, ans_iter) == tally(eq_iter, ans_iter)\n\ndef tally(eq, ans):\n    \"\"\"算出等式一边的值：遇到 = 或者等式结束就停。\"\"\"\n    number, total = True, 0\n    multiplier = 1   # 只会是 1 或 -1\n    for x in eq:\n        if ______(d):\n            if x == '?':\n                ______(e)\n            total += multiplier * x\n        else:\n            if x == '=':\n                ______(f)\n            else:\n                multiplier = ______(g)[x]   # 提示：用字典\n        number = not number\n    return total\n```\n\n空 (d) 填什么？",
+     "choices": [
+      "number",
+      "not number",
+      "isinstance(x, int)",
+      "not isinstance(x, int)"
+     ],
+     "answer": 0,
+     "explain": "`number` 记录当前位置该是数还是运算符；`x` 可能是 `'?'`，所以不能用 `isinstance(x, int)`。"
+    },
+    {
+     "id": "q3e",
+     "type": "text",
+     "points": 1,
+     "prompt": "空 (e) 填什么？",
+     "accept": [
+      "x = next(ans)"
+     ],
+     "explain": "遇到 `?` 就从答案迭代器里取下一个数。"
+    },
+    {
+     "id": "q3f",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (f) 填什么？",
+     "choices": [
+      "return total",
+      "return sum(ans)",
+      "return sum(eq)",
+      "total += sum(ans)",
+      "total += sum(eq)",
+      "total += tally(eq, ans)",
+      "total -= tally(eq, ans)"
+     ],
+     "answer": 0,
+     "explain": "遇到 `=`，这一边算完了；两次调用 `tally` 共用同一个迭代器，第二次从 `=` 后面接着算。"
+    },
+    {
+     "id": "q3g",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (g) 填什么？（提示：用字典）",
+     "accept": [
+      "{'+': 1, '-': -1}",
+      "{'-': -1, '+': 1}",
+      "{\"+\": 1, \"-\": -1}"
+     ],
+     "explain": "加号乘 1，减号乘 -1。"
+    },
+    {
+     "id": "q3h",
+     "type": "text",
+     "points": 2,
+     "prompt": "实现 `feasible(eq, allowed)`：能不能把每个 `?` 换成 `allowed` 里的某个数（同一个数可以用多次），让等式成立。可以调用 `evaluate`。\n\n```python\ndef feasible(eq, allowed=range(0, 10)):\n    \"\"\"\n    >>> feasible([7, '+', 2, '=', '?', '+', 6])     # ? 可以是 3\n    True\n    >>> feasible(['?', '+', 5, '=', '?', '-', 6])\n    False\n    >>> feasible(['?', '+', 5, '=', '?', '-', 6], range(-10, 10))   # 例如 -5 和 6\n    True\n    \"\"\"\n    if '?' not in eq:\n        return ______(h)\n    n = min([i for i in range(len(eq)) if ______(i)])   # 第一个 ? 的下标\n    return any([______(j) for x in allowed])\n```\n\n空 (h) 填什么？",
+     "accept": [
+      "evaluate(eq, [])"
+     ],
+     "explain": "没有 `?` 了，直接算等式是否成立。"
+    },
+    {
+     "id": "q3i",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (i) 填什么？",
+     "choices": [
+      "i == '?'",
+      "i != '?'",
+      "eq[i] == '?'",
+      "eq[i] != '?'"
+     ],
+     "answer": 2,
+     "explain": "`i` 是下标，要看下标处的元素。"
+    },
+    {
+     "id": "q3j",
+     "type": "text",
+     "points": 3,
+     "prompt": "空 (j) 填什么？（不能写 `for`、`in`、`map`、`range`）",
+     "accept": [
+      "feasible(eq[:n] + [x] + eq[n+1:], allowed)",
+      "feasible(eq[:n] + [x] + eq[n + 1:], allowed)"
+     ],
+     "explain": "把第一个 `?` 换成 `x`，递归判断剩下的 `?` 能不能填好；用切片拼新列表，不改原来的 `eq`。"
+    },
+    {
+     "id": "q3k",
+     "type": "choice",
+     "points": 1,
+     "prompt": "实现 `solve(equation, allowed)`：返回一个迭代器，依次给出所有满足等式的答案列表。可以调用 `evaluate` 和 `feasible`。\n\n```python\ndef print_all(t):\n    for x in t:\n        print(x)\n\ndef solve(equation, allowed=range(0, 10)):\n    \"\"\"\n    >>> print_all(solve(['?', '-', 2, '=', '?', '+', 6]))\n    [8, 0]\n    [9, 1]\n    >>> print_all(solve(['?', '=', '?', '+', '?'], range(1, 4)))\n    [2, 1, 1]\n    [3, 1, 2]\n    [3, 2, 1]\n    \"\"\"\n    def candidates(n):\n        \"\"\"产生所有 n 个数的答案列表。\"\"\"\n        if n == 0:\n            yield []\n        else:\n            for first in allowed:\n                for rest in ______(k):\n                    yield ______(l)\n    blanks = equation.count('?')\n    return ______(m)(______(n), candidates(blanks))\n```\n\n空 (k) 填什么？",
+     "choices": [
+      "allowed",
+      "equation",
+      "solve(equation[1:], allowed)",
+      "solve(equation[2:], allowed)",
+      "candidates(n-1)",
+      "candidates(n-first)"
+     ],
+     "answer": 4,
+     "explain": "第一个数选 `first`，后面 n-1 个数的所有组合。"
+    },
+    {
+     "id": "q3l",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (l) 填什么？",
+     "choices": [
+      "first + rest",
+      "[first] + rest",
+      "first + [rest]",
+      "[first, rest]",
+      "[[first], rest]",
+      "[first, [rest]]"
+     ],
+     "answer": 1,
+     "explain": "`rest` 是列表，把 `first` 放到前面。"
+    },
+    {
+     "id": "q3m",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (m) 填什么？",
+     "choices": [
+      "map",
+      "filter",
+      "any",
+      "all",
+      "zip"
+     ],
+     "answer": 1,
+     "explain": "从所有候选里挑出满足等式的；`filter` 返回的也是迭代器。"
+    },
+    {
+     "id": "q3n",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (n) 填什么？",
+     "accept": [
+      "lambda a: evaluate(equation, a)"
+     ],
+     "explain": "判断一个候选答案列表是否满足等式。"
+    }
+   ]
+  },
+  {
+   "title": "第 4 大题：修剪树（10 分）",
+   "intro": "`Tree` 类就是课上用的那个。",
+   "questions": [
+    {
+     "id": "q4a",
+     "type": "choice",
+     "points": 2,
+     "prompt": "实现 `sums(t)`：返回一个字典，每个结点是键，值是以它为根的子树的标签之和。\n\n```python\ndef sums(t):\n    \"\"\"\n    >>> t = Tree(2, [Tree(4, [Tree(5)]), Tree(3), Tree(5, [Tree(6), Tree(7)])])\n    >>> d = sums(t)\n    >>> nodes = [t, t.branches[0], t.branches[0].branches[0], t.branches[2]]\n    >>> [d[n] for n in nodes]\n    [32, 9, 5, 18]\n    \"\"\"\n    result = {}\n    def insert(t):\n        for b in t.branches:\n            ______(a)\n        result[t] = ______(b)\n    insert(t)\n    return result\n```\n\n空 (a) 填什么？",
+     "choices": [
+      "insert(b)",
+      "sums(b)",
+      "result += sums(b)",
+      "result[b] = insert(b)",
+      "result[b] += insert(b)",
+      "result[t] += insert(b)",
+      "result[t] += result[b]",
+      "result[b] = sums(t)",
+      "result[b] += sums(t)"
+     ],
+     "answer": 0,
+     "explain": "先把每个分支（以及它下面的结点）都放进字典。"
+    },
+    {
+     "id": "q4b",
+     "type": "text",
+     "points": 3,
+     "prompt": "空 (b) 填什么？",
+     "accept": [
+      "t.label + sum([result[b] for b in t.branches])",
+      "sum([result[b] for b in t.branches]) + t.label",
+      "t.label + sum(result[b] for b in t.branches)"
+     ],
+     "explain": "分支的和已经算好放在字典里了，加上自己的标签。"
+    },
+    {
+     "id": "q4c",
+     "type": "text",
+     "points": 2,
+     "prompt": "实现 `one_cut(t, n)`：返回一棵和 `t` 一样、但剪掉了一个非根结点（连同它下面的结点）的新树，剪掉哪个使剩下的标签之和最接近 `n`。不能修改 `t`。\n\n```python\ndef one_cut(t, n):\n    \"\"\"\n    >>> t = Tree(2, [Tree(4, [Tree(5)]), Tree(3), Tree(5, [Tree(6), Tree(7)])])   # 总和 32\n    >>> one_cut(t, 30)   # 剪掉 3，剩 29\n    Tree(2, [Tree(4, [Tree(5)]), Tree(5, [Tree(6), Tree(7)])])\n    >>> one_cut(t, 15)   # 剪掉 5 和它下面的 6、7，剩 14\n    Tree(2, [Tree(4, [Tree(5)]), Tree(3)])\n    \"\"\"\n    d = sums(t)\n    total = d.pop(t)   # 去掉根结点；total 是全部标签的和\n    target = min(d.keys(), key=lambda node: ______(c))\n    def cut(t):\n        ______(d)\n    ______(e)\n```\n\n空 (c) 填什么？",
+     "accept": [
+      "abs(n - (total - d[node]))",
+      "abs(total - d[node] - n)",
+      "abs((total - d[node]) - n)"
+     ],
+     "explain": "剪掉 `node` 后剩下 `total - d[node]`，和 `n` 的差的绝对值越小越好。"
+    },
+    {
+     "id": "q4d",
+     "type": "choice",
+     "points": 2,
+     "prompt": "空 (d) 填什么？",
+     "choices": [
+      "t.branches.remove(target)",
+      "t.branches = [b for b in t.branches if b is not target]",
+      "t.branches = [cut(b) for b in t.branches if b is not target]",
+      "t = Tree(t.label, [b for b in t.branches if b is not target])",
+      "t = Tree(t.label, [cut(b) for b in t.branches if b is not target])",
+      "return Tree(t.label, [b for b in t.branches if b is not target])",
+      "return Tree(t.label, [cut(b) for b in t.branches if b is not target])"
+     ],
+     "answer": 6,
+     "explain": "建新树（不改原树），跳过目标结点，其余分支递归地处理（目标可能在更深处）。"
+    },
+    {
+     "id": "q4e",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (e) 填什么？",
+     "choices": [
+      "return t",
+      "return cut(t)",
+      "return Tree(t.label, list(map(cut, t.branches)))",
+      "return [cut(t), t][1]"
+     ],
+     "answer": 1,
+     "explain": "从根开始剪。"
+    }
+   ]
+  },
+  {
+   "title": "第 5 大题：下载（4 分）",
+   "intro": "协程函数 `download` 下载给定名字的文件（实现没给出）：\n\n```python\nasync def download(filename: str):\n    ...\n\nclass Downloader():\n    def __init__(self, filenames):\n        self.filenames = filenames\n        self.current_index = 0\n\n    async def download_files(self):\n        while self.current_index < len(self.filenames):\n            filename = self.filenames[self.current_index]\n            self.current_index += 1\n            await download(filename)\n\n    async def download_all(self):\n        await asyncio.gather(self.download_files(), self.download_files())\n\nd = Downloader([\"a\", \"b\", \"c\", \"d\"])\nasyncio.run(d.download_all())\n```",
+   "questions": [
+    {
+     "id": "q5a",
+     "type": "multi",
+     "points": 3,
+     "prompt": "下面哪些说法是对的？（多选）",
+     "choices": [
+      "download 恰好被调用 4 次。",
+      "download 可能被调用超过 4 次。",
+      "download 可能被调用少于 4 次。",
+      "每个文件恰好被 download 一次。",
+      "download 可能不会下载全部文件。",
+      "同一个文件可能被 download 不止一次。",
+      "上面的代码可能因为 self.current_index 越界而出错。"
+     ],
+     "answers": [
+      0,
+      3
+     ],
+     "explain": "两个协程交替运行，但只会在 `await` 处让出控制权。取下标、加一这几行之间不会被打断，所以每个文件恰好被取走一次，也不会越界。"
+    },
+    {
+     "id": "q5b",
+     "type": "text",
+     "points": 1,
+     "prompt": "假设每次 `download` 需要 1 秒，而且这 1 秒都在等待（等待期间让出控制权，其他协程可以运行）。上面的代码运行要多少秒？只写数字。",
+     "accept": [
+      "2",
+      "2 秒",
+      "2 seconds"
+     ],
+     "explain": "两个协程同时在等，每个下载两个文件：1 秒下 a 和 b，再 1 秒下 c 和 d，共 2 秒。"
+    }
+   ]
+  },
+  {
+   "title": "第 6 大题：Scheme 对比 Python（15 分）",
+   "intro": "同一个问题分别用 Python（链表）和 Scheme 实现：数一数列表里相隔 k 个位置的两个元素相等的有几对。",
+   "questions": [
+    {
+     "id": "q6a",
+     "type": "choice",
+     "points": 1,
+     "prompt": "Python 版 `match(s, k)`（`s` 是 `Link` 实例或 `Link.empty`，`k` 是正整数）：\n\n```python\ndef match(s, k):\n    \"\"\"\n    >>> nums = Link(3, Link(1, Link(4, Link(1, Link(5, Link(2, Link(5, Link(3, Link(5)))))))))\n    >>> match(nums, 2)   # 1 和 1；5 和 5；5 和 5\n    3\n    >>> {k: match(nums, k) for k in range(1, 8)}\n    {1: 0, 2: 3, 3: 0, 4: 1, 5: 0, 6: 0, 7: 1}\n    \"\"\"\n    t, count = s, 0\n    ______(a):\n        if t is not Link.empty:\n            ______(b)\n    while t is not Link.empty:\n        if ______(c):\n            count += 1\n        ______(d)\n    return count\n```\n\n空 (a) 填什么？",
+     "choices": [
+      "def f(t)",
+      "if s is not Link.empty",
+      "while s is not Link.empty",
+      "for x in range(k)"
+     ],
+     "answer": 3,
+     "explain": "先让 `t` 往后走 k 步（链表不够长就停在末尾）。"
+    },
+    {
+     "id": "q6b",
+     "type": "text",
+     "points": 1,
+     "prompt": "空 (b) 填什么？",
+     "accept": [
+      "t = t.rest"
+     ],
+     "explain": "往后走一步。"
+    },
+    {
+     "id": "q6c",
+     "type": "text",
+     "points": 1,
+     "prompt": "空 (c) 填什么？",
+     "accept": [
+      "s.first == t.first",
+      "t.first == s.first"
+     ],
+     "explain": "`s` 和 `t` 正好相隔 k 个位置，比较它们指向的元素。"
+    },
+    {
+     "id": "q6d",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (d) 填什么？",
+     "accept": [
+      "s, t = s.rest, t.rest",
+      "t, s = t.rest, s.rest"
+     ],
+     "explain": "两个指针一起往后走。"
+    },
+    {
+     "id": "q6e",
+     "type": "choice",
+     "points": 1,
+     "prompt": "Scheme 过程 `zip-map`：接收两个参数的过程 `f` 和列表 `s`、`t`，返回对同一位置的两个元素调用 `f` 的结果组成的列表，长度取两者较短的。\n\n```scheme\n;;; scm> (zip-map + '(10 30 20 40) '(5 6 7))\n;;; (15 36 27)\n;;; scm> (zip-map list '(10 30 20 40) '(9 8 7 6 5 4))\n;;; ((10 9) (30 8) (20 7) (40 6))\n(define (zip-map f s t)\n  (if (or (null? s) (null? t)) nil\n      (______(e) ______(f) ______(g))))\n```\n\n空 (e) 填什么？",
+     "choices": [
+      "cons",
+      "list",
+      "append",
+      "zip-map"
+     ],
+     "answer": 0,
+     "explain": "把这一对的结果接到后面的结果列表前面。"
+    },
+    {
+     "id": "q6f",
+     "type": "choice",
+     "points": 2,
+     "prompt": "空 (f) 填什么？",
+     "choices": [
+      "(car s)",
+      "(car t)",
+      "(cons (car s) (car t))",
+      "(list (car s) (car t))",
+      "(f (cons (car s) (car t)))",
+      "(f (list (car s) (car t)))",
+      "(f (car s) (car t))",
+      "(apply f (car s) (car t))"
+     ],
+     "answer": 6,
+     "explain": "`f` 接收两个参数，分别是两个列表的第一个元素。"
+    },
+    {
+     "id": "q6g",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (g) 填什么？",
+     "accept": [
+      "(zip-map f (cdr s) (cdr t))"
+     ],
+     "explain": "递归处理两个列表剩下的部分。"
+    },
+    {
+     "id": "q6h",
+     "type": "choice",
+     "points": 1,
+     "prompt": "Scheme 版 `match`：可以调用 `advance` 和 `zip-map`。\n\n```scheme\n;;; 返回列表 s 从下标 k 开始的部分\n(define (advance s k) (if (or (zero? k) (null? s)) s (advance (cdr s) (- k 1))))\n\n;;; scm> (define nums '(3 1 4 1 5 2 5 3 5))\n;;; scm> (match nums 2)\n;;; 3\n(define (match s k)\n  (______(h) (______(i) (lambda (a b) ______(j)) s ______(k))))\n```\n\n空 (h) 填什么？",
+     "choices": [
+      "+",
+      "sum",
+      "len",
+      "cons '+",
+      "apply +"
+     ],
+     "answer": 4,
+     "explain": "把一列 0 和 1 加起来：`(apply + 列表)`。Scheme 里没有 `sum`。"
+    },
+    {
+     "id": "q6i",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (i) 填什么？",
+     "choices": [
+      "advance",
+      "zip-map",
+      "map",
+      "filter",
+      "apply"
+     ],
+     "answer": 1,
+     "explain": "把 `s` 和往后错开 k 个的 `s` 逐位配对。"
+    },
+    {
+     "id": "q6j",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (j) 填什么？（提示：写一个求值为数的表达式）",
+     "accept": [
+      "(if (= a b) 1 0)",
+      "(if (eq? a b) 1 0)",
+      "(if (equal? a b) 1 0)"
+     ],
+     "explain": "相等记 1，不等记 0，最后加起来。"
+    },
+    {
+     "id": "q6k",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (k) 填什么？",
+     "choices": [
+      "s",
+      "k",
+      "(cdr s)",
+      "(advance s k)"
+     ],
+     "answer": 3,
+     "explain": "第二个列表是 `s` 从下标 k 开始的部分；`zip-map` 按较短的长度停，正好。"
+    }
+   ]
+  },
+  {
+   "title": "第 7 大题：学生分组（9 分）",
+   "intro": "学生有名字 `name` 和所在的讨论组 `group`（一个 `DiscGroup` 实例）。创建学生时按他给的关键词 `keyword` 分组：放进已有的、关键词相同且不满 6 人的组；没有这样的组就新建一个。每个讨论组有从 0 开始依次编号的 `id`、学生列表 `students` 和关键词 `keyword`。\n\n```python\nclass Student():\n    \"\"\"\n    >>> chris = Student(\"Chris\", \"kickstart\")\n    >>> pranav = Student(\"Pranav\", \"tortilla\")\n    >>> sebastian = Student(\"Sebastian\", \"tortilla\")\n    >>> print(chris)\n    Student Chris is in Disc 0: kickstart (['Chris'])\n    >>> print(sebastian)\n    Student Sebastian is in Disc 1: tortilla (['Pranav', 'Sebastian'])\n    \"\"\"\n    def __init__(self, name, keyword):\n        self.name = name\n        self.group = ______(a)\n        for group in ______(b):\n            if group.keyword == keyword and len(group.students) < 6:\n                self.group = ______(c)\n        if not self.group:\n            self.group = ______(d)\n        ______(e)\n\n    def __str__(self):\n        return f\"Student {self.name} is in {self.group}\"\n\nclass DiscGroup():\n    groups = []   # 全部 DiscGroup 实例\n    def __init__(self, keyword):\n        self.students = []   # 这个讨论组里的学生\n        self.keyword = keyword\n        self.id = ______(f)\n        ______(g)\n\n    def __str__(self):\n        return f\"Disc {self.id}: {self.keyword} ({[s.name for s in self.students]})\"\n```",
+   "questions": [
+    {
+     "id": "q7a",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (a) 填什么？",
+     "choices": [
+      "None",
+      "group",
+      "DiscGroup(keyword)",
+      "DiscGroup(self.keyword)",
+      "DiscGroup(self, keyword)"
+     ],
+     "answer": 0,
+     "explain": "先设为 `None`，后面用 `if not self.group` 判断有没有找到组。"
+    },
+    {
+     "id": "q7b",
+     "type": "text",
+     "points": 1,
+     "prompt": "空 (b) 填什么？",
+     "accept": [
+      "DiscGroup.groups"
+     ],
+     "explain": "遍历所有已有的讨论组（类属性）。"
+    },
+    {
+     "id": "q7c",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (c) 填什么？",
+     "choices": [
+      "None",
+      "group",
+      "DiscGroup(keyword)",
+      "DiscGroup(self.keyword)",
+      "DiscGroup(self, keyword)"
+     ],
+     "answer": 1,
+     "explain": "找到合适的组就放进去。"
+    },
+    {
+     "id": "q7d",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (d) 填什么？",
+     "choices": [
+      "None",
+      "group",
+      "DiscGroup(keyword)",
+      "DiscGroup(self.keyword)",
+      "DiscGroup(self, keyword)"
+     ],
+     "answer": 2,
+     "explain": "没找到就用学生给的关键词新建一个组（`self` 没有 `keyword` 属性）。"
+    },
+    {
+     "id": "q7e",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (e) 填什么？",
+     "accept": [
+      "self.group.students.append(self)"
+     ],
+     "explain": "把自己加到组的学生列表里。"
+    },
+    {
+     "id": "q7f",
+     "type": "text",
+     "points": 1,
+     "prompt": "空 (f) 填什么？",
+     "accept": [
+      "len(DiscGroup.groups)",
+      "len(self.groups)",
+      "len(type(self).groups)"
+     ],
+     "explain": "编号从 0 开始依次加一：等于已有组的个数。"
+    },
+    {
+     "id": "q7g",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (g) 填什么？",
+     "accept": [
+      "DiscGroup.groups.append(self)",
+      "self.groups.append(self)"
+     ],
+     "explain": "把新组记进类属性 `groups`。注意要先取编号再加入。"
+    }
+   ]
+  },
+  {
+   "title": "第 8 大题：用 SQL 查学生（6 分）",
+   "intro": "表 `students` 每个学生一行，列：`name`（字符串）、`discussion_id`（整数，所在讨论组的编号）、`keyword`（字符串，学生选的关键词）。\n\n表 `discussions` 每个讨论组一行，列：`id`（整数，唯一）、`ta`（字符串，带组的助教）、`room`（字符串，教室）。",
+   "questions": [
+    {
+     "id": "q8a",
+     "type": "choice",
+     "points": 1,
+     "prompt": "查出用得最多的关键词，以及用这个关键词的学生总数（假设没有并列）：\n\n```sql\nSELECT keyword, ______(a) AS total FROM students ______(b);\n```\n\n空 (a) 填什么？",
+     "choices": [
+      "1",
+      "name",
+      "COUNT(*)",
+      "MAX(keyword)",
+      "MAX(name)",
+      "MAX(COUNT(*))"
+     ],
+     "answer": 2,
+     "explain": "按关键词分组后，每组的行数就是学生数。"
+    },
+    {
+     "id": "q8b",
+     "type": "choice",
+     "points": 2,
+     "prompt": "空 (b) 填什么？",
+     "choices": [
+      "GROUP BY keyword;",
+      "GROUP BY keyword HAVING MAX(COUNT(*));",
+      "GROUP BY keyword HAVING COUNT(*) = MAX(COUNT(*));",
+      "GROUP BY keyword LIMIT MAX(COUNT(*));",
+      "GROUP BY keyword ORDER BY keyword DESC LIMIT 1;",
+      "GROUP BY keyword ORDER BY COUNT(*) DESC LIMIT 1;",
+      "AS s1 JOIN students AS s2 ON s1.keyword = s2.keyword LIMIT 1;",
+      "ORDER BY COUNT(*) DESC;",
+      "ORDER BY keyword DESC;",
+      "ORDER BY keyword DESC LIMIT MAX(COUNT(*));",
+      "ORDER BY keyword DESC LIMIT 1;"
+     ],
+     "answer": 5,
+     "explain": "按人数从多到少排，取第一行。聚合函数不能嵌套（`MAX(COUNT(*))` 不行）。"
+    },
+    {
+     "id": "q8c",
+     "type": "text",
+     "points": 3,
+     "prompt": "新建表 `big`：每个学生数超过 20 的讨论组一行，列是助教名和讨论组编号。\n\n```sql\nCREATE TABLE big AS\n  SELECT ta, id FROM students JOIN discussions ______(c);\n```\n\n空 (c) 填什么？",
+     "accept": [
+      "ON discussion_id = id GROUP BY id HAVING COUNT(*) > 20",
+      "ON id = discussion_id GROUP BY id HAVING COUNT(*) > 20",
+      "ON discussion_id = id GROUP BY discussion_id HAVING COUNT(*) > 20",
+      "ON students.discussion_id = discussions.id GROUP BY id HAVING COUNT(*) > 20"
+     ],
+     "explain": "把学生和他的讨论组连起来，按讨论组分组，用 `HAVING` 筛出人数超过 20 的组（筛分组后的结果要用 `HAVING`，不是 `WHERE`）。"
+    }
+   ]
+  }
+ ]
+}

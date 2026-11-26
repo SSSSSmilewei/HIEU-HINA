@@ -87,6 +87,18 @@ describe("测验格式", () => {
     }
   });
 
+  test("每场测验用自己的标准答案作答，不需要判题服务的题全部满分（防止答案录错）", () => {
+    expect([...EXAMS.keys()]).toEqual(["cs61a-fa25-mt1", "cs61a-fa25-mt2", "cs61a-fa25-final"]);
+    for (const e of EXAMS.values())
+      for (const s of e.sections)
+        for (const q of s.questions) {
+          const a = q.type === "choice" ? q.answer : q.type === "multi" ? q.answers : q.type === "text" ? q.accept[0]! : null;
+          if (a !== null) expect(gradeLocal(q, a), `${e.id}/${q.id}`).toBe(q.points);
+          if (q.type === "text") for (const x of q.accept) expect(gradeLocal(q, x), `${e.id}/${q.id}`).toBe(q.points);
+        }
+    expect(EXAMS.get("cs61a-fa25-final")!.certificate).toBe(true);
+  });
+
   test("填空比较：忽略首尾空白、多余空格和空行", () => {
     expect(normalizeText(" 6\n8\n\n 8 \nNone ")).toBe("6\n8\n8\nNone");
     const q = Exam.parse(EXAMS.get(ID)).sections[1]!.questions[1]!;

@@ -1188,3 +1188,30 @@ html.ide-dragging * {
   margin-top: 24px;
   text-align: right;
 }
+.ide-exam-cert {
+  margin: 16px 0;
+  padding: 20px 24px;
+  border: 2px solid var(--ide-ok);
+  border-radius: 3px;
+  text-align: center;
+}
+.ide-exam-cert-title {
+  margin-bottom: 8px;
+  color: var(--ide-ok);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+@media print {
+  .ide-top,
+  .ide-exam-section,
+  .ide-exam-score,
+  .ide-exam-cert button {
+    display: none !important;
+  }
+  .ide {
+    position: static;
+    background: #fff;
+    color: #000;
+  }
+}
