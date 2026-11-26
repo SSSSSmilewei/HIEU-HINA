@@ -962,3 +962,88 @@ html.ide-dragging * {
   color: var(--ide-muted);
   font-size: 12px;
 }
+
+/* Hog 试玩（故事 3.3） */
+.ide-hog {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 16px;
+}
+.ide-hog-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.ide-hog-bar label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ide-hog-scores {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.ide-hog-player {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px 14px;
+  border: 1px solid var(--ide-line-strong);
+  border-radius: 3px;
+}
+.ide-hog-player strong {
+  color: var(--ide-strong);
+  font-family: var(--font-mono);
+  font-size: 28px;
+}
+.ide-hog-player.is-turn {
+  border-color: var(--ide-accent);
+}
+.ide-hog-player.is-win {
+  border-color: var(--ide-ok);
+}
+.ide-hog-roll {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ide-hog-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ide-hog-buttons .ide-btn {
+  min-width: 36px;
+  justify-content: center;
+}
+.ide-hog-status {
+  margin: 0;
+  color: var(--ide-ok);
+  font-weight: 600;
+}
+.ide-hog-log {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.ide-hog-log li {
+  display: flex;
+  gap: 10px;
+  padding: 3px 0;
+  border-bottom: 1px solid var(--ide-line);
+}
+.ide-hog-who {
+  width: 56px;
+  color: var(--ide-muted);
+}
+.ide-hog-dice {
+  min-width: 120px;
+  color: var(--ide-strong);
+  font-size: 16px;
+  line-height: 1;
+}

@@ -8,6 +8,7 @@ import { LANGUAGE_LABEL, type Language } from "../../shared/problem";
 import { type Monaco, loadMonaco } from "./monaco";
 import { AiPanel } from "./AiPanel";
 import { EnvDiagramPanel } from "./EnvDiagram";
+import { HogPlay } from "./HogPlay";
 import { WwpdPanel } from "./Wwpd";
 import { fileForLanguage, monacoLanguage, type PublicProblem, type SubmissionBrief, type WorkspaceSource } from "./types";
 import "./ide.css";
@@ -19,7 +20,7 @@ import "./ide.css";
 
 type Mode = "run" | "submit";
 type LeftTab = "statement" | "submissions" | "ai";
-type BottomTab = "result" | "output" | "input";
+type BottomTab = "result" | "output" | "input" | "play";
 type Theme = "dark" | "light";
 
 interface Layout {
@@ -111,6 +112,8 @@ export function Workspace({ source, problemId }: { source: WorkspaceSource; prob
   /** 预测输出题填的答案：题目编号 → 按顺序的每个空 */
   const [answers, setAnswers] = useState<Record<string, string[]>>(() => readJson(`${DRAFT_PREFIX}${scope}:wwpd`, {}));
   const isWwpd = problem.kind === "wwpd";
+  /** 能在浏览器里试玩的项目（故事 3.3）：目前是 Hog */
+  const canPlay = source.kind === "assignment" && source.course === "cs61a" && source.assignment.id === "hog";
   /** 环境图题：和预测输出题一样不写代码，作答存在 answers 里 */
   const isEnv = problem.kind === "envdiagram";
   useEffect(() => {
@@ -411,11 +414,18 @@ export function Workspace({ source, problemId }: { source: WorkspaceSource; prob
                   自定义输入
                 </Tab>
               )}
+              {canPlay && (
+                <Tab on={bottomTab === "play"} onClick={() => setBottomTab("play")}>
+                  试玩
+                </Tab>
+              )}
               <span className="ide-tabs-fill" />
               {result && <span className="ide-muted">{result.mode === "run" ? "运行" : "提交"} · {relativeTime(result.at)}</span>}
             </div>
             <div className="ide-scroll ide-console-body">
-              {bottomTab === "input" ? (
+              {bottomTab === "play" && canPlay ? (
+                <HogPlay files={Object.fromEntries(Object.keys(initialFiles).filter((p) => /^[^/]+\.py$/.test(p)).map((p) => [p, files[p] ?? initialFiles[p] ?? ""]))} />
+              ) : bottomTab === "input" ? (
                 <div className="ide-stdin">
                   <label className="ide-check">
                     <input type="checkbox" checked={useStdin} onChange={(e) => setUseStdin(e.target.checked)} />
