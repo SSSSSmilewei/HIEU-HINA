@@ -473,6 +473,19 @@ export const MIGRATIONS: string[][] = [
     )`,
     `CREATE INDEX IF NOT EXISTS exam_attempts_by_user ON exam_attempts(user_id, exam, started_at)`,
   ],
+  // v20：管理员给某一讲添加的视频源（故事 3.6），和课程包里的视频源合在一起显示
+  [
+    `CREATE TABLE IF NOT EXISTS video_sources (
+      id TEXT PRIMARY KEY,
+      course TEXT NOT NULL,
+      item TEXT NOT NULL,
+      label TEXT NOT NULL,
+      url TEXT NOT NULL,
+      added_by TEXT NOT NULL,
+      created_at INTEGER NOT NULL
+    )`,
+    `CREATE INDEX IF NOT EXISTS video_sources_by_item ON video_sources(course, item)`,
+  ],
 ];
 
 // 每个数据库连接只迁移一次（Worker 里通常只有一个；测试里每个用例一个内存库）
