@@ -36,6 +36,8 @@ const ExamPage = lazy(() => import("./pages/ExamPage").then((m) => ({ default: m
 const NoticesPage = lazy(() => import("./pages/Notices").then((m) => ({ default: m.NoticesPage })));
 const ProfilePage = lazy(() => import("./pages/Profile").then((m) => ({ default: m.ProfilePage })));
 const ReportPage = lazy(() => import("./pages/Report").then((m) => ({ default: m.ReportPage })));
+const ReposPage = lazy(() => import("./pages/Repos").then((m) => ({ default: m.ReposPage })));
+const RepoPage = lazy(() => import("./pages/Repos").then((m) => ({ default: m.RepoPage })));
 
 function Boot() {
   return (
@@ -145,6 +147,17 @@ export function App() {
       <MeContext.Provider value={ctx}>
         <PageContent key={path} fallback={<Boot />}>
           <ExamPage course={exam.slug} id={exam.id} />
+        </PageContent>
+      </MeContext.Provider>
+    );
+  }
+  // 仓库页（要登录）：和做题界面一样是全屏的 IDE 风格
+  const repoPage = matchPath("/repos/:name", path);
+  if (me.role && (path === "/repos" || repoPage)) {
+    return (
+      <MeContext.Provider value={ctx}>
+        <PageContent key={path} fallback={<Boot />}>
+          {repoPage ? <RepoPage name={repoPage.name} /> : <ReposPage />}
         </PageContent>
       </MeContext.Provider>
     );

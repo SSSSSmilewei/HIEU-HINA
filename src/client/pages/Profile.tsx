@@ -79,6 +79,14 @@ export function ProfilePage({ me, onLogout }: { me: Me; onLogout: () => void }) 
         </a>
       )}
 
+      <Link to="/repos" className="card row" style={{ gap: 12, padding: "14px 18px", textDecoration: "none", color: "inherit" }}>
+        <Icon name="code" size={18} />
+        <span className="stack grow" style={{ gap: 2 }}>
+          <span style={{ fontWeight: 500 }}>我的仓库</span>
+          <span className="small sub">作业和刷题的代码都保存在自己的 Git 仓库里，可以查看提交历史和每次的改动，也可以克隆到本地或镜像到 GitHub。</span>
+        </span>
+      </Link>
+
       <section className="card stack" aria-labelledby="hm-h" style={{ gap: 16, padding: 22, borderRadius: 26 }}>
         <div className="row wrap" style={{ justifyContent: "space-between" }}>
           <span className="stack" style={{ gap: 2 }}>

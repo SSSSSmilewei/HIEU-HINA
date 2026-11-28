@@ -30,7 +30,7 @@ export class ForgejoError extends Error {
   }
 }
 
-export async function call<T>(env: Env, method: string, path: string, body?: unknown, okStatus: number[] = []): Promise<{ status: number; data: T | null }> {
+export async function call<T>(env: Env, method: string, path: string, body?: unknown, okStatus: number[] = []): Promise<{ status: number; data: T | null; headers: Headers }> {
   const res = await fetch(`${env.FORGEJO_URL!.replace(/\/$/, "")}/api/v1${path}`, {
     method,
     headers: { authorization: `token ${env.FORGEJO_TOKEN}`, "content-type": "application/json", accept: "application/json" },
@@ -39,10 +39,23 @@ export async function call<T>(env: Env, method: string, path: string, body?: unk
   });
   if (!res.ok && !okStatus.includes(res.status)) throw new ForgejoError(res.status, `Forgejo ${method} ${path} → ${res.status}：${(await res.text()).slice(0, 200)}`);
   const text = await res.text();
-  return { status: res.status, data: text ? (JSON.parse(text) as T) : null };
+  return { status: res.status, data: text ? (JSON.parse(text) as T) : null, headers: res.headers };
 }
 
-interface Who {
+/** 和 call 一样，但返回纯文本（改动对比 .diff）；内容超过 maxBytes 只取前面一段 */
+export async function callText(env: Env, path: string, maxBytes: number): Promise<{ status: number; text: string; truncated: boolean }> {
+  const res = await fetch(`${env.FORGEJO_URL!.replace(/\/$/, "")}/api/v1${path}`, {
+    headers: { authorization: `token ${env.FORGEJO_TOKEN}` },
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  });
+  if (res.status === 404) return { status: 404, text: "", truncated: false };
+  if (!res.ok) throw new ForgejoError(res.status, `Forgejo GET ${path} → ${res.status}`);
+  const buf = new Uint8Array(await res.arrayBuffer());
+  const truncated = buf.length > maxBytes;
+  return { status: res.status, text: new TextDecoder().decode(truncated ? buf.slice(0, maxBytes) : buf), truncated };
+}
+
+export interface Who {
   id: string;
   name: string;
   studentNo: string;
@@ -63,7 +76,7 @@ function randomPassword(): string {
   return `Hn-${[...b].map((x) => x.toString(16).padStart(2, "0")).join("")}`;
 }
 
-/** 建学员的 Forgejo 账号（已经有了就跳过）。学员不用知道这个密码：网页里看仓库走平台，本地用平台签发的令牌。 */
+/** 建学员的 Forgejo 账号（已经有了就跳过）。这个随机密码学员不知道：网页里看仓库走平台；要在本地 clone、push，学员在仓库页自己设一个 Git 密码。 */
 export async function ensureUser(env: Env, u: Who): Promise<string> {
   const name = forgejoName(u);
   const row = await env.DB.prepare("SELECT username FROM forgejo_users WHERE user_id = ?").bind(u.id).first<{ username: string }>();

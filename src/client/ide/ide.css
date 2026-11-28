@@ -1215,3 +1215,374 @@ html.ide-dragging * {
     color: #000;
   }
 }
+
+/* 仓库页（故事 2.2）：/repos 和 /repos/:name，沿用做题界面的配色和控件 */
+.repo-page {
+  background: var(--ide-bg);
+}
+.repo-wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 20px 20px 60px;
+}
+.repo-section {
+  margin-bottom: 28px;
+}
+.repo-section > p {
+  margin: 0 0 14px;
+  line-height: 1.7;
+}
+.repo-h3 {
+  margin: 18px 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ide-strong);
+}
+.repo-empty {
+  padding: 14px 16px;
+  border: 1px dashed var(--ide-line-strong);
+  border-radius: 3px;
+  color: var(--ide-muted);
+}
+.repo-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.repo-table th {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--ide-line-strong);
+  color: var(--ide-muted);
+  font-weight: 500;
+  font-size: 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+.repo-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--ide-line);
+}
+.repo-table .num {
+  text-align: right;
+  font-family: var(--font-mono);
+}
+.repo-row {
+  cursor: pointer;
+}
+.repo-row:hover {
+  background: var(--ide-hover);
+}
+.repo-name,
+.repo-crumb {
+  font-family: var(--font-mono);
+  color: var(--ide-accent) !important;
+  text-decoration: none;
+}
+.repo-name:hover,
+.repo-crumb:hover {
+  text-decoration: underline;
+}
+.ide-chip.repo-public {
+  color: var(--ide-warn);
+  border-color: color-mix(in srgb, var(--ide-warn) 50%, transparent);
+}
+.repo-field {
+  margin-bottom: 10px;
+}
+.repo-copy {
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+}
+.repo-copy-text {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 10px;
+  border: 1px solid var(--ide-line-strong);
+  border-radius: 3px;
+  background: var(--ide-code-bg);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--ide-strong);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.repo-form {
+  margin: 14px 0 4px;
+}
+.repo-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.repo-input {
+  flex: 1 1 180px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--ide-line-strong);
+  border-radius: 3px;
+  background: var(--ide-input);
+  font-family: var(--font-mono) !important;
+}
+.repo-input:focus {
+  outline: 1px solid var(--ide-accent);
+  outline-offset: -1px;
+}
+.repo-ok {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-left: 2px solid var(--ide-ok);
+  background: var(--ide-code-bg);
+  color: var(--ide-ok);
+}
+.repo-steps {
+  margin: 0 0 8px;
+  padding-left: 20px;
+  list-style: decimal;
+  line-height: 1.8;
+}
+.repo-wrap :not(.repo-copy) > code,
+.repo-clone :not(.repo-copy) > code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 0 4px;
+  background: var(--ide-code-bg);
+  border-radius: 2px;
+}
+.repo-wrap .ide-pre {
+  max-height: none;
+  white-space: pre;
+  overflow-x: auto;
+  margin-bottom: 10px;
+}
+
+/* 克隆面板：挂在顶栏右下角 */
+.repo-clone {
+  position: absolute;
+  top: 44px;
+  right: 10px;
+  z-index: 5;
+  width: min(520px, calc(100vw - 20px));
+  padding: 14px 40px 14px 14px;
+  border: 1px solid var(--ide-line-strong);
+  border-radius: 3px;
+  background: var(--ide-pane);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
+}
+.repo-clone-x {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
+.repo-tree {
+  padding: 4px 0 12px;
+}
+.repo-dir {
+  color: var(--ide-text);
+}
+.repo-caret {
+  display: inline-block;
+  width: 14px;
+  flex: none;
+  color: var(--ide-muted);
+}
+.repo-path {
+  font-family: var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.repo-subbar {
+  display: flex;
+  gap: 2px;
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--ide-line);
+  flex: none;
+}
+.repo-subbar .ide-link {
+  padding: 2px 8px;
+}
+.repo-subbar .repo-on {
+  color: var(--ide-strong) !important;
+  text-decoration: underline;
+}
+.repo-md {
+  max-width: 860px;
+  padding: 16px 24px 40px;
+}
+.repo-md ul {
+  padding-left: 22px;
+  list-style: disc;
+}
+.repo-md ol {
+  padding-left: 22px;
+  list-style: decimal;
+}
+.repo-plain {
+  flex: 1;
+  margin: 0;
+  max-height: none;
+  border: 0;
+}
+
+/* 提交历史 */
+.repo-count {
+  padding: 8px 14px;
+  font-size: 12px;
+  border-bottom: 1px solid var(--ide-line);
+}
+.repo-commits {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.repo-commit {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+  padding: 8px 14px;
+  border: 0;
+  border-bottom: 1px solid var(--ide-line);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.repo-commit:hover {
+  background: var(--ide-hover);
+}
+.repo-commit-title {
+  color: var(--ide-strong);
+}
+.repo-commit-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  font-size: 12px;
+  color: var(--ide-muted);
+}
+.repo-add {
+  font-family: var(--font-mono);
+  color: var(--ide-ok);
+}
+.repo-del {
+  font-family: var(--font-mono);
+  color: var(--ide-bad);
+}
+.repo-sha {
+  font-family: var(--font-mono);
+  color: var(--ide-accent);
+}
+
+/* 一次提交的改动对比 */
+.repo-commit-detail {
+  padding: 12px 14px 40px;
+}
+.repo-commit-head {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ide-strong);
+}
+.repo-commit-body {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: pre-wrap;
+  color: var(--ide-text);
+}
+.repo-diff {
+  margin-bottom: 14px;
+  border: 1px solid var(--ide-line-strong);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.repo-diff-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--ide-tabbar);
+  border-bottom: 1px solid var(--ide-line);
+}
+.repo-diff-path {
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.repo-diff-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 20px;
+}
+.repo-diff-table td {
+  padding: 0;
+  vertical-align: top;
+}
+.repo-ln {
+  width: 1%;
+  min-width: 40px;
+  padding: 0 8px !important;
+  text-align: right;
+  color: var(--ide-muted);
+  user-select: none;
+  white-space: nowrap;
+  border-right: 1px solid var(--ide-line);
+}
+.repo-code {
+  padding: 0 10px !important;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--ide-text);
+}
+.repo-sign {
+  display: inline-block;
+  width: 14px;
+  user-select: none;
+  color: var(--ide-muted);
+}
+.repo-l-add {
+  background: color-mix(in srgb, var(--ide-ok) 14%, transparent);
+}
+.repo-l-add .repo-sign {
+  color: var(--ide-ok);
+}
+.repo-l-del {
+  background: color-mix(in srgb, var(--ide-bad) 14%, transparent);
+}
+.repo-l-del .repo-sign {
+  color: var(--ide-bad);
+}
+.repo-hunk td {
+  padding: 2px 10px !important;
+  background: color-mix(in srgb, var(--ide-accent) 10%, transparent);
+  color: var(--ide-muted);
+}
+.repo-note td {
+  padding: 0 10px !important;
+  color: var(--ide-muted);
+  font-style: italic;
+}
+
+/* 手机：文件树在上，内容在下 */
+@media (max-width: 720px) {
+  .ide .ide-main:has(.repo-tree) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 32%) minmax(0, 1fr);
+  }
+  .ide .ide-main:has(.repo-tree) > .ide-split {
+    display: none;
+  }
+  .repo-table th:nth-child(2),
+  .repo-table td:nth-child(2),
+  .repo-table th:nth-child(5),
+  .repo-table td:nth-child(5) {
+    display: none;
+  }
+  .ide-top .ide-btn {
+    padding: 0 8px;
+  }
+}
