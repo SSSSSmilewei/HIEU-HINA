@@ -66,3 +66,42 @@ export interface JudgeResult {
   stdout?: string;
   stderr?: string;
 }
+
+/**
+ * 「运行」任意代码（VSCode 插件，2026-11-28）：不对应任何题目，把学员的文件和输入放进沙箱跑一次，
+ * 本机不用装 Python、C、C++、Java。限时 5 秒、内存 256 MB，不能读交互输入以外的东西，没有网络。
+ */
+export const EXEC_LANGUAGES = ["python", "c", "cpp", "java"] as const;
+export type ExecLanguage = (typeof EXEC_LANGUAGES)[number];
+export const EXEC_TIME_MS = 5_000;
+export const EXEC_MEMORY_MB = 256;
+
+/** 文件路径：相对路径，用 / 分隔，不能有 ..、空的一级或开头的 / */
+const RelPath = z
+  .string()
+  .min(1)
+  .max(200)
+  .refine((p) => !p.startsWith("/") && p.split("/").every((s) => s !== "" && s !== "." && s !== ".."), "文件路径不对");
+
+export const ExecRequest = z
+  .object({
+    language: z.enum(EXEC_LANGUAGES),
+    /** 要运行的文件（files 里的一个） */
+    main: RelPath,
+    files: z.record(RelPath, z.string()).refine((f) => Object.keys(f).length >= 1 && Object.keys(f).length <= MAX_SUBMIT_FILES, "文件太多"),
+    stdin: z.string().max(64 * 1024).default(""),
+  })
+  .refine((r) => r.main in r.files, { message: "要运行的文件不在提交的文件里", path: ["main"] });
+export type ExecRequest = z.infer<typeof ExecRequest>;
+
+export interface ExecResult {
+  /** ok 正常结束；exit 非零退出；tle 超时；mle 超内存；ole 输出太多；ce 编译错误；error 沙箱出错 */
+  status: "ok" | "exit" | "signal" | "tle" | "mle" | "ole" | "ce" | "error";
+  exitCode: number;
+  timeMs: number;
+  memoryKb: number;
+  stdout: string;
+  stderr: string;
+  /** 编译错误时的编译输出 */
+  compileOutput?: string;
+}

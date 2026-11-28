@@ -7,11 +7,13 @@
  *   GET  /v1/health          服务和沙箱是否正常
  *   POST /v1/run             只跑公开用例，或者跑自带的输入
  *   POST /v1/submit          跑全部用例
+ *   POST /v1/exec            运行任意代码（不对应题目，不判对错；VSCode 插件的「运行」）
  * 请求体是 JudgeRequest（src/shared/judge.ts），返回 JudgeResult。
  * 日志只记题目、语言、结果，不记学员代码。
  */
 import { join } from "node:path";
-import { JudgeRequest, MAX_SUBMIT_BYTES } from "../../src/shared/judge";
+import { ExecRequest, JudgeRequest, MAX_SUBMIT_BYTES } from "../../src/shared/judge";
+import { exec } from "./exec";
 import { judge, type Mode } from "./judge";
 import { loadProblems } from "./problems";
 import { GoJudge } from "./sandbox";
@@ -74,6 +76,23 @@ async function handleJudge(req: Request, mode: Mode): Promise<Response> {
   return json(result);
 }
 
+async function handleExec(req: Request): Promise<Response> {
+  const text = await req.text();
+  if (text.length > MAX_SUBMIT_BYTES) return json({ error: "提交的代码太大" }, 413);
+  let raw: unknown;
+  try {
+    raw = JSON.parse(text);
+  } catch {
+    return json({ error: "请求不是合法的 JSON" }, 400);
+  }
+  const parsed = ExecRequest.safeParse(raw);
+  if (!parsed.success) return json({ error: parsed.error.issues[0]?.message ?? "请求格式不对" }, 400);
+  const started = Date.now();
+  const result = await slot(() => exec(sandbox, parsed.data));
+  console.log(`${new Date().toISOString()} exec ${parsed.data.language} ${result.status} ${Date.now() - started}ms`);
+  return json(result);
+}
+
 Bun.serve({
   port: PORT,
   hostname: process.env.HOST ?? "127.0.0.1",
@@ -86,6 +105,7 @@ Bun.serve({
     if (!authorized(req)) return json({ error: "令牌不对" }, 401);
     if (req.method === "POST" && pathname === "/v1/run") return handleJudge(req, "run");
     if (req.method === "POST" && pathname === "/v1/submit") return handleJudge(req, "submit");
+    if (req.method === "POST" && pathname === "/v1/exec") return handleExec(req);
     return json({ error: "没有这个接口" }, 404);
   },
 });

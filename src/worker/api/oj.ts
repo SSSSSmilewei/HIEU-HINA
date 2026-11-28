@@ -2,7 +2,7 @@ import { recordActivityOnce } from "../activity";
 import { syncOrQueue } from "../forgejo";
 import type { Env } from "../env";
 import { type Ctx, HttpError, json, type Router } from "../http";
-import { JudgeRequest, type JudgeResult, MAX_SUBMIT_BYTES, VERDICTS } from "../../shared/judge";
+import { ExecRequest, type ExecResult, JudgeRequest, type JudgeResult, MAX_SUBMIT_BYTES, VERDICTS } from "../../shared/judge";
 import { memberId, isAdmin } from "./common";
 
 /**
@@ -12,12 +12,15 @@ import { memberId, isAdmin } from "./common";
  *   GET  /api/oj/submissions?problem=  我在这道题上的提交
  *   GET  /api/oj/submissions/:id     一次提交的代码和结果（本人或管理员）
  *   GET  /api/oj/solved?prefix=      我通过了哪些题（prefix 如 cs61a/lab01）
+ *   POST /api/oj/exec                运行任意代码（不判对错，VSCode 插件用；要登录）
  */
 
 const MINUTE_MS = 60_000;
 /** 每人每分钟最多提交几次、运行几次 */
 export const SUBMITS_PER_MINUTE = 10;
 export const RUNS_PER_MINUTE = 20;
+/** 运行任意代码：每人每分钟最多几次 */
+export const EXECS_PER_MINUTE = 10;
 /** 提交列表最多返回几条 */
 const LIST_LIMIT = 50;
 const JUDGE_TIMEOUT_MS = 120_000;
@@ -37,7 +40,7 @@ async function readRequest(c: Ctx): Promise<JudgeRequest> {
 }
 
 /** 限流：who 在最近一分钟里调用了多少次 */
-async function limit(db: D1Database, who: string, max: number, now: number) {
+export async function limit(db: D1Database, who: string, max: number, now: number) {
   const row = await db.prepare("SELECT COUNT(*) AS n FROM oj_hits WHERE who = ? AND at > ?").bind(who, now - MINUTE_MS).first<{ n: number }>();
   if ((row?.n ?? 0) >= max) throw new HttpError(429, "太频繁了，请稍等一会儿再试");
   await db.batch([db.prepare("INSERT INTO oj_hits (who, at) VALUES (?, ?)").bind(who, now), db.prepare("DELETE FROM oj_hits WHERE at < ?").bind(now - MINUTE_MS)]);
@@ -63,6 +66,25 @@ export async function callJudge(env: Env, mode: "run" | "submit", body: JudgeReq
   const result = (await res.json()) as JudgeResult;
   if (!VERDICTS.includes(result.verdict)) throw new HttpError(503, "判题服务返回的结果看不懂");
   return result;
+}
+
+/** 运行任意代码：转给判题服务的 /v1/exec */
+async function callExec(env: Env, body: ExecRequest): Promise<ExecResult> {
+  if (!env.JUDGE_URL || !env.JUDGE_TOKEN) throw new HttpError(503, "判题服务还没有配置");
+  let res: Response;
+  try {
+    res = await fetch(`${env.JUDGE_URL.replace(/\/$/, "")}/v1/exec`, {
+      method: "POST",
+      headers: { "content-type": "application/json", authorization: `Bearer ${env.JUDGE_TOKEN}` },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(JUDGE_TIMEOUT_MS),
+    });
+  } catch {
+    throw new HttpError(503, "判题服务暂时连不上，请稍后再试");
+  }
+  if (res.status === 400) throw new HttpError(400, ((await res.json().catch(() => ({}))) as { error?: string }).error ?? "请求格式不对");
+  if (!res.ok) throw new HttpError(503, `判题服务出错（${res.status}），请稍后再试`);
+  return (await res.json()) as ExecResult;
 }
 
 function clientKey(c: Ctx): string {
@@ -101,6 +123,22 @@ export function ojRoutes(api: Router) {
     const body = await readRequest(c);
     await limit(c.env.DB, clientKey(c), RUNS_PER_MINUTE, Date.now());
     return json({ result: await callJudge(c.env, "run", body) });
+  });
+
+  api.post("/api/oj/exec", async (c) => {
+    const uid = memberId(c);
+    const text = await c.req.text();
+    if (text.length > MAX_SUBMIT_BYTES) throw new HttpError(413, "代码太大了");
+    let raw: unknown;
+    try {
+      raw = JSON.parse(text);
+    } catch {
+      throw new HttpError(400, "请求不是合法的 JSON");
+    }
+    const r = ExecRequest.safeParse(raw);
+    if (!r.success) throw new HttpError(400, r.error.issues[0]?.message ?? "请求格式不对");
+    await limit(c.env.DB, `exec:${uid}`, EXECS_PER_MINUTE, Date.now());
+    return json({ result: await callExec(c.env, r.data) });
   });
 
   api.post("/api/oj/submit", async (c) => {

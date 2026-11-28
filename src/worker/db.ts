@@ -502,6 +502,28 @@ export const MIGRATIONS: string[][] = [
     )`,
     `CREATE INDEX IF NOT EXISTS api_tokens_by_user ON api_tokens(user_id)`,
   ],
+  // v22：VSCode 插件第二版（2026-11-28）。
+  // device_logins：插件一键登录（插件拿 device_code 轮询，学员在网页上确认 user_code），
+  //   只存 device_code 的 SHA-256；令牌在被取走前暂存在 token 列，取走后清空，10 分钟过期。
+  // git_credentials：插件用的 Git 密码，AES-GCM 加密存放（密钥由 SESSION_SECRET 派生），换设备登录插件时复用
+  [
+    `CREATE TABLE IF NOT EXISTS device_logins (
+      device_hash TEXT PRIMARY KEY,
+      user_code TEXT NOT NULL UNIQUE,
+      client TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'pending',
+      user_id TEXT,
+      token TEXT,
+      created_at INTEGER NOT NULL,
+      expires_at INTEGER NOT NULL
+    )`,
+    `CREATE TABLE IF NOT EXISTS git_credentials (
+      user_id TEXT PRIMARY KEY,
+      iv TEXT NOT NULL,
+      enc TEXT NOT NULL,
+      updated_at INTEGER NOT NULL
+    )`,
+  ],
 ];
 
 // 每个数据库连接只迁移一次（Worker 里通常只有一个；测试里每个用例一个内存库）

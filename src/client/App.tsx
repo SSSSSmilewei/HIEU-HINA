@@ -5,7 +5,7 @@ import { BrandMark, Shell } from "./components/Shell";
 import { PageContent } from "./components/PageContent";
 import { StartPage } from "./pages/Start";
 import { HomePage } from "./pages/Home";
-import { LoginPage, PasswordPage } from "./pages/Login";
+import { DeviceLinkPage, LoginPage, PasswordPage } from "./pages/Login";
 import { Onboarding, needsOnboarding } from "./components/Onboarding";
 import { NoticeGate } from "./components/NoticeGate";
 import { shouldPlayIntro } from "./intro";
@@ -103,6 +103,7 @@ export function App() {
   // 游客：只能看首页、协会、课程、公告；其余页面先去登录，登录完回来
   if (!me.role && !guestCanSee(path)) return <Redirect to={loginHref(path + search)} />;
   if (path === "/password" && me.role) return <PasswordPage me={me} />;
+  if (path === "/link" && me.role) return <DeviceLinkPage me={me} />;
 
   const isAdmin = !!me.isAdmin;
   let page: React.ReactNode;

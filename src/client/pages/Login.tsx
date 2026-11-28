@@ -384,3 +384,81 @@ export function PasswordPage({ me }: { me: Me }) {
     </LoginFrame>
   );
 }
+
+/**
+ * VSCode 插件一键登录的确认页（/link?code=XXXX-XXXX，2026-11-28）。
+ * 插件打开浏览器到这里，学员核对确认码后点「允许」，插件就拿到一个个人令牌。
+ */
+export function DeviceLinkPage({ me }: { me: Me }) {
+  useTitle("确认登录 VSCode 插件");
+  const { search } = useLocation();
+  const code = new URLSearchParams(search).get("code") ?? "";
+  const { data, error } = useApi<{ client: string; userCode: string; status: string; expiresAt: number }>(code ? `/api/device/${encodeURIComponent(code)}` : null);
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState<"approved" | "denied" | null>(null);
+  const [fail, setFail] = useState<string | null>(null);
+
+  const decide = async (allow: boolean) => {
+    setBusy(true);
+    setFail(null);
+    try {
+      const r = await api<{ status: "approved" | "denied" }>("/api/device/approve", { body: { code, allow } });
+      setDone(r.status);
+    } catch (e) {
+      setFail((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const who = me.member ? `${me.member.name}${me.member.username ? `（@${me.member.username}）` : ""}` : "";
+  const state = done ?? (data && data.status !== "pending" ? (data.status as "approved" | "denied") : null);
+
+  return (
+    <LoginFrame>
+      <div className="stack" style={{ gap: 6 }}>
+        <h1 className="h2">确认登录 VSCode 插件</h1>
+        <p className="small sub">当前账号：{who}</p>
+      </div>
+      {!code ? (
+        <p className="small">链接里缺少确认码。请回到 VSCode，重新运行「HIANA：登录」。</p>
+      ) : error ? (
+        <p className="error-text small" role="alert">
+          {error.message}
+        </p>
+      ) : !data ? (
+        <Spinner />
+      ) : state === "approved" ? (
+        <div className="stack" style={{ gap: 6 }}>
+          <p className="small">已允许。请回到 VSCode，插件会在几秒钟内完成登录，这个页面可以关闭。</p>
+          <p className="xsmall sub">以后不想让这台电脑上的插件继续使用你的账号，可以在「我的仓库」页的令牌列表里撤销「{data.client}」。</p>
+        </div>
+      ) : state === "denied" ? (
+        <p className="small">已拒绝，插件不会登录你的账号。这个页面可以关闭。</p>
+      ) : (
+        <div className="stack" style={{ gap: 14 }}>
+          <p className="small">
+            「{data.client}」请求登录你的账号。请核对 VSCode 里显示的确认码是否与下面一致，一致才点「允许」。
+          </p>
+          <div className="mono" style={{ fontSize: 28, letterSpacing: "0.12em", textAlign: "center", padding: "12px 0", border: "1px solid var(--line)", borderRadius: 14 }}>
+            {data.userCode}
+          </div>
+          <p className="xsmall sub">
+            允许后，插件可以查看你的仓库、下载和更新仓库、在服务器上运行代码、提交作业和刷题、查看提交记录。插件不能修改密码、签到或者签发新的令牌。
+          </p>
+          {fail && (
+            <span className="error-text xsmall" role="alert">
+              {fail}
+            </span>
+          )}
+          <button className="btn btn-primary btn-lg btn-block" type="button" disabled={busy} onClick={() => void decide(true)}>
+            {busy ? <Spinner /> : "允许"}
+          </button>
+          <button className="btn btn-quiet btn-block" type="button" disabled={busy} onClick={() => void decide(false)}>
+            拒绝
+          </button>
+        </div>
+      )}
+    </LoginFrame>
+  );
+}

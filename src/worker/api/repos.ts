@@ -1,6 +1,7 @@
 import type { Env } from "../env";
 import { call, callText, ensureUser, ForgejoError, forgejoEnabled } from "../forgejo";
 import { type Ctx, HttpError, json, type Router } from "../http";
+import { requireSecret } from "../session";
 import { requireUser } from "./common";
 
 /**
@@ -13,6 +14,11 @@ import { requireUser } from "./common";
  *   GET  /api/git/repos/:name/commits/:sha    一次提交：说明、改了哪些文件、改动对比（unified diff）
  *   POST /api/git/repos/:name/visibility      { private: boolean } 改成公开或私有
  *   POST /api/git/password                    { password } 设置 Git 密码（本地 clone、push 用）
+ *   POST /api/git/credential                  { reset? } VSCode 插件拿 Git 用户名和密码（个人令牌能调）：
+ *       设置过 Git 密码就用它，没设置过就生成一个；reset 为 true 时重新生成（密码被别处改掉、推送认证失败时）
+ *
+ * Git 密码加密存在 git_credentials 里（AES-GCM，密钥由 SESSION_SECRET 派生），插件在别的电脑上登录时能拿到同一个，
+ * 不会把学员在命令行里用的密码改掉。
  */
 
 export const PAGE_SIZE = 30;
@@ -48,6 +54,44 @@ interface FCommit {
 async function ownerOf(env: Env, userId: string): Promise<string | null> {
   const row = await env.DB.prepare("SELECT username FROM forgejo_users WHERE user_id = ?").bind(userId).first<{ username: string }>();
   return row?.username ?? null;
+}
+
+const hex = (b: Uint8Array) => [...b].map((x) => x.toString(16).padStart(2, "0")).join("");
+const unhex = (s: string) => Uint8Array.from(s.match(/../g) ?? [], (x) => parseInt(x, 16));
+
+async function credentialKey(env: Env): Promise<CryptoKey> {
+  const raw = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`hiana-git-credential:${requireSecret(env)}`));
+  return crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["encrypt", "decrypt"]);
+}
+
+export async function saveGitPassword(env: Env, userId: string, password: string): Promise<void> {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const enc = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, await credentialKey(env), new TextEncoder().encode(password)));
+  await env.DB.prepare("INSERT INTO git_credentials (user_id, iv, enc, updated_at) VALUES (?, ?, ?, ?) ON CONFLICT(user_id) DO UPDATE SET iv = excluded.iv, enc = excluded.enc, updated_at = excluded.updated_at")
+    .bind(userId, hex(iv), hex(enc), Date.now())
+    .run();
+}
+
+/** 存着的 Git 密码；没有，或者 SESSION_SECRET 换过解不开时是 null */
+export async function loadGitPassword(env: Env, userId: string): Promise<string | null> {
+  const row = await env.DB.prepare("SELECT iv, enc FROM git_credentials WHERE user_id = ?").bind(userId).first<{ iv: string; enc: string }>();
+  if (!row) return null;
+  try {
+    const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unhex(row.iv) }, await credentialKey(env), unhex(row.enc));
+    return new TextDecoder().decode(plain);
+  } catch {
+    return null;
+  }
+}
+
+function randomGitPassword(): string {
+  return `hg-${hex(crypto.getRandomValues(new Uint8Array(18)))}`;
+}
+
+/** 在 Forgejo 上把 owner 的密码设成 password；Forgejo 不收时报 400 */
+async function setForgejoPassword(env: Env, owner: string, password: string): Promise<void> {
+  const r = await call(env, "PATCH", `/admin/users/${owner}`, { password, must_change_password: false, login_name: owner, source_id: 0 }, [400, 422]);
+  if (r.status !== 200) throw new HttpError(400, "仓库服务不接受这个密码，请换一个更复杂的");
 }
 
 function needForgejo(env: Env) {
@@ -125,11 +169,24 @@ export function repoRoutes(api: Router) {
     if (password.length < MIN_PASSWORD || password.length > MAX_PASSWORD) throw new HttpError(400, `Git 密码要 ${MIN_PASSWORD} 到 ${MAX_PASSWORD} 个字符`);
     if (/\s/.test(password)) throw new HttpError(400, "Git 密码里不能有空格");
     const owner = await viaForgejo(() => ensureUser(c.env, { id: u.id, name: u.name, studentNo: u.studentNo, username: u.username, kind: u.kind }));
-    await viaForgejo(async () => {
-      const r = await call(c.env, "PATCH", `/admin/users/${owner}`, { password, must_change_password: false, login_name: owner, source_id: 0 }, [400, 422]);
-      if (r.status !== 200) throw new HttpError(400, "仓库服务不接受这个密码，请换一个更复杂的");
-    });
+    await viaForgejo(() => setForgejoPassword(c.env, owner, password));
+    await saveGitPassword(c.env, u.id, password);
     return json({ ok: true, owner });
+  });
+
+  api.post("/api/git/credential", async (c) => {
+    const u = requireUser(c);
+    needForgejo(c.env);
+    const b = await c.body<{ reset?: unknown }>();
+    const owner = await viaForgejo(() => ensureUser(c.env, { id: u.id, name: u.name, studentNo: u.studentNo, username: u.username, kind: u.kind }));
+    let password = b.reset === true ? null : await loadGitPassword(c.env, u.id);
+    if (!password) {
+      password = randomGitPassword();
+      const p = password;
+      await viaForgejo(() => setForgejoPassword(c.env, owner, p));
+      await saveGitPassword(c.env, u.id, password);
+    }
+    return json({ username: owner, password, base: (c.env.FORGEJO_PUBLIC_URL || c.env.FORGEJO_URL || "").replace(/\/$/, "") });
   });
 
   api.get("/api/git/repos/:name", async (c) => {

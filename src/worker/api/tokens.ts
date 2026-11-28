@@ -20,9 +20,10 @@ const TOUCH_MS = 60 * 60 * 1000;
 /** 令牌能用的接口：方法 + 路径前缀 */
 const TOKEN_SCOPES: [string, RegExp][] = [
   ["GET", /^\/api\/auth\/me$/],
-  ["POST", /^\/api\/oj\/(run|submit)$/],
+  ["POST", /^\/api\/oj\/(run|submit|exec)$/],
   ["GET", /^\/api\/oj\/(submissions|solved)(\/|$)/],
   ["GET", /^\/api\/git\/repos(\/|$)/],
+  ["POST", /^\/api\/git\/credential$/],
 ];
 
 export function tokenAllowed(method: string, path: string): boolean {
@@ -53,6 +54,18 @@ export async function tokenOwner(env: Env, token: string, now = Date.now()): Pro
   return { uid: row.user_id, sv: row.sv };
 }
 
+/** 签发一个令牌（网页上手动签发、插件一键登录都走这里）。超过 MAX_TOKENS 个时报 400 */
+export async function issueToken(env: Env, userId: string, sv: number, name: string): Promise<{ id: string; name: string; token: string }> {
+  const n = await env.DB.prepare("SELECT COUNT(*) AS n FROM api_tokens WHERE user_id = ? AND revoked_at IS NULL AND sv = ?").bind(userId, sv).first<{ n: number }>();
+  if ((n?.n ?? 0) >= MAX_TOKENS) throw new HttpError(400, `最多同时有 ${MAX_TOKENS} 个令牌，请先在「我的仓库」页撤销不用的`);
+  const token = newToken();
+  const id = crypto.randomUUID();
+  await env.DB.prepare("INSERT INTO api_tokens (id, user_id, name, hash, hint, sv, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)")
+    .bind(id, userId, name, await hashToken(token), token.slice(-4), sv, Date.now())
+    .run();
+  return { id, name, token };
+}
+
 export function tokenRoutes(api: Router) {
   api.get("/api/tokens", async (c) => {
     const u = requireUser(c);
@@ -68,14 +81,7 @@ export function tokenRoutes(api: Router) {
     const b = await c.body<{ name?: unknown }>();
     const name = typeof b.name === "string" ? b.name.trim() : "";
     if (!name || name.length > 40) throw new HttpError(400, "给令牌起个名字，最多 40 个字，例如「宿舍的笔记本」");
-    const n = await c.env.DB.prepare("SELECT COUNT(*) AS n FROM api_tokens WHERE user_id = ? AND revoked_at IS NULL AND sv = ?").bind(u.id, u.sessionVersion).first<{ n: number }>();
-    if ((n?.n ?? 0) >= MAX_TOKENS) throw new HttpError(400, `最多同时有 ${MAX_TOKENS} 个令牌，请先撤销不用的`);
-    const token = newToken();
-    const id = crypto.randomUUID();
-    await c.env.DB.prepare("INSERT INTO api_tokens (id, user_id, name, hash, hint, sv, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)")
-      .bind(id, u.id, name, await hashToken(token), token.slice(-4), u.sessionVersion, Date.now())
-      .run();
-    return json({ id, name, token });
+    return json(await issueToken(c.env, u.id, u.sessionVersion, name));
   });
 
   api.delete("/api/tokens/:id", async (c) => {
