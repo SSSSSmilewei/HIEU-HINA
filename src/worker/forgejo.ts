@@ -30,7 +30,7 @@ export class ForgejoError extends Error {
   }
 }
 
-async function call<T>(env: Env, method: string, path: string, body?: unknown, okStatus: number[] = []): Promise<{ status: number; data: T | null }> {
+export async function call<T>(env: Env, method: string, path: string, body?: unknown, okStatus: number[] = []): Promise<{ status: number; data: T | null }> {
   const res = await fetch(`${env.FORGEJO_URL!.replace(/\/$/, "")}/api/v1${path}`, {
     method,
     headers: { authorization: `token ${env.FORGEJO_TOKEN}`, "content-type": "application/json", accept: "application/json" },
@@ -99,6 +99,44 @@ export async function commitFiles(env: Env, owner: string, repo: string, files: 
   return true;
 }
 
+/** 课程仓库 README 里的一份作业 */
+export interface ReadmeAssignment {
+  id: string;
+  title: string;
+  repoDir: string;
+  problems: { id: string; title: string }[];
+}
+
+/**
+ * 课程仓库的 README（故事 2.2）：学了什么、过了哪些题、做了哪些项目。每次同步提交时重新生成，没变就不提交。
+ * 只列学员动过的作业（仓库里有目录的）。
+ */
+export function courseReadme(input: { course: string; name: string; assignments: ReadmeAssignment[]; solved: Set<string>; started: Set<string> }): string {
+  const { course, name, assignments, solved, started } = input;
+  const mine = assignments.filter((a) => started.has(`${course}/${a.repoDir}`));
+  const lines = [
+    `# ${course.toUpperCase()} · ${name}`,
+    "",
+    "这个仓库由海纳协会学习平台自动维护：每次在作业台「提交」，代码都会作为一次提交放进来。第一次做某份作业时，先放入官方起始代码。",
+    "",
+  ];
+  let total = 0;
+  let done = 0;
+  const rows = mine.map((a) => {
+    const n = a.problems.filter((p) => solved.has(`${course}/${a.id}/${p.id}`)).length;
+    total += a.problems.length;
+    done += n;
+    const mark = n === a.problems.length && n > 0 ? "✅" : n > 0 ? "🟡" : "⬜";
+    return `| ${mark} | [${a.title}](${a.repoDir}/) | ${n} / ${a.problems.length} |`;
+  });
+  lines.push(`## 进度`, "", `做过 ${mine.length} 份作业，通过 ${done} / ${total} 道题。`, "");
+  if (rows.length) lines.push("| | 作业 | 通过 |", "| --- | --- | --- |", ...rows, "");
+  const passed = mine.flatMap((a) => a.problems.filter((p) => solved.has(`${course}/${a.id}/${p.id}`)).map((p) => `- ${a.title} · ${p.title}`));
+  if (passed.length) lines.push("## 通过的题", "", ...passed, "");
+  lines.push("---", "", "题目、起始代码与测试的版权归原课程所有，仅供学习交流。");
+  return lines.join("\n") + "\n";
+}
+
 /** 作业包的公开版本（静态文件），用来取仓库目录、起始代码和题目名 */
 interface AssignmentLite {
   id: string;
@@ -151,6 +189,7 @@ export async function syncSubmission(env: Env, s: SubmissionSync): Promise<void>
     const p = a.problems.find((x) => x.id === pid);
     const mine = Object.fromEntries(Object.entries(s.files).map(([path, content]) => [`${a.repoDir}/${path}`, content]));
     await commitFiles(env, owner, course, mine, `${a.title} · ${p?.title ?? pid}：提交，${result}`, author);
+    await updateReadme(env, s.user, owner, course, author);
     return;
   }
   // 刷题：只把通过的代码放进仓库
@@ -159,6 +198,21 @@ export async function syncSubmission(env: Env, s: SubmissionSync): Promise<void>
   const title = await loadProblemTitle(env, s.problem);
   const mine = Object.fromEntries(Object.entries(s.files).map(([path, content]) => [`${s.problem}/${path}`, content]));
   await commitFiles(env, owner, PRACTICE_REPO, mine, `${title}：通过`, author);
+}
+
+/** 重新生成课程仓库的 README：读通过记录和学员动过的作业目录（从静态的作业目录取题目名） */
+async function updateReadme(env: Env, user: Who, owner: string, course: string, author: { name: string; email: string }): Promise<void> {
+  const dirs = await env.DB.prepare("SELECT dir FROM forgejo_dirs WHERE user_id = ? AND dir LIKE ?").bind(user.id, `${course}/%`).all<{ dir: string }>();
+  const solved = await env.DB.prepare("SELECT problem FROM oj_solved WHERE user_id = ? AND substr(problem, 1, ?) = ?").bind(user.id, course.length + 1, `${course}/`).all<{ problem: string }>();
+  const started = new Set(dirs.results.map((r) => r.dir));
+  const assignments: ReadmeAssignment[] = [];
+  for (const d of started) {
+    const id = d.split("/").pop()!;
+    const a = await loadAssignment(env, course, id);
+    if (a) assignments.push({ id: a.id, title: a.title, repoDir: a.repoDir, problems: a.problems.map((p) => ({ id: p.id, title: p.title })) });
+  }
+  const md = courseReadme({ course, name: user.name, assignments, solved: new Set(solved.results.map((r) => r.problem)), started });
+  await commitFiles(env, owner, course, { "README.md": md }, "更新 README：学习进度", author);
 }
 
 /** 提交后调用：写不进去就排队，不影响判题结果 */

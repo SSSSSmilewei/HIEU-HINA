@@ -116,16 +116,21 @@ describe("学员仓库", () => {
     expect(await syncOrQueue(e, sub({ verdict: "WA", passed: 1 }))).toBe("done");
     expect([...f.users]).toEqual(["s250101001"]);
     expect([...f.repos]).toEqual(["s250101001/cs61a"]);
-    expect(f.commits.map((c) => c.message)).toEqual(["开始实验 1：函数：官方起始代码", "实验 1：函数 · 取出某一位数字：提交，答案错误（1/3）"]);
+    expect(f.commits.map((c) => c.message)).toEqual(["开始实验 1：函数：官方起始代码", "实验 1：函数 · 取出某一位数字：提交，答案错误（1/3）", "更新 README：学习进度"]);
+    expect(f.text("s250101001/cs61a/README.md")).toContain("| ⬜ | [实验 1：函数](lab/lab01/) | 0 / 1 |");
     expect(f.commits[0]!.files.map((x) => x.path)).toEqual(["lab/lab01/lab01.py", "lab/lab01/tests/q.py"]);
     expect(f.text("s250101001/cs61a/lab/lab01/lab01.py")).toContain("10 ** k");
 
-    // 第二次：不再提交起始代码；内容没变就不产生提交
+    // 第二次：不再提交起始代码；内容没变就不产生提交（README 也没变）
     await syncOrQueue(e, sub());
-    expect(f.commits).toHaveLength(2);
-    await syncOrQueue(e, sub({ files: { "lab01.py": "def digit(n, k):\n    return pow(10, k)\n" } }));
     expect(f.commits).toHaveLength(3);
-    expect(f.commits[2]!.files[0]!.operation).toBe("update");
+    // 通过之后 README 跟着更新
+    await e.DB.prepare("INSERT INTO oj_solved (user_id, problem, solved_at) VALUES ('u1', 'cs61a/lab01/digit', 1)").run();
+    await syncOrQueue(e, sub({ files: { "lab01.py": "def digit(n, k):\n    return pow(10, k)\n" } }));
+    expect(f.commits).toHaveLength(5);
+    expect(f.commits[3]!.files[0]!.operation).toBe("update");
+    expect(f.text("s250101001/cs61a/README.md")).toContain("| ✅ | [实验 1：函数](lab/lab01/) | 1 / 1 |");
+    expect(f.text("s250101001/cs61a/README.md")).toContain("- 实验 1：函数 · 取出某一位数字");
   });
 
   test("刷题：只有通过的才进 oj-practice 仓库", async () => {
@@ -145,7 +150,7 @@ describe("学员仓库", () => {
     expect(await drainQueue(e, Date.now())).toBe(0); // 还没到重试时间
     down = false;
     expect(await drainQueue(e, Date.now() + 10 * 60_000)).toBe(1);
-    expect(f.commits).toHaveLength(2);
+    expect(f.commits).toHaveLength(3);
     const left = await e.DB.prepare("SELECT COUNT(*) AS n FROM forgejo_queue").first<{ n: number }>();
     expect(left?.n).toBe(0);
   });

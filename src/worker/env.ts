@@ -26,6 +26,8 @@ export interface Env {
   /** 学员仓库（Forgejo）的地址和管理员令牌；没配时不写仓库，判题照常 */
   FORGEJO_URL?: string;
   FORGEJO_TOKEN?: string;
+  /** 学员能访问的 Forgejo 地址（clone 用）；不填就用 FORGEJO_URL */
+  FORGEJO_PUBLIC_URL?: string;
 }
 
 /**
