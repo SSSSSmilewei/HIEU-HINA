@@ -2,7 +2,7 @@
 // .vsix 就是一个 zip：extension.vsixmanifest、[Content_Types].xml、extension/ 下的插件文件。
 // 不用 vsce（要多装一套依赖），zip 用 Node 自带的 zlib 自己写；时间戳固定，同样的源码打出同样的包。
 import { build } from "esbuild";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { deflateRawSync } from "node:zlib";
 
@@ -109,7 +109,7 @@ function manifest(pkg) {
 }
 
 const CONTENT_TYPES = `<?xml version="1.0" encoding="utf-8"?>
-<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension=".json" ContentType="application/json" /><Default Extension=".js" ContentType="application/javascript" /><Default Extension=".md" ContentType="text/markdown" /><Default Extension=".vsixmanifest" ContentType="text/xml" /></Types>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension=".json" ContentType="application/json" /><Default Extension=".js" ContentType="application/javascript" /><Default Extension=".md" ContentType="text/markdown" /><Default Extension=".vsixmanifest" ContentType="text/xml" /><Default Extension=".svg" ContentType="image/svg+xml" /></Types>
 `;
 
 /** 打包到 <out>/downloads/hiana-oj.vsix，返回插件版本和包的大小 */
@@ -134,6 +134,10 @@ export async function buildVsix(root, out) {
     ["extension/package.json", JSON.stringify(pkg, null, 2)],
     ["extension/readme.md", readFileSync(join(dir, "README.md"), "utf8")],
     ["extension/dist/extension.js", bundled.outputFiles[0].contents],
+    // 图标（左侧竖栏的 HIANA）
+    ...readdirSync(join(dir, "media"))
+      .sort()
+      .map((f) => [`extension/media/${f}`, readFileSync(join(dir, "media", f))]),
   ];
   const vsix = zip(files);
   mkdirSync(join(out, "downloads"), { recursive: true });

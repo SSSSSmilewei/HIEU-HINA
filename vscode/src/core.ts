@@ -22,7 +22,7 @@ export class Hiana {
   readonly server: string;
   constructor(
     server: string,
-    private token: string,
+    private token: string | null,
     private fetchImpl: FetchLike = fetch as unknown as FetchLike,
   ) {
     this.server = normalizeServer(server);
@@ -33,7 +33,7 @@ export class Hiana {
     try {
       res = await this.fetchImpl(this.server + path, {
         method,
-        headers: { authorization: `Bearer ${this.token}`, accept: "application/json", ...(body === undefined ? {} : { "content-type": "application/json" }) },
+        headers: { ...(this.token ? { authorization: `Bearer ${this.token}` } : {}), accept: "application/json", ...(body === undefined ? {} : { "content-type": "application/json" }) },
         body: body === undefined ? undefined : JSON.stringify(body),
       });
     } catch {
@@ -48,7 +48,7 @@ export class Hiana {
     }
     if (!res.ok) {
       const msg = (data as { error?: string } | null)?.error;
-      if (res.status === 401) throw new ApiError("登录已失效：令牌不对、已撤销，或者改过密码。请在平台「我的仓库」页重新签发令牌，然后运行「HIANA：登录」", 401);
+      if (res.status === 401) throw new ApiError("登录已失效：令牌已撤销，或者改过平台密码。请在插件里重新登录（侧边栏 HIANA →「登录」）", 401);
       throw new ApiError(msg ?? `请求失败（HTTP ${res.status}）`, res.status);
     }
     return data as T;
@@ -74,6 +74,24 @@ export class Hiana {
   }
   submissions(problem: string) {
     return this.request<{ submissions: SubmissionBrief[] }>("GET", `/api/oj/submissions?problem=${encodeURIComponent(problem)}`);
+  }
+  solved(prefix: string) {
+    return this.request<{ solved: { problem: string; solvedAt: number }[] }>("GET", `/api/oj/solved?prefix=${encodeURIComponent(prefix)}`);
+  }
+  /** 在服务器上运行任意代码（不判对错） */
+  exec(body: ExecBody) {
+    return this.request<{ result: ExecResult }>("POST", "/api/oj/exec", body);
+  }
+  /** 插件用的 Git 用户名和密码 */
+  credential(reset = false) {
+    return this.request<{ username: string; password: string; base: string }>("POST", "/api/git/credential", reset ? { reset: true } : {});
+  }
+  /** 一键登录：不用令牌 */
+  deviceStart(client: string) {
+    return this.request<{ deviceCode: string; userCode: string; url: string; interval: number; expiresIn: number }>("POST", "/api/device/start", { client });
+  }
+  devicePoll(deviceCode: string) {
+    return this.request<{ status: "pending" | "denied" | "expired" | "ok"; token?: string }>("POST", "/api/device/poll", { deviceCode });
   }
   submission(id: string) {
     return this.request<{ submission: SubmissionBrief & { files: Record<string, string>; result: JudgeResult } }>("GET", `/api/oj/submissions/${encodeURIComponent(id)}`);
@@ -220,4 +238,94 @@ export function formatResult(mode: "run" | "submit", title: string, r: JudgeResu
 export function repoNameFromUrl(url: string): string | null {
   const m = /\/([^/]+?)(?:\.git)?\/?$/.exec(url.trim());
   return m ? m[1]! : null;
+}
+
+export interface ExecBody {
+  language: "python" | "c" | "cpp" | "java";
+  main: string;
+  files: Record<string, string>;
+  stdin: string;
+}
+export interface ExecResult {
+  status: "ok" | "exit" | "signal" | "tle" | "mle" | "ole" | "ce" | "error";
+  exitCode: number;
+  timeMs: number;
+  memoryKb: number;
+  stdout: string;
+  stderr: string;
+  compileOutput?: string;
+}
+
+/** 在服务器上运行时，按扩展名定语言；不支持的返回 null */
+export function execLanguage(file: string): ExecBody["language"] | null {
+  const ext = file.slice(file.lastIndexOf(".") + 1).toLowerCase();
+  return ext === "py" ? "python" : ext === "c" ? "c" : ext === "cpp" || ext === "cc" || ext === "cxx" ? "cpp" : ext === "java" ? "java" : null;
+}
+
+/** 和主文件一起带上服务器的文件：同一个目录里同一种语言的源文件（Python 的模块、C/C++ 的头文件） */
+export function companionFile(lang: ExecBody["language"], name: string): boolean {
+  const ext = name.slice(name.lastIndexOf(".") + 1).toLowerCase();
+  if (lang === "python") return ext === "py";
+  if (lang === "java") return ext === "java";
+  return ["h", "hpp", "hh"].includes(ext);
+}
+
+/** 运行时的输入文件：先找「主文件名.in」，再找 input.txt */
+export function inputCandidates(mainName: string): string[] {
+  const stem = mainName.includes(".") ? mainName.slice(0, mainName.lastIndexOf(".")) : mainName;
+  return [`${stem}.in`, "input.txt"];
+}
+
+const EXEC_STATUS: Record<ExecResult["status"], string> = {
+  ok: "运行结束",
+  exit: "程序以非零值退出",
+  signal: "程序被系统终止（可能是越界访问或除以零）",
+  tle: "超出时间限制（5 秒）",
+  mle: "超出内存限制（256 MB）",
+  ole: "输出太多，已截断",
+  ce: "编译错误",
+  error: "服务器运行出错",
+};
+
+/** 在服务器上运行的结果排成输出面板里的文字 */
+export function formatExec(file: string, input: string | null, r: ExecResult, at = new Date()): string {
+  const head = `运行 · ${file} · ${at.toLocaleString("zh-CN", { hour12: false })}`;
+  const lines = [head, "─".repeat(Math.min(60, head.length * 2))];
+  lines.push(input === null ? "输入：无（需要输入时，在同一目录放一个同名的 .in 文件或 input.txt）" : `输入：${input}`);
+  if (r.status === "ce") {
+    lines.push("编译错误：", indent(r.compileOutput ?? ""));
+    return lines.join("\n");
+  }
+  lines.push("", "输出：", r.stdout ? indent(r.stdout) : "    （没有输出）");
+  if (r.stderr) lines.push("", "标准错误：", indent(r.stderr));
+  lines.push("", `${EXEC_STATUS[r.status]}${r.status === "exit" ? `（退出码 ${r.exitCode}）` : ""}    用时 ${r.timeMs} ms    内存 ${Math.round(r.memoryKb / 1024)} MB`);
+  return lines.join("\n");
+}
+
+/** 仓库下载到本机的默认位置：<文档>/HIANA/<仓库名> */
+export function defaultRepoFolder(home: string, setting: string | undefined): string {
+  const t = (setting ?? "").trim();
+  if (t) return t.replace(/^~(?=$|[\\/])/, home);
+  return `${home.replace(/[\\/]+$/, "")}/Documents/HIANA`;
+}
+
+/** git 凭据文件里的一行：http(s)://用户名:密码@主机 */
+export function credentialLine(base: string, username: string, password: string): string {
+  const u = new URL(base);
+  return `${u.protocol}//${encodeURIComponent(username)}:${encodeURIComponent(password)}@${u.host}`;
+}
+
+/** 远程地址是不是这个账号在这个平台上的仓库，是的话返回仓库名 */
+export function ownRepo(remoteUrl: string, base: string, owner: string): string | null {
+  let u: URL;
+  let b: URL;
+  try {
+    u = new URL(remoteUrl);
+    b = new URL(base);
+  } catch {
+    return null;
+  }
+  if (u.host !== b.host) return null;
+  const m = /^\/([^/]+)\/([^/]+?)(?:\.git)?\/?$/.exec(u.pathname);
+  return m && m[1]!.toLowerCase() === owner.toLowerCase() ? m[2]! : null;
 }

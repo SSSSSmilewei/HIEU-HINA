@@ -3,7 +3,26 @@ import { memoryD1 } from "../scripts/local-d1";
 import { crc32, zip } from "../scripts/vsix.mjs";
 import type { Env } from "../src/worker/env";
 import worker from "../src/worker/index";
-import { ApiError, codeProblems, findTarget, formatResult, Hiana, judgeId, languageFor, normalizeServer, type OjIndex, type ProblemFile, repoNameFromUrl } from "../vscode/src/core";
+import {
+  ApiError,
+  codeProblems,
+  companionFile,
+  credentialLine,
+  defaultRepoFolder,
+  execLanguage,
+  findTarget,
+  formatExec,
+  formatResult,
+  Hiana,
+  inputCandidates,
+  judgeId,
+  languageFor,
+  normalizeServer,
+  type OjIndex,
+  ownRepo,
+  type ProblemFile,
+  repoNameFromUrl,
+} from "../vscode/src/core";
 
 /** VSCode 插件（故事 2.3）里和 VSCode 无关的部分 */
 const index: OjIndex = {
@@ -107,7 +126,7 @@ describe("插件用令牌调平台接口", () => {
     const err = await bad.repos().catch((e: unknown) => e);
     expect(err).toBeInstanceOf(ApiError);
     expect((err as ApiError).status).toBe(401);
-    expect((err as ApiError).message).toContain("重新签发令牌");
+    expect((err as ApiError).message).toContain("重新登录");
   });
 });
 
@@ -121,5 +140,42 @@ describe(".vsix 打包", () => {
     expect(z.readUInt32LE(0)).toBe(0x04034b50);
     expect(z.readUInt32LE(z.length - 22)).toBe(0x06054b50);
     expect(z.readUInt16LE(z.length - 22 + 10)).toBe(2);
+  });
+});
+
+describe("插件第二版：在服务器上运行、仓库位置、Git 凭据", () => {
+  test("按扩展名定语言，带上同目录的模块和头文件，找输入文件", () => {
+    expect(execLanguage("hw.py")).toBe("python");
+    expect(execLanguage("Main.JAVA")).toBe("java");
+    expect(execLanguage("a.cc")).toBe("cpp");
+    expect(execLanguage("q.scm")).toBeNull();
+    expect(companionFile("python", "util.py")).toBe(true);
+    expect(companionFile("c", "list.h")).toBe(true);
+    expect(companionFile("c", "other.c")).toBe(false);
+    expect(inputCandidates("main.cpp")).toEqual(["main.in", "input.txt"]);
+  });
+
+  test("运行结果：输出、退出码、编译错误", () => {
+    const at = new Date(2026, 10, 28, 12, 0, 0);
+    const ok = formatExec("main.py", "input.txt", { status: "exit", exitCode: 1, timeMs: 12, memoryKb: 4096, stdout: "1\n", stderr: "Traceback…" }, at);
+    expect(ok).toContain("输入：input.txt");
+    expect(ok).toContain("输出：\n    1");
+    expect(ok).toContain("标准错误：\n    Traceback…");
+    expect(ok).toContain("程序以非零值退出（退出码 1）");
+    const ce = formatExec("m.c", null, { status: "ce", exitCode: 1, timeMs: 0, memoryKb: 0, stdout: "", stderr: "", compileOutput: "m.c:1: error" }, at);
+    expect(ce).toContain("编译错误：\n    m.c:1: error");
+    expect(ce).toContain("输入：无");
+  });
+
+  test("默认下载位置、凭据行、认出自己的仓库", () => {
+    expect(defaultRepoFolder("/home/lin", "")).toBe("/home/lin/Documents/HIANA");
+    expect(defaultRepoFolder("C:\\Users\\lin", undefined)).toBe("C:\\Users\\lin/Documents/HIANA");
+    expect(defaultRepoFolder("/home/lin", "~/code")).toBe("/home/lin/code");
+    expect(credentialLine("https://git.example.edu", "lin", "a@b:c")).toBe("https://lin:a%40b%3Ac@git.example.edu");
+    expect(ownRepo("https://git.example.edu/lin/cs61a.git", "https://git.example.edu", "lin")).toBe("cs61a");
+    expect(ownRepo("https://git.example.edu/LIN/oj-practice", "https://git.example.edu", "lin")).toBe("oj-practice");
+    expect(ownRepo("https://github.com/lin/cs61a.git", "https://git.example.edu", "lin")).toBeNull();
+    expect(ownRepo("https://git.example.edu/chen/cs61a.git", "https://git.example.edu", "lin")).toBeNull();
+    expect(ownRepo("git@github.com:lin/x.git", "https://git.example.edu", "lin")).toBeNull();
   });
 });

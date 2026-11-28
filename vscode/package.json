@@ -1,8 +1,8 @@
 {
   "name": "hiana-oj",
   "displayName": "海纳协会 OJ",
-  "description": "在 VSCode 里写海纳协会学习平台的作业：克隆自己的课程仓库，运行公开测试，提交到 OJ，查看判题结果。",
-  "version": "0.1.0",
+  "description": "在 VSCode 里写海纳协会学习平台的作业：一键登录，下载自己的仓库，在服务器上运行代码（本机不用装编程环境），运行公开测试，提交到 OJ。",
+  "version": "0.2.0",
   "publisher": "hiana",
   "license": "MIT",
   "engines": { "vscode": "^1.85.0" },
@@ -11,20 +11,52 @@
   "main": "./dist/extension.js",
   "activationEvents": ["onStartupFinished"],
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [{ "id": "hiana", "title": "HIANA", "icon": "media/hiana.svg" }]
+    },
+    "views": {
+      "hiana": [{ "id": "hiana.view", "name": "海纳协会 OJ" }]
+    },
+    "viewsWelcome": [
+      {
+        "view": "hiana.view",
+        "contents": "登录海纳协会学习平台以后，这里会列出你的仓库和当前作业的题目。\n[登录](command:hiana.login)\n点「登录」会打开浏览器，在平台上点「允许」即可。也可以[使用令牌登录](command:hiana.loginWithToken)，或者修改[平台地址](command:hiana.setServer)。",
+        "when": "!hiana.loggedIn"
+      }
+    ],
     "commands": [
       { "command": "hiana.login", "title": "登录", "category": "HIANA" },
-      { "command": "hiana.logout", "title": "退出登录", "category": "HIANA" },
-      { "command": "hiana.clone", "title": "克隆我的课程仓库", "category": "HIANA" },
-      { "command": "hiana.run", "title": "运行公开测试", "category": "HIANA", "icon": "$(play)" },
+      { "command": "hiana.loginWithToken", "title": "使用令牌登录", "category": "HIANA" },
+      { "command": "hiana.logout", "title": "退出登录", "category": "HIANA", "icon": "$(sign-out)" },
+      { "command": "hiana.setServer", "title": "平台地址", "category": "HIANA" },
+      { "command": "hiana.refresh", "title": "刷新", "category": "HIANA", "icon": "$(refresh)" },
+      { "command": "hiana.clone", "title": "下载仓库", "category": "HIANA", "icon": "$(cloud-download)" },
+      { "command": "hiana.openRepo", "title": "打开仓库", "category": "HIANA", "icon": "$(folder-opened)" },
+      { "command": "hiana.updateRepo", "title": "更新仓库", "category": "HIANA", "icon": "$(sync)" },
+      { "command": "hiana.exec", "title": "在服务器上运行", "category": "HIANA", "icon": "$(run)" },
+      { "command": "hiana.run", "title": "运行公开测试", "category": "HIANA", "icon": "$(beaker)" },
       { "command": "hiana.submit", "title": "提交到 OJ", "category": "HIANA", "icon": "$(cloud-upload)" },
       { "command": "hiana.history", "title": "查看提交记录", "category": "HIANA" },
       { "command": "hiana.openWeb", "title": "在平台上打开这道题", "category": "HIANA" },
       { "command": "hiana.menu", "title": "操作菜单", "category": "HIANA" }
     ],
     "menus": {
+      "view/title": [{ "command": "hiana.refresh", "when": "view == hiana.view && hiana.loggedIn", "group": "navigation" }],
+      "view/item/context": [
+        { "command": "hiana.logout", "when": "view == hiana.view && viewItem == account", "group": "inline" },
+        { "command": "hiana.clone", "when": "view == hiana.view && viewItem == repo.remote", "group": "inline" },
+        { "command": "hiana.updateRepo", "when": "view == hiana.view && viewItem == repo.local", "group": "inline@1" },
+        { "command": "hiana.openRepo", "when": "view == hiana.view && viewItem == repo.local", "group": "inline@2" }
+      ],
       "editor/title": [
-        { "command": "hiana.run", "when": "hiana.loggedIn && resourceScheme == file && resourceExtname =~ /^\\.(py|scm|sql|c|cpp|java)$/", "group": "navigation@1" },
-        { "command": "hiana.submit", "when": "hiana.loggedIn && resourceScheme == file && resourceExtname =~ /^\\.(py|scm|sql|c|cpp|java)$/", "group": "navigation@2" }
+        { "command": "hiana.exec", "when": "hiana.loggedIn && resourceScheme == file && resourceExtname =~ /^\\.(py|c|cpp|cc|cxx|java)$/", "group": "navigation@1" },
+        { "command": "hiana.run", "when": "hiana.loggedIn && hiana.inAssignment", "group": "navigation@2" },
+        { "command": "hiana.submit", "when": "hiana.loggedIn && hiana.inAssignment", "group": "navigation@3" }
+      ],
+      "explorer/context": [{ "command": "hiana.exec", "when": "hiana.loggedIn && resourceExtname =~ /^\\.(py|c|cpp|cc|cxx|java)$/", "group": "navigation@9" }],
+      "commandPalette": [
+        { "command": "hiana.openRepo", "when": "false" },
+        { "command": "hiana.updateRepo", "when": "false" }
       ]
     },
     "configuration": {
@@ -34,6 +66,11 @@
           "type": "string",
           "default": "https://study.shanmoew-denied.win",
           "description": "海纳协会学习平台的地址。"
+        },
+        "hiana.repoFolder": {
+          "type": "string",
+          "default": "",
+          "description": "仓库下载到哪个文件夹。留空就是「文档/HIANA」。"
         }
       }
     }

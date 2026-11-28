@@ -352,7 +352,7 @@ function VscodeSection() {
     <section className="repo-section">
       <h2 className="ide-h2">VSCode 插件</h2>
       <p className="ide-muted">
-        装上插件以后，可以在 VSCode 里克隆自己的课程仓库、运行公开测试、提交到 OJ，判题结果显示在 VSCode 的输出面板里。提交时插件会先把改动推送到你的仓库，再交给平台判题，网页上的提交记录和仓库里都能看到。
+        装上插件以后，VSCode 左侧竖栏会出现「HIANA」：登录以后能看到自己的所有仓库，点一下就下载到本机；写代码时可以直接在服务器上运行，本机不用安装 Python、C、C++ 或 Java；作业可以运行公开测试、提交到 OJ，判题结果显示在 VSCode 里。提交时插件会先把改动推送到你的仓库，再交给平台判题。
       </p>
       <ol className="repo-steps">
         <li>
@@ -361,13 +361,17 @@ function VscodeSection() {
           </a>
           。在 VSCode 的「扩展」视图右上角点「…」，选「从 VSIX 安装…」，选中下载的文件；也可以在终端运行 <code>code --install-extension hiana-oj.vsix</code>。
         </li>
-        <li>在下面签发一个令牌并复制下来。令牌只显示这一次。</li>
+        <li>点 VSCode 左侧竖栏的「HIANA」，再点「登录」。浏览器会打开平台的确认页，核对确认码后点「允许」。</li>
+        <li>回到 VSCode，在「我的仓库」里点要下载的仓库。下载和推送用的 Git 凭据由插件自动处理，不需要另外设置 Git 密码。</li>
         <li>
-          在 VSCode 里按 <code>Ctrl+Shift+P</code>，运行「HIANA：登录」，粘贴令牌。然后运行「HIANA：克隆我的课程仓库」，询问账号密码时填上面的 Git 用户名和 Git 密码。
+          打开代码文件，编辑器右上角有「在服务器上运行」；打开作业文件时还有「运行公开测试」和「提交到 OJ」。程序需要输入时，在同一个文件夹里放一个和代码同名的 <code>.in</code> 文件（例如 <code>main.in</code>）或者 <code>input.txt</code>。
         </li>
       </ol>
+      <p className="ide-muted">
+        每次在插件里登录，都会在下面的列表里留下一个令牌，名字是那台电脑的名称；不再使用的电脑请撤销。无法打开浏览器时，可以在这里手动签发令牌，在插件里选「使用令牌登录」。
+      </p>
       <form className="repo-form" onSubmit={(e) => void issue(e)}>
-        <div className="ide-field-label">签发令牌（起个名字，方便以后认出是哪台电脑在用）</div>
+        <div className="ide-field-label">手动签发令牌（起个名字，方便以后认出是哪台电脑在用）</div>
         <div className="repo-form-row">
           <input className="repo-input" placeholder="例如：宿舍的笔记本" maxLength={40} value={name} onChange={(e) => setName(e.target.value)} aria-label="令牌名称" />
           <button className="ide-btn ide-btn-primary" disabled={busy || !name.trim()}>
