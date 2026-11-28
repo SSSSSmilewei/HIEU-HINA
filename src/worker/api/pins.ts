@@ -5,7 +5,7 @@ import { ModelError, complete, modelConfig } from "../ai";
 import { getCourse, getPackageJson } from "../catalog";
 import { type Ctx, HttpError, type Router, json } from "../http";
 import { adminLink, enqueue, flush } from "../notify";
-import { isAdmin, requireAdmin, requireUser, seesNames, viewerId } from "./common";
+import { isAdmin, requireAdmin, requireUser, shownName, viewerId } from "./common";
 
 /**
  * 蓝色钉子：在讲义的某一段（或某道练手题）上钉一个问题，大家在下面讨论，Agent 的回答也留在里面。
@@ -59,17 +59,17 @@ interface Author {
   id: string;
   name: string;
   display_name: string | null;
+  username: string | null;
   kind: string;
   role: string;
 }
 
-/** 发言人怎么显示：能看真名的人看到名字；其余人看到校外成员的昵称，校内成员只显示“协会成员” */
+/** 发言人怎么显示：规则见 shownName（能看真名的人看到名字，其余人看到用户名） */
 function authorLabel(c: Ctx, a: Author | undefined, agent: boolean): string {
   if (agent) return "AI 助手";
   if (!a) return "已离开的成员";
   if (a.id === viewerId(c)) return "你";
-  const nick = a.display_name || a.name;
-  const shown = seesNames(c) || a.kind === "external" ? nick : "协会成员";
+  const shown = shownName(c, { name: a.name, username: a.username, displayName: a.display_name });
   return a.role === "admin" ? `${shown}（管理员）` : shown;
 }
 
@@ -90,7 +90,7 @@ async function loadPins(c: Ctx, where: string, ...binds: unknown[]) {
   const userIds = [...new Set([...pins.results.map((p) => p.user_id), ...msgs.results.map((m) => m.user_id).filter((x): x is string => !!x)])];
   const users = userIds.length
     ? await db
-        .prepare(`SELECT id, name, display_name, kind, role FROM users WHERE id IN (${userIds.map(() => "?").join(",")})`)
+        .prepare(`SELECT id, name, display_name, username, kind, role FROM users WHERE id IN (${userIds.map(() => "?").join(",")})`)
         .bind(...userIds)
         .all<Author>()
     : { results: [] as Author[] };

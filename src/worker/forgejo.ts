@@ -63,8 +63,15 @@ export interface Who {
   kind: "campus" | "external";
 }
 
-/** 平台账号对应的 Forgejo 用户名：校内 s+学号，校外 x-+用户名 */
+/**
+ * 平台账号对应的 Forgejo 用户名（2026-11-28 起）：设了平台用户名就用它，仓库地址里不再出现学号；
+ * 还没设用户名的老账号沿用以前的名字（校内 s+学号，校外 x-+用户名），设了以后自动改名。
+ */
 export function forgejoName(u: Who): string {
+  return u.username ? u.username.toLowerCase() : legacyName(u);
+}
+
+function legacyName(u: Who): string {
   if (u.kind === "campus") return `s${u.studentNo}`.toLowerCase();
   return `x-${(u.username ?? u.id).toLowerCase().replace(/[^a-z0-9_.-]/g, "-")}`.slice(0, 39);
 }
@@ -76,14 +83,49 @@ function randomPassword(): string {
   return `Hn-${[...b].map((x) => x.toString(16).padStart(2, "0")).join("")}`;
 }
 
-/** 建学员的 Forgejo 账号（已经有了就跳过）。这个随机密码学员不知道：网页里看仓库走平台；要在本地 clone、push，学员在仓库页自己设一个 Git 密码。 */
-export async function ensureUser(env: Env, u: Who): Promise<string> {
-  const name = forgejoName(u);
+/** 在 Forgejo 建账号。422 = 名字已存在或者 Forgejo 不收（保留字）：已存在就当作建好了，不收返回 false */
+async function createUser(env: Env, name: string): Promise<boolean> {
+  // full_name 也用用户名：仓库公开以后，Forgejo 页面上不能出现真名
+  const r = await call(env, "POST", "/admin/users", { username: name, full_name: name, email: emailOf(name), password: randomPassword(), must_change_password: false, visibility: "private" }, [422]);
+  if (r.status !== 422) return true;
+  return (await call(env, "GET", `/users/${name}`, undefined, [404])).status === 200;
+}
+
+/**
+ * 建学员的 Forgejo 账号（已经有了就跳过；平台用户名变了就跟着改名）。返回 Forgejo 用户名。
+ * 这个随机密码学员不知道：网页里看仓库走平台；本地 clone、push 用仓库页设的 Git 密码，或者 VSCode 插件拿到的凭据。
+ */
+export async function ensureUser(env: Env, who: Who): Promise<string> {
+  // 用户名以数据库里现在的为准：排队重试的提交带的是提交那一刻的账号信息，中间可能改过用户名
+  const cur = await env.DB.prepare("SELECT username FROM users WHERE id = ?").bind(who.id).first<{ username: string | null }>();
+  const u = cur ? { ...who, username: cur.username } : who;
+  const want = forgejoName(u);
   const row = await env.DB.prepare("SELECT username FROM forgejo_users WHERE user_id = ?").bind(u.id).first<{ username: string }>();
-  if (row) return row.username;
-  await call(env, "POST", "/admin/users", { username: name, full_name: u.name, email: emailOf(name), password: randomPassword(), must_change_password: false, visibility: "private" }, [422]);
+  if (row) return row.username === want ? row.username : renameUser(env, u.id, row.username, want);
+  let name = want;
+  if (!(await createUser(env, name))) {
+    name = legacyName(u);
+    await createUser(env, name);
+  }
   await env.DB.prepare("INSERT OR IGNORE INTO forgejo_users (user_id, username, created_at) VALUES (?, ?, ?)").bind(u.id, name, Date.now()).run();
   return name;
+}
+
+/** Forgejo 账号改名（仓库跟着走，旧地址 Forgejo 会自动跳转）。改不成（新名字被占、保留字）就沿用旧名字 */
+async function renameUser(env: Env, userId: string, from: string, to: string): Promise<string> {
+  try {
+    const r = await call(env, "POST", `/admin/users/${from}/rename`, { new_username: to }, [404, 422]);
+    if (r.status === 404) {
+      // Forgejo 那边没有旧账号了（比如被管理员删了）：按新名字重建
+      if (!(await createUser(env, to))) return from;
+    } else if (r.status === 422) return from;
+    await call(env, "PATCH", `/admin/users/${to}`, { full_name: to, email: emailOf(to), login_name: to, source_id: 0 }, [422]);
+    await env.DB.prepare("UPDATE forgejo_users SET username = ? WHERE user_id = ?").bind(to, userId).run();
+    return to;
+  } catch (err) {
+    console.error("Forgejo 改名失败", from, to, err);
+    return from;
+  }
 }
 
 export async function ensureRepo(env: Env, owner: string, repo: string, description: string): Promise<void> {
@@ -183,7 +225,8 @@ export interface SubmissionSync {
 /** 把一次提交写进学员仓库 */
 export async function syncSubmission(env: Env, s: SubmissionSync): Promise<void> {
   const owner = await ensureUser(env, s.user);
-  const author = { name: s.user.name, email: emailOf(owner) };
+  // 提交作者写仓库用户名，不写真名（仓库可以公开）
+  const author = { name: owner, email: emailOf(owner) };
   const parts = s.problem.split("/");
   const result = `${VERDICT_TEXT[s.verdict]}${s.total ? `（${s.passed}/${s.total}）` : ""}`;
   if (parts.length === 3) {
@@ -224,7 +267,7 @@ async function updateReadme(env: Env, user: Who, owner: string, course: string, 
     const a = await loadAssignment(env, course, id);
     if (a) assignments.push({ id: a.id, title: a.title, repoDir: a.repoDir, problems: a.problems.map((p) => ({ id: p.id, title: p.title })) });
   }
-  const md = courseReadme({ course, name: user.name, assignments, solved: new Set(solved.results.map((r) => r.problem)), started });
+  const md = courseReadme({ course, name: owner, assignments, solved: new Set(solved.results.map((r) => r.problem)), started });
   await commitFiles(env, owner, course, { "README.md": md }, "更新 README：学习进度", author);
 }
 

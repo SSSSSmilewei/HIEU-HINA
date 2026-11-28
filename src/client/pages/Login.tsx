@@ -51,7 +51,7 @@ type Kind = "campus" | "external";
 
 /** 学号：9 位数字（和后端 STUDENT_NO_RE 一致；登录时不检查，兼容以前录入的账号） */
 const STUDENT_NO_RE = /^\d{9}$/;
-/** 校外账号的用户名（和后端 USERNAME_RE 一致） */
+/** 用户名（和后端 USERNAME_RE 一致；校内、校外都要填） */
 const USERNAME_RE = /^[a-z][a-z0-9_-]{2,19}$/;
 
 function ErrorText({ error }: { error: string | null }) {
@@ -116,7 +116,26 @@ export function LoginPage({ onLogin }: { onLogin: (me: Me) => void }) {
     <label className="field">
       账号
       <input className="input" value={account} onChange={(e) => setAccount(e.target.value)} autoFocus autoComplete="username" maxLength={100} autoCapitalize="off" spellCheck={false} />
-      <span className="hint xsmall">校内填学号，校外填用户名或邮箱</span>
+      <span className="hint xsmall">校内填学号或用户名，校外填用户名或邮箱</span>
+    </label>
+  );
+  const usernameField = (
+    <label className="field">
+      用户名
+      <input
+        className="input"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        autoComplete={kind === "campus" ? "off" : "username"}
+        maxLength={20}
+        autoCapitalize="off"
+        spellCheck={false}
+        aria-invalid={badUser || undefined}
+      />
+      <span className={badUser ? "error-text xsmall" : "hint xsmall"}>
+        3–20 位，小写字母开头，可用小写字母、数字、_ 和 -。
+        {kind === "campus" ? "校外人员和游客只能看到你的用户名，看不到姓名和学号；用户名也用作你的仓库地址，注册后可以修改。" : ""}
+      </span>
     </label>
   );
   const registerFields =
@@ -145,23 +164,11 @@ export function LoginPage({ onLogin }: { onLogin: (me: Me) => void }) {
           <input className="input" value={klass} onChange={(e) => setKlass(e.target.value)} maxLength={30} placeholder="例如 计科2501" />
           <span className="hint xsmall">签到表按班级给学校，请写全</span>
         </label>
+        {usernameField}
       </>
     ) : (
       <>
-        <label className="field">
-          用户名
-          <input
-            className="input"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            autoComplete="username"
-            maxLength={20}
-            autoCapitalize="off"
-            spellCheck={false}
-            aria-invalid={badUser || undefined}
-          />
-          <span className={badUser ? "error-text xsmall" : "hint xsmall"}>3–20 位，小写字母开头，可用小写字母、数字、_ 和 -</span>
-        </label>
+        {usernameField}
         <label className="field">
           昵称
           <input className="input" value={name} onChange={(e) => setName(e.target.value)} autoComplete="nickname" maxLength={20} />
@@ -244,7 +251,7 @@ export function LoginPage({ onLogin }: { onLogin: (me: Me) => void }) {
               void run(
                 "/api/auth/register",
                 kind === "campus"
-                  ? { kind, studentNo: studentNo.trim(), name, className: klass.trim(), password, confirm, invite: invite.trim() }
+                  ? { kind, studentNo: studentNo.trim(), username: uname, name, className: klass.trim(), password, confirm, invite: invite.trim() }
                   : { kind, username: uname, email: email.trim(), org: org.trim(), name, password, confirm, invite: invite.trim() },
               );
             }}
@@ -272,7 +279,7 @@ export function LoginPage({ onLogin }: { onLogin: (me: Me) => void }) {
             <button
               className="btn btn-primary btn-lg btn-block"
               type="submit"
-              disabled={busy || (kind === "campus" ? !STUDENT_NO_RE.test(studentNo.trim()) || !klass.trim() : !USERNAME_RE.test(uname)) || !name.trim() || !invite.trim() || !pwReady}
+              disabled={busy || !USERNAME_RE.test(uname) || (kind === "campus" && (!STUDENT_NO_RE.test(studentNo.trim()) || !klass.trim())) || !name.trim() || !invite.trim() || !pwReady}
             >
               {busy ? <Spinner /> : "注册并登录"}
             </button>

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, test } from "bun:test";
 import { memoryD1 } from "../scripts/local-d1";
 import { ensureSchema } from "../src/worker/db";
 import type { Env } from "../src/worker/env";
-import { drainQueue, forgejoName, syncOrQueue, type SubmissionSync } from "../src/worker/forgejo";
+import { drainQueue, ensureUser, forgejoName, syncOrQueue, type SubmissionSync } from "../src/worker/forgejo";
 
 /** 学员仓库（故事 2.1）。Forgejo 用内存里的假服务代替，只实现用到的几个接口。 */
 const URL_BASE = "http://forgejo.test";
@@ -36,6 +36,16 @@ function fakeForgejo(opts: { down?: () => boolean } = {}) {
       users.add(body.username);
       return res(201, { login: body.username });
     }
+    if ((m = path.match(/^\/admin\/users\/([^/]+)\/rename$/)) && method === "POST") {
+      if (!users.has(m[1]!)) return res(404, {});
+      if (users.has(body.new_username)) return res(422, { message: "taken" });
+      users.delete(m[1]!);
+      users.add(body.new_username);
+      for (const r of [...repos]) if (r.startsWith(`${m[1]}/`)) (repos.delete(r), repos.add(`${body.new_username}/${r.slice(m[1]!.length + 1)}`));
+      return res(204);
+    }
+    if ((m = path.match(/^\/admin\/users\/([^/]+)$/)) && method === "PATCH") return users.has(m[1]!) ? res(200, {}) : res(404, {});
+    if ((m = path.match(/^\/users\/([^/]+)$/)) && method === "GET") return users.has(m[1]!) ? res(200, {}) : res(404, {});
     if ((m = path.match(/^\/admin\/users\/([^/]+)\/repos$/)) && method === "POST") {
       repos.add(`${m[1]}/${body.name}`);
       return res(201, {});
@@ -105,9 +115,21 @@ const sub = (over: Partial<SubmissionSync> = {}): SubmissionSync => ({
 });
 
 describe("学员仓库", () => {
-  test("用户名：校内 s+学号，校外 x-+用户名", () => {
+  test("用户名：设了平台用户名就用它；没设的老账号校内 s+学号", () => {
     expect(forgejoName(student)).toBe("s250101001");
-    expect(forgejoName({ ...student, kind: "external", username: "Alice.W" })).toBe("x-alice.w");
+    expect(forgejoName({ ...student, username: "lin" })).toBe("lin");
+    expect(forgejoName({ ...student, kind: "external", username: "alice" })).toBe("alice");
+  });
+
+  test("设了用户名以后仓库账号跟着改名；新名字被占就沿用旧名字", async () => {
+    const f = fakeForgejo();
+    const e = await env();
+    expect(await ensureUser(e, student)).toBe("s250101001");
+    expect(await ensureUser(e, { ...student, username: "lin" })).toBe("lin");
+    expect(f.users.has("lin") && !f.users.has("s250101001")).toBe(true);
+    expect((await e.DB.prepare("SELECT username FROM forgejo_users WHERE user_id = 'u1'").first<{ username: string }>())!.username).toBe("lin");
+    f.users.add("taken");
+    expect(await ensureUser(e, { ...student, username: "taken" })).toBe("lin");
   });
 
   test("第一次提交：建账号和仓库，先提交官方起始代码，再提交学员的代码", async () => {

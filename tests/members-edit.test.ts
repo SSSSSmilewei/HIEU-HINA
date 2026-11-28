@@ -92,7 +92,10 @@ describe("管理员修改成员信息", () => {
     expect((await admin("PUT", `/api/admin/members/${id}`, { studentNo: "254030411" })).status).toBe(409);
     expect((await admin("PUT", `/api/admin/members/${id}`, { studentNo: "123" })).status).toBe(400);
     expect((await admin("PUT", `/api/admin/members/${id}`, { name: " " })).status).toBe(400);
-    expect((await admin("PUT", `/api/admin/members/${id}`, { username: "lin" })).status).toBe(400);
+    // 2026-11-28 起校内账号也有用户名；邮箱和单位仍然只有校外账号有
+    expect((await admin("PUT", `/api/admin/members/${id}`, { username: "lin" })).status).toBe(200);
+    expect((await admin("PUT", `/api/admin/members/${id}`, { username: "s254030411" })).status).toBe(400);
+    expect((await admin("PUT", `/api/admin/members/${id}`, { email: "lin@example.com" })).status).toBe(400);
     expect((await admin("PUT", `/api/admin/members/nobody`, { name: "x" })).status).toBe(404);
   });
 
@@ -146,5 +149,30 @@ describe("安装包从本站转发", () => {
     expect(old.headers.get("content-disposition")).toContain("hiana-0.4.0-arm64-v8a.apk");
     expect((await call("GET", "/api/app/apk?abi=../../evil")).status).toBe(400);
     expect((await call("GET", "/api/app/apk?v=../x")).status).toBe(404);
+  });
+});
+
+describe("用户名（2026-11-28 起校内账号也有）", () => {
+  test("校内注册带用户名，能用用户名登录；重名、保留字、格式不对会拒绝", async () => {
+    const { call, admin, invite, pw } = setup();
+    await admin("GET", "/api/auth/me");
+    const base = { studentNo: "250101001", name: "林同学", className: "计科2501", ...pw };
+    expect((await call("POST", "/api/auth/register", { body: { ...base, username: "Lin_2025", invite: await invite() } })).data.member.username).toBe("lin_2025");
+    const login = await call("POST", "/api/auth/member", { body: { account: "lin_2025", password: pw.password } });
+    expect(login.data.member.studentNo).toBe("250101001");
+
+    const other = { studentNo: "250101002", name: "陈同学", className: "计科2501", ...pw };
+    expect((await call("POST", "/api/auth/register", { body: { ...other, username: "lin_2025", invite: await invite() } })).status).toBe(409);
+    expect((await call("POST", "/api/auth/register", { body: { ...other, username: "s250101001", invite: await invite() } })).status).toBe(400);
+    expect((await call("POST", "/api/auth/register", { body: { ...other, username: "admin", invite: await invite() } })).status).toBe(400);
+    expect((await call("POST", "/api/auth/register", { body: { ...other, username: "9chen", invite: await invite() } })).status).toBe(400);
+    // 旧版 App 不带用户名也能注册，之后在“我的”里补
+    const old = await call("POST", "/api/auth/register", { body: { ...other, invite: await invite() } });
+    expect(old.data.member.username).toBeNull();
+    const t = old.data.token as string;
+    expect((await call("PUT", "/api/me/username", { body: { username: "lin_2025" }, token: t })).status).toBe(409);
+    expect((await call("PUT", "/api/me/username", { body: { username: "chen" }, token: t })).data.username).toBe("chen");
+    expect((await call("GET", "/api/auth/me", { token: t })).data.member.username).toBe("chen");
+    expect((await call("PUT", "/api/me/username", { body: { username: "chen" } })).status).toBe(401);
   });
 });

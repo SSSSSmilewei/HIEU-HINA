@@ -316,6 +316,10 @@ describe("蓝色钉子", () => {
     expect(guest.data[0].author).toBe("协会成员");
     expect(guest.data[0].messages[0].body).toBe(pin.body);
     expect((await call("chen", "GET", "/api/pins?course=cs50x&page=notes-1")).data[0].author).toBe("林同学");
+    // 设了用户名以后，游客看到的是用户名（2026-11-28 起）
+    expect((await call("lin", "PUT", "/api/me/username", { username: "lin-x" })).data.username).toBe("lin-x");
+    expect((await call("guest", "GET", "/api/pins?course=cs50x&page=notes-1")).data[0].author).toBe("@lin-x");
+    expect((await call("chen", "GET", "/api/pins?course=cs50x&page=notes-1")).data[0].author).toBe("林同学");
 
     // 别人回复后算“有人回了”，提问的人就不能撤回了
     const replied = await call("chen", "POST", `/api/pins/${id}/messages`, { body: "换行符" });

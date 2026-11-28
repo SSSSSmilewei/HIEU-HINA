@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { getSetting } from "../db";
+import { ensureUser, forgejoEnabled } from "../forgejo";
 import { type Ctx, HttpError, type Router, json } from "../http";
 import {
   AccountError,
@@ -10,6 +11,7 @@ import {
   resetWithCode,
   setDisplayName,
   setOwnClass,
+  setOwnUsername,
   setOwnPassword,
   touchLastSeen,
 } from "../members";
@@ -203,6 +205,23 @@ export function authRoutes(api: Router) {
     const { className } = z.object({ className: z.string().max(60) }).parse(await c.body());
     try {
       return json({ className: await setOwnClass(c.env.DB, uid, className) });
+    } catch (err) {
+      if (err instanceof AccountError) throw new HttpError(err.status, err.message);
+      throw err;
+    }
+  });
+
+  /** 本人设置 / 修改用户名（校内老账号补填，校外也能改）。返回 username。 */
+  api.put("/api/me/username", async (c) => {
+    const uid = memberId(c);
+    const { username } = z.object({ username: z.string().max(40) }).parse(await c.body());
+    try {
+      const u = requireUser(c);
+      const value = await setOwnUsername(c.env.DB, uid, username);
+      // 已经有仓库账号的，仓库账号跟着改名（失败不影响平台用户名，下次提交时会再试）
+      if (forgejoEnabled(c.env) && (await c.env.DB.prepare("SELECT 1 AS x FROM forgejo_users WHERE user_id = ?").bind(uid).first()))
+        await ensureUser(c.env, { id: uid, name: u.name, studentNo: u.studentNo, username: value, kind: u.kind }).catch((e) => console.error("仓库账号改名失败", e));
+      return json({ username: value });
     } catch (err) {
       if (err instanceof AccountError) throw new HttpError(err.status, err.message);
       throw err;
