@@ -1,0 +1,191 @@
+/* 深海地图（故事 3.7）：固定的深海配色，不跟皮肤走（和协会页一样） */
+.sea {
+  --sea-top: #0e4d6e;
+  --sea-bottom: #020b1a;
+  --sea-text: #d9f1ff;
+  --sea-muted: #7fa9c2;
+  --sea-glow: #5ee7ff;
+  --sea-amber: #ffc45e;
+  padding: 32px 24px 64px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, var(--sea-top) 0%, #072a45 30%, #04172e 65%, var(--sea-bottom) 100%);
+  color: var(--sea-text);
+}
+@media (max-width: 640px) {
+  .sea {
+    padding: 24px 16px 48px;
+    border-radius: 14px;
+  }
+}
+.sea a {
+  color: inherit;
+  text-decoration: none;
+}
+.sea-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.sea-back {
+  color: var(--sea-muted) !important;
+  font-size: 13px;
+}
+.sea-title {
+  margin: 8px 0 4px;
+  font-size: 28px;
+  letter-spacing: 0.08em;
+}
+.sea-sub {
+  margin: 0;
+  color: var(--sea-muted);
+  font-size: 14px;
+}
+.sea-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.sea-xp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sea-xp strong {
+  color: var(--sea-glow);
+  font-size: 28px;
+  font-variant-numeric: tabular-nums;
+}
+.sea-xp span {
+  color: var(--sea-muted);
+  font-size: 12px;
+}
+.sea-next {
+  padding: 8px 14px;
+  border: 1px solid var(--sea-glow);
+  border-radius: 999px;
+  color: var(--sea-glow) !important;
+  font-size: 14px;
+}
+.sea-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 960px;
+  margin: 20px auto 8px;
+  padding: 0;
+  list-style: none;
+}
+.sea-badges li {
+  padding: 4px 12px;
+  border: 1px solid rgba(127, 169, 194, 0.35);
+  border-radius: 999px;
+  color: var(--sea-muted);
+  font-size: 13px;
+}
+.sea-badges li.is-on {
+  border-color: var(--sea-amber);
+  color: var(--sea-amber);
+}
+.sea-badge-icon {
+  margin-right: 4px;
+}
+.sea-dive {
+  max-width: 960px;
+  margin: 24px auto 0;
+  padding: 0;
+  list-style: none;
+}
+.sea-week {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 16px;
+  padding: 18px 0;
+  border-top: 1px dashed rgba(127, 169, 194, 0.25);
+}
+.sea-depth {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  color: var(--sea-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.sea-depth small {
+  font-size: 12px;
+  opacity: 0.8;
+}
+.sea-leg h2 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 600;
+}
+.sea-nodes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.sea-node {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid rgba(127, 169, 194, 0.25);
+  border-radius: 12px;
+  background: rgba(2, 11, 26, 0.35);
+  transition: border-color 0.2s, background 0.2s;
+}
+.sea-node:hover {
+  border-color: var(--sea-glow);
+}
+.sea-dot {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--sea-muted);
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+}
+.sea-name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 14px;
+}
+.sea-name small {
+  color: var(--sea-muted);
+  font-size: 12px;
+}
+.sea-node.is-done .sea-dot {
+  border-color: var(--sea-glow);
+  background: var(--sea-glow);
+  color: var(--sea-bottom);
+  box-shadow: 0 0 12px var(--sea-glow);
+}
+.sea-node.is-doing .sea-dot {
+  border-color: var(--sea-amber);
+  color: var(--sea-amber);
+}
+.sea-node.is-ahead {
+  opacity: 0.5;
+}
+.sea-node.is-optional .sea-dot {
+  border-style: dashed;
+}
+.sea-foot {
+  max-width: 960px;
+  margin: 32px auto 0;
+  color: var(--sea-muted);
+  font-size: 13px;
+  text-align: center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sea-node {
+    transition: none;
+  }
+}

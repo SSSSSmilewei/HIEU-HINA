@@ -1,0 +1,42 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "disc07",
+ "title": "讨论课 7：面向对象编程、继承",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/disc/disc07/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "disc07",
+ "repoDir": "disc/disc07",
+ "intro": "讨论课的题目原本是小组在纸上一起做的。这里收了能自动判对错的两类题：写代码的题（用官方 doctest 判，做对之后题目下方显示官方解答），和画环境图的题（先在纸上画，再把每一帧填进来，判题服务实际运行程序后逐帧比对）。口头讨论的题请看讲义页的官方讲义。",
+ "problems": [
+  {
+   "id": "draw",
+   "title": "Draw",
+   "titleEn": "Draw",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nThe `draw` function takes a list `hand` and a list of unique non-negative integers `positions` that are all less than the length of `hand`. It removes `hand[p]` for each `p` in `positions` and returns a list of those elements in the order they appeared in `hand` (not the order they appeared in `positions`).\n\nFill in each blank with one of these names: `list`, `map`, `filter`, `reverse`, `reversed`, `sort`, `sorted`, `append`, `insert`, `index`, `remove`, `pop`, `zip`, or `sum`. See the [built-in functions](https://docs.python.org/3/library/functions.html) and [list methods](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) documentation for descriptions of what these do.\n\n*Aced* it? Give yourselves a *hand*!\n",
+   "statementEn": "The `draw` function takes a list `hand` and a list of unique non-negative integers `positions` that are all less than the length of `hand`. It removes `hand[p]` for each `p` in `positions` and returns a list of those elements in the order they appeared in `hand` (not the order they appeared in `positions`).\n\nFill in each blank with one of these names: `list`, `map`, `filter`, `reverse`, `reversed`, `sort`, `sorted`, `append`, `insert`, `index`, `remove`, `pop`, `zip`, or `sum`. See the [built-in functions](https://docs.python.org/3/library/functions.html) and [list methods](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) documentation for descriptions of what these do.\n\n*Aced* it? Give yourselves a *hand*!\n",
+   "editable": [
+    "draw.py"
+   ],
+   "focus": {
+    "file": "draw.py",
+    "symbol": "draw"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "draw"
+   },
+   "hints": [
+    "For a list `s` and integer `i`, `s.pop(i)` returns and removes the `i`th element, which changes the position (index) of all the later elements but does not affect the position of prior elements.",
+    "Calling `reversed(s)` on a list `s` returns an iterator. Calling `list(reversed(s))` returns a list of the elements in `s` in reversed order."
+   ],
+   "explain": "官方解答：\n\n```python\ndef draw(hand, positions):\n    \"\"\"Remove and return the items at positions from hand.\n\n    >>> hand = ['A', 'K', 'Q', 'J', 10, 9]\n    >>> draw(hand, [2, 1, 4])\n    ['K', 'Q', 10]\n    >>> hand\n    ['A', 'J', 9]\n    \"\"\"\n    return list(reversed( [hand.pop(i) for i in reversed(sorted(positions))] ))\n```\n"
+  }
+ ]
+}

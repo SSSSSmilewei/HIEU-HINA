@@ -1,0 +1,169 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "hw03",
+ "title": "作业 3：递归、树形递归",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/hw/hw03/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "hw03",
+ "repoDir": "hw/hw03",
+ "intro": "",
+ "problems": [
+  {
+   "id": "num_eights",
+   "title": "Num Eights",
+   "titleEn": "Num Eights",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a recursive function `num_eights` that takes a positive integer `num` and returns the number of times the digit 8 appears in `num`.\n\n**Important:** Use recursion; the tests will fail if you use any assignment statements or loops. (You can define new functions, but don't put assignment statements there either.)\n",
+   "statementEn": "Write a recursive function `num_eights` that takes a positive integer `num` and returns the number of times the digit 8 appears in `num`.\n\n**Important:** Use recursion; the tests will fail if you use any assignment statements or loops. (You can define new functions, but don't put assignment statements there either.)\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "num_eights"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "num_eights"
+   }
+  },
+  {
+   "id": "digit_distance",
+   "title": "Digit Distance",
+   "titleEn": "Digit Distance",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nFor a given integer, the *digit distance* is the sum of the absolute differences between consecutive digits. For example:\n\n- The digit distance of `61` is `5`, as the absolute value of `6 - 1` is `5`.\n- The digit distance of `71253` is `12` (`abs(7-1) + abs(1-2) + abs(2-5) + abs(5-3)` = `6 + 1 + 3 + 2`).\n- The digit distance of `6` is `0` because there are no pairs of consecutive digits.\n\nWrite a function that determines the digit distance of a positive integer. You must use recursion or the tests will fail.\n",
+   "statementEn": "For a given integer, the *digit distance* is the sum of the absolute differences between consecutive digits. For example:\n\n- The digit distance of `61` is `5`, as the absolute value of `6 - 1` is `5`.\n- The digit distance of `71253` is `12` (`abs(7-1) + abs(1-2) + abs(2-5) + abs(5-3)` = `6 + 1 + 3 + 2`).\n- The digit distance of `6` is `0` because there are no pairs of consecutive digits.\n\nWrite a function that determines the digit distance of a positive integer. You must use recursion or the tests will fail.\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "digit_distance"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "digit_distance"
+   }
+  },
+  {
+   "id": "interleaved_sum",
+   "title": "Interleaved Sum",
+   "titleEn": "Interleaved Sum",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function `interleaved_sum`, which takes in a number `num` and two one-argument functions: `f_odd` and `f_even`. It returns the sum of applying `f_odd` to every odd number and `f_even` to every even number from 1 to `num` *inclusive*.\n\nFor example, executing `interleaved_sum(5, lambda x: x, lambda x: x * x)` returns `1 + 2*2 + 3 + 4*4 + 5 = 29`.\n\n**Important:** Implement this function without using any loops or directly testing if a number is odd or even (no using `%`). Instead of directly checking whether a number is even or odd, start with 1, which you know is an odd number.\n\n**Hint:** Introduce an inner helper function that takes an odd number `k` and computes an interleaved sum from `k` to `num` (including `num`). Alternatively, you can use mutual recursion.\n",
+   "statementEn": "Write a function `interleaved_sum`, which takes in a number `num` and two one-argument functions: `f_odd` and `f_even`. It returns the sum of applying `f_odd` to every odd number and `f_even` to every even number from 1 to `num` *inclusive*.\n\nFor example, executing `interleaved_sum(5, lambda x: x, lambda x: x * x)` returns `1 + 2*2 + 3 + 4*4 + 5 = 29`.\n\n**Important:** Implement this function without using any loops or directly testing if a number is odd or even (no using `%`). Instead of directly checking whether a number is even or odd, start with 1, which you know is an odd number.\n\n**Hint:** Introduce an inner helper function that takes an odd number `k` and computes an interleaved sum from `k` to `num` (including `num`). Alternatively, you can use mutual recursion.\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "interleaved_sum"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "interleaved_sum"
+   }
+  },
+  {
+   "id": "count_dollars",
+   "title": "Count Dollars",
+   "titleEn": "Count Dollars",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nGiven a positive integer `sum_needed`, a set of dollar bills makes change for `sum_needed` if the sum of the values of the dollar bills is `sum_needed`. Here we will use standard US dollar bill values: 1, 5, 10, 20, 50, and 100. For example, the following sets make change for `15`:\n\n- 15 1-dollar bills\n- 10 1-dollar, 1 5-dollar bills\n- 5 1-dollar, 2 5-dollar bills\n- 5 1-dollar, 1 10-dollar bills\n- 3 5-dollar bills\n- 1 5-dollar, 1 10-dollar bills\n\nThus, there are 6 ways to make change for `15`. Write a **recursive** function `count_dollars` that takes a positive integer `sum_needed` and returns the number of ways to make change for `sum_needed` using 1, 5, 10, 20, 50, and 100 dollar bills.\n\nUse `next_smaller_dollar` in your solution: `next_smaller_dollar` will return the next smaller dollar bill value from the input (e.g. `next_smaller_dollar(5)` is `1`). *The function will return `None` if the next dollar bill value does not exist.*\n\n**Important:** Use recursion; the tests will fail if you use loops.\n\n**Hint:** Refer to the [implementation](https://www.composingprograms.com/pages/17-recursive-functions.html#example-partitions) of `count_partitions` for an example of how to count the ways to sum up to a final value with smaller parts. If you need to keep track of more than one value across recursive calls, consider writing a helper function.\n",
+   "statementEn": "Given a positive integer `sum_needed`, a set of dollar bills makes change for `sum_needed` if the sum of the values of the dollar bills is `sum_needed`. Here we will use standard US dollar bill values: 1, 5, 10, 20, 50, and 100. For example, the following sets make change for `15`:\n\n- 15 1-dollar bills\n- 10 1-dollar, 1 5-dollar bills\n- 5 1-dollar, 2 5-dollar bills\n- 5 1-dollar, 1 10-dollar bills\n- 3 5-dollar bills\n- 1 5-dollar, 1 10-dollar bills\n\nThus, there are 6 ways to make change for `15`. Write a **recursive** function `count_dollars` that takes a positive integer `sum_needed` and returns the number of ways to make change for `sum_needed` using 1, 5, 10, 20, 50, and 100 dollar bills.\n\nUse `next_smaller_dollar` in your solution: `next_smaller_dollar` will return the next smaller dollar bill value from the input (e.g. `next_smaller_dollar(5)` is `1`). *The function will return `None` if the next dollar bill value does not exist.*\n\n**Important:** Use recursion; the tests will fail if you use loops.\n\n**Hint:** Refer to the [implementation](https://www.composingprograms.com/pages/17-recursive-functions.html#example-partitions) of `count_partitions` for an example of how to count the ways to sum up to a final value with smaller parts. If you need to keep track of more than one value across recursive calls, consider writing a helper function.\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "count_dollars"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "count_dollars"
+   }
+  },
+  {
+   "id": "count_dollars_upward",
+   "title": "Count Dollars Upward",
+   "titleEn": "Count Dollars Upward",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a **recursive** function `count_dollars_upward` that is just like `count_dollars` except it uses `next_larger_dollar`, which returns the next larger dollar bill value from the input (e.g. `next_larger_dollar(5)` is `10`). *The function will return `None` if the next dollar bill value does not exist.*\n\n**Important:** Use recursion; the tests will fail if you use loops.\n\n Exam Practice\n\nHomework assignments will also contain prior exam-level questions for you to take a look at. These questions have no submission component; feel free to attempt them if you'd like a challenge!\n\n1. Fall 2017 MT1 Q4a: [Digital](https://inst.eecs.berkeley.edu/~cs61a/fa21/exam/fa17/mt1/61a-fa17-mt1.pdf#page=5)\n2. Fall 2019 Final Q6b: [Palindromes](https://inst.eecs.berkeley.edu/~cs61a/sp21/exam/fa19/final/61a-fa19-final.pdf#page=6)\n\n Just For Fun Questions\n\nThe questions below are out of scope for 61A. You can try them if you want an extra challenge, but they're just puzzles that are not required for the course. Almost all students will skip them, and that's fine. We will **not** be prioritizing support for these questions on Ed or during Office Hours.\n",
+   "statementEn": "Write a **recursive** function `count_dollars_upward` that is just like `count_dollars` except it uses `next_larger_dollar`, which returns the next larger dollar bill value from the input (e.g. `next_larger_dollar(5)` is `10`). *The function will return `None` if the next dollar bill value does not exist.*\n\n**Important:** Use recursion; the tests will fail if you use loops.\n\n Exam Practice\n\nHomework assignments will also contain prior exam-level questions for you to take a look at. These questions have no submission component; feel free to attempt them if you'd like a challenge!\n\n1. Fall 2017 MT1 Q4a: [Digital](https://inst.eecs.berkeley.edu/~cs61a/fa21/exam/fa17/mt1/61a-fa17-mt1.pdf#page=5)\n2. Fall 2019 Final Q6b: [Palindromes](https://inst.eecs.berkeley.edu/~cs61a/sp21/exam/fa19/final/61a-fa19-final.pdf#page=6)\n\n Just For Fun Questions\n\nThe questions below are out of scope for 61A. You can try them if you want an extra challenge, but they're just puzzles that are not required for the course. Almost all students will skip them, and that's fine. We will **not** be prioritizing support for these questions on Ed or during Office Hours.\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "count_dollars_upward"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "count_dollars_upward"
+   }
+  },
+  {
+   "id": "move_stack",
+   "title": "Towers of Hanoi",
+   "titleEn": "Towers of Hanoi",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nA classic puzzle called the Towers of Hanoi is a game that consists of three rods, and a number of disks of different sizes which can slide onto any rod. The puzzle starts with `num` disks in a neat stack in ascending order of size on a `start` rod, the smallest at the top, forming a conical shape.  The objective of the puzzle is to move the entire stack to an `end` rod, obeying the following rules:\n\n- Only one disk may be moved at a time.\n- Each move consists of taking the top (smallest) disk from one of the rods and sliding it onto another rod, on top of the other disks that may already be present on that rod.\n- No disk may be placed on top of a smaller disk.\n\n Complete the definition of `move_stack`, which prints out the steps required to move `num` disks from the `start` rod to the `end` rod without violating the rules. The provided `print_move` function will print out the step to move a single disk from the given `origin` to the given `destination`.\n\n**Hint:** Draw out a few games with various `num` on a piece of paper and try to find a pattern of disk movements that applies to any `num`. In your solution, take the recursive leap of faith whenever you need to move any amount of disks less than `num` from one rod to another. If you need more help, see the following hints.\n",
+   "statementEn": "A classic puzzle called the Towers of Hanoi is a game that consists of three rods, and a number of disks of different sizes which can slide onto any rod. The puzzle starts with `num` disks in a neat stack in ascending order of size on a `start` rod, the smallest at the top, forming a conical shape.  The objective of the puzzle is to move the entire stack to an `end` rod, obeying the following rules:\n\n- Only one disk may be moved at a time.\n- Each move consists of taking the top (smallest) disk from one of the rods and sliding it onto another rod, on top of the other disks that may already be present on that rod.\n- No disk may be placed on top of a smaller disk.\n\n Complete the definition of `move_stack`, which prints out the steps required to move `num` disks from the `start` rod to the `end` rod without violating the rules. The provided `print_move` function will print out the step to move a single disk from the given `origin` to the given `destination`.\n\n**Hint:** Draw out a few games with various `num` on a piece of paper and try to find a pattern of disk movements that applies to any `num`. In your solution, take the recursive leap of faith whenever you need to move any amount of disks less than `num` from one rod to another. If you need more help, see the following hints.\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "move_stack"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "move_stack"
+   }
+  },
+  {
+   "id": "make_anonymous_factorial",
+   "title": "Anonymous Factorial",
+   "titleEn": "Anonymous Factorial",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nThis question demonstrates that it's possible to write recursive functions without assigning them a name in the global frame.\n\nThe recursive factorial function can be written as a single expression by using a [conditional expression](http://docs.python.org/py3k/reference/expressions.html#conditional-expressions).\n\n```\n>>> fact = lambda n: 1 if n == 1 else mul(n, fact(sub(n, 1)))\n>>> fact(5)\n120\n```\n\nHowever, this implementation relies on the fact (no pun intended) that `fact` has a name, to which we refer in the body of `fact`. To write a recursive function, we have always given it a name using a `def` or assignment statement so that we can refer to the function within its own body. In this question, your job is to define `fact` recursively without using a `def` or assignment statement to give it a name.\n\nWrite an expression that computes `n` factorial using only call expressions, conditional expressions, and `lambda` expressions (no assignment or `def` statements).\n\n**Note:** You are not allowed to use `make_anonymous_factorial` in your return expression.\n\nThe `sub` and `mul` functions from the `operator` module are the only built-in functions required to solve this problem.\n\n**Hint:** In order to recursively compute the factorial, you need a name to use in the recursive calls. What other ways have we learned to give something a name, besides assignment statements and `def` statements?\n",
+   "statementEn": "This question demonstrates that it's possible to write recursive functions without assigning them a name in the global frame.\n\nThe recursive factorial function can be written as a single expression by using a [conditional expression](http://docs.python.org/py3k/reference/expressions.html#conditional-expressions).\n\n```\n>>> fact = lambda n: 1 if n == 1 else mul(n, fact(sub(n, 1)))\n>>> fact(5)\n120\n```\n\nHowever, this implementation relies on the fact (no pun intended) that `fact` has a name, to which we refer in the body of `fact`. To write a recursive function, we have always given it a name using a `def` or assignment statement so that we can refer to the function within its own body. In this question, your job is to define `fact` recursively without using a `def` or assignment statement to give it a name.\n\nWrite an expression that computes `n` factorial using only call expressions, conditional expressions, and `lambda` expressions (no assignment or `def` statements).\n\n**Note:** You are not allowed to use `make_anonymous_factorial` in your return expression.\n\nThe `sub` and `mul` functions from the `operator` module are the only built-in functions required to solve this problem.\n\n**Hint:** In order to recursively compute the factorial, you need a name to use in the recursive calls. What other ways have we learned to give something a name, besides assignment statements and `def` statements?\n",
+   "editable": [
+    "hw03.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "make_anonymous_factorial"
+   },
+   "focus": {
+    "file": "hw03.py",
+    "symbol": "make_anonymous_factorial"
+   }
+  }
+ ]
+}

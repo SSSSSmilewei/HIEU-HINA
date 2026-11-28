@@ -1,0 +1,103 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "hw05",
+ "title": "作业 5：迭代器、生成器",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/hw/hw05/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "hw05",
+ "repoDir": "hw/hw05",
+ "intro": "",
+ "problems": [
+  {
+   "id": "hailstone",
+   "title": "Infinite Hailstone",
+   "titleEn": "Infinite Hailstone",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a generator function that yields the elements of the hailstone sequence starting at number `n`. After reaching the end of the hailstone sequence, the generator should yield the number 1 indefinitely.\n\nHere is a quick reminder of how the hailstone sequence is defined:\n\n1. Pick a positive integer `n` as the start.\n2. If `n` is even, divide it by 2.\n3. If `n` is odd, multiply it by 3 and add 1.\n4. Continue this process until `n` is 1.\n\nTry to write this generator function recursively. If you are stuck, you can first try writing it iteratively and then seeing how you can turn that implementation into a recursive one.\n\n**Hint:** Since `hailstone` returns a generator, you can `yield from` a call to `hailstone`!\n",
+   "statementEn": "Write a generator function that yields the elements of the hailstone sequence starting at number `n`. After reaching the end of the hailstone sequence, the generator should yield the number 1 indefinitely.\n\nHere is a quick reminder of how the hailstone sequence is defined:\n\n1. Pick a positive integer `n` as the start.\n2. If `n` is even, divide it by 2.\n3. If `n` is odd, multiply it by 3 and add 1.\n4. Continue this process until `n` is 1.\n\nTry to write this generator function recursively. If you are stuck, you can first try writing it iteratively and then seeing how you can turn that implementation into a recursive one.\n\n**Hint:** Since `hailstone` returns a generator, you can `yield from` a call to `hailstone`!\n",
+   "editable": [
+    "hw05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "hailstone"
+   },
+   "focus": {
+    "file": "hw05.py",
+    "symbol": "hailstone"
+   }
+  },
+  {
+   "id": "merge",
+   "title": "Merge",
+   "titleEn": "Merge",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\n**Definition:** An *infinite iterator* is an iterator that never stops providing values when `next` is called. For example, `ones()` evaluates to an infinite iterator:\n\n```\ndef ones():\n    while True:\n        yield 1\n```\n\nWrite a generator function `merge(a, b)` that takes two infinite iterators, `a` and `b`, as inputs. Both iterators yield elements in strictly increasing order with no duplicates. Your generator should produce all unique elements from both input iterators in increasing order, without any duplicates.\n\n**Note:** The input iterators do not contain duplicates within themselves, but they may have common elements between them.\n",
+   "statementEn": "**Definition:** An *infinite iterator* is an iterator that never stops providing values when `next` is called. For example, `ones()` evaluates to an infinite iterator:\n\n```\ndef ones():\n    while True:\n        yield 1\n```\n\nWrite a generator function `merge(a, b)` that takes two infinite iterators, `a` and `b`, as inputs. Both iterators yield elements in strictly increasing order with no duplicates. Your generator should produce all unique elements from both input iterators in increasing order, without any duplicates.\n\n**Note:** The input iterators do not contain duplicates within themselves, but they may have common elements between them.\n",
+   "editable": [
+    "hw05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "merge"
+   },
+   "focus": {
+    "file": "hw05.py",
+    "symbol": "merge"
+   }
+  },
+  {
+   "id": "stair_ways",
+   "title": "Stair Ways",
+   "titleEn": "Stair Ways",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImagine that you want to go up a staircase that has `n` steps, where `n` is a positive integer. You can take either **one** or **two steps** each time you move.\n\nWrite a generator function `stair_ways` that yields all the different ways you can climb the staircase.\n\nEach \"way\" of climbing a staircase can be represented by a list of 1s and 2s, where each number indicates whether you take one step or two steps at a time.\n\nFor example, for a staircase with 3 steps, there are three ways to climb it:\n\n- You can take one step each time: `[1, 1, 1]`.\n- You can take two steps then one step: `[2, 1]`.\n- You can take one step then two steps: `[1, 2].`.\n\nTherefore, `stair_ways(3)` should yield `[1, 1, 1]`, `[2, 1]`, and `[1, 2]`. These can be yielded in any order.\n\n**Hint:** Think about the problem recursively. If you're on some step n, which steps could you have just been on?\n",
+   "statementEn": "Imagine that you want to go up a staircase that has `n` steps, where `n` is a positive integer. You can take either **one** or **two steps** each time you move.\n\nWrite a generator function `stair_ways` that yields all the different ways you can climb the staircase.\n\nEach \"way\" of climbing a staircase can be represented by a list of 1s and 2s, where each number indicates whether you take one step or two steps at a time.\n\nFor example, for a staircase with 3 steps, there are three ways to climb it:\n\n- You can take one step each time: `[1, 1, 1]`.\n- You can take two steps then one step: `[2, 1]`.\n- You can take one step then two steps: `[1, 2].`.\n\nTherefore, `stair_ways(3)` should yield `[1, 1, 1]`, `[2, 1]`, and `[1, 2]`. These can be yielded in any order.\n\n**Hint:** Think about the problem recursively. If you're on some step n, which steps could you have just been on?\n",
+   "editable": [
+    "hw05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "stair_ways"
+   },
+   "focus": {
+    "file": "hw05.py",
+    "symbol": "stair_ways"
+   }
+  },
+  {
+   "id": "yield_paths",
+   "title": "Yield Paths",
+   "titleEn": "Yield Paths",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a generator function `yield_paths` that takes a tree `t` and a target `target`. It yields each path from the root of `t` to any node with the label `target`.\n\nEach path should be returned as a list of labels from the root to the matching node. The paths can be yielded in any order.\n\n**Hint:** If you are having trouble getting started, think about how you would approach this problem if it was not a generator function. What would the recursive steps look like?\n\n**Hint:** Remember, you can iterate over generator objects because they are a type of iterator!\n",
+   "statementEn": "Write a generator function `yield_paths` that takes a tree `t` and a target `target`. It yields each path from the root of `t` to any node with the label `target`.\n\nEach path should be returned as a list of labels from the root to the matching node. The paths can be yielded in any order.\n\n**Hint:** If you are having trouble getting started, think about how you would approach this problem if it was not a generator function. What would the recursive steps look like?\n\n**Hint:** Remember, you can iterate over generator objects because they are a type of iterator!\n",
+   "editable": [
+    "hw05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "yield_paths"
+   },
+   "focus": {
+    "file": "hw05.py",
+    "symbol": "yield_paths"
+   }
+  }
+ ]
+}

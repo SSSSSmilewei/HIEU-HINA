@@ -1,0 +1,410 @@
+{
+ "$id": "https://study.shanmoew-denied.win/schema/assignment-v1.json",
+ "title": "hiana-assignment@1 作业包",
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "type": "object",
+ "properties": {
+  "format": {
+   "type": "string",
+   "const": "hiana-assignment@1"
+  },
+  "course": {
+   "type": "string",
+   "pattern": "^[a-z0-9][a-z0-9_-]{0,47}$"
+  },
+  "id": {
+   "type": "string",
+   "pattern": "^[a-z0-9][a-z0-9_-]{0,47}$"
+  },
+  "title": {
+   "type": "string",
+   "minLength": 1,
+   "maxLength": 80
+  },
+  "semester": {
+   "type": "string",
+   "pattern": "^(sp|su|fa)\\d{2}$"
+  },
+  "source": {
+   "type": "string",
+   "format": "uri"
+  },
+  "license": {
+   "type": "string",
+   "minLength": 1,
+   "maxLength": 400
+  },
+  "language": {
+   "type": "string",
+   "enum": [
+    "zh",
+    "en"
+   ]
+  },
+  "item": {
+   "type": "string",
+   "maxLength": 80
+  },
+  "repoDir": {
+   "type": "string",
+   "minLength": 1,
+   "maxLength": 200
+  },
+  "intro": {
+   "default": "",
+   "type": "string",
+   "maxLength": 60000
+  },
+  "problems": {
+   "minItems": 1,
+   "maxItems": 60,
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "format": {
+      "default": "hiana-problem@1",
+      "type": "string",
+      "const": "hiana-problem@1"
+     },
+     "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,47}$"
+     },
+     "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+     },
+     "titleEn": {
+      "type": "string",
+      "maxLength": 80
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "function",
+       "io",
+       "project",
+       "wwpd",
+       "envdiagram",
+       "scheme",
+       "sql",
+       "writetests",
+       "fixbug"
+      ]
+     },
+     "languages": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+       "type": "string",
+       "enum": [
+        "python",
+        "c",
+        "cpp",
+        "java",
+        "sql",
+        "scheme"
+       ]
+      }
+     },
+     "difficulty": {
+      "type": "string",
+      "enum": [
+       "easy",
+       "medium",
+       "hard"
+      ]
+     },
+     "statement": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60000
+     },
+     "statementEn": {
+      "type": "string",
+      "maxLength": 60000
+     },
+     "editable": {
+      "maxItems": 20,
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 200
+      }
+     },
+     "focus": {
+      "type": "object",
+      "properties": {
+       "file": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+       },
+       "symbol": {
+        "type": "string",
+        "maxLength": 60
+       }
+      },
+      "required": [
+       "file"
+      ]
+     },
+     "tests": {
+      "anyOf": [
+       {
+        "type": "object",
+        "properties": {
+         "kind": {
+          "type": "string",
+          "const": "ok"
+         },
+         "question": {
+          "type": "string",
+          "maxLength": 200,
+          "pattern": "^[\\w.-]+( [\\w.-]+)*$"
+         }
+        },
+        "required": [
+         "kind",
+         "question"
+        ]
+       },
+       {
+        "type": "object",
+        "properties": {
+         "kind": {
+          "type": "string",
+          "const": "io"
+         },
+         "cases": {
+          "minItems": 1,
+          "maxItems": 200,
+          "type": "array",
+          "items": {
+           "type": "object",
+           "properties": {
+            "input": {
+             "type": "string",
+             "maxLength": 1000000
+            },
+            "output": {
+             "type": "string",
+             "maxLength": 1000000
+            },
+            "hidden": {
+             "default": false,
+             "type": "boolean"
+            }
+           },
+           "required": [
+            "input",
+            "output"
+           ]
+          }
+         },
+         "compare": {
+          "default": "exact",
+          "type": "string",
+          "enum": [
+           "exact",
+           "unordered"
+          ]
+         }
+        },
+        "required": [
+         "kind",
+         "cases"
+        ]
+       },
+       {
+        "type": "object",
+        "properties": {
+         "kind": {
+          "type": "string",
+          "const": "envdiagram"
+         },
+         "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000
+         }
+        },
+        "required": [
+         "kind",
+         "code"
+        ]
+       }
+      ]
+     },
+     "timeMs": {
+      "default": 2000,
+      "type": "integer",
+      "minimum": 100,
+      "maximum": 20000
+     },
+     "memoryMb": {
+      "default": 256,
+      "type": "integer",
+      "minimum": 16,
+      "maximum": 1024
+     },
+     "knowledge": {
+      "default": [],
+      "maxItems": 10,
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "label": {
+         "type": "string",
+         "minLength": 1,
+         "maxLength": 40
+        },
+        "href": {
+         "type": "string",
+         "pattern": "^\\/\\S*$"
+        }
+       },
+       "required": [
+        "label"
+       ]
+      }
+     },
+     "unlock": {
+      "maxItems": 40,
+      "type": "array",
+      "items": {
+       "anyOf": [
+        {
+         "type": "object",
+         "properties": {
+          "type": {
+           "type": "string",
+           "const": "session"
+          },
+          "steps": {
+           "minItems": 1,
+           "maxItems": 60,
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "code": {
+              "type": "string",
+              "maxLength": 4000
+             },
+             "want": {
+              "maxItems": 50,
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "text": {
+                 "type": "string"
+                },
+                "hash": {
+                 "type": "string",
+                 "pattern": "^[0-9a-f]{32}$"
+                }
+               }
+              }
+             }
+            },
+            "required": [
+             "code",
+             "want"
+            ]
+           }
+          }
+         },
+         "required": [
+          "type",
+          "steps"
+         ]
+        },
+        {
+         "type": "object",
+         "properties": {
+          "type": {
+           "type": "string",
+           "const": "choice"
+          },
+          "question": {
+           "type": "string",
+           "maxLength": 4000
+          },
+          "choices": {
+           "minItems": 2,
+           "maxItems": 10,
+           "type": "array",
+           "items": {
+            "type": "string",
+            "maxLength": 4000
+           }
+          },
+          "answer": {
+           "type": "string",
+           "pattern": "^[0-9a-f]{32}$"
+          }
+         },
+         "required": [
+          "type",
+          "question",
+          "choices",
+          "answer"
+         ]
+        }
+       ]
+      }
+     },
+     "hints": {
+      "default": [],
+      "maxItems": 3,
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 2000
+      }
+     },
+     "explain": {
+      "type": "string",
+      "maxLength": 20000
+     },
+     "tags": {
+      "default": [],
+      "maxItems": 10,
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 20
+      }
+     }
+    },
+    "required": [
+     "id",
+     "title",
+     "kind",
+     "languages",
+     "statement",
+     "editable",
+     "tests"
+    ]
+   }
+  }
+ },
+ "required": [
+  "format",
+  "course",
+  "id",
+  "title",
+  "semester",
+  "license",
+  "repoDir",
+  "problems"
+ ]
+}

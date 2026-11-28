@@ -383,6 +383,147 @@ export const MIGRATIONS: string[][] = [
       PRIMARY KEY (user_id, course_slug, level_id)
     )`,
   ],
+  // v16：OJ 判题（2026-11，docs/prd/hiana-oj.md）：每次「提交」一条记录；每人每题第一次通过记一条；「运行」只记次数用来限流
+  [
+    `CREATE TABLE IF NOT EXISTS oj_submissions (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      problem TEXT NOT NULL,
+      language TEXT NOT NULL,
+      files TEXT NOT NULL,
+      verdict TEXT NOT NULL,
+      passed INTEGER NOT NULL,
+      total INTEGER NOT NULL,
+      time_ms INTEGER NOT NULL,
+      memory_kb INTEGER NOT NULL,
+      result TEXT NOT NULL,
+      created_at INTEGER NOT NULL
+    )`,
+    `CREATE INDEX IF NOT EXISTS oj_submissions_by_user ON oj_submissions(user_id, problem, created_at)`,
+    `CREATE INDEX IF NOT EXISTS oj_submissions_by_problem ON oj_submissions(problem, created_at)`,
+    `CREATE TABLE IF NOT EXISTS oj_solved (
+      user_id TEXT NOT NULL,
+      problem TEXT NOT NULL,
+      solved_at INTEGER NOT NULL,
+      PRIMARY KEY (user_id, problem)
+    )`,
+    `CREATE TABLE IF NOT EXISTS oj_hits (
+      who TEXT NOT NULL,
+      at INTEGER NOT NULL
+    )`,
+    `CREATE INDEX IF NOT EXISTS oj_hits_by_who ON oj_hits(who, at)`,
+  ],
+  // v17：学员仓库（Forgejo，故事 2.1）。平台账号 ↔ Forgejo 用户名；哪份作业的起始代码已经提交过；写不进去的提交排队重试
+  [
+    `CREATE TABLE IF NOT EXISTS forgejo_users (
+      user_id TEXT PRIMARY KEY,
+      username TEXT NOT NULL UNIQUE,
+      created_at INTEGER NOT NULL
+    )`,
+    `CREATE TABLE IF NOT EXISTS forgejo_dirs (
+      user_id TEXT NOT NULL,
+      dir TEXT NOT NULL,
+      created_at INTEGER NOT NULL,
+      PRIMARY KEY (user_id, dir)
+    )`,
+    `CREATE TABLE IF NOT EXISTS forgejo_queue (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      payload TEXT NOT NULL,
+      attempts INTEGER NOT NULL,
+      next_at INTEGER NOT NULL,
+      last_error TEXT,
+      created_at INTEGER NOT NULL
+    )`,
+    `CREATE INDEX IF NOT EXISTS forgejo_queue_by_next ON forgejo_queue(next_at)`,
+  ],
+  // v18：OJ 里的 AI（故事 4.1）。每人每天次数；AI 对每次提交的评语和质量分（综合排行用）
+  [
+    `CREATE TABLE IF NOT EXISTS oj_ai_usage (
+      user_id TEXT NOT NULL,
+      day TEXT NOT NULL,
+      count INTEGER NOT NULL,
+      PRIMARY KEY (user_id, day)
+    )`,
+    `CREATE TABLE IF NOT EXISTS oj_reviews (
+      submission_id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      problem TEXT NOT NULL,
+      score INTEGER NOT NULL,
+      review TEXT NOT NULL,
+      created_at INTEGER NOT NULL
+    )`,
+    `CREATE INDEX IF NOT EXISTS oj_reviews_by_user ON oj_reviews(user_id, problem)`,
+  ],
+  // v19：限时测验（故事 3.5）。一次作答一行：开始时记截止时间，作答随时保存，交卷（或过了截止时间）后判分
+  [
+    `CREATE TABLE IF NOT EXISTS exam_attempts (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      exam TEXT NOT NULL,
+      started_at INTEGER NOT NULL,
+      deadline INTEGER NOT NULL,
+      answers TEXT NOT NULL DEFAULT '{}',
+      saved_at INTEGER,
+      submitted_at INTEGER,
+      score REAL,
+      max_score REAL,
+      passed INTEGER,
+      detail TEXT
+    )`,
+    `CREATE INDEX IF NOT EXISTS exam_attempts_by_user ON exam_attempts(user_id, exam, started_at)`,
+  ],
+  // v20：管理员给某一讲添加的视频源（故事 3.6），和课程包里的视频源合在一起显示
+  [
+    `CREATE TABLE IF NOT EXISTS video_sources (
+      id TEXT PRIMARY KEY,
+      course TEXT NOT NULL,
+      item TEXT NOT NULL,
+      label TEXT NOT NULL,
+      url TEXT NOT NULL,
+      added_by TEXT NOT NULL,
+      created_at INTEGER NOT NULL
+    )`,
+    `CREATE INDEX IF NOT EXISTS video_sources_by_item ON video_sources(course, item)`,
+  ],
+  // v21：个人令牌（故事 2.3，VSCode 插件用）。只存令牌的 SHA-256；撤销后保留一行，记撤销时间。
+  // sv 是签发时账号的 session_version：改密码、重置密码以后，旧令牌和其他设备的登录一起失效
+  [
+    `CREATE TABLE IF NOT EXISTS api_tokens (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      name TEXT NOT NULL,
+      hash TEXT NOT NULL UNIQUE,
+      hint TEXT NOT NULL,
+      sv INTEGER NOT NULL DEFAULT 0,
+      created_at INTEGER NOT NULL,
+      last_used_at INTEGER,
+      revoked_at INTEGER
+    )`,
+    `CREATE INDEX IF NOT EXISTS api_tokens_by_user ON api_tokens(user_id)`,
+  ],
+  // v22：VSCode 插件第二版（2026-11-28）。
+  // device_logins：插件一键登录（插件拿 device_code 轮询，学员在网页上确认 user_code），
+  //   只存 device_code 的 SHA-256；令牌在被取走前暂存在 token 列，取走后清空，10 分钟过期。
+  // git_credentials：插件用的 Git 密码，AES-GCM 加密存放（密钥由 SESSION_SECRET 派生），换设备登录插件时复用
+  [
+    `CREATE TABLE IF NOT EXISTS device_logins (
+      device_hash TEXT PRIMARY KEY,
+      user_code TEXT NOT NULL UNIQUE,
+      client TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'pending',
+      user_id TEXT,
+      token TEXT,
+      created_at INTEGER NOT NULL,
+      expires_at INTEGER NOT NULL
+    )`,
+    `CREATE TABLE IF NOT EXISTS git_credentials (
+      user_id TEXT PRIMARY KEY,
+      iv TEXT NOT NULL,
+      enc TEXT NOT NULL,
+      updated_at INTEGER NOT NULL
+    )`,
+  ],
 ];
 
 // 每个数据库连接只迁移一次（Worker 里通常只有一个；测试里每个用例一个内存库）

@@ -1,0 +1,147 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "hw04",
+ "title": "作业 4：序列、数据抽象、树",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/hw/hw04/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "hw04",
+ "repoDir": "hw/hw04",
+ "intro": "",
+ "problems": [
+  {
+   "id": "shuffle",
+   "title": "Shuffle",
+   "titleEn": "Shuffle",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `shuffle`, which takes a sequence `s` (such as a list or range) with an even number of elements. It returns a new list that *interleaves* the elements of the first half of `s` with the elements of the second half. It does not modify `s`.\n\nTo *interleave* two sequences `s0` and `s1` is to create a new list containing the first element of `s0`, the first element of `s1`, the second element of `s0`, the second element of `s1`, and so on. For example, if `s = [1, 2, 3, 4, 5, 6]` then the first half is `s0 = [1, 2, 3]` and the second half is `s1 = [4, 5, 6]`, and interleaving `s0` and `s1` would result in `[1, 4, 2, 5, 3, 6]`.\n",
+   "statementEn": "Implement `shuffle`, which takes a sequence `s` (such as a list or range) with an even number of elements. It returns a new list that *interleaves* the elements of the first half of `s` with the elements of the second half. It does not modify `s`.\n\nTo *interleave* two sequences `s0` and `s1` is to create a new list containing the first element of `s0`, the first element of `s1`, the second element of `s0`, the second element of `s1`, and so on. For example, if `s = [1, 2, 3, 4, 5, 6]` then the first half is `s0 = [1, 2, 3]` and the second half is `s1 = [4, 5, 6]`, and interleaving `s0` and `s1` would result in `[1, 4, 2, 5, 3, 6]`.\n",
+   "editable": [
+    "hw04.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "shuffle"
+   },
+   "focus": {
+    "file": "hw04.py",
+    "symbol": "shuffle"
+   }
+  },
+  {
+   "id": "deep_map",
+   "title": "Deep Map",
+   "titleEn": "Deep Map",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\n**Definition:** A *nested list of numbers* is a list that contains numbers and lists. It may contain only numbers, only lists, or a mixture of both. The lists must also be *nested lists of numbers*. For example: `[1, [2, [3]], 4]`, `[1, 2, 3]`, and `[[1, 2], [3, 4]]` are all *nested lists of numbers*.\n\nWrite a function `deep_map` that takes two arguments: a nested list of numbers `s` and a one-argument function `f`. It modifies `s` **in place** by replacing each number in s with the result of calling `f` on that number.\n\n**Important:** `deep_map` returns `None` and should not create any new lists.\n\n**Hint:** `type(a) == list` will evaluate to `True` if `a` is a list.\n",
+   "statementEn": "**Definition:** A *nested list of numbers* is a list that contains numbers and lists. It may contain only numbers, only lists, or a mixture of both. The lists must also be *nested lists of numbers*. For example: `[1, [2, [3]], 4]`, `[1, 2, 3]`, and `[[1, 2], [3, 4]]` are all *nested lists of numbers*.\n\nWrite a function `deep_map` that takes two arguments: a nested list of numbers `s` and a one-argument function `f`. It modifies `s` **in place** by replacing each number in s with the result of calling `f` on that number.\n\n**Important:** `deep_map` returns `None` and should not create any new lists.\n\n**Hint:** `type(a) == list` will evaluate to `True` if `a` is a list.\n",
+   "editable": [
+    "hw04.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "deep_map"
+   },
+   "focus": {
+    "file": "hw04.py",
+    "symbol": "deep_map"
+   }
+  },
+  {
+   "id": "total_mass",
+   "title": "Mass",
+   "titleEn": "Mass",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the `planet` data abstraction by completing the `planet` constructor and the `mass` selector. The planet constructor should create and return a planet. A planet should be represented using a two-element list where the first element is the string `'planet'` and the second element is the planet's mass. The `mass` function should return the mass of the `planet` object that is passed as a parameter.\n\n```\ndef planet(mass):\n    \"\"\"Construct a planet of some mass.\"\"\"\n    assert mass > 0\n    \"*** YOUR CODE HERE ***\"\n\ndef mass(p):\n    \"\"\"Select the mass of a planet.\"\"\"\n    assert is_planet(p), 'must call mass on a planet'\n    \"*** YOUR CODE HERE ***\"\n\ndef is_planet(p):\n    \"\"\"Whether p is a planet.\"\"\"\n    return type(p) == list and len(p) == 2 and p[0] == 'planet'\n```\n\nThe `total_mass` function demonstrates the use of the mobile, arm, and planet abstractions. It has been implemented for you. *You may use the `total_mass` function in the following questions.*\n\n```\ndef examples():\n    t = mobile(arm(1, planet(2)),\n               arm(2, planet(1)))\n    u = mobile(arm(5, planet(1)),\n               arm(1, mobile(arm(2, planet(3)),\n                             arm(3, planet(2)))))\n    v = mobile(arm(4, t), arm(2, u))\n    return t, u, v\n\ndef total_mass(m):\n    \"\"\"Return the total mass of m, a planet or mobile.\n\n    >>> t, u, v = examples()\n    >>> total_mass(t)\n    3\n    >>> total_mass(u)\n    6\n    >>> total_mass(v)\n    9\n    \"\"\"\n    if is_planet(m):\n        return mass(m)\n    else:\n        assert is_mobile(m), \"must get total mass of a mobile or a planet\"\n        return total_mass(end(left(m))) + total_mass(end(right(m)))\n```\n\nRun the `ok` tests for `total_mass` to make sure that your `planet` and `mass` functions are implemented correctly.\n",
+   "statementEn": "Implement the `planet` data abstraction by completing the `planet` constructor and the `mass` selector. The planet constructor should create and return a planet. A planet should be represented using a two-element list where the first element is the string `'planet'` and the second element is the planet's mass. The `mass` function should return the mass of the `planet` object that is passed as a parameter.\n\n```\ndef planet(mass):\n    \"\"\"Construct a planet of some mass.\"\"\"\n    assert mass > 0\n    \"*** YOUR CODE HERE ***\"\n\ndef mass(p):\n    \"\"\"Select the mass of a planet.\"\"\"\n    assert is_planet(p), 'must call mass on a planet'\n    \"*** YOUR CODE HERE ***\"\n\ndef is_planet(p):\n    \"\"\"Whether p is a planet.\"\"\"\n    return type(p) == list and len(p) == 2 and p[0] == 'planet'\n```\n\nThe `total_mass` function demonstrates the use of the mobile, arm, and planet abstractions. It has been implemented for you. *You may use the `total_mass` function in the following questions.*\n\n```\ndef examples():\n    t = mobile(arm(1, planet(2)),\n               arm(2, planet(1)))\n    u = mobile(arm(5, planet(1)),\n               arm(1, mobile(arm(2, planet(3)),\n                             arm(3, planet(2)))))\n    v = mobile(arm(4, t), arm(2, u))\n    return t, u, v\n\ndef total_mass(m):\n    \"\"\"Return the total mass of m, a planet or mobile.\n\n    >>> t, u, v = examples()\n    >>> total_mass(t)\n    3\n    >>> total_mass(u)\n    6\n    >>> total_mass(v)\n    9\n    \"\"\"\n    if is_planet(m):\n        return mass(m)\n    else:\n        assert is_mobile(m), \"must get total mass of a mobile or a planet\"\n        return total_mass(end(left(m))) + total_mass(end(right(m)))\n```\n\nRun the `ok` tests for `total_mass` to make sure that your `planet` and `mass` functions are implemented correctly.\n",
+   "editable": [
+    "hw04.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "total_mass"
+   },
+   "focus": {
+    "file": "hw04.py",
+    "symbol": "total_mass"
+   }
+  },
+  {
+   "id": "balanced",
+   "title": "Balanced",
+   "titleEn": "Balanced",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the `balanced` function, which returns whether `m` is a *balanced* mobile. A mobile is *balanced* if **both** of the following conditions are met:\n\n1. The *torque* applied by its left arm is equal to the *torque* applied by its right arm. The *torque* of an arm is the length of the rod multiplied by the total mass hanging from that rod. For example, if the left arm has a length of `5`, and there is a `mobile` hanging at the end of the left arm of total mass `10`, the torque on the left side of our mobile is `50`.\n2. Each of the mobiles hanging at the end of its arms is itself *balanced*. **Hint:** Recursive structure! Does this remind you of something?\n\nPlanets are already balanced, as there is nothing hanging off of them.\n\n**Reminder:** You may use the `total_mass` function above. **Don't violate abstraction barriers.** Instead, use the selector functions that have been defined.\n\n```\ndef balanced(m):\n    \"\"\"Return whether m is balanced.\n\n    >>> t, u, v = examples()\n    >>> balanced(t)\n    True\n    >>> balanced(v)\n    True\n    >>> p = mobile(arm(3, t), arm(2, u))\n    >>> balanced(p)\n    False\n    >>> balanced(mobile(arm(1, v), arm(1, p)))\n    False\n    >>> balanced(mobile(arm(1, p), arm(1, v)))\n    False\n    >>> from construct_check import check\n    >>> # checking for abstraction barrier violations by banning indexing\n    >>> check(SOURCE_FILE, 'balanced', ['Index'])\n    True\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n",
+   "statementEn": "Implement the `balanced` function, which returns whether `m` is a *balanced* mobile. A mobile is *balanced* if **both** of the following conditions are met:\n\n1. The *torque* applied by its left arm is equal to the *torque* applied by its right arm. The *torque* of an arm is the length of the rod multiplied by the total mass hanging from that rod. For example, if the left arm has a length of `5`, and there is a `mobile` hanging at the end of the left arm of total mass `10`, the torque on the left side of our mobile is `50`.\n2. Each of the mobiles hanging at the end of its arms is itself *balanced*. **Hint:** Recursive structure! Does this remind you of something?\n\nPlanets are already balanced, as there is nothing hanging off of them.\n\n**Reminder:** You may use the `total_mass` function above. **Don't violate abstraction barriers.** Instead, use the selector functions that have been defined.\n\n```\ndef balanced(m):\n    \"\"\"Return whether m is balanced.\n\n    >>> t, u, v = examples()\n    >>> balanced(t)\n    True\n    >>> balanced(v)\n    True\n    >>> p = mobile(arm(3, t), arm(2, u))\n    >>> balanced(p)\n    False\n    >>> balanced(mobile(arm(1, v), arm(1, p)))\n    False\n    >>> balanced(mobile(arm(1, p), arm(1, v)))\n    False\n    >>> from construct_check import check\n    >>> # checking for abstraction barrier violations by banning indexing\n    >>> check(SOURCE_FILE, 'balanced', ['Index'])\n    True\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n",
+   "editable": [
+    "hw04.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "balanced"
+   },
+   "focus": {
+    "file": "hw04.py",
+    "symbol": "balanced"
+   }
+  },
+  {
+   "id": "prune_leaves",
+   "title": "Pruning Leaves",
+   "titleEn": "Pruning Leaves",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `prune_leaves`, which takes a tree `t` and a tuple of values `vals`. It returns a version of `t` with all its **leaves** whose labels are in `vals` removed. Do not remove non-leaf nodes and do not remove leaves that do not match any of the items in `vals`. Return `None` if pruning the tree results in there being no nodes left in the tree.\n",
+   "statementEn": "Implement `prune_leaves`, which takes a tree `t` and a tuple of values `vals`. It returns a version of `t` with all its **leaves** whose labels are in `vals` removed. Do not remove non-leaf nodes and do not remove leaves that do not match any of the items in `vals`. Return `None` if pruning the tree results in there being no nodes left in the tree.\n",
+   "editable": [
+    "hw04.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "prune_leaves"
+   },
+   "focus": {
+    "file": "hw04.py",
+    "symbol": "prune_leaves"
+   }
+  },
+  {
+   "id": "max_path_sum",
+   "title": "Maximum Path Sum",
+   "titleEn": "Maximum Path Sum",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function that takes in a tree of positive numbers and returns the maximum sum of the labels along any *root-to-leaf path* in the tree. A *root-to-leaf path* is a sequence of nodes starting at the root and ending at some leaf of the tree.\n",
+   "statementEn": "Write a function that takes in a tree of positive numbers and returns the maximum sum of the labels along any *root-to-leaf path* in the tree. A *root-to-leaf path* is a sequence of nodes starting at the root and ending at some leaf of the tree.\n",
+   "editable": [
+    "hw04.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "max_path_sum"
+   },
+   "focus": {
+    "file": "hw04.py",
+    "symbol": "max_path_sum"
+   }
+  }
+ ]
+}

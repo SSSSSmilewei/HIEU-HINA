@@ -1,0 +1,69 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "hw09",
+ "title": "作业 9：程序即数据、宏",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/hw/hw09/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "hw09",
+ "repoDir": "hw/hw09",
+ "intro": "",
+ "problems": [
+  {
+   "id": "curry-cook",
+   "title": "Cooking Curry",
+   "titleEn": "Cooking Curry",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the function `curry-cook`, which takes in a Scheme list `formals` and a quoted expression `body`. `curry-cook` should generate a program as a list that is a curried version of a lambda function. The returned program should be a curried version of a lambda function with formal arguments equal to `formals`, and a function body equal to `body`. You may assume that all functions passed in will have more than 0 `formals`; otherwise, it would not be curry-able!\n\nFor example, if you wanted to curry the function `(lambda (x y) (+ x y))`, you would set `formals` equal to `'(x y)`, the `body` equal to `'(+ x y)`, and make a call to `curry-cook`: `(curry-cook '(x y) '(+ x y))`.\n\n```\nscm> (curry-cook '(a) 'a)\n(lambda (a) a)\nscm> (curry-cook '(x y) '(+ x y))\n(lambda (x) (lambda (y) (+ x y)))\n```\n",
+   "statementEn": "Implement the function `curry-cook`, which takes in a Scheme list `formals` and a quoted expression `body`. `curry-cook` should generate a program as a list that is a curried version of a lambda function. The returned program should be a curried version of a lambda function with formal arguments equal to `formals`, and a function body equal to `body`. You may assume that all functions passed in will have more than 0 `formals`; otherwise, it would not be curry-able!\n\nFor example, if you wanted to curry the function `(lambda (x y) (+ x y))`, you would set `formals` equal to `'(x y)`, the `body` equal to `'(+ x y)`, and make a call to `curry-cook`: `(curry-cook '(x y) '(+ x y))`.\n\n```\nscm> (curry-cook '(a) 'a)\n(lambda (a) a)\nscm> (curry-cook '(x y) '(+ x y))\n(lambda (x) (lambda (y) (+ x y)))\n```\n",
+   "editable": [
+    "hw09.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "curry-cook"
+   }
+  },
+  {
+   "id": "curry-consume",
+   "title": "Consuming Curry",
+   "titleEn": "Consuming Curry",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the function `curry-consume`, which takes in a curried lambda function `curry` and applies the function to a list of arguments `args`. You may make the following assumptions:\n\n1. If `curry` is an `n`-curried function, then there will be at most `n` arguments in `args`.\n2. **If there are 0 arguments** (`args` is an empty list), then you may assume that `curry` has been fully applied with relevant arguments; in this case, `curry` now contains a value representing the output of the lambda function. Return it.\n\nNote that there can be fewer `args` than `formals` for the corresponding lambda function `curry`! In the case that there are fewer arguments, `curry-consume` should return a curried lambda function, which is the result of partially applying `curry` up to the number of `args` provdied. See the doctests below for a few examples.\n\n```\nscm> (define three-curry (lambda (x) (lambda (y) (lambda (z) (+ x (* y z)))) ))\nthree-curry\nscm> (define eat-two (curry-consume three-curry '(1 2))) ; pass in only two arguments, return should be a one-arg lambda function!\neat-two\nscm> eat-two\n(lambda (z) (+ x (* y z)))\nscm> (eat-two 3) ; pass in the last argument; 1 + (2 * 3)\n7\nscm> (curry-consume three-curry '(1 2 3)) ; all three arguments at once\n7\n```\n",
+   "statementEn": "Implement the function `curry-consume`, which takes in a curried lambda function `curry` and applies the function to a list of arguments `args`. You may make the following assumptions:\n\n1. If `curry` is an `n`-curried function, then there will be at most `n` arguments in `args`.\n2. **If there are 0 arguments** (`args` is an empty list), then you may assume that `curry` has been fully applied with relevant arguments; in this case, `curry` now contains a value representing the output of the lambda function. Return it.\n\nNote that there can be fewer `args` than `formals` for the corresponding lambda function `curry`! In the case that there are fewer arguments, `curry-consume` should return a curried lambda function, which is the result of partially applying `curry` up to the number of `args` provdied. See the doctests below for a few examples.\n\n```\nscm> (define three-curry (lambda (x) (lambda (y) (lambda (z) (+ x (* y z)))) ))\nthree-curry\nscm> (define eat-two (curry-consume three-curry '(1 2))) ; pass in only two arguments, return should be a one-arg lambda function!\neat-two\nscm> eat-two\n(lambda (z) (+ x (* y z)))\nscm> (eat-two 3) ; pass in the last argument; 1 + (2 * 3)\n7\nscm> (curry-consume three-curry '(1 2 3)) ; all three arguments at once\n7\n```\n",
+   "editable": [
+    "hw09.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "curry-consume"
+   }
+  },
+  {
+   "id": "switch-to-cond",
+   "title": "Switch to Cond",
+   "titleEn": "Switch to Cond",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\n`switch` is a macro that takes in an expression `expr` and a list of pairs `options`, where the first element of each pair is a value and the second element is a single expression. `switch` evaluates the expression contained in the list of `options` that corresponds to the value that `expr` evaluates to. It then returns the value tied to that expression in `options`.\n\n```\nscm> (switch (+ 1 1) ((1 (print 'a))\n                      (2 (print 'b)) ; (print 'b) is evaluated because (+ 1 1) evaluates to 2\n                      (3 (print 'c))))\nb\n```\n\n`switch` uses another procedure called `switch-to-cond` in its implementation:\n\n```\nscm> (define-macro (switch expr options)\n                   (switch-to-cond (list 'switch expr options))\n     )\n```\n\nYour task is to define `switch-to-cond`, a procedure (not a macro) that takes in a quoted `switch` expression and converts it into a `cond` expression with the same behavior. An example is shown below.\n\n```\nscm> (switch-to-cond `(switch (+ 1 1) ((1 2) (2 4) (3 6))))\n(cond ((equal? (+ 1 1) 1) 2) ((equal? (+ 1 1) 2) 4) ((equal? (+ 1 1) 3) 6))\n```\n",
+   "statementEn": "`switch` is a macro that takes in an expression `expr` and a list of pairs `options`, where the first element of each pair is a value and the second element is a single expression. `switch` evaluates the expression contained in the list of `options` that corresponds to the value that `expr` evaluates to. It then returns the value tied to that expression in `options`.\n\n```\nscm> (switch (+ 1 1) ((1 (print 'a))\n                      (2 (print 'b)) ; (print 'b) is evaluated because (+ 1 1) evaluates to 2\n                      (3 (print 'c))))\nb\n```\n\n`switch` uses another procedure called `switch-to-cond` in its implementation:\n\n```\nscm> (define-macro (switch expr options)\n                   (switch-to-cond (list 'switch expr options))\n     )\n```\n\nYour task is to define `switch-to-cond`, a procedure (not a macro) that takes in a quoted `switch` expression and converts it into a `cond` expression with the same behavior. An example is shown below.\n\n```\nscm> (switch-to-cond `(switch (+ 1 1) ((1 2) (2 4) (3 6))))\n(cond ((equal? (+ 1 1) 1) 2) ((equal? (+ 1 1) 2) 4) ((equal? (+ 1 1) 3) 6))\n```\n",
+   "editable": [
+    "hw09.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "switch-to-cond"
+   }
+  }
+ ]
+}

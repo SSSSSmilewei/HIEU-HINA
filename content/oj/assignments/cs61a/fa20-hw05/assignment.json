@@ -1,0 +1,147 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "fa20-hw05",
+ "title": "作业 5：面向对象编程, 链表, 树",
+ "semester": "fa20",
+ "language": "zh",
+ "source": "https://inst.eecs.berkeley.edu/~cs61a/fa20/hw/hw05/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2020 秋季）；中文翻译来自 github.com/chillyhigh/CS61A-CN（MIT 许可）。仅供协会内部学习交流",
+ "item": "hw06",
+ "repoDir": "fa20/hw/hw05",
+ "intro": "",
+ "problems": [
+  {
+   "id": "vendingmachine",
+   "title": "自动售货机",
+   "titleEn": "Vending Machine",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "创建一个名为 `VendingMachine` 的类，它表示一个用于售卖某些商品的自动售货机。 `VendingMachine` 对象应返回描述其交互过程的字符串。\n\n请补全 `VendingMachine` 类，添加适当的属性和方法，使其行为符合以下的 doctests：\n\n[Python 字符串格式化语法](https://docs.python.org/zh-cn/3/library/stdtypes.html#str.format) 可能对你有用。 下面是一个示例：\n\n```\n>>> ten, twenty, thirty = 10, 'twenty', [30]\n>>> '{0} plus {1} is {2}'.format(ten, twenty, thirty)\n'10 plus twenty is [30]'\n```\n",
+   "statementEn": "Create a class called `VendingMachine` that represents a vending machine for some product. A `VendingMachine` object returns strings describing its interactions.\n\nFill in the `VendingMachine` class, adding attributes and methods as appropriate, such that its behavior matches the following doctests:\n\nYou may find [Python string formatting syntax](https://docs.python.org/2/library/stdtypes.html#str.format) useful. A quick example:\n\n```\n>>> ten, twenty, thirty = 10, 'twenty', [30]\n>>> '{0} plus {1} is {2}'.format(ten, twenty, thirty)\n'10 plus twenty is [30]'\n```\n",
+   "editable": [
+    "hw05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "VendingMachine"
+   },
+   "focus": {
+    "file": "hw05.py",
+    "symbol": "VendingMachine"
+   }
+  },
+  {
+   "id": "mint",
+   "title": "铸币",
+   "titleEn": "Mint",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "完成 `Mint` 和 `Coin` 类，使铸币厂创建的硬币具有正确的年份和价值。\n\n- 每个 `Mint` 实例都有一个 `year` 标记。`update` 方法将 `year` 标记设置为 `Mint` 类中的 `current_year` 类属性的值。\n- `create` 方法接受 `Coin` 的子类，并返回该类的一个实例，该实例的年份标记为当前铸币厂 `mint` 的年份 （如果 `mint` 未调用 `update` 方法，其年份可能不同于 `Mint.current_year`）。\n- `Coin` 类的 `worth` 方法返回硬币的面值 `cents`，并且对于超过 50 年的硬币， 每多一年增加 1 cent。硬币的年龄可以通过用 `Mint` 类的 `current_year` 类属性减去硬币的年份来计算。\n",
+   "statementEn": "Complete the `Mint` and `Coin` classes so that the coins created by a mint have the correct year and worth.\n\n- Each `Mint` instance has a `year` stamp. The `update` method sets the `year` stamp to the `current_year` class attribute of the `Mint` class.\n- The `create` method takes a subclass of `Coin` and returns an instance of that class stamped with the `mint`'s year (which may be different from `Mint.current_year` if it has not been updated.)\n- A `Coin`'s `worth` method returns the `cents` value of the coin plus one extra cent for each year of age beyond 50. A coin's age can be determined by subtracting the coin's year from the `current_year` class attribute of the `Mint` class.\n",
+   "editable": [
+    "hw05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "Mint"
+   },
+   "focus": {
+    "file": "hw05.py",
+    "symbol": "Mint"
+   }
+  },
+  {
+   "id": "store_digits",
+   "title": "存储数位",
+   "titleEn": "Store Digits",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个函数 `store_digits`，它接收一个整数 `n`，并返回一个链表， 该链表的每个元素都是 `n` 的一个数位。\n\n注意：不要使用任何字符串操作函数，如 `str` 和 `reversed`。\n\n   附加题\n",
+   "statementEn": "Write a function `store_digits` that takes in an integer `n` and returns a linked list where each element of the list is a digit of `n`.\n\nNote: do not use any string manipulation functions like `str` and `reversed`\n\n   Extra Questions\n",
+   "editable": [
+    "hw05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "store_digits"
+   },
+   "focus": {
+    "file": "hw05.py",
+    "symbol": "store_digits"
+   }
+  },
+  {
+   "id": "is_bst",
+   "title": "判断二叉搜索树",
+   "titleEn": "Is BST",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个函数 `is_bst`，它接收一棵树 `t`，并在且仅在 `t` 是一棵有效的二叉搜索树时返回 `True`。二叉搜索树需满足以下条件：\n\n- 每个节点最多有两个子节点（叶子节点自动视为有效的二叉搜索树）。\n- 所有子树本身也是有效的二叉搜索树。\n- 对于每个节点，该节点左子树中的所有值小于等于该节点的标签。\n- 对于每个节点，该节点右子树中的所有值大于该节点的标签。\n\n以下是一个二叉搜索树的示例：\n\n请注意，如果一个节点只有一个子节点，该子节点可以被视为左子节点或右子节点。你需要将这一点考虑在内。\n\n*提示：* 编写辅助函数 `bst_min` 和 `bst_max` 可能会有所帮助，它们分别返回一棵树的最小值和最大值（前提是该树是有效的二叉搜索树）。\n",
+   "statementEn": "Write a function `is_bst`, which takes a Tree `t` and returns `True` if, and only if, `t` is a valid binary search tree, which means that:\n\n- Each node has at most two children (a leaf is automatically a valid binary search tree)\n- The children are valid binary search trees\n- For every node, the entries in that node's left child are less than or equal to the label of the node\n- For every node, the entries in that node's right child are greater than the label of the node\n\nAn example of a BST is:\n\nNote that, if a node has only one child, that child could be considered either the left or right child. You should take this into consideration.\n\n*Hint:* It may be helpful to write helper functions `bst_min` and `bst_max` that return the minimum and maximum, respectively, of a Tree if it is a valid binary search tree.\n",
+   "editable": [
+    "hw05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "is_bst"
+   },
+   "focus": {
+    "file": "hw05.py",
+    "symbol": "is_bst"
+   }
+  },
+  {
+   "id": "preorder",
+   "title": "前序遍历",
+   "titleEn": "Preorder",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "定义函数 `preorder`，该函数接受一棵树作为参数，并返回一个列表，包含树中所有的元素，顺序与 `print_tree` 打印它们的顺序相同。\n\n下图展示了节点的打印顺序，箭头表示函数调用的顺序。\n\n*注意*：这种节点的遍历顺序称为前序遍历（preorder traversal）。\n",
+   "statementEn": "Define the function `preorder`, which takes in a tree as an argument and returns a list of all the entries in the tree in the order that `print_tree` would print them.\n\nThe following diagram shows the order that the nodes would get printed, with the arrows representing function calls.\n\n*Note*: This ordering of the nodes in a tree is called a preorder traversal.\n",
+   "editable": [
+    "hw05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "preorder"
+   },
+   "focus": {
+    "file": "hw05.py",
+    "symbol": "preorder"
+   }
+  },
+  {
+   "id": "path_yielder",
+   "title": "生成路径",
+   "titleEn": "Yield Paths",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "定义一个生成器函数 `path_yielder`，它接受一棵树 `t` 和一个值 `value`，返回一个生成器对象，该生成器会生成从 `t` 的根节点到标签为 `value` 的节点的所有路径。\n\n`t` 是使用类实现的，而不是基于函数的ADT（抽象数据类型）。\n\n每条路径应该以列表的形式表示，其中包含树中沿路径的所有标签。路径的生成顺序可以是任意的。\n\n我们已经为你提供了一个（部分）代码框架。你不一定要使用这个框架，但如果你的实现与其有较大不同，你可能需要思考如何调整你的代码以适配该框架。\n\n```\ndef path_yielder(t, value):\n    \"\"\"Yields all possible paths from the root of t to a node with the label value\n    as a list.\n\n    >>> t1 = Tree(1, [Tree(2, [Tree(3), Tree(4, [Tree(6)]), Tree(5)]), Tree(5)])\n    >>> print(t1)\n    1\n      2\n        3\n        4\n          6\n        5\n      5\n    >>> next(path_yielder(t1, 6))\n    [1, 2, 4, 6]\n    >>> path_to_5 = path_yielder(t1, 5)\n    >>> sorted(list(path_to_5))\n    [[1, 2, 5], [1, 5]]\n\n    >>> t2 = Tree(0, [Tree(2, [t1])])\n    >>> print(t2)\n    0\n      2\n        1\n          2\n            3\n            4\n              6\n            5\n          5\n    >>> path_to_2 = path_yielder(t2, 2)\n    >>> sorted(list(path_to_2))\n    [[0, 2], [0, 2, 1, 2]]\n    \"\"\"\n\n    \"*** YOUR CODE HERE ***\"\n\n    for _______________ in _________________:\n        for _______________ in _________________:\n\n            \"*** YOUR CODE HERE ***\"\n\n```\n\n**提示：**如果你不知道如何开始，可以思考如果这不是一个生成器函数，你会如何解决这个问题？你的递归调用会是什么样的？在一个生成器函数中，如果你在函数体内进行“递归调用”，会发生什么？\n",
+   "statementEn": "Define a generator function `path_yielder` which takes in a Tree `t`, a value `value`, and returns a generator object which yields each path from the root of `t` to a node that has label `value`.\n\n`t` is implemented with a class, not as the function-based ADT.\n\nEach path should be represented as a list of the labels along that path in the tree. You may yield the paths in any order.\n\nWe have provided a (partial) skeleton for you. You do not need to use this skeleton, but if your implementation diverges significantly from it, you might want to think about how you can get it to fit the skeleton.\n\n```\ndef path_yielder(t, value):\n    \"\"\"Yields all possible paths from the root of t to a node with the label value\n    as a list.\n\n    >>> t1 = Tree(1, [Tree(2, [Tree(3), Tree(4, [Tree(6)]), Tree(5)]), Tree(5)])\n    >>> print(t1)\n    1\n      2\n        3\n        4\n          6\n        5\n      5\n    >>> next(path_yielder(t1, 6))\n    [1, 2, 4, 6]\n    >>> path_to_5 = path_yielder(t1, 5)\n    >>> sorted(list(path_to_5))\n    [[1, 2, 5], [1, 5]]\n\n    >>> t2 = Tree(0, [Tree(2, [t1])])\n    >>> print(t2)\n    0\n      2\n        1\n          2\n            3\n            4\n              6\n            5\n          5\n    >>> path_to_2 = path_yielder(t2, 2)\n    >>> sorted(list(path_to_2))\n    [[0, 2], [0, 2, 1, 2]]\n    \"\"\"\n\n    \"*** YOUR CODE HERE ***\"\n\n    for _______________ in _________________:\n        for _______________ in _________________:\n\n            \"*** YOUR CODE HERE ***\"\n\n```\n\nHint: If you're having trouble getting started, think about how you'd approach this problem if it wasn't a generator function. What would your recursive calls be? With a generator function, what happens if you make a \"recursive call\" within its body?\n",
+   "editable": [
+    "hw05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "path_yielder"
+   },
+   "focus": {
+    "file": "hw05.py",
+    "symbol": "path_yielder"
+   }
+  }
+ ]
+}

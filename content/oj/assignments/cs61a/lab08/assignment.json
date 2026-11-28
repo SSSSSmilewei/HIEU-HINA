@@ -1,0 +1,141 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "lab08",
+ "title": "实验 8：Scheme",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/lab/lab08/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "lab08",
+ "repoDir": "lab/lab08",
+ "intro": "",
+ "problems": [
+  {
+   "id": "over_or_under",
+   "title": "Over or Under",
+   "titleEn": "Over or Under",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nDefine a procedure `over-or-under` which takes in a number `num1` and a number `num2` and returns the following:\n\n- -1 if `num1` is less than `num2`\n- 0 if `num1` is equal to `num2`\n- 1 if `num1` is greater than `num2`\n\n**Note:** Remember that every parenthesis in Scheme makes a function call. For example, just typing `0` in the Scheme interpeter will return `0`. However, typing `(0)` will cause an Error because `0` is not a function.\n\n*Challenge: Implement this in 2 different ways using `if` and `cond`!*\n",
+   "statementEn": "Define a procedure `over-or-under` which takes in a number `num1` and a number `num2` and returns the following:\n\n- -1 if `num1` is less than `num2`\n- 0 if `num1` is equal to `num2`\n- 1 if `num1` is greater than `num2`\n\n**Note:** Remember that every parenthesis in Scheme makes a function call. For example, just typing `0` in the Scheme interpeter will return `0`. However, typing `(0)` will cause an Error because `0` is not a function.\n\n*Challenge: Implement this in 2 different ways using `if` and `cond`!*\n",
+   "editable": [
+    "lab08.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "over_or_under"
+   }
+  },
+  {
+   "id": "composed",
+   "title": "Compose",
+   "titleEn": "Compose",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite the procedure `composed`, which takes in procedures `f` and `g` and returns a new procedure. This new procedure takes in a number `x` and returns the result of calling `f` on `g` of `x`.\n\n**Note:** Remember to use *Scheme syntax* when calling functions. The form is `(func arg)`, not `func(arg)`.\n",
+   "statementEn": "Write the procedure `composed`, which takes in procedures `f` and `g` and returns a new procedure. This new procedure takes in a number `x` and returns the result of calling `f` on `g` of `x`.\n\n**Note:** Remember to use *Scheme syntax* when calling functions. The form is `(func arg)`, not `func(arg)`.\n",
+   "editable": [
+    "lab08.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "composed"
+   }
+  },
+  {
+   "id": "repeat",
+   "title": "Repeat",
+   "titleEn": "Repeat",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite the procedure `repeat`, which takes in a procedure `f` and a number `n`, and outputs a new procedure. This new procedure takes in a number `x` and returns the result of calling `f` on `x` a total of `n` times. For example:\n\n```\nscm> (define (square x) (* x x))\nsquare\nscm> ((repeat square 2) 5) ; (square (square 5))\n625\nscm> ((repeat square 3) 3) ; (square (square (square 3)))\n6561\nscm> ((repeat square 1) 7) ; (square 7)\n49\n```\n\n**Hint:** The `composed` function you wrote in the previous problem might be useful.\n",
+   "statementEn": "Write the procedure `repeat`, which takes in a procedure `f` and a number `n`, and outputs a new procedure. This new procedure takes in a number `x` and returns the result of calling `f` on `x` a total of `n` times. For example:\n\n```\nscm> (define (square x) (* x x))\nsquare\nscm> ((repeat square 2) 5) ; (square (square 5))\n625\nscm> ((repeat square 3) 3) ; (square (square (square 3)))\n6561\nscm> ((repeat square 1) 7) ; (square 7)\n49\n```\n\n**Hint:** The `composed` function you wrote in the previous problem might be useful.\n",
+   "editable": [
+    "lab08.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "repeat"
+   }
+  },
+  {
+   "id": "gcd",
+   "title": "Greatest Common Divisor",
+   "titleEn": "Greatest Common Divisor",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nThe Greatest Common Divisor (GCD) is the largest integer that evenly divides two positive integers.\n\nWrite the procedure `gcd`, which computes the GCD of numbers `a` and `b` using Euclid's algorithm, which recursively uses the fact that the GCD of two values is either of the following:\n\n- the smaller value if it evenly divides the larger value, or\n- the greatest common divisor of the smaller value and the remainder of the larger value divided by the smaller value\n\nIn other words, if `a` is greater than `b` and `a` is not divisible by `b`, then\n\n```\ngcd(a, b) = gcd(b, a % b)  # please note that this is Python syntax\n```\n\nYou may find the provided procedures `min` and `max` helpful. You can also use the built-in `modulo` and `zero?` procedures.\n\n```\nscm> (modulo 10 4)\n2\nscm> (zero? (- 3 3))\n#t\nscm> (zero? 3)\n#f\n```\n",
+   "statementEn": "The Greatest Common Divisor (GCD) is the largest integer that evenly divides two positive integers.\n\nWrite the procedure `gcd`, which computes the GCD of numbers `a` and `b` using Euclid's algorithm, which recursively uses the fact that the GCD of two values is either of the following:\n\n- the smaller value if it evenly divides the larger value, or\n- the greatest common divisor of the smaller value and the remainder of the larger value divided by the smaller value\n\nIn other words, if `a` is greater than `b` and `a` is not divisible by `b`, then\n\n```\ngcd(a, b) = gcd(b, a % b)  # please note that this is Python syntax\n```\n\nYou may find the provided procedures `min` and `max` helpful. You can also use the built-in `modulo` and `zero?` procedures.\n\n```\nscm> (modulo 10 4)\n2\nscm> (zero? (- 3 3))\n#t\nscm> (zero? 3)\n#f\n```\n",
+   "editable": [
+    "lab08.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "gcd"
+   }
+  },
+  {
+   "id": "exp",
+   "title": "Exp",
+   "titleEn": "Exp",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWe want to implement the `exp` procedure. So, we write the following recursive procedure:\n\n```\n(define (exp-recursive b n)\n  (if (= n 0)\n      1\n      (* b (exp-recursive b (- n 1)))))\n```\n\nTry to evaluate\n\n```\n(exp-recursive 2 (exp-recursive 2 10))\n```\n\nYou will notice that it will cause a maximum recursion depth error. To fix this, we need to use tail recursion! Implement the `exp` procedure using tail recursion:\n\n```\n(define (exp b n)\n  ;; Computes b^n.\n  ;; b is any number, n must be a non-negative integer.\n  (define (helper n so-far) ;; since b never changes, we can use the b from the outer function\n    ;; YOUR CODE HERE\n  (helper n 1)\n)\n```\n",
+   "statementEn": "We want to implement the `exp` procedure. So, we write the following recursive procedure:\n\n```\n(define (exp-recursive b n)\n  (if (= n 0)\n      1\n      (* b (exp-recursive b (- n 1)))))\n```\n\nTry to evaluate\n\n```\n(exp-recursive 2 (exp-recursive 2 10))\n```\n\nYou will notice that it will cause a maximum recursion depth error. To fix this, we need to use tail recursion! Implement the `exp` procedure using tail recursion:\n\n```\n(define (exp b n)\n  ;; Computes b^n.\n  ;; b is any number, n must be a non-negative integer.\n  (define (helper n so-far) ;; since b never changes, we can use the b from the outer function\n    ;; YOUR CODE HERE\n  (helper n 1)\n)\n```\n",
+   "editable": [
+    "lab08.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "exp"
+   }
+  },
+  {
+   "id": "swap",
+   "title": "Swap",
+   "titleEn": "Swap",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a tail-recursive function `swap`, which takes in a Scheme list `s` and returns a new Scheme list where every two elements in `s` are swapped.\n",
+   "statementEn": "Write a tail-recursive function `swap`, which takes in a Scheme list `s` and returns a new Scheme list where every two elements in `s` are swapped.\n",
+   "editable": [
+    "lab08.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "swap"
+   }
+  },
+  {
+   "id": "make_adder",
+   "title": "Make Adder",
+   "titleEn": "Make Adder",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a procedure `make-adder` that takes a number `num` as input and returns a new procedure. This returned procedure should accept another number `inc` and return the sum of `num` and `inc`.\n\n**Hint**: To return a procedure, you can either return a `lambda` expression or `define` another nested procedure.\n\n**Note**: `define` does not return a function, but `lambda` does.\n\n**Hint**: Scheme will automatically return the last clause in your procedure.\n\nYou can find documentation on the syntax of `lambda` expressions in [the 61A scheme specification!](https://cs61a.org/articles/scheme-spec/index.html#lambda)\n",
+   "statementEn": "Write a procedure `make-adder` that takes a number `num` as input and returns a new procedure. This returned procedure should accept another number `inc` and return the sum of `num` and `inc`.\n\n**Hint**: To return a procedure, you can either return a `lambda` expression or `define` another nested procedure.\n\n**Note**: `define` does not return a function, but `lambda` does.\n\n**Hint**: Scheme will automatically return the last clause in your procedure.\n\nYou can find documentation on the syntax of `lambda` expressions in [the 61A scheme specification!](https://cs61a.org/articles/scheme-spec/index.html#lambda)\n",
+   "editable": [
+    "lab08.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "make_adder"
+   }
+  }
+ ]
+}

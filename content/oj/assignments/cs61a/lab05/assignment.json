@@ -1,0 +1,510 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "lab05",
+ "title": "实验 5：迭代器、可变性",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/lab/lab05/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "lab05",
+ "repoDir": "lab/lab05",
+ "intro": "",
+ "problems": [
+  {
+   "id": "list-mutation",
+   "title": "WWPD: List-Mutation",
+   "titleEn": "WWPD: List-Mutation",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\n**Important:** For all WWPD questions, type `Function` if you believe the answer is `<function...>`, `Error` if it errors, and `Nothing` if nothing is displayed.\n\n```\n>>> s = [6, 7, 8]\n>>> print(s.append(6))\n\n>>> s\n\n>>> s.insert(0, 9)\n>>> s\n\n>>> x = s.pop(1)\n>>> s\n\n>>> s.remove(x)\n>>> s\n\n>>> a, b = s, s[:]\n>>> a is s\n\n>>> b == s\n\n>>> b is s\n\n>>> a.pop()\n\n>>> a + b\n\n>>> s = [3]\n>>> s.extend([4, 5])\n>>> s\n\n>>> a\n\n>>> s.extend([s.append(9), s.append(10)])\n>>> s\n\n```\n",
+   "statementEn": "**Important:** For all WWPD questions, type `Function` if you believe the answer is `<function...>`, `Error` if it errors, and `Nothing` if nothing is displayed.\n\n```\n>>> s = [6, 7, 8]\n>>> print(s.append(6))\n\n>>> s\n\n>>> s.insert(0, 9)\n>>> s\n\n>>> x = s.pop(1)\n>>> s\n\n>>> s.remove(x)\n>>> s\n\n>>> a, b = s, s[:]\n>>> a is s\n\n>>> b == s\n\n>>> b is s\n\n>>> a.pop()\n\n>>> a + b\n\n>>> s = [3]\n>>> s.extend([4, 5])\n>>> s\n\n>>> a\n\n>>> s.extend([s.append(9), s.append(10)])\n>>> s\n\n```\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "list-mutation"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "# If nothing would be output by Python, type Nothing",
+       "want": []
+      },
+      {
+       "code": "# If the code would error, type Error",
+       "want": []
+      },
+      {
+       "code": "s = [6, 7, 8]",
+       "want": []
+      },
+      {
+       "code": "print(s.append(6))",
+       "want": [
+        {
+         "hash": "84065bc2161626528de8ac041e7b4659"
+        }
+       ]
+      },
+      {
+       "code": "s",
+       "want": [
+        {
+         "hash": "ee5bbac9b7c275f4e302977fc4fa36cf"
+        }
+       ]
+      },
+      {
+       "code": "s.insert(0, 9)",
+       "want": []
+      },
+      {
+       "code": "s",
+       "want": [
+        {
+         "hash": "83a4325e933b3579e994d93825052779"
+        }
+       ]
+      },
+      {
+       "code": "x = s.pop(1)",
+       "want": []
+      },
+      {
+       "code": "s",
+       "want": [
+        {
+         "hash": "0796af3f349d61609034bb7d27ec8028"
+        }
+       ]
+      },
+      {
+       "code": "s.remove(x)",
+       "want": []
+      },
+      {
+       "code": "s",
+       "want": [
+        {
+         "hash": "bcfc5b735efb7da84d01a012acd2817d"
+        }
+       ]
+      },
+      {
+       "code": "a, b = s, s[:]",
+       "want": []
+      },
+      {
+       "code": "a is s",
+       "want": [
+        {
+         "hash": "4975a2633e94dd9ea1ce929c1df08a3b"
+        }
+       ]
+      },
+      {
+       "code": "b == s",
+       "want": [
+        {
+         "hash": "4975a2633e94dd9ea1ce929c1df08a3b"
+        }
+       ]
+      },
+      {
+       "code": "b is s",
+       "want": [
+        {
+         "hash": "ac667055c8e3c84ad7260b0fefa2e007"
+        }
+       ]
+      },
+      {
+       "code": "a.pop()",
+       "want": [
+        {
+         "hash": "1399d9a7e3e505d23edf2a8008d52474"
+        }
+       ]
+      },
+      {
+       "code": "a + b",
+       "want": [
+        {
+         "hash": "75c70659bcfa1183c7fa83ac12489296"
+        }
+       ]
+      },
+      {
+       "code": "s = [3]",
+       "want": []
+      },
+      {
+       "code": "s.extend([4, 5])",
+       "want": []
+      },
+      {
+       "code": "s",
+       "want": [
+        {
+         "hash": "64a560a48df30fb585341a84030995f3"
+        }
+       ]
+      },
+      {
+       "code": "a",
+       "want": [
+        {
+         "hash": "ebbc4ce3f02bb524db6606ccd8bb5438"
+        }
+       ]
+      },
+      {
+       "code": "s.extend([s.append(9), s.append(10)])",
+       "want": []
+      },
+      {
+       "code": "s",
+       "want": [
+        {
+         "hash": "eb32275e5742fa24d3632207e4fe0e18"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "insert_items",
+   "title": "Insert Items",
+   "titleEn": "Insert Items",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function that takes in a list `s`, a value `before`, and a value `after`. It modifies `s` in place by inserting `after` just after each value equal to `before` in `s`. It returns `s`.\n\n**Important:** No new lists should be created.\n\n**Note:** If the values passed into `before` and `after` are equal, make sure you're not creating an infinitely long list while iterating through it. If you find that your code is taking more than a few seconds to run, the function may be in an infinite loop of inserting new values.\n",
+   "statementEn": "Write a function that takes in a list `s`, a value `before`, and a value `after`. It modifies `s` in place by inserting `after` just after each value equal to `before` in `s`. It returns `s`.\n\n**Important:** No new lists should be created.\n\n**Note:** If the values passed into `before` and `after` are equal, make sure you're not creating an infinitely long list while iterating through it. If you find that your code is taking more than a few seconds to run, the function may be in an infinite loop of inserting new values.\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "insert_items"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "insert_items"
+   }
+  },
+  {
+   "id": "group_by",
+   "title": "Group By",
+   "titleEn": "Group By",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function that takes in a list `s` and a function `fn`, and returns a dictionary that groups the elements of `s` based on the result of applying `fn`.\n\n- The dictionary should have one key for each unique result of applying `fn` to elements of `s`.\n- The value for each key should be a list of all elements in `s` that, when passed to `fn`, produce that key (what it evaluates to).\n\nIn other words, for each element `e` in `s`, determine `fn(e)` and add `e` to the list corresponding to `fn(e)` in the dictionary.\n",
+   "statementEn": "Write a function that takes in a list `s` and a function `fn`, and returns a dictionary that groups the elements of `s` based on the result of applying `fn`.\n\n- The dictionary should have one key for each unique result of applying `fn` to elements of `s`.\n- The value for each key should be a list of all elements in `s` that, when passed to `fn`, produce that key (what it evaluates to).\n\nIn other words, for each element `e` in `s`, determine `fn(e)` and add `e` to the list corresponding to `fn(e)` in the dictionary.\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "group_by"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "group_by"
+   }
+  },
+  {
+   "id": "sprout_leaves",
+   "title": "Sprout Leaves",
+   "titleEn": "Sprout Leaves",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nDefine a function `sprout_leaves` that takes in a tree `t` and a list of leaf labels `leaves`. It returns a new tree that is identical to `t`, but in which each old leaf node has new branches, one for each leaf label in `leaves`.\n\nFor example, say we have the tree `t = tree(1, [tree(2), tree(3, [tree(4)])])`:\n\n```\n  1\n / \\\n2   3\n    |\n    4\n```\n\nIf we call `sprout_leaves(t, [5, 6])`, the result is the following tree:\n\n```\n       1\n     /   \\\n    2     3\n   / \\    |\n  5   6   4\n         / \\\n        5   6\n```\n",
+   "statementEn": "Define a function `sprout_leaves` that takes in a tree `t` and a list of leaf labels `leaves`. It returns a new tree that is identical to `t`, but in which each old leaf node has new branches, one for each leaf label in `leaves`.\n\nFor example, say we have the tree `t = tree(1, [tree(2), tree(3, [tree(4)])])`:\n\n```\n  1\n / \\\n2   3\n    |\n    4\n```\n\nIf we call `sprout_leaves(t, [5, 6])`, the result is the following tree:\n\n```\n       1\n     /   \\\n    2     3\n   / \\    |\n  5   6   4\n         / \\\n        5   6\n```\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "sprout_leaves"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "sprout_leaves"
+   }
+  },
+  {
+   "id": "iterators-wwpd",
+   "title": "WWPD: Iterators",
+   "titleEn": "WWPD: Iterators",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\n**Important:** Enter `StopIteration` if a `StopIteration` exception occurs, `Error` if you believe a different error occurs, and `Iterator` if the output is an iterator object.\n\n**Important:** Python's built-in function `map`, `filter`, and `zip` return *iterators*, not lists.\n\n```\n>>> s = [1, 2, 3, 4]\n>>> t = iter(s)\n>>> next(s)\n\n>>> next(t)\n\n>>> next(t)\n\n>>> next(iter(s))\n\n>>> next(iter(s))\n\n>>> u = t\n>>> next(u)\n\n>>> next(t)\n\n```\n\n```\n>>> r = range(6)\n>>> r_iter = iter(r)\n>>> next(r_iter)\n\n>>> [x + 1 for x in r]\n\n>>> [x + 1 for x in r_iter]\n\n>>> next(r_iter)\n\n```\n\n```\n>>> map_iter = map(lambda x : x + 10, range(5))\n>>> next(map_iter)\n\n>>> next(map_iter)\n\n>>> list(map_iter)\n\n>>> for e in filter(lambda x : x % 4 == 0, range(1000, 1008)):\n...     print(e)\n\n>>> [x + y for x, y in zip([1, 2, 3], [4, 5, 6])]\n\n```\n",
+   "statementEn": "**Important:** Enter `StopIteration` if a `StopIteration` exception occurs, `Error` if you believe a different error occurs, and `Iterator` if the output is an iterator object.\n\n**Important:** Python's built-in function `map`, `filter`, and `zip` return *iterators*, not lists.\n\n```\n>>> s = [1, 2, 3, 4]\n>>> t = iter(s)\n>>> next(s)\n\n>>> next(t)\n\n>>> next(t)\n\n>>> next(iter(s))\n\n>>> next(iter(s))\n\n>>> u = t\n>>> next(u)\n\n>>> next(t)\n\n```\n\n```\n>>> r = range(6)\n>>> r_iter = iter(r)\n>>> next(r_iter)\n\n>>> [x + 1 for x in r]\n\n>>> [x + 1 for x in r_iter]\n\n>>> next(r_iter)\n\n```\n\n```\n>>> map_iter = map(lambda x : x + 10, range(5))\n>>> next(map_iter)\n\n>>> next(map_iter)\n\n>>> list(map_iter)\n\n>>> for e in filter(lambda x : x % 4 == 0, range(1000, 1008)):\n...     print(e)\n\n>>> [x + y for x, y in zip([1, 2, 3], [4, 5, 6])]\n\n```\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "iterators-wwpd"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "# Enter StopIteration if StopIteration exception occurs, Error for other errors",
+       "want": []
+      },
+      {
+       "code": "# Enter Iterator if the output is an iterator object.",
+       "want": []
+      },
+      {
+       "code": "s = [1, 2, 3, 4]",
+       "want": []
+      },
+      {
+       "code": "t = iter(s)",
+       "want": []
+      },
+      {
+       "code": "next(s)",
+       "want": [
+        {
+         "hash": "66901ed5775b51743d745870a1a883e3"
+        }
+       ]
+      },
+      {
+       "code": "next(t)",
+       "want": [
+        {
+         "hash": "35926b8dc788659825b34f78c7f76f91"
+        }
+       ]
+      },
+      {
+       "code": "next(t)",
+       "want": [
+        {
+         "hash": "31f02e75f8bef5a0621b68131795447b"
+        }
+       ]
+      },
+      {
+       "code": "next(iter(s))",
+       "want": [
+        {
+         "hash": "35926b8dc788659825b34f78c7f76f91"
+        }
+       ]
+      },
+      {
+       "code": "next(iter(s))",
+       "want": [
+        {
+         "hash": "35926b8dc788659825b34f78c7f76f91"
+        }
+       ]
+      },
+      {
+       "code": "next(t)",
+       "want": [
+        {
+         "hash": "74689fcda5421388b764b40ec8de8ccd"
+        }
+       ]
+      },
+      {
+       "code": "next(t)",
+       "want": [
+        {
+         "hash": "fef77a143fa87e746554afe9ebb16a3d"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "r = range(6)",
+       "want": []
+      },
+      {
+       "code": "r_iter = iter(r)",
+       "want": []
+      },
+      {
+       "code": "next(r_iter)",
+       "want": [
+        {
+         "hash": "58e1f1fb97222d3a4c3904f2aa3cf3fa"
+        }
+       ]
+      },
+      {
+       "code": "[x + 1 for x in r]",
+       "want": [
+        {
+         "hash": "650bdb2b36c8f995df90e9ba89bc6296"
+        }
+       ]
+      },
+      {
+       "code": "[x + 1 for x in r_iter]",
+       "want": [
+        {
+         "hash": "d5ac882300cb5dba818dba62ad445078"
+        }
+       ]
+      },
+      {
+       "code": "next(r_iter)",
+       "want": [
+        {
+         "hash": "5ae3a662faab36325ff2515dae9b0edd"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "map_iter = map(lambda x : x + 10, range(5))",
+       "want": []
+      },
+      {
+       "code": "next(map_iter)",
+       "want": [
+        {
+         "hash": "c3fb2b60594bc44d1fb463ee64add7e4"
+        }
+       ]
+      },
+      {
+       "code": "next(map_iter)",
+       "want": [
+        {
+         "hash": "b175ff944106bc551fe6cd7d299a8a62"
+        }
+       ]
+      },
+      {
+       "code": "list(map_iter)",
+       "want": [
+        {
+         "hash": "432189140c9520338be16c9d678a44d5"
+        }
+       ]
+      },
+      {
+       "code": "for e in filter(lambda x : x % 4 == 0, range(1000, 1008)):\n    print(e)",
+       "want": [
+        {
+         "hash": "3dab7ee8f513b748e8368e1dbd9ae002"
+        },
+        {
+         "hash": "c4498dd9e0ddf4e9c57b1a6b498e7087"
+        }
+       ]
+      },
+      {
+       "code": "[x + y for x, y in zip([1, 2, 3], [4, 5, 6])]",
+       "want": [
+        {
+         "hash": "7242aed8fdd814d9456c884eda215d73"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "count_occurrences",
+   "title": "Count Occurrences",
+   "titleEn": "Count Occurrences",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `count_occurrences`, which takes an iterator `t`, an integer `n`, and a value `x`. It returns the number of elements in the first `n` elements of `t` that are equal to `x`.\n\nYou can assume that `t` has at least `n` elements.\n\n**Important**: You should call `next` on `t` exactly `n` times. If you need to iterate through more than `n` elements, think about how you can optimize your solution.\n",
+   "statementEn": "Implement `count_occurrences`, which takes an iterator `t`, an integer `n`, and a value `x`. It returns the number of elements in the first `n` elements of `t` that are equal to `x`.\n\nYou can assume that `t` has at least `n` elements.\n\n**Important**: You should call `next` on `t` exactly `n` times. If you need to iterate through more than `n` elements, think about how you can optimize your solution.\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "count_occurrences"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "count_occurrences"
+   }
+  },
+  {
+   "id": "pathsum",
+   "title": "Path Sum",
+   "titleEn": "Path Sum",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nDefine a function `pathsum`, which takes in a tree of numbers `t` and a number `n`. It returns `True` if there is a path from the root to a leaf such that the sum of the numbers along that path is `n` and `False` otherwise.\n",
+   "statementEn": "Define a function `pathsum`, which takes in a tree of numbers `t` and a number `n`. It returns `True` if there is a path from the root to a leaf such that the sum of the numbers along that path is `n` and `False` otherwise.\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "pathsum"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "pathsum"
+   }
+  },
+  {
+   "id": "sum_tree",
+   "title": "Perfectly Balanced",
+   "titleEn": "Perfectly Balanced",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `sum_tree`, which returns the sum of all the labels in tree `t`.\n\nThen, implement `balanced`, which returns whether every branch of `t` has the same total sum and that the branches themselves are also balanced.\n\n- For example, the tree above is balanced because each branch has the same total sum, and each branch is also itself balanced.\n\n**Challenge:** Solve both of these parts with just 1 line of code each.\n",
+   "statementEn": "Implement `sum_tree`, which returns the sum of all the labels in tree `t`.\n\nThen, implement `balanced`, which returns whether every branch of `t` has the same total sum and that the branches themselves are also balanced.\n\n- For example, the tree above is balanced because each branch has the same total sum, and each branch is also itself balanced.\n\n**Challenge:** Solve both of these parts with just 1 line of code each.\n",
+   "editable": [
+    "lab05.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "sum_tree balanced"
+   },
+   "focus": {
+    "file": "lab05.py",
+    "symbol": "sum_tree"
+   }
+  }
+ ]
+}

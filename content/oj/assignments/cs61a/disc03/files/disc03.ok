@@ -1,0 +1,8 @@
+{
+    "name": "Discussion 3",
+    "src": [
+        "sevens.py",
+        "skip_factorial.py",
+        "swipe.py"
+    ]
+}

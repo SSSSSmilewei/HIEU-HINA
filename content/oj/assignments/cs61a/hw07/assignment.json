@@ -1,0 +1,69 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "hw07",
+ "title": "作业 7：Scheme",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/hw/hw07/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "hw07",
+ "repoDir": "hw/hw07",
+ "intro": "",
+ "problems": [
+  {
+   "id": "pow",
+   "title": "Pow",
+   "titleEn": "Pow",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement a procedure `pow` that raises a number `base` to the power of a nonnegative integer `exp`. The number of recursive `pow` calls should grow logarithmically with respect to `exp`, rather than linearly. For example, `(pow 2 32)` should result in 5 recursive `pow` calls rather than 32 recursive `pow` calls.\n\n*Hint:*\n\n1. x2y = (xy)2\n2. x2y+1 = x(xy)2\n\nFor example, 216 = (28)2 and 217 = 2 * (28)2.\n\nYou may use the built-in predicates `even?` and `odd?`. Also, the `square` procedure is defined for you.\n\nScheme doesn't have `while` or `for` statements, so use recursion to solve this problem.\n",
+   "statementEn": "Implement a procedure `pow` that raises a number `base` to the power of a nonnegative integer `exp`. The number of recursive `pow` calls should grow logarithmically with respect to `exp`, rather than linearly. For example, `(pow 2 32)` should result in 5 recursive `pow` calls rather than 32 recursive `pow` calls.\n\n*Hint:*\n\n1. x2y = (xy)2\n2. x2y+1 = x(xy)2\n\nFor example, 216 = (28)2 and 217 = 2 * (28)2.\n\nYou may use the built-in predicates `even?` and `odd?`. Also, the `square` procedure is defined for you.\n\nScheme doesn't have `while` or `for` statements, so use recursion to solve this problem.\n",
+   "editable": [
+    "hw07.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "pow"
+   }
+  },
+  {
+   "id": "repeatedly-cube",
+   "title": "Repeatedly Cube",
+   "titleEn": "Repeatedly Cube",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `repeatedly-cube`, which receives a number `x` and cubes it `n` times.\n\nHere are some examples of how `repeatedly-cube` should behave:\n\n```\nscm> (repeatedly-cube 100 1) ; 1 cubed 100 times is still 1\n1\nscm> (repeatedly-cube 2 2) ; (2^3)^3\n512\nscm> (repeatedly-cube 3 2) ; ((2^3)^3)^3\n134217728\n```\n",
+   "statementEn": "Implement `repeatedly-cube`, which receives a number `x` and cubes it `n` times.\n\nHere are some examples of how `repeatedly-cube` should behave:\n\n```\nscm> (repeatedly-cube 100 1) ; 1 cubed 100 times is still 1\n1\nscm> (repeatedly-cube 2 2) ; (2^3)^3\n512\nscm> (repeatedly-cube 3 2) ; ((2^3)^3)^3\n134217728\n```\n",
+   "editable": [
+    "hw07.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "repeatedly-cube"
+   }
+  },
+  {
+   "id": "cadr-caddr",
+   "title": "Cadr and Caddr",
+   "titleEn": "Cadr and Caddr",
+   "kind": "function",
+   "languages": [
+    "scheme"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nDefine the procedure `cadr`, which returns the second element of a list. Also define `caddr`, which returns the third element of a list. Try writing `cadr` and `caddr` in terms of `car` and `cdr`.\n",
+   "statementEn": "Define the procedure `cadr`, which returns the second element of a list. Also define `caddr`, which returns the third element of a list. Try writing `cadr` and `caddr` in terms of `car` and `cdr`.\n",
+   "editable": [
+    "hw07.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "cadr-caddr"
+   }
+  }
+ ]
+}

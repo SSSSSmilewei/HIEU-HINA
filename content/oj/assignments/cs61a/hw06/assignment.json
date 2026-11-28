@@ -1,0 +1,147 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "hw06",
+ "title": "作业 6：面向对象编程、链表、可变的树",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/hw/hw06/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "hw06",
+ "repoDir": "hw/hw06",
+ "intro": "",
+ "problems": [
+  {
+   "id": "vendingmachine",
+   "title": "Vending Machine",
+   "titleEn": "Vending Machine",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nIn this question you'll create a [vending machine](https://en.wikipedia.org/wiki/Vending_machine) that sells a single product and provides change when needed.\n\nImplement the `VendingMachine` class, which models a vending machine for one specific product. The methods of a `VendingMachine` object return strings to describe the machine’s status and operations. Ensure that your output matches *exactly* with the strings provided in the doctests, including punctuation and spacing.\n\nYou may find Python's formatted string literals, or [f-strings](https://docs.python.org/3/tutorial/inputoutput.html#fancier-output-formatting) useful. A quick example:\n\n```\n>>> feeling = 'love'\n>>> course = 'CS 61A!'\n>>> combined_string = f'I {feeling} {course}'\n>>> combined_string\n'I love CS 61A!'\n```\n",
+   "statementEn": "In this question you'll create a [vending machine](https://en.wikipedia.org/wiki/Vending_machine) that sells a single product and provides change when needed.\n\nImplement the `VendingMachine` class, which models a vending machine for one specific product. The methods of a `VendingMachine` object return strings to describe the machine’s status and operations. Ensure that your output matches *exactly* with the strings provided in the doctests, including punctuation and spacing.\n\nYou may find Python's formatted string literals, or [f-strings](https://docs.python.org/3/tutorial/inputoutput.html#fancier-output-formatting) useful. A quick example:\n\n```\n>>> feeling = 'love'\n>>> course = 'CS 61A!'\n>>> combined_string = f'I {feeling} {course}'\n>>> combined_string\n'I love CS 61A!'\n```\n",
+   "editable": [
+    "hw06.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "VendingMachine"
+   },
+   "focus": {
+    "file": "hw06.py",
+    "symbol": "VendingMachine"
+   }
+  },
+  {
+   "id": "store_digits",
+   "title": "Store Digits",
+   "titleEn": "Store Digits",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function `store_digits` that takes in an integer `n` and returns a linked list containing the digits of `n` in the same order (from left to right).\n\n**Important**: Do not use any string manipulation functions, such as `str` or `reversed`.\n",
+   "statementEn": "Write a function `store_digits` that takes in an integer `n` and returns a linked list containing the digits of `n` in the same order (from left to right).\n\n**Important**: Do not use any string manipulation functions, such as `str` or `reversed`.\n",
+   "editable": [
+    "hw06.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "store_digits"
+   },
+   "focus": {
+    "file": "hw06.py",
+    "symbol": "store_digits"
+   }
+  },
+  {
+   "id": "deep_map_mut",
+   "title": "Mutable Mapping",
+   "titleEn": "Mutable Mapping",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `deep_map_mut(func, s)`, which applies the function `func` to each element in the linked list `s`. If an element is itself a linked list, recursively apply `func` to its elements as well.\n\nYour implementation should *mutate* the original linked list. **Do not create any new linked lists.** The function returns `None`.\n\n**Hint**: You can use the built-in `isinstance` function to determine if an element is a linked list.\n\n```\n>>> s = Link(1, Link(2, Link(3, Link(4))))\n>>> isinstance(s, Link)\nTrue\n>>> isinstance(s, int)\nFalse\n```\n\n**Construct Check**: The final test case for this problem checks that your function does not create any new linked lists. If you are failing this doctest, make sure that you are not creating link lists by calling the constructor, i.e.\n\n```\ns = Link(1)\n```\n",
+   "statementEn": "Implement `deep_map_mut(func, s)`, which applies the function `func` to each element in the linked list `s`. If an element is itself a linked list, recursively apply `func` to its elements as well.\n\nYour implementation should *mutate* the original linked list. **Do not create any new linked lists.** The function returns `None`.\n\n**Hint**: You can use the built-in `isinstance` function to determine if an element is a linked list.\n\n```\n>>> s = Link(1, Link(2, Link(3, Link(4))))\n>>> isinstance(s, Link)\nTrue\n>>> isinstance(s, int)\nFalse\n```\n\n**Construct Check**: The final test case for this problem checks that your function does not create any new linked lists. If you are failing this doctest, make sure that you are not creating link lists by calling the constructor, i.e.\n\n```\ns = Link(1)\n```\n",
+   "editable": [
+    "hw06.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "deep_map_mut"
+   },
+   "focus": {
+    "file": "hw06.py",
+    "symbol": "deep_map_mut"
+   }
+  },
+  {
+   "id": "prune_small",
+   "title": "Prune Small",
+   "titleEn": "Prune Small",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nRemoving some nodes from a tree is called *pruning* the tree.\n\nComplete the function `prune_small` that takes in a `Tree` `t` and a number `n`. For each node with more than `n` branches, keep only the `n` branches with the smallest labels and remove (*prune*) the rest.\n\n**Hint**: The `max` function takes in an `iterable` as well as an optional `key` argument (which takes in a one-argument function). For example, `max([-7, 2, -1], key=abs)` would return `-7` since `abs(-7)` is greater than `abs(2)` and `abs(-1)`.\n",
+   "statementEn": "Removing some nodes from a tree is called *pruning* the tree.\n\nComplete the function `prune_small` that takes in a `Tree` `t` and a number `n`. For each node with more than `n` branches, keep only the `n` branches with the smallest labels and remove (*prune*) the rest.\n\n**Hint**: The `max` function takes in an `iterable` as well as an optional `key` argument (which takes in a one-argument function). For example, `max([-7, 2, -1], key=abs)` would return `-7` since `abs(-7)` is greater than `abs(2)` and `abs(-1)`.\n",
+   "editable": [
+    "hw06.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "prune_small"
+   },
+   "focus": {
+    "file": "hw06.py",
+    "symbol": "prune_small"
+   }
+  },
+  {
+   "id": "delete",
+   "title": "Delete",
+   "titleEn": "Delete",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `delete`, which takes a Tree `t` and removes all non-root nodes labeled `x`. The parent of each remaining node is its nearest ancestor that was not removed. The root node is never removed, even if its label is `x`.\n",
+   "statementEn": "Implement `delete`, which takes a Tree `t` and removes all non-root nodes labeled `x`. The parent of each remaining node is its nearest ancestor that was not removed. The root node is never removed, even if its label is `x`.\n",
+   "editable": [
+    "hw06.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "delete"
+   },
+   "focus": {
+    "file": "hw06.py",
+    "symbol": "delete"
+   }
+  },
+  {
+   "id": "two_list",
+   "title": "Two List",
+   "titleEn": "Two List",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement a function `two_list` that takes in two lists and returns a linked list. The first list contains the values that we want to put in the linked list, and the second list contains the number of each corresponding value. Assume both lists are the same size and have a length of 1 or greater. Assume all elements in the second list are greater than 0.\n\n Exam Practice\n\nHomework assignments will also contain prior exam questions for you to try. These questions have no submission component; feel free to attempt them if you'd like some practice!\n\nObject-Oriented Programming\n\n1. Spring 2022 MT2 Q8: [CS61A Presents The Game of Hoop.](https://cs61a.org/exam/sp22/mt2/61a-sp22-mt2.pdf#page=17)\n2. Fall 2020 MT2 Q3: [Sparse Lists](https://cs61a.org/exam/fa20/mt2/61a-fa20-mt2.pdf#page=9)\n3. Fall 2019 MT2 Q7: [Version 2.0](https://cs61a.org/exam/fa19/mt2/61a-fa19-mt2.pdf#page=8)\n\nLinked Lists\n\n1. Fall 2020 Final Q3: [College Party](https://cs61a.org/exam/fa20/final/61a-fa20-final.pdf#page=9)\n2. Fall 2018 MT2 Q6: [Dr. Frankenlink](https://cs61a.org/exam/fa18/mt2/61a-fa18-mt2.pdf#page=6)\n3. Spring 2017 MT1 Q5: [Insert](https://cs61a.org/exam/sp17/mt1/61a-sp17-mt1.pdf#page=7)\n",
+   "statementEn": "Implement a function `two_list` that takes in two lists and returns a linked list. The first list contains the values that we want to put in the linked list, and the second list contains the number of each corresponding value. Assume both lists are the same size and have a length of 1 or greater. Assume all elements in the second list are greater than 0.\n\n Exam Practice\n\nHomework assignments will also contain prior exam questions for you to try. These questions have no submission component; feel free to attempt them if you'd like some practice!\n\nObject-Oriented Programming\n\n1. Spring 2022 MT2 Q8: [CS61A Presents The Game of Hoop.](https://cs61a.org/exam/sp22/mt2/61a-sp22-mt2.pdf#page=17)\n2. Fall 2020 MT2 Q3: [Sparse Lists](https://cs61a.org/exam/fa20/mt2/61a-fa20-mt2.pdf#page=9)\n3. Fall 2019 MT2 Q7: [Version 2.0](https://cs61a.org/exam/fa19/mt2/61a-fa19-mt2.pdf#page=8)\n\nLinked Lists\n\n1. Fall 2020 Final Q3: [College Party](https://cs61a.org/exam/fa20/final/61a-fa20-final.pdf#page=9)\n2. Fall 2018 MT2 Q6: [Dr. Frankenlink](https://cs61a.org/exam/fa18/mt2/61a-fa18-mt2.pdf#page=6)\n3. Spring 2017 MT1 Q5: [Insert](https://cs61a.org/exam/sp17/mt1/61a-sp17-mt1.pdf#page=7)\n",
+   "editable": [
+    "hw06.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "two_list"
+   },
+   "focus": {
+    "file": "hw06.py",
+    "symbol": "two_list"
+   }
+  }
+ ]
+}

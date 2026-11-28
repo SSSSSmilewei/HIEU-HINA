@@ -1,0 +1,81 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "hw02",
+ "title": "作业 2：高阶函数",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/hw/hw02/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "hw02",
+ "repoDir": "hw/hw02",
+ "intro": "",
+ "problems": [
+  {
+   "id": "product",
+   "title": "Product",
+   "titleEn": "Product",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function called `product` that returns the product of the first `n` terms of a sequence. Specifically, `product` takes in an integer `n` and `term`, a single-argument function that determines a sequence (That is, `term(i)` gives the `i`th term of the sequence). `product(n, term)` should return `term(1) * ... * term(n)`.\n\n```\ndef product(n, term):\n    \"\"\"Return the product of the first n terms in a sequence.\n\n    n: a positive integer\n    term: a function that takes an index as input and produces a term\n\n    >>> product(3, identity)  # 1 * 2 * 3\n    6\n    >>> product(5, identity)  # 1 * 2 * 3 * 4 * 5\n    120\n    >>> product(3, square)    # 1^2 * 2^2 * 3^2\n    36\n    >>> product(5, square)    # 1^2 * 2^2 * 3^2 * 4^2 * 5^2\n    14400\n    >>> product(3, increment) # (1+1) * (2+1) * (3+1)\n    24\n    >>> product(3, triple)    # 1*3 * 2*3 * 3*3\n    162\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n",
+   "statementEn": "Write a function called `product` that returns the product of the first `n` terms of a sequence. Specifically, `product` takes in an integer `n` and `term`, a single-argument function that determines a sequence (That is, `term(i)` gives the `i`th term of the sequence). `product(n, term)` should return `term(1) * ... * term(n)`.\n\n```\ndef product(n, term):\n    \"\"\"Return the product of the first n terms in a sequence.\n\n    n: a positive integer\n    term: a function that takes an index as input and produces a term\n\n    >>> product(3, identity)  # 1 * 2 * 3\n    6\n    >>> product(5, identity)  # 1 * 2 * 3 * 4 * 5\n    120\n    >>> product(3, square)    # 1^2 * 2^2 * 3^2\n    36\n    >>> product(5, square)    # 1^2 * 2^2 * 3^2 * 4^2 * 5^2\n    14400\n    >>> product(3, increment) # (1+1) * (2+1) * (3+1)\n    24\n    >>> product(3, triple)    # 1*3 * 2*3 * 3*3\n    162\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n",
+   "editable": [
+    "hw02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "product"
+   },
+   "focus": {
+    "file": "hw02.py",
+    "symbol": "product"
+   }
+  },
+  {
+   "id": "accumulate",
+   "title": "Accumulate",
+   "titleEn": "Accumulate",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nLet's take a look at how `product` is an instance of a more general function called `accumulate`, which we would like to implement:\n\n```\ndef accumulate(fuse, start, n, term):\n    \"\"\"Return the result of fusing together the first n terms in a sequence\n    and start.  The terms to be fused are term(1), term(2), ..., term(n).\n    The function fuse is a two-argument commutative & associative function.\n\n    >>> accumulate(add, 0, 5, identity)  # 0 + 1 + 2 + 3 + 4 + 5\n    15\n    >>> accumulate(add, 11, 5, identity) # 11 + 1 + 2 + 3 + 4 + 5\n    26\n    >>> accumulate(add, 11, 0, identity) # 11 (fuse is never used)\n    11\n    >>> accumulate(add, 11, 3, square)   # 11 + 1^2 + 2^2 + 3^2\n    25\n    >>> accumulate(mul, 2, 3, square)    # 2 * 1^2 * 2^2 * 3^2\n    72\n    >>> # 2 + (1^2 + 1) + (2^2 + 1) + (3^2 + 1)\n    >>> accumulate(lambda x, y: x + y + 1, 2, 3, square)\n    19\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n\n`accumulate` has the following parameters:\n\n- `fuse`: a two-argument function that specifies how the current term is fused with the previously accumulated terms\n- `start`: value at which to start the accumulation\n- `n`: a non-negative integer indicating the number of terms to fuse\n- `term`: a single-argument function; `term(i)` is the `i`th term of the sequence\n\nImplement `accumulate`, which fuses the first `n` terms of the sequence defined by `term` with the `start` value using the `fuse` function.\n\nFor example, the result of `accumulate(add, 11, 3, square)` is\n\n```\nadd(11,  add(square(1), add(square(2),  square(3)))) =\n    11 +     square(1) +    square(2) + square(3)    =\n    11 +     1         +    4         + 9            = 25\n```\n\nAssume that `fuse` is commutative, `fuse(a, b) == fuse(b, a)`, and associative, `fuse(fuse(a, b), c) == fuse(a, fuse(b, c))`.\n\nThen, implement `summation` (from lecture) and `product` as one-line calls to `accumulate`.\n\n**Important:** Both `summation_using_accumulate` and `product_using_accumulate` should be implemented with a single line of code starting with `return`.\n\n```\ndef summation_using_accumulate(n, term):\n    \"\"\"Returns the sum: term(1) + ... + term(n), using accumulate.\n\n    >>> summation_using_accumulate(5, square) # square(1) + square(2) + ... + square(4) + square(5)\n    55\n    >>> summation_using_accumulate(5, triple) # triple(1) + triple(2) + ... + triple(4) + triple(5)\n    45\n    >>> # This test checks that the body of the function is just a return statement.\n    >>> import inspect, ast\n    >>> [type(x).__name__ for x in ast.parse(inspect.getsource(summation_using_accumulate)).body[0].body]\n    ['Expr', 'Return']\n    \"\"\"\n    return ____\n\ndef product_using_accumulate(n, term):\n    \"\"\"Returns the product: term(1) * ... * term(n), using accumulate.\n\n    >>> product_using_accumulate(4, square) # square(1) * square(2) * square(3) * square()\n    576\n    >>> product_using_accumulate(6, triple) # triple(1) * triple(2) * ... * triple(5) * triple(6)\n    524880\n    >>> # This test checks that the body of the function is just a return statement.\n    >>> import inspect, ast\n    >>> [type(x).__name__ for x in ast.parse(inspect.getsource(product_using_accumulate)).body[0].body]\n    ['Expr', 'Return']\n    \"\"\"\n    return ____\n\n```\n\nUse Ok to test your code:\n\n```\npython3 ok -q summation_using_accumulate\npython3 ok -q product_using_accumulate\n```\n",
+   "statementEn": "Let's take a look at how `product` is an instance of a more general function called `accumulate`, which we would like to implement:\n\n```\ndef accumulate(fuse, start, n, term):\n    \"\"\"Return the result of fusing together the first n terms in a sequence\n    and start.  The terms to be fused are term(1), term(2), ..., term(n).\n    The function fuse is a two-argument commutative & associative function.\n\n    >>> accumulate(add, 0, 5, identity)  # 0 + 1 + 2 + 3 + 4 + 5\n    15\n    >>> accumulate(add, 11, 5, identity) # 11 + 1 + 2 + 3 + 4 + 5\n    26\n    >>> accumulate(add, 11, 0, identity) # 11 (fuse is never used)\n    11\n    >>> accumulate(add, 11, 3, square)   # 11 + 1^2 + 2^2 + 3^2\n    25\n    >>> accumulate(mul, 2, 3, square)    # 2 * 1^2 * 2^2 * 3^2\n    72\n    >>> # 2 + (1^2 + 1) + (2^2 + 1) + (3^2 + 1)\n    >>> accumulate(lambda x, y: x + y + 1, 2, 3, square)\n    19\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n\n`accumulate` has the following parameters:\n\n- `fuse`: a two-argument function that specifies how the current term is fused with the previously accumulated terms\n- `start`: value at which to start the accumulation\n- `n`: a non-negative integer indicating the number of terms to fuse\n- `term`: a single-argument function; `term(i)` is the `i`th term of the sequence\n\nImplement `accumulate`, which fuses the first `n` terms of the sequence defined by `term` with the `start` value using the `fuse` function.\n\nFor example, the result of `accumulate(add, 11, 3, square)` is\n\n```\nadd(11,  add(square(1), add(square(2),  square(3)))) =\n    11 +     square(1) +    square(2) + square(3)    =\n    11 +     1         +    4         + 9            = 25\n```\n\nAssume that `fuse` is commutative, `fuse(a, b) == fuse(b, a)`, and associative, `fuse(fuse(a, b), c) == fuse(a, fuse(b, c))`.\n\nThen, implement `summation` (from lecture) and `product` as one-line calls to `accumulate`.\n\n**Important:** Both `summation_using_accumulate` and `product_using_accumulate` should be implemented with a single line of code starting with `return`.\n\n```\ndef summation_using_accumulate(n, term):\n    \"\"\"Returns the sum: term(1) + ... + term(n), using accumulate.\n\n    >>> summation_using_accumulate(5, square) # square(1) + square(2) + ... + square(4) + square(5)\n    55\n    >>> summation_using_accumulate(5, triple) # triple(1) + triple(2) + ... + triple(4) + triple(5)\n    45\n    >>> # This test checks that the body of the function is just a return statement.\n    >>> import inspect, ast\n    >>> [type(x).__name__ for x in ast.parse(inspect.getsource(summation_using_accumulate)).body[0].body]\n    ['Expr', 'Return']\n    \"\"\"\n    return ____\n\ndef product_using_accumulate(n, term):\n    \"\"\"Returns the product: term(1) * ... * term(n), using accumulate.\n\n    >>> product_using_accumulate(4, square) # square(1) * square(2) * square(3) * square()\n    576\n    >>> product_using_accumulate(6, triple) # triple(1) * triple(2) * ... * triple(5) * triple(6)\n    524880\n    >>> # This test checks that the body of the function is just a return statement.\n    >>> import inspect, ast\n    >>> [type(x).__name__ for x in ast.parse(inspect.getsource(product_using_accumulate)).body[0].body]\n    ['Expr', 'Return']\n    \"\"\"\n    return ____\n\n```\n\nUse Ok to test your code:\n\n```\npython3 ok -q summation_using_accumulate\npython3 ok -q product_using_accumulate\n```\n",
+   "editable": [
+    "hw02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "accumulate summation_using_accumulate product_using_accumulate"
+   },
+   "focus": {
+    "file": "hw02.py",
+    "symbol": "accumulate"
+   }
+  },
+  {
+   "id": "make_repeater",
+   "title": "Make Repeater",
+   "titleEn": "Make Repeater",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the function `make_repeater` which takes a one-argument function `f` and a positive integer `n`. It returns a one-argument function so that `make_repeater(f, n)(x)` returns the value of `f(f(...f(x)...))`, in which `f` is applied `n` times to `x`. For example, `make_repeater(square, 3)(5)` squares 5 three times and returns 390625, just like `square(square(square(5)))`.\n\n```\ndef make_repeater(f, n):\n    \"\"\"Returns the function that computes the nth application of f.\n\n    >>> add_three = make_repeater(increment, 3)\n    >>> add_three(5)\n    8\n    >>> make_repeater(triple, 5)(1) # 3 * (3 * (3 * (3 * (3 * 1))))\n    243\n    >>> make_repeater(square, 2)(5) # square(square(5))\n    625\n    >>> make_repeater(square, 3)(5) # square(square(square(5)))\n    390625\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n",
+   "statementEn": "Implement the function `make_repeater` which takes a one-argument function `f` and a positive integer `n`. It returns a one-argument function so that `make_repeater(f, n)(x)` returns the value of `f(f(...f(x)...))`, in which `f` is applied `n` times to `x`. For example, `make_repeater(square, 3)(5)` squares 5 three times and returns 390625, just like `square(square(square(5)))`.\n\n```\ndef make_repeater(f, n):\n    \"\"\"Returns the function that computes the nth application of f.\n\n    >>> add_three = make_repeater(increment, 3)\n    >>> add_three(5)\n    8\n    >>> make_repeater(triple, 5)(1) # 3 * (3 * (3 * (3 * (3 * 1))))\n    243\n    >>> make_repeater(square, 2)(5) # square(square(5))\n    625\n    >>> make_repeater(square, 3)(5) # square(square(square(5)))\n    390625\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n",
+   "editable": [
+    "hw02.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "make_repeater"
+   },
+   "focus": {
+    "file": "hw02.py",
+    "symbol": "make_repeater"
+   }
+  }
+ ]
+}

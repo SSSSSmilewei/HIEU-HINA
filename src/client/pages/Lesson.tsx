@@ -1,4 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AssignmentEntry, useHasAssignment } from "../components/AssignmentEntry";
+import { ExamEntry } from "../components/ExamEntry";
+import { useVideoSide, useVideoSources, VideoPlayer } from "../components/VideoPlayer";
 import { ITEM_KIND_LABEL } from "../../shared/light";
 import type { Item } from "../../shared/package";
 import { PinBoard } from "../components/Pins";
@@ -27,6 +30,11 @@ export function LessonPage({ slug, page }: { slug: string; page: string }) {
   const [panelHost, setPanelHost] = useState<HTMLElement | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const source = useMemo(() => (pkg && at?.pageId ? () => loadPage(slug, pkg, at.pageId as string) : null), [pkg, slug, at?.pageId]);
+  // 有作业台（OJ 作业）的条目，判题都走作业台，旧的浏览器练手题不再显示
+  const oj = useHasAssignment(slug, item?.id ?? "");
+  // 视频（故事 3.6）：课程包里的视频源加上管理员加的；可以和讲义并排看
+  const [videos, reloadVideos] = useVideoSources(slug, item?.id ?? "", item?.videos ?? []);
+  const [videoSide, setVideoSide] = useVideoSide();
 
   if (pkgError)
     return (
@@ -57,6 +65,9 @@ export function LessonPage({ slug, page }: { slug: string; page: string }) {
   const done = !!state?.done[item.id];
   const solved = new Set(state?.solved[item.id] ?? []);
   const lastPage = !item.pages.length || at.pageId === item.pages[item.pages.length - 1].id;
+  const showPractice = item.practice.length > 0 && oj === false;
+  const sideVideo = videoSide && videos.length > 0 && !panelOpen;
+  const player = <VideoPlayer course={slug} item={item.id} sources={videos} side={sideVideo} onSide={setVideoSide} onChanged={reloadVideos} />;
 
   return (
     <div className="page lesson-page">
@@ -81,6 +92,9 @@ export function LessonPage({ slug, page }: { slug: string; page: string }) {
         </div>
       </header>
 
+      <AssignmentEntry course={slug} item={item.id} />
+      <ExamEntry course={slug} item={item.id} />
+
       {item.pages.length > 1 && (
         <nav ref={tabs} className="page-tabs" aria-label="这一项的页面">
           {item.pages.map((p) => (
@@ -91,16 +105,17 @@ export function LessonPage({ slug, page }: { slug: string; page: string }) {
         </nav>
       )}
 
-      <div className={`lesson${panelOpen ? " has-pin" : ""}`}>
+      <div className={`lesson${panelOpen ? " has-pin" : ""}${sideVideo ? " has-video" : ""}`}>
         <PinBoard course={slug} page={page} enabled={!isLocalSlug(slug)} toolHost={toolHost} panelHost={panelHost} onPanel={setPanelOpen}>
         <div className="lesson-body stack" style={{ gap: 40 }}>
+          {!sideVideo && player}
           {source && (
             <article key={page}>
               <Prose source={source} onToc={onToc} dropTitle />
             </article>
           )}
           <Resources item={item} />
-          {item.practice.length > 0 && lastPage && (
+          {showPractice && lastPage && (
             <section id="practice" aria-labelledby="practice-h" className="stack" style={{ gap: 16 }}>
               <div className="section-head">
                 <h2 id="practice-h" className="h2">
@@ -117,7 +132,7 @@ export function LessonPage({ slug, page }: { slug: string; page: string }) {
         </PinBoard>
         <aside className="lesson-side">
           <div ref={setPanelHost} className="pin-host" />
-          {!panelOpen && <Toc items={toc} />}
+          {sideVideo ? player : !panelOpen && <Toc items={toc} />}
         </aside>
       </div>
 
@@ -126,7 +141,7 @@ export function LessonPage({ slug, page }: { slug: string; page: string }) {
           <Icon name="check" size={16} stroke={2.2} />
           {done ? "已完成" : "标记完成"}
         </button>
-        {item.practice.length > 0 && !lastPage && (
+        {showPractice && !lastPage && (
           <Link to={`/courses/${slug}/learn/${item.pages[item.pages.length - 1].id}#practice`} className="btn btn-quiet">
             去练手（{item.practice.length} 题）
           </Link>
@@ -161,25 +176,10 @@ export function LessonPage({ slug, page }: { slug: string; page: string }) {
 
 /** 视频、参考链接、正式提交地址 */
 function Resources({ item }: { item: Item }) {
-  if (!item.videos.length && !item.links.length && !item.submit) return null;
+  // 视频在讲义上方的播放器里（VideoPlayer），这里只放链接和提交地址
+  if (!item.links.length && !item.submit) return null;
   return (
     <section className="res-box" aria-label="视频和链接">
-      {item.videos.length > 0 && (
-        <div className="res-row">
-          <span className="res-label">
-            <Icon name="video" size={16} />
-            视频
-          </span>
-          <span className="row wrap" style={{ gap: 8 }}>
-            {item.videos.map((l) => (
-              <a key={l.url} href={l.url} target="_blank" rel="noreferrer" className="ext-link">
-                {l.label}
-                <Icon name="external" size={12} stroke={2.2} />
-              </a>
-            ))}
-          </span>
-        </div>
-      )}
       {item.links.length > 0 && (
         <div className="res-row">
           <span className="res-label">

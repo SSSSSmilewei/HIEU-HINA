@@ -1,0 +1,403 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "lab07",
+ "title": "实验 7：链表、继承",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/lab/lab07/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "lab07",
+ "repoDir": "lab/lab07",
+ "intro": "",
+ "problems": [
+  {
+   "id": "inheritance-abc",
+   "title": "WWPD: Inheritance ABCs",
+   "titleEn": "WWPD: Inheritance ABCs",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\n**Important:** For all WWPD questions, type `Function` if you believe the answer is `<function...>`, `Error` if it errors, and `Nothing` if nothing is displayed.\n\n```\n>>> class A:\n...   x, y = 0, 0\n...   def __init__(self):\n...         return\n>>> class B(A):\n...   def __init__(self):\n...         return\n>>> class C(A):\n...   def __init__(self):\n...         return\n>>> print(A.x, B.x, C.x)\n\n>>> B.x = 2\n>>> print(A.x, B.x, C.x)\n\n>>> A.x += 1\n>>> print(A.x, B.x, C.x)\n\n>>> obj = C()\n>>> obj.y = 1\n>>> C.y == obj.y\n\n>>> A.y = obj.y\n>>> print(A.y, B.y, C.y, obj.y)\n\n```\n",
+   "statementEn": "**Important:** For all WWPD questions, type `Function` if you believe the answer is `<function...>`, `Error` if it errors, and `Nothing` if nothing is displayed.\n\n```\n>>> class A:\n...   x, y = 0, 0\n...   def __init__(self):\n...         return\n>>> class B(A):\n...   def __init__(self):\n...         return\n>>> class C(A):\n...   def __init__(self):\n...         return\n>>> print(A.x, B.x, C.x)\n\n>>> B.x = 2\n>>> print(A.x, B.x, C.x)\n\n>>> A.x += 1\n>>> print(A.x, B.x, C.x)\n\n>>> obj = C()\n>>> obj.y = 1\n>>> C.y == obj.y\n\n>>> A.y = obj.y\n>>> print(A.y, B.y, C.y, obj.y)\n\n```\n",
+   "editable": [
+    "lab07.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "inheritance-abc"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "class A:\n  x, y = 0, 0\n  def __init__(self):\n        return",
+       "want": []
+      },
+      {
+       "code": "class B(A):\n  def __init__(self):\n        return",
+       "want": []
+      },
+      {
+       "code": "class C(A):\n  def __init__(self):\n        return",
+       "want": []
+      },
+      {
+       "code": "print(A.x, B.x, C.x)",
+       "want": [
+        {
+         "hash": "5dd1d444cfee04cb2069097fa040a660"
+        }
+       ]
+      },
+      {
+       "code": "B.x = 2",
+       "want": []
+      },
+      {
+       "code": "print(A.x, B.x, C.x)",
+       "want": [
+        {
+         "hash": "cfd0937eea29fcfd259be44001016aed"
+        }
+       ]
+      },
+      {
+       "code": "A.x += 1",
+       "want": []
+      },
+      {
+       "code": "print(A.x, B.x, C.x)",
+       "want": [
+        {
+         "hash": "49f2632a22ef174bac832e2a2ce85ff9"
+        }
+       ]
+      },
+      {
+       "code": "obj = C()",
+       "want": []
+      },
+      {
+       "code": "obj.y = 1",
+       "want": []
+      },
+      {
+       "code": "C.y == obj.y",
+       "want": [
+        {
+         "hash": "1a1d55c577c8de00da2b32e78f9335d1"
+        }
+       ]
+      },
+      {
+       "code": "A.y = obj.y",
+       "want": []
+      },
+      {
+       "code": "print(A.y, B.y, C.y, obj.y)",
+       "want": [
+        {
+         "hash": "e2e33f175e79ff7ff8d44b3176378b5d"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "account",
+   "title": "Retirement",
+   "titleEn": "Retirement",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nAdd a `time_to_retire` method to the `Account` class. This method takes in an `amount` and returns the number of years until the current `balance` grows to at least `amount`, assuming that the bank adds the interest (calculated as the current `balance` multiplied by the `interest` rate) to the `balance` at the end of each year. Make sure you're not modifying the account's balance!\n\n**Important**: Calling the `time_to_retire` method should not change the account balance.\n",
+   "statementEn": "Add a `time_to_retire` method to the `Account` class. This method takes in an `amount` and returns the number of years until the current `balance` grows to at least `amount`, assuming that the bank adds the interest (calculated as the current `balance` multiplied by the `interest` rate) to the `balance` at the end of each year. Make sure you're not modifying the account's balance!\n\n**Important**: Calling the `time_to_retire` method should not change the account balance.\n",
+   "editable": [
+    "lab07.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "Account"
+   },
+   "focus": {
+    "file": "lab07.py",
+    "symbol": "Account"
+   }
+  },
+  {
+   "id": "freechecking",
+   "title": "FreeChecking",
+   "titleEn": "FreeChecking",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the `FreeChecking` class, which is like the `Account` class except that it charges a withdraw fee `withdraw_fee` after withdrawing `free_withdrawals` number of times. If a withdrawal is unsuccessful, no withdrawal fee will be charged, but it still counts towards the number of free withdrawals remaining.\n",
+   "statementEn": "Implement the `FreeChecking` class, which is like the `Account` class except that it charges a withdraw fee `withdraw_fee` after withdrawing `free_withdrawals` number of times. If a withdrawal is unsuccessful, no withdrawal fee will be charged, but it still counts towards the number of free withdrawals remaining.\n",
+   "editable": [
+    "lab07.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "FreeChecking"
+   },
+   "focus": {
+    "file": "lab07.py",
+    "symbol": "FreeChecking"
+   }
+  },
+  {
+   "id": "link",
+   "title": "WWPD: Linked Lists",
+   "titleEn": "WWPD: Linked Lists",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nRead over the `Link` class. Make sure you understand the doctests.\n\nEnter `Function` if you believe the answer is `<function ...>`, `Error` if it errors, and `Nothing` if nothing is displayed.\n\nIf you get stuck, try drawing out the box-and-pointer diagram for the linked list on a piece of paper or loading the `Link` class into the interpreter with `python3 -i lab07.py`.\n\n```\n>>> link = Link(1000)\n>>> link.first\n\n>>> link.rest is Link.empty\n\n>>> link = Link(1000, 2000)\n\n>>> link = Link(1000, Link())\n\n```\n\n```\n>>> link = Link(1, Link(2, Link(3)))\n>>> link.first\n\n>>> link.rest.first\n\n>>> link.rest.rest.rest is Link.empty\n\n>>> link.first = 9001\n>>> link.first\n\n>>> link.rest = link.rest.rest\n>>> link.rest.first\n\n>>> link = Link(1)\n>>> link.rest = link\n>>> link.rest.rest is Link.empty\n\n>>> link.rest.rest.rest.rest.first\n\n>>> link = Link(2, Link(3, Link(4)))\n>>> link2 = Link(1, link)\n>>> link2.first\n\n>>> link2.rest.first\n\n```\n\n```\n>>> link = Link(5, Link(6, Link(7)))\n>>> link                 # Look at the __repr__ method of Link\n\n>>> print(link)          # Look at the __str__ method of Link\n\n```\n",
+   "statementEn": "Read over the `Link` class. Make sure you understand the doctests.\n\nEnter `Function` if you believe the answer is `<function ...>`, `Error` if it errors, and `Nothing` if nothing is displayed.\n\nIf you get stuck, try drawing out the box-and-pointer diagram for the linked list on a piece of paper or loading the `Link` class into the interpreter with `python3 -i lab07.py`.\n\n```\n>>> link = Link(1000)\n>>> link.first\n\n>>> link.rest is Link.empty\n\n>>> link = Link(1000, 2000)\n\n>>> link = Link(1000, Link())\n\n```\n\n```\n>>> link = Link(1, Link(2, Link(3)))\n>>> link.first\n\n>>> link.rest.first\n\n>>> link.rest.rest.rest is Link.empty\n\n>>> link.first = 9001\n>>> link.first\n\n>>> link.rest = link.rest.rest\n>>> link.rest.first\n\n>>> link = Link(1)\n>>> link.rest = link\n>>> link.rest.rest is Link.empty\n\n>>> link.rest.rest.rest.rest.first\n\n>>> link = Link(2, Link(3, Link(4)))\n>>> link2 = Link(1, link)\n>>> link2.first\n\n>>> link2.rest.first\n\n```\n\n```\n>>> link = Link(5, Link(6, Link(7)))\n>>> link                 # Look at the __repr__ method of Link\n\n>>> print(link)          # Look at the __str__ method of Link\n\n```\n",
+   "editable": [
+    "lab07.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "link"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "from lab08 import *",
+       "want": []
+      },
+      {
+       "code": "link = Link(1000)",
+       "want": []
+      },
+      {
+       "code": "link.first",
+       "want": [
+        {
+         "hash": "edb6f8e1ec6e1bc0b2deae8f8cd333bf"
+        }
+       ]
+      },
+      {
+       "code": "link.rest is Link.empty",
+       "want": [
+        {
+         "hash": "a60487f0dcc07e26f48fbf3cf021859d"
+        }
+       ]
+      },
+      {
+       "code": "link = Link(1000, 2000)",
+       "want": [
+        {
+         "hash": "795bceccbca635277a3bbfa64bc9dba0"
+        }
+       ]
+      },
+      {
+       "code": "link = Link(1000, Link())",
+       "want": [
+        {
+         "hash": "795bceccbca635277a3bbfa64bc9dba0"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "from lab08 import *",
+       "want": []
+      },
+      {
+       "code": "link = Link(1, Link(2, Link(3)))",
+       "want": []
+      },
+      {
+       "code": "link.first",
+       "want": [
+        {
+         "hash": "030bca9dd0d55198e3fa5a2ab185b285"
+        }
+       ]
+      },
+      {
+       "code": "link.rest.first",
+       "want": [
+        {
+         "hash": "c9aea858aa12d15d170a9fd7596d70b1"
+        }
+       ]
+      },
+      {
+       "code": "link.rest.rest.rest is Link.empty",
+       "want": [
+        {
+         "hash": "a60487f0dcc07e26f48fbf3cf021859d"
+        }
+       ]
+      },
+      {
+       "code": "link.first = 9001",
+       "want": []
+      },
+      {
+       "code": "link.first",
+       "want": [
+        {
+         "hash": "2c9f5ddf74d01d9aa3f7f14577718d55"
+        }
+       ]
+      },
+      {
+       "code": "link.rest = link.rest.rest",
+       "want": []
+      },
+      {
+       "code": "link.rest.first",
+       "want": [
+        {
+         "hash": "9a023de211dac9bf8558350f5fa3bdca"
+        }
+       ]
+      },
+      {
+       "code": "link = Link(1)",
+       "want": []
+      },
+      {
+       "code": "link.rest = link",
+       "want": []
+      },
+      {
+       "code": "link.rest.rest is Link.empty",
+       "want": [
+        {
+         "hash": "1a1d55c577c8de00da2b32e78f9335d1"
+        }
+       ]
+      },
+      {
+       "code": "link.rest.rest.rest.rest.first",
+       "want": [
+        {
+         "hash": "030bca9dd0d55198e3fa5a2ab185b285"
+        }
+       ]
+      },
+      {
+       "code": "link = Link(2, Link(3, Link(4)))",
+       "want": []
+      },
+      {
+       "code": "link2 = Link(1, link)",
+       "want": []
+      },
+      {
+       "code": "link2.first",
+       "want": [
+        {
+         "hash": "030bca9dd0d55198e3fa5a2ab185b285"
+        }
+       ]
+      },
+      {
+       "code": "link2.rest.first",
+       "want": [
+        {
+         "hash": "c9aea858aa12d15d170a9fd7596d70b1"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "from lab08 import *",
+       "want": []
+      },
+      {
+       "code": "link = Link(5, Link(6, Link(7)))",
+       "want": []
+      },
+      {
+       "code": "link                  # Look at the __repr__ method of Link",
+       "want": [
+        {
+         "hash": "a353eddb3d8856d2db7bf086df685a3d"
+        }
+       ]
+      },
+      {
+       "code": "print(link)           # Look at the __str__ method of Link",
+       "want": [
+        {
+         "hash": "25c7ce903757e4d9be73a6ae9cf74023"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "without",
+   "title": "Without One",
+   "titleEn": "Without One",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `without`, which takes a linked list `s` and a non-negative integer `i`. It returns a linked list with all of the elements of `s` except for the one at index `i`. (Assume `s.first` is the element at index 0.)\n\nThe original linked list `s` should not be changed.\n\n**Hint:** Using recursive approach might be easier than the iterative approach.\n",
+   "statementEn": "Implement `without`, which takes a linked list `s` and a non-negative integer `i`. It returns a linked list with all of the elements of `s` except for the one at index `i`. (Assume `s.first` is the element at index 0.)\n\nThe original linked list `s` should not be changed.\n\n**Hint:** Using recursive approach might be easier than the iterative approach.\n",
+   "editable": [
+    "lab07.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "without"
+   },
+   "focus": {
+    "file": "lab07.py",
+    "symbol": "without"
+   }
+  },
+  {
+   "id": "duplicate_link",
+   "title": "Duplicate Link",
+   "titleEn": "Duplicate Link",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function `duplicate_link` that takes in a linked list `s` and a value `val`. It **mutates** `s` so that each element equal to `val` is followed by an additional `val` (a duplicate copy). It returns `None`. Be careful not to get into an infinite loop where you keep duplicating the new copies!\n\n**Note**: In order to insert a link into a linked list, reassign the `rest` attribute of the `Link` instances that have `val` as their `first`. Try drawing out a doctest to visualize!\n",
+   "statementEn": "Write a function `duplicate_link` that takes in a linked list `s` and a value `val`. It **mutates** `s` so that each element equal to `val` is followed by an additional `val` (a duplicate copy). It returns `None`. Be careful not to get into an infinite loop where you keep duplicating the new copies!\n\n**Note**: In order to insert a link into a linked list, reassign the `rest` attribute of the `Link` instances that have `val` as their `first`. Try drawing out a doctest to visualize!\n",
+   "editable": [
+    "lab07.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "duplicate_link"
+   },
+   "focus": {
+    "file": "lab07.py",
+    "symbol": "duplicate_link"
+   }
+  }
+ ]
+}

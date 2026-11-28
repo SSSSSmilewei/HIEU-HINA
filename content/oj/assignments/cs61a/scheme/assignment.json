@@ -1,0 +1,473 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "scheme",
+ "title": "项目 4：Scheme 解释器",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/proj/scheme/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "proj-scheme",
+ "repoDir": "proj/scheme",
+ "intro": "",
+ "problems": [
+  {
+   "id": "01",
+   "title": "Problem 1 (0.5 pts)",
+   "titleEn": "Problem 1 (0.5 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the `define` and `lookup` methods of the `Frame` class in `scheme_classes.py`.\n\nEach `Frame` object has the following instance attributes:\n\n- `bindings` is a dictionary representing the bindings in the frame instance. Each item associates a Scheme symbol (represented as a Python string) to a Scheme value.\n- `parent` is the parent `Frame` instance (parent environment frame). The parent of the Global Frame is `None`.\n\nTo complete these methods:\n\n1. `define` takes a symbol (represented by a Python string) and a value. It binds the symbol to the value in the `Frame` instance using `bindings`.\n2.\n\n`lookup` takes a symbol and returns the value bound to that symbol in the first frame of the environment where it is found. The *environment* for a `Frame` instance consists of that frame, its parent frame, and all its ancestor frames, including the Global Frame. When looking up a symbol:\n\n  - If the symbol is bound in the current frame, return its value.\n  - If the symbol is not bound in the current frame and the frame has a parent frame, continue looking up the symbol in the parent frame.\n  - Keep checking all parent frames until either the symbol is found or there are no more parent frames.\n  - If the symbol is never found in any frame, raise a SchemeError.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nAfter you complete this problem, start your Scheme interpreter (with `python3 scheme.py`) and you should now be able to look up built-in procedure names:\n\n```\nscm> +\n#[+]\nscm> odd?\n#[odd?]\n```\n\nHowever, your Scheme interpreter will still not be able to *call* these procedures until you complete the next problem.\n\nRemember, at this point, you can only exit the interpreter by pressing `Ctrl-d` on Max/Linux (or `Ctrl-z Enter` on Windows).\n",
+   "statementEn": "Implement the `define` and `lookup` methods of the `Frame` class in `scheme_classes.py`.\n\nEach `Frame` object has the following instance attributes:\n\n- `bindings` is a dictionary representing the bindings in the frame instance. Each item associates a Scheme symbol (represented as a Python string) to a Scheme value.\n- `parent` is the parent `Frame` instance (parent environment frame). The parent of the Global Frame is `None`.\n\nTo complete these methods:\n\n1. `define` takes a symbol (represented by a Python string) and a value. It binds the symbol to the value in the `Frame` instance using `bindings`.\n2.\n\n`lookup` takes a symbol and returns the value bound to that symbol in the first frame of the environment where it is found. The *environment* for a `Frame` instance consists of that frame, its parent frame, and all its ancestor frames, including the Global Frame. When looking up a symbol:\n\n  - If the symbol is bound in the current frame, return its value.\n  - If the symbol is not bound in the current frame and the frame has a parent frame, continue looking up the symbol in the parent frame.\n  - Keep checking all parent frames until either the symbol is found or there are no more parent frames.\n  - If the symbol is never found in any frame, raise a SchemeError.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nAfter you complete this problem, start your Scheme interpreter (with `python3 scheme.py`) and you should now be able to look up built-in procedure names:\n\n```\nscm> +\n#[+]\nscm> odd?\n#[odd?]\n```\n\nHowever, your Scheme interpreter will still not be able to *call* these procedures until you complete the next problem.\n\nRemember, at this point, you can only exit the interpreter by pressing `Ctrl-d` on Max/Linux (or `Ctrl-z Enter` on Windows).\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "01"
+   }
+  },
+  {
+   "id": "02",
+   "title": "Problem 2 (1 pts)",
+   "titleEn": "Problem 2 (1 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nTo be able to call built-in procedures, such as `+`, you need to complete the `BuiltinProcedure` case within the `scheme_apply` function in `scheme_eval_apply.py`. Built-in procedures are applied by calling a corresponding Python function that implements the procedure.\n\nTo see a list of all Scheme built-in procedures used in the project, look in the `scheme_builtins.py` file. Any function decorated with `@builtin` will be added to the globally-defined `BUILTINS` list.\n\nA `BuiltinProcedure` has two instance attributes:\n\n- `py_func`: the *Python* function that implements the built-in Scheme procedure.\n- `need_env`: a Boolean that indicates whether or not this built-in procedure will need the current environment to be passed in as the last argument. The environment is required, for instance, to implement the built-in `eval` procedure.\n\n`scheme_apply` takes the `procedure` object, a linked list of argument values `args`, and the current environment `env`. The `args` argument is a Scheme list, represented as a `Link` object or `nil`, containing the values passed to the `procedure`. For example, if the Scheme built-in procedure we are trying to use is `+` and we pass in `args` as `Link(1, Link(2, nil))` to `scheme_apply`, we would be making the call `(+ 1 2)`.\n\nYour implementation should do the following:\n\n- Convert the Scheme list to a Python list of arguments. *Hint:* `args` is a `Link`, which has `.first` and `.rest` attributes.\n- If `procedure.need_env` is `True`, then add the current environment `env` to the end of this list.\n- Return the result of calling `procedure.py_func` on all of those arguments. Since you don't know the exact number of arguments, use `*args` notation: `f(1, 2, 3)` is equivalent to `f(*[1, 2, 3]`). Do this part within the `try` statement provided, after the line that says `try:`.\n\nWe have already implemented the following behavior for you:\n\n- If calling the function results in a `TypeError` exception being raised, then the wrong number of arguments were passed. The `try` statement handles this exception and raises a `SchemeError` with the message `'incorrect number of arguments'`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\n👩🏽‍💻👨🏿‍💻 [Pair programming?](https://cs61a.org/articles/pair-programming.html) Remember to alternate between driver and navigator roles. The driver controls the keyboard; the navigator watches, asks questions, and suggests ideas.\n",
+   "statementEn": "To be able to call built-in procedures, such as `+`, you need to complete the `BuiltinProcedure` case within the `scheme_apply` function in `scheme_eval_apply.py`. Built-in procedures are applied by calling a corresponding Python function that implements the procedure.\n\nTo see a list of all Scheme built-in procedures used in the project, look in the `scheme_builtins.py` file. Any function decorated with `@builtin` will be added to the globally-defined `BUILTINS` list.\n\nA `BuiltinProcedure` has two instance attributes:\n\n- `py_func`: the *Python* function that implements the built-in Scheme procedure.\n- `need_env`: a Boolean that indicates whether or not this built-in procedure will need the current environment to be passed in as the last argument. The environment is required, for instance, to implement the built-in `eval` procedure.\n\n`scheme_apply` takes the `procedure` object, a linked list of argument values `args`, and the current environment `env`. The `args` argument is a Scheme list, represented as a `Link` object or `nil`, containing the values passed to the `procedure`. For example, if the Scheme built-in procedure we are trying to use is `+` and we pass in `args` as `Link(1, Link(2, nil))` to `scheme_apply`, we would be making the call `(+ 1 2)`.\n\nYour implementation should do the following:\n\n- Convert the Scheme list to a Python list of arguments. *Hint:* `args` is a `Link`, which has `.first` and `.rest` attributes.\n- If `procedure.need_env` is `True`, then add the current environment `env` to the end of this list.\n- Return the result of calling `procedure.py_func` on all of those arguments. Since you don't know the exact number of arguments, use `*args` notation: `f(1, 2, 3)` is equivalent to `f(*[1, 2, 3]`). Do this part within the `try` statement provided, after the line that says `try:`.\n\nWe have already implemented the following behavior for you:\n\n- If calling the function results in a `TypeError` exception being raised, then the wrong number of arguments were passed. The `try` statement handles this exception and raises a `SchemeError` with the message `'incorrect number of arguments'`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\n👩🏽‍💻👨🏿‍💻 [Pair programming?](https://cs61a.org/articles/pair-programming.html) Remember to alternate between driver and navigator roles. The driver controls the keyboard; the navigator watches, asks questions, and suggests ideas.\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "02"
+   }
+  },
+  {
+   "id": "03",
+   "title": "Problem 3 (1 pts)",
+   "titleEn": "Problem 3 (1 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nThe `scheme_eval` function (in `scheme_eval_apply.py`) evaluates a Scheme expression in an environment. The provided code already looks up symbols in the current environment, returns self-evaluating expressions (such as numbers), and evaluates special forms.\n\nImplement the missing part of `scheme_eval`, which evaluates a call expression. To evaluate a call expression:\n\n1. Evaluate the operator (which should evaluate to a `Procedure` instance – see `scheme_classes.py` for `Procedure` definitions).\n2. Evaluate all of the operands and collect the results (the argument values) in a Scheme list.\n3. Return the result of calling `scheme_apply` on this `Procedure`, these argument values, and the current environment.\n\nYou'll have to recursively call `scheme_eval` in the first two steps. Here are some other functions/methods you should use:\n\n- The `map_link` function returns a new Scheme list constructed by applying a *one-argument Python function* to every item in a Scheme list.\n- The `scheme_apply` function applies a Scheme procedure to arguments represented as a Scheme list (a `Link` instance or `nil`).\n\n**Important**: do not mutate the passed-in `expr`. That would change a program as it's being evaluated, creating strange and incorrect effects.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nSome of the unlocking tests call a primitive (built-in) procedure called `print-then-return`. This procedure doesn't exist in Scheme, but was added to this project just to test this question. `print-then-return` takes two arguments. It prints out its first argument and returns the second. If you're interested, you can find this function at the bottom of `scheme_builtins.py`\n\nYour interpreter should now be able to evaluate built-in procedure calls, giving you the functionality of the Calculator language and more. Run `python3 scheme.py`, and you can now add and multiply!\n\n```\nscm> (+ 1 2)\n3\nscm> (* 3 4 (- 5 2) 1)\n36\nscm> (odd? 31)\n#t\n```\n",
+   "statementEn": "The `scheme_eval` function (in `scheme_eval_apply.py`) evaluates a Scheme expression in an environment. The provided code already looks up symbols in the current environment, returns self-evaluating expressions (such as numbers), and evaluates special forms.\n\nImplement the missing part of `scheme_eval`, which evaluates a call expression. To evaluate a call expression:\n\n1. Evaluate the operator (which should evaluate to a `Procedure` instance – see `scheme_classes.py` for `Procedure` definitions).\n2. Evaluate all of the operands and collect the results (the argument values) in a Scheme list.\n3. Return the result of calling `scheme_apply` on this `Procedure`, these argument values, and the current environment.\n\nYou'll have to recursively call `scheme_eval` in the first two steps. Here are some other functions/methods you should use:\n\n- The `map_link` function returns a new Scheme list constructed by applying a *one-argument Python function* to every item in a Scheme list.\n- The `scheme_apply` function applies a Scheme procedure to arguments represented as a Scheme list (a `Link` instance or `nil`).\n\n**Important**: do not mutate the passed-in `expr`. That would change a program as it's being evaluated, creating strange and incorrect effects.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nSome of the unlocking tests call a primitive (built-in) procedure called `print-then-return`. This procedure doesn't exist in Scheme, but was added to this project just to test this question. `print-then-return` takes two arguments. It prints out its first argument and returns the second. If you're interested, you can find this function at the bottom of `scheme_builtins.py`\n\nYour interpreter should now be able to evaluate built-in procedure calls, giving you the functionality of the Calculator language and more. Run `python3 scheme.py`, and you can now add and multiply!\n\n```\nscm> (+ 1 2)\n3\nscm> (* 3 4 (- 5 2) 1)\n36\nscm> (odd? 31)\n#t\n```\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "03"
+   }
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "The `define` special form ([spec](https://cs61a.org/articles/scheme-spec/index.html#define)) in Scheme can be used *either* to assign the value of a given expression to a symbol or to create a procedure and bind it to a symbol:\n\n```\nscm> (define a (+ 2 3))  ; Binds the symbol a to the value of expression (+ 2 3)\na\nscm> (define (foo x) x)  ; Creates a procedure and binds it to the symbol foo\nfoo\n```\n\nNotice that the type of the first operand can tell us what is being defined:\n\n- If it is a symbol, e.g. `a`, then the expression is defining a symbol.\n- If it is a Scheme list, e.g. `(foo x)`, then the expression is creating a procedure.\n\nThe `do_define_form` function in `scheme_forms.py` evaluates `(define ...)` expressions. There are two missing parts in this function; one for when the first operand is a symbol, and the other for when it is a Scheme list (i.e. `Link`). For this problem, implement **just the first part**, which evaluates the second operand to obtain a value and binds the first operand, a symbol, to that value. Then, `do_define_form` returns the symbol that was bound.\n\n*Hint:* The `define` method of a `Frame` instance creates a binding in that frame.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nYou should now be able to assign values to symbols and evaluate those symbols.\n\n```\nscm> (define x 15)\nx\nscm> (define y (* 2 x))\ny\nscm> y\n30\n```\n\nThe following `ok` test determines whether the operator of a call expression is evaluated multiple times. The operator should be evaluated only a *single* time before raising an error (because `x` is not bound to a procedure).\n\n```\n(define x 0)\n; expect x\n((define x (+ x 1)) 2)\n; expect SchemeError\nx\n; expect 1\n```\n\nIf the operator is evaluated twice, then `x` will be bound to 2 instead of 1 at the end, causing the test to fail. Therefore, if your code fails this test, you'll want to make sure you only evaluate the operator of a call expression once in `scheme_eval`.\n",
+   "id": "04-concept",
+   "title": "Problem 4 (1 pts) · 先回答几个问题",
+   "titleEn": "Problem 4 (1 pts) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "04"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "What is the structure of the expressions argument to do_define_form?",
+     "choices": [
+      "Link(A, Link(B, nil)), where:\n    A is the symbol being bound,\n    B is an expression whose value should be evaluated and bound to A",
+      "Link(A, Link(B, nil)), where:\n    A is the symbol being bound,\n    B is the value that should be bound to A",
+      "Link(A, B), where:\n    A is the symbol being bound,\n    B is the value that should be bound to A",
+      "Link(A, B), where:\n    A is the symbol being bound,\n    B is an expression whose value should be evaluated and bound to A",
+      "Link('define', Link(A, Link(B, nil))), where:\n    A is the symbol being bound,\n    B is an expression whose value should be evaluated and bound to A"
+     ],
+     "answer": "f2848fe6a4a34d0bb2c12ac2c0e2b57a"
+    },
+    {
+     "type": "choice",
+     "question": "What method of a Frame instance will bind\na value to a symbol in that frame?",
+     "choices": [
+      "make_child_frame",
+      "define",
+      "lookup",
+      "bindings"
+     ],
+     "answer": "166644f7a08261ae4107d6833b0a52a8"
+    }
+   ]
+  },
+  {
+   "id": "04",
+   "title": "Problem 4 (1 pts)",
+   "titleEn": "Problem 4 (1 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nThe `define` special form ([spec](https://cs61a.org/articles/scheme-spec/index.html#define)) in Scheme can be used *either* to assign the value of a given expression to a symbol or to create a procedure and bind it to a symbol:\n\n```\nscm> (define a (+ 2 3))  ; Binds the symbol a to the value of expression (+ 2 3)\na\nscm> (define (foo x) x)  ; Creates a procedure and binds it to the symbol foo\nfoo\n```\n\nNotice that the type of the first operand can tell us what is being defined:\n\n- If it is a symbol, e.g. `a`, then the expression is defining a symbol.\n- If it is a Scheme list, e.g. `(foo x)`, then the expression is creating a procedure.\n\nThe `do_define_form` function in `scheme_forms.py` evaluates `(define ...)` expressions. There are two missing parts in this function; one for when the first operand is a symbol, and the other for when it is a Scheme list (i.e. `Link`). For this problem, implement **just the first part**, which evaluates the second operand to obtain a value and binds the first operand, a symbol, to that value. Then, `do_define_form` returns the symbol that was bound.\n\n*Hint:* The `define` method of a `Frame` instance creates a binding in that frame.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nYou should now be able to assign values to symbols and evaluate those symbols.\n\n```\nscm> (define x 15)\nx\nscm> (define y (* 2 x))\ny\nscm> y\n30\n```\n\nThe following `ok` test determines whether the operator of a call expression is evaluated multiple times. The operator should be evaluated only a *single* time before raising an error (because `x` is not bound to a procedure).\n\n```\n(define x 0)\n; expect x\n((define x (+ x 1)) 2)\n; expect SchemeError\nx\n; expect 1\n```\n\nIf the operator is evaluated twice, then `x` will be bound to 2 instead of 1 at the end, causing the test to fail. Therefore, if your code fails this test, you'll want to make sure you only evaluate the operator of a call expression once in `scheme_eval`.\n",
+   "statementEn": "The `define` special form ([spec](https://cs61a.org/articles/scheme-spec/index.html#define)) in Scheme can be used *either* to assign the value of a given expression to a symbol or to create a procedure and bind it to a symbol:\n\n```\nscm> (define a (+ 2 3))  ; Binds the symbol a to the value of expression (+ 2 3)\na\nscm> (define (foo x) x)  ; Creates a procedure and binds it to the symbol foo\nfoo\n```\n\nNotice that the type of the first operand can tell us what is being defined:\n\n- If it is a symbol, e.g. `a`, then the expression is defining a symbol.\n- If it is a Scheme list, e.g. `(foo x)`, then the expression is creating a procedure.\n\nThe `do_define_form` function in `scheme_forms.py` evaluates `(define ...)` expressions. There are two missing parts in this function; one for when the first operand is a symbol, and the other for when it is a Scheme list (i.e. `Link`). For this problem, implement **just the first part**, which evaluates the second operand to obtain a value and binds the first operand, a symbol, to that value. Then, `do_define_form` returns the symbol that was bound.\n\n*Hint:* The `define` method of a `Frame` instance creates a binding in that frame.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nYou should now be able to assign values to symbols and evaluate those symbols.\n\n```\nscm> (define x 15)\nx\nscm> (define y (* 2 x))\ny\nscm> y\n30\n```\n\nThe following `ok` test determines whether the operator of a call expression is evaluated multiple times. The operator should be evaluated only a *single* time before raising an error (because `x` is not bound to a procedure).\n\n```\n(define x 0)\n; expect x\n((define x (+ x 1)) 2)\n; expect SchemeError\nx\n; expect 1\n```\n\nIf the operator is evaluated twice, then `x` will be bound to 2 instead of 1 at the end, causing the test to fail. Therefore, if your code fails this test, you'll want to make sure you only evaluate the operator of a call expression once in `scheme_eval`.\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "04"
+   }
+  },
+  {
+   "languages": [
+    "python"
+   ],
+   "statementEn": "In Scheme, you can quote expressions in two ways: with the `quote` special form ([spec](https://cs61a.org/articles/scheme-spec/index.html#quote)) or with the symbol `'`. The reader converts `'...` into `(quote ...)`, so that your interpreter only needs to evaluate the `(quote ...)` syntax. The `quote` special form returns its operand expression without evaluating it:\n\n```\nscm> (quote hello)\nhello\nscm> '(cons 1 2)  ; Equivalent to (quote (cons 1 2))\n(cons 1 2)\n```\n\nImplement the `do_quote_form` function in `scheme_forms.py` so that it simply returns the unevaluated operand of the `(quote ...)` expression.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nAfter completing this function, you should be able to evaluate quoted expressions. Try out some of the following in your interpreter!\n\n```\nscm> (quote a)\na\nscm> (quote (1 2))\n(1 2)\nscm> (quote (1 (2 three (4 5))))\n(1 (2 three (4 5)))\nscm> (car (quote (a b)))\na\nscm> 'hello\nhello\nscm> '(1 2)\n(1 2)\nscm> '(1 (2 three (4 5)))\n(1 (2 three (4 5)))\nscm> (car '(a b))\na\nscm> (eval (cons 'car '('(1 2))))\n1\nscm> (eval (define tau 6.28))\n6.28\nscm> (eval 'tau)\n6.28\nscm> tau\n6.28\n```\n",
+   "id": "05-concept",
+   "title": "Problem 5 (0.5 pts) · 先回答几个问题",
+   "titleEn": "Problem 5 (0.5 pts) · Understanding",
+   "kind": "wwpd",
+   "statement": "动手写代码之前，先回答几道理解题，确认读懂了题目要求（官方 ok 要求先「解锁」这些题才能跑测试）。题目说明见下一道题。\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "05"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "What is the structure of the expressions argument to do_quote_form?",
+     "choices": [
+      "Link('quote', Link(A, nil)), where:\n    A is the quoted expression",
+      "[A], where:\n    A is the quoted expression",
+      "Link(A, nil), where:\n    A is the quoted expression",
+      "A, where:\n    A is the quoted expression"
+     ],
+     "answer": "b4aa547bac1b887dfd7387940e9b4a0a"
+    }
+   ]
+  },
+  {
+   "id": "05",
+   "title": "Problem 5 (0.5 pts)",
+   "titleEn": "Problem 5 (0.5 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nIn Scheme, you can quote expressions in two ways: with the `quote` special form ([spec](https://cs61a.org/articles/scheme-spec/index.html#quote)) or with the symbol `'`. The reader converts `'...` into `(quote ...)`, so that your interpreter only needs to evaluate the `(quote ...)` syntax. The `quote` special form returns its operand expression without evaluating it:\n\n```\nscm> (quote hello)\nhello\nscm> '(cons 1 2)  ; Equivalent to (quote (cons 1 2))\n(cons 1 2)\n```\n\nImplement the `do_quote_form` function in `scheme_forms.py` so that it simply returns the unevaluated operand of the `(quote ...)` expression.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nAfter completing this function, you should be able to evaluate quoted expressions. Try out some of the following in your interpreter!\n\n```\nscm> (quote a)\na\nscm> (quote (1 2))\n(1 2)\nscm> (quote (1 (2 three (4 5))))\n(1 (2 three (4 5)))\nscm> (car (quote (a b)))\na\nscm> 'hello\nhello\nscm> '(1 2)\n(1 2)\nscm> '(1 (2 three (4 5)))\n(1 (2 three (4 5)))\nscm> (car '(a b))\na\nscm> (eval (cons 'car '('(1 2))))\n1\nscm> (eval (define tau 6.28))\n6.28\nscm> (eval 'tau)\n6.28\nscm> tau\n6.28\n```\n",
+   "statementEn": "In Scheme, you can quote expressions in two ways: with the `quote` special form ([spec](https://cs61a.org/articles/scheme-spec/index.html#quote)) or with the symbol `'`. The reader converts `'...` into `(quote ...)`, so that your interpreter only needs to evaluate the `(quote ...)` syntax. The `quote` special form returns its operand expression without evaluating it:\n\n```\nscm> (quote hello)\nhello\nscm> '(cons 1 2)  ; Equivalent to (quote (cons 1 2))\n(cons 1 2)\n```\n\nImplement the `do_quote_form` function in `scheme_forms.py` so that it simply returns the unevaluated operand of the `(quote ...)` expression.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nAfter completing this function, you should be able to evaluate quoted expressions. Try out some of the following in your interpreter!\n\n```\nscm> (quote a)\na\nscm> (quote (1 2))\n(1 2)\nscm> (quote (1 (2 three (4 5))))\n(1 (2 three (4 5)))\nscm> (car (quote (a b)))\na\nscm> 'hello\nhello\nscm> '(1 2)\n(1 2)\nscm> '(1 (2 three (4 5)))\n(1 (2 three (4 5)))\nscm> (car '(a b))\na\nscm> (eval (cons 'car '('(1 2))))\n1\nscm> (eval (define tau 6.28))\n6.28\nscm> (eval 'tau)\n6.28\nscm> tau\n6.28\n```\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "05"
+   }
+  },
+  {
+   "id": "06",
+   "title": "Problem 6 (0.5 pts)",
+   "titleEn": "Problem 6 (0.5 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nChange the `eval_all` function in `scheme_eval_apply.py` (which is called from `do_begin_form` in `scheme_forms.py`) to complete the implementation of the `begin` special form ([spec](https://cs61a.org/articles/scheme-spec/index.html#begin)).\n\nA `begin` expression is evaluated by evaluating all sub-expressions in order. The value of the `begin` expression is the value of the final sub-expression.\n\nTo complete the implementation of `begin`, `eval_all` will take in `expressions` (a Scheme list of expressions) and `env` (a `Frame` representing the current environment), evaluate all the expressions in `expressions`, and return the value of the last expression in `expressions`.\n\n```\nscm> (begin (+ 2 3) (+ 5 6))\n11\nscm> (define x (begin (display 3) (newline) (+ 2 3)))\n3\nx\nscm> (+ x 3)\n8\nscm> (begin (print 3) '(+ 2 3))\n3\n(+ 2 3)\n```\n\nIf `eval_all` is passed an empty list of expressions (`nil`), then it should return the Python value `None`, which represents the Scheme value `undefined`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\n👩🏽‍💻👨🏿‍💻 [Pair programming?](https://cs61a.org/articles/pair-programming.html) This would be a good time to switch roles. Switching roles makes sure that you both benefit from the learning experience of being in each role.\n",
+   "statementEn": "Change the `eval_all` function in `scheme_eval_apply.py` (which is called from `do_begin_form` in `scheme_forms.py`) to complete the implementation of the `begin` special form ([spec](https://cs61a.org/articles/scheme-spec/index.html#begin)).\n\nA `begin` expression is evaluated by evaluating all sub-expressions in order. The value of the `begin` expression is the value of the final sub-expression.\n\nTo complete the implementation of `begin`, `eval_all` will take in `expressions` (a Scheme list of expressions) and `env` (a `Frame` representing the current environment), evaluate all the expressions in `expressions`, and return the value of the last expression in `expressions`.\n\n```\nscm> (begin (+ 2 3) (+ 5 6))\n11\nscm> (define x (begin (display 3) (newline) (+ 2 3)))\n3\nx\nscm> (+ x 3)\n8\nscm> (begin (print 3) '(+ 2 3))\n3\n(+ 2 3)\n```\n\nIf `eval_all` is passed an empty list of expressions (`nil`), then it should return the Python value `None`, which represents the Scheme value `undefined`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\n👩🏽‍💻👨🏿‍💻 [Pair programming?](https://cs61a.org/articles/pair-programming.html) This would be a good time to switch roles. Switching roles makes sure that you both benefit from the learning experience of being in each role.\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "06"
+   }
+  },
+  {
+   "id": "07",
+   "title": "Problem 7 (1 pts)",
+   "titleEn": "Problem 7 (1 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the `do_lambda_form` function ([spec](https://cs61a.org/articles/scheme-spec/index.html#lambda)) in `scheme_forms.py`, which creates and returns a `LambdaProcedure` instance.\n\nIn Scheme, the body of a procedure can contain multiple expressions, but must include at least one. The `body` attribute of a `LambdaProcedure` instance is a nested Scheme list of these expressions, and the `formals` attribute is a `Link`. Like a `begin` special form, evaluating the body of a procedure executes all expressions in order. A procedure returns the value of its last body expression.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nWhile you cannot call a user-defined procedure yet, you can visually verify that you have created the procedure correctly by evaluating a lambda expression in your interpreter.\n\n```\nscm> (lambda (x y) (+ x y))\n(lambda (x y) (+ x y))\n```\n",
+   "statementEn": "Implement the `do_lambda_form` function ([spec](https://cs61a.org/articles/scheme-spec/index.html#lambda)) in `scheme_forms.py`, which creates and returns a `LambdaProcedure` instance.\n\nIn Scheme, the body of a procedure can contain multiple expressions, but must include at least one. The `body` attribute of a `LambdaProcedure` instance is a nested Scheme list of these expressions, and the `formals` attribute is a `Link`. Like a `begin` special form, evaluating the body of a procedure executes all expressions in order. A procedure returns the value of its last body expression.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nWhile you cannot call a user-defined procedure yet, you can visually verify that you have created the procedure correctly by evaluating a lambda expression in your interpreter.\n\n```\nscm> (lambda (x y) (+ x y))\n(lambda (x y) (+ x y))\n```\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "07"
+   }
+  },
+  {
+   "id": "08",
+   "title": "Problem 8 (1 pts)",
+   "titleEn": "Problem 8 (1 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the `make_child_frame` method of the `Frame` class (in `scheme_classes.py`), which will be used to create new frames when calling user-defined procedures. This method takes in two arguments: `formals`, which is a Scheme list of symbols (ex: `Link('x', Link('y', nil))`), and `vals`, which is a Scheme list of values (ex: `Link(3, Link(5, nil))`). It should return a new child frame with the formal parameters bound to the values.\n\nTo do this:\n\n- If the number of argument values does not match with the number of formal parameters, raise a `SchemeError`.\n- Create a new `Frame` instance that is the child of this frame (called `self`).\n- Bind each formal parameter to its corresponding value in the newly created frame. The first symbol in `formals` should be bound to the first value in `vals`, and so on. Remember that `formals` and `vals` are `Link`s.\n- Return the new frame.\n\n*Hint:* The `define` method of a `Frame` instance creates a binding in that frame.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "statementEn": "Implement the `make_child_frame` method of the `Frame` class (in `scheme_classes.py`), which will be used to create new frames when calling user-defined procedures. This method takes in two arguments: `formals`, which is a Scheme list of symbols (ex: `Link('x', Link('y', nil))`), and `vals`, which is a Scheme list of values (ex: `Link(3, Link(5, nil))`). It should return a new child frame with the formal parameters bound to the values.\n\nTo do this:\n\n- If the number of argument values does not match with the number of formal parameters, raise a `SchemeError`.\n- Create a new `Frame` instance that is the child of this frame (called `self`).\n- Bind each formal parameter to its corresponding value in the newly created frame. The first symbol in `formals` should be bound to the first value in `vals`, and so on. Remember that `formals` and `vals` are `Link`s.\n- Return the new frame.\n\n*Hint:* The `define` method of a `Frame` instance creates a binding in that frame.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "08"
+   }
+  },
+  {
+   "id": "09",
+   "title": "Problem 9 (1 pts)",
+   "titleEn": "Problem 9 (1 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the `LambdaProcedure` case in the `scheme_apply` function in `scheme_eval_apply.py`. This `elif` block is executed when the procedure being applied is a `LambdaProcedure` instance.\n\nFirst create a new `Frame` instance and bind the `procedure`'s formal parameters to the argument values by calling the `make_child_frame` method on the appropriate parent frame.\n\nThen, within this new frame, evaluate each of the expressions of the body of the procedure using `eval_all`.\n\n*Hint:* Your new frame should be a child of the frame in which the lambda was **defined**. The `env` provided as an argument to `scheme_apply` is instead the frame in which the procedure was **called**.\n\nSee [User-Defined Procedures](https://cs61a.org/proj/scheme.html#user-defined-procedures) to remind yourself of the attributes of `LambdaProcedure`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "statementEn": "Implement the `LambdaProcedure` case in the `scheme_apply` function in `scheme_eval_apply.py`. This `elif` block is executed when the procedure being applied is a `LambdaProcedure` instance.\n\nFirst create a new `Frame` instance and bind the `procedure`'s formal parameters to the argument values by calling the `make_child_frame` method on the appropriate parent frame.\n\nThen, within this new frame, evaluate each of the expressions of the body of the procedure using `eval_all`.\n\n*Hint:* Your new frame should be a child of the frame in which the lambda was **defined**. The `env` provided as an argument to `scheme_apply` is instead the frame in which the procedure was **called**.\n\nSee [User-Defined Procedures](https://cs61a.org/proj/scheme.html#user-defined-procedures) to remind yourself of the attributes of `LambdaProcedure`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "09"
+   }
+  },
+  {
+   "id": "10",
+   "title": "Problem 10 (1 pts)",
+   "titleEn": "Problem 10 (1 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nCurrently, your Scheme interpreter is able to bind symbols to user-defined procedures in the following manner:\n\n```\nscm> (define f (lambda (x) (* x 2)))\nf\n```\n\nHowever, we'd like to be able to use the *shorthand* form of defining named procedures, which is what we've been doing in homeworks and labs:\n\n```\nscm> (define (f x) (* x 2))\nf\n```\n\nModify the `do_define_form` function in `scheme_forms.py` so that it correctly handles `define (...) ...)` expressions ([spec](https://cs61a.org/articles/scheme-spec/index.html#define)).\n\nMake sure that it can handle multi-expression bodies. For example,\n\n```\nscm> (define (g y) (print y) (+ y 1))\ng\nscm> (g 3)\n3\n4\n```\n\nThere are (at least) two ways to solve this problem. One is to construct an expression `(define _ (lambda ...))` and call `do_define_form` on it (omitting the `define`). The second is to implement it directly:\n\n- Using the given variables `signature` and `expressions`, find the defined function's name (symbol), formals, and body.\n- Create a `LambdaProcedure` instance using the formals and body. (You could call `do_lambda_form` to do this.)\n- Bind the symbol to this new `LambdaProcedure` instance.\n- Return the symbol that was bound.\n\n*Doctest Walkthrough*: Consider the doctest `do_define_form(read_line(\"((f x) (+ x 2))\"), env)`. This is the Python call that will evaluate `(define (f x) (+ x 2))` in Scheme. `read_line` is a utility function that takes in `\"((f x) (+ x 2))\"` and returns its `Link` representation. Therefore, that `Link` representation is passed into `do_define_form` as its `expressions` parameter.\n\n*Hint for Way 2*: How can we utilize the Scheme list representation of `((f x) (+ x 2))` (the structure for `(define (f x) (* x 2))`) to have the same functionality as `(define f (lambda (x) (+ x 2)))`, which we know our Scheme interpreter (and thus our Python code) can already handle? Try writing out the Scheme list representation yourself and consider what components you would need to extract from it in order to be able to replicate the functionality of `(define f (lambda (x) (+ x 2)))` in Python within `do_define_form`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nAt this point in the project, your Scheme interpreter should support the following features:\n\n- Creating procedures using `lambda` expressions,\n- Defining named procedures using `define` expressions, and\n- Calling user-defined procedures.\n",
+   "statementEn": "Currently, your Scheme interpreter is able to bind symbols to user-defined procedures in the following manner:\n\n```\nscm> (define f (lambda (x) (* x 2)))\nf\n```\n\nHowever, we'd like to be able to use the *shorthand* form of defining named procedures, which is what we've been doing in homeworks and labs:\n\n```\nscm> (define (f x) (* x 2))\nf\n```\n\nModify the `do_define_form` function in `scheme_forms.py` so that it correctly handles `define (...) ...)` expressions ([spec](https://cs61a.org/articles/scheme-spec/index.html#define)).\n\nMake sure that it can handle multi-expression bodies. For example,\n\n```\nscm> (define (g y) (print y) (+ y 1))\ng\nscm> (g 3)\n3\n4\n```\n\nThere are (at least) two ways to solve this problem. One is to construct an expression `(define _ (lambda ...))` and call `do_define_form` on it (omitting the `define`). The second is to implement it directly:\n\n- Using the given variables `signature` and `expressions`, find the defined function's name (symbol), formals, and body.\n- Create a `LambdaProcedure` instance using the formals and body. (You could call `do_lambda_form` to do this.)\n- Bind the symbol to this new `LambdaProcedure` instance.\n- Return the symbol that was bound.\n\n*Doctest Walkthrough*: Consider the doctest `do_define_form(read_line(\"((f x) (+ x 2))\"), env)`. This is the Python call that will evaluate `(define (f x) (+ x 2))` in Scheme. `read_line` is a utility function that takes in `\"((f x) (+ x 2))\"` and returns its `Link` representation. Therefore, that `Link` representation is passed into `do_define_form` as its `expressions` parameter.\n\n*Hint for Way 2*: How can we utilize the Scheme list representation of `((f x) (+ x 2))` (the structure for `(define (f x) (* x 2))`) to have the same functionality as `(define f (lambda (x) (+ x 2)))`, which we know our Scheme interpreter (and thus our Python code) can already handle? Try writing out the Scheme list representation yourself and consider what components you would need to extract from it in order to be able to replicate the functionality of `(define f (lambda (x) (+ x 2)))` in Python within `do_define_form`.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nAt this point in the project, your Scheme interpreter should support the following features:\n\n- Creating procedures using `lambda` expressions,\n- Defining named procedures using `define` expressions, and\n- Calling user-defined procedures.\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "10"
+   }
+  },
+  {
+   "id": "11",
+   "title": "Problem 11 (0.5 pts)",
+   "titleEn": "Problem 11 (0.5 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nAll of the Scheme procedures we've seen so far use **lexical scoping**: the parent of the new call frame is the environment in which the procedure was *defined*. Another type of scoping, which is not standard in Scheme but appears in other variants of Lisp, is called **dynamic scoping**: the parent of the new call frame is the environment in which the call expression was *evaluated*. With dynamic scoping, calling the same procedure with the same arguments from different parts of your code can create different behavior (due to different parent frames).\n\nThe `mu` special form ([spec](https://cs61a.org/articles/scheme-spec/index.html#mu); invented for this project) evaluates to a dynamically scoped procedure.\n\n```\nscm> (define f (mu () (* a b)))\nf\nscm> (define g (lambda () (define a 4) (define b 5) (f)))\ng\nscm> (g)\n20\n```\n\nAbove, the procedure `f` does not have `a` or `b` as arguments; however, because `f` gets called **within** the procedure `g`, it has access to the `a` and `b` defined in `g`'s frame.\n\nYour job:\n\n- Implement `do_mu_form` in `scheme_forms.py` to evaluate the `mu` special form. A `mu` expression evaluates to a `MuProcedure`. The `MuProcedure` class (defined in `scheme_classes.py`) has been provided for you.\n- In addition to implementing `do_mu_form`, complete the `MuProcedure` case within the `scheme_apply` function (in `scheme_eval_apply.py`) so that when a mu procedure is called, its body is evaluated in the correct environment. When a `MuProcedure` is called, the parent of the new call frame is the environment in which that call expression was **evaluated**. As a result, a `MuProcedure` does not need to store an environment as an instance attribute. Your code here should be VERY similar to what you did for question 9.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nThis rest of the section will be completed in `scheme_forms.py`.\n\nLogical special forms include `if`, `and`, `or`, and `cond`. These expressions are special because not all of their sub-expressions may be evaluated.\n\nIn Scheme, only `#f` is a false value. All other values (including `0` and `nil`) are true values. You can test whether a value is a true or false value using the provided Python functions `is_scheme_true` and `is_scheme_false`, defined in `scheme_utils.py`.\n\nScheme traditionally uses `#f` to indicate the false Boolean value. In our interpreter, that is equivalent to `false` or `False`. Similarly, `true`, `True`, and `#t` are all equivalent. However, **when unlocking tests**, use `#t` and `#f`.\n\nTo get you started, we've provided an implementation of the `if` special form in the `do_if_form` function.\n",
+   "statementEn": "All of the Scheme procedures we've seen so far use **lexical scoping**: the parent of the new call frame is the environment in which the procedure was *defined*. Another type of scoping, which is not standard in Scheme but appears in other variants of Lisp, is called **dynamic scoping**: the parent of the new call frame is the environment in which the call expression was *evaluated*. With dynamic scoping, calling the same procedure with the same arguments from different parts of your code can create different behavior (due to different parent frames).\n\nThe `mu` special form ([spec](https://cs61a.org/articles/scheme-spec/index.html#mu); invented for this project) evaluates to a dynamically scoped procedure.\n\n```\nscm> (define f (mu () (* a b)))\nf\nscm> (define g (lambda () (define a 4) (define b 5) (f)))\ng\nscm> (g)\n20\n```\n\nAbove, the procedure `f` does not have `a` or `b` as arguments; however, because `f` gets called **within** the procedure `g`, it has access to the `a` and `b` defined in `g`'s frame.\n\nYour job:\n\n- Implement `do_mu_form` in `scheme_forms.py` to evaluate the `mu` special form. A `mu` expression evaluates to a `MuProcedure`. The `MuProcedure` class (defined in `scheme_classes.py`) has been provided for you.\n- In addition to implementing `do_mu_form`, complete the `MuProcedure` case within the `scheme_apply` function (in `scheme_eval_apply.py`) so that when a mu procedure is called, its body is evaluated in the correct environment. When a `MuProcedure` is called, the parent of the new call frame is the environment in which that call expression was **evaluated**. As a result, a `MuProcedure` does not need to store an environment as an instance attribute. Your code here should be VERY similar to what you did for question 9.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n\nThis rest of the section will be completed in `scheme_forms.py`.\n\nLogical special forms include `if`, `and`, `or`, and `cond`. These expressions are special because not all of their sub-expressions may be evaluated.\n\nIn Scheme, only `#f` is a false value. All other values (including `0` and `nil`) are true values. You can test whether a value is a true or false value using the provided Python functions `is_scheme_true` and `is_scheme_false`, defined in `scheme_utils.py`.\n\nScheme traditionally uses `#f` to indicate the false Boolean value. In our interpreter, that is equivalent to `false` or `False`. Similarly, `true`, `True`, and `#t` are all equivalent. However, **when unlocking tests**, use `#t` and `#f`.\n\nTo get you started, we've provided an implementation of the `if` special form in the `do_if_form` function.\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "11"
+   }
+  },
+  {
+   "id": "12",
+   "title": "Problem 12 (1 pts)",
+   "titleEn": "Problem 12 (1 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `do_and_form` and `do_or_form` so that `and` and `or` expressions ([spec](https://cs61a.org/articles/scheme-spec/index.html#and)) are evaluated correctly.\n\nThe logical forms `and` and `or` are *short-circuiting*. For `and`, your interpreter should evaluate each sub-expression from left to right, and if any of these is a false value, return that value. Otherwise, return the value of the last sub-expression. If there are no sub-expressions in an `and` expression, it evaluates to `#t`.\n\n```\nscm> (and)\n#t\nscm> (and 4 5 6)  ; all operands are true values\n6\nscm> (and 4 5 (+ 3 3))\n6\nscm> (and #t #f 42 (/ 1 0))  ; short-circuiting behavior of and\n#f\n```\n\nIn your code here, you should represent Scheme's `#t` as Python's `True` and Scheme's `#f` as Python's `False`.\n\nFor `or`, evaluate each sub-expression from left to right. If any sub-expression evaluates to a true value, return that value. Otherwise, return the value of the last sub-expression. If there are no sub-expressions in an `or` expression, it evaluates to `#f`.\n\n```\nscm> (or)\n#f\nscm> (or 5 2 1)  ; 5 is a true value\n5\nscm> (or #f (- 1 1) 1)  ; 0 is a true value in Scheme\n0\nscm> (or 4 #t (/ 1 0))  ; short-circuiting behavior of or\n4\n```\n\n**Important:** Use the provided Python functions `is_scheme_true` and `is_scheme_false` from `scheme_utils.py` to test boolean values.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "statementEn": "Implement `do_and_form` and `do_or_form` so that `and` and `or` expressions ([spec](https://cs61a.org/articles/scheme-spec/index.html#and)) are evaluated correctly.\n\nThe logical forms `and` and `or` are *short-circuiting*. For `and`, your interpreter should evaluate each sub-expression from left to right, and if any of these is a false value, return that value. Otherwise, return the value of the last sub-expression. If there are no sub-expressions in an `and` expression, it evaluates to `#t`.\n\n```\nscm> (and)\n#t\nscm> (and 4 5 6)  ; all operands are true values\n6\nscm> (and 4 5 (+ 3 3))\n6\nscm> (and #t #f 42 (/ 1 0))  ; short-circuiting behavior of and\n#f\n```\n\nIn your code here, you should represent Scheme's `#t` as Python's `True` and Scheme's `#f` as Python's `False`.\n\nFor `or`, evaluate each sub-expression from left to right. If any sub-expression evaluates to a true value, return that value. Otherwise, return the value of the last sub-expression. If there are no sub-expressions in an `or` expression, it evaluates to `#f`.\n\n```\nscm> (or)\n#f\nscm> (or 5 2 1)  ; 5 is a true value\n5\nscm> (or #f (- 1 1) 1)  ; 0 is a true value in Scheme\n0\nscm> (or 4 #t (/ 1 0))  ; short-circuiting behavior of or\n4\n```\n\n**Important:** Use the provided Python functions `is_scheme_true` and `is_scheme_false` from `scheme_utils.py` to test boolean values.\n\nBefore writing any code, unlock the tests to verify your understanding of the question:\n\nOnce you are done unlocking, begin implementing your solution. You can check your correctness with:\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "12"
+   }
+  },
+  {
+   "id": "13",
+   "title": "Problem 13 (1 pts)",
+   "titleEn": "Problem 13 (1 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nFill in the missing parts of `do_cond_form` so that it correctly implements `cond` ([spec](https://cs61a.org/articles/scheme-spec/index.html#cond)), returning the value of the first result sub-expression corresponding to a true predicate, or the value of the result sub-expression corresponding to `else`.\n\nSome special cases:\n\n- When the true predicate does not have a corresponding result sub-expression, return the predicate value.\n- When a result sub-expression of a `cond` case has multiple expressions, evaluate them all and return the value of the last expression. (*Hint*: Use `eval_all`.)\n\nYour implementation should match the following examples and the additional tests in `tests.scm`.\n\n```\nscm> (cond ((= 4 3) 'nope)\n           ((= 4 4) 'hi)\n           (else 'wait))\nhi\nscm> (cond ((= 4 3) 'wat)\n           ((= 4 4))\n           (else 'hm))\n#t\nscm> (cond ((= 4 4) 'here (+ 40 2))\n           (else 'wat 0))\n42\n```\n\nThe value of a `cond` is `undefined` if there are no true predicates and no `else`. In such a case, `do_cond_form` should return `None`. If there is only an `else`, return the value of its result sub-expression. If it doesn't have one, return `#t`.\n\n```\nscm> (cond (False 1) (False 2))\nscm> (cond (else))\n#t\n```\n\nUse Ok to unlock and test your code:\n\n```\npython3 ok -q 13 -u\npython3 ok -q 13\n```\n",
+   "statementEn": "Fill in the missing parts of `do_cond_form` so that it correctly implements `cond` ([spec](https://cs61a.org/articles/scheme-spec/index.html#cond)), returning the value of the first result sub-expression corresponding to a true predicate, or the value of the result sub-expression corresponding to `else`.\n\nSome special cases:\n\n- When the true predicate does not have a corresponding result sub-expression, return the predicate value.\n- When a result sub-expression of a `cond` case has multiple expressions, evaluate them all and return the value of the last expression. (*Hint*: Use `eval_all`.)\n\nYour implementation should match the following examples and the additional tests in `tests.scm`.\n\n```\nscm> (cond ((= 4 3) 'nope)\n           ((= 4 4) 'hi)\n           (else 'wait))\nhi\nscm> (cond ((= 4 3) 'wat)\n           ((= 4 4))\n           (else 'hm))\n#t\nscm> (cond ((= 4 4) 'here (+ 40 2))\n           (else 'wat 0))\n42\n```\n\nThe value of a `cond` is `undefined` if there are no true predicates and no `else`. In such a case, `do_cond_form` should return `None`. If there is only an `else`, return the value of its result sub-expression. If it doesn't have one, return `#t`.\n\n```\nscm> (cond (False 1) (False 2))\nscm> (cond (else))\n#t\n```\n\nUse Ok to unlock and test your code:\n\n```\npython3 ok -q 13 -u\npython3 ok -q 13\n```\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "13"
+   }
+  },
+  {
+   "id": "14",
+   "title": "Problem 14 (0.5 pts)",
+   "titleEn": "Problem 14 (0.5 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the `(enumerate s)` procedure, which takes in a list of values `s` and returns a list of two-element lists, where the first element is the index of the value, and the second element is the value itself. Set the first index to 0.\n\n```\nscm> (enumerate '(3 4 5 6))\n((0 3) (1 4) (2 5) (3 6))\nscm> (enumerate '(c s 6 1 a))\n((0 c) (1 s) (2 6) (3 1) (4 a))\nscm> (enumerate '())\n()\n```\n",
+   "statementEn": "Implement the `(enumerate s)` procedure, which takes in a list of values `s` and returns a list of two-element lists, where the first element is the index of the value, and the second element is the value itself. Set the first index to 0.\n\n```\nscm> (enumerate '(3 4 5 6))\n((0 3) (1 4) (2 5) (3 6))\nscm> (enumerate '(c s 6 1 a))\n((0 c) (1 s) (2 6) (3 1) (4 a))\nscm> (enumerate '())\n()\n```\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "14"
+   }
+  },
+  {
+   "id": "15",
+   "title": "Problem 15 (1 pts)",
+   "titleEn": "Problem 15 (1 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nA *dictionary list* is a Scheme list of pairs `((key value) (key value) ... (key value))` where each `key` is a unique symbol.\n\nImplement `(get dict key)`, a scheme procedure that takes a dictionary list `dict` and a value `key` that appears as the **first** element in some pair within `dict`. The `get` procedure returns the value paired with `key`. If `key` is not the first value in a pair within `dict`, return `#f`.\n\nThen, implement `(set dict key value)`, a scheme procedure that takes a dictionary list `dict` and `key` and `value` values. If `key` is a key in `dict`, then it returns a new dictionary-list that is the same length as `dict` but has `value` as the value paired with `key`. If `key` is not a key in `dict`, then it returns a dictionary list with all of the key-value pairs in `dict` as well as a new pair at the end containing `(key value)`. Assume that no key appears more than once in `dict`.\n\n```\nscm> (define dict-list '((a 1) (b 2) (c 3)))\ndict-list\nscm> (get dict-list 'b)\n2\nscm> (get dict-list 'e)\n#f\nscm> (set dict-list 'b 4)\n((a 1) (b 4) (c 3))\nscm> (set dict-list 'x 0)\n((a 1) (b 2) (c 3) (x 0))\n```\n",
+   "statementEn": "A *dictionary list* is a Scheme list of pairs `((key value) (key value) ... (key value))` where each `key` is a unique symbol.\n\nImplement `(get dict key)`, a scheme procedure that takes a dictionary list `dict` and a value `key` that appears as the **first** element in some pair within `dict`. The `get` procedure returns the value paired with `key`. If `key` is not the first value in a pair within `dict`, return `#f`.\n\nThen, implement `(set dict key value)`, a scheme procedure that takes a dictionary list `dict` and `key` and `value` values. If `key` is a key in `dict`, then it returns a new dictionary-list that is the same length as `dict` but has `value` as the value paired with `key`. If `key` is not a key in `dict`, then it returns a dictionary list with all of the key-value pairs in `dict` as well as a new pair at the end containing `(key value)`. Assume that no key appears more than once in `dict`.\n\n```\nscm> (define dict-list '((a 1) (b 2) (c 3)))\ndict-list\nscm> (get dict-list 'b)\n2\nscm> (get dict-list 'e)\n#f\nscm> (set dict-list 'b 4)\n((a 1) (b 4) (c 3))\nscm> (set dict-list 'x 0)\n((a 1) (b 2) (c 3) (x 0))\n```\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "15"
+   }
+  },
+  {
+   "id": "16",
+   "title": "Problem 16 (1 pts)",
+   "titleEn": "Problem 16 (1 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nIn Schémémon, before taking an action, you have the option to solve a Scheme programming problem. Correctly answering the problem will double the damage you deal during your turn and prevent you from missing! The programming problems all consist of a description followed by a `define` form with a blank. For example,\n\n```\nImplement factorial(), which takes an integer \"n\" and outputs the value of \"n\"!.\n\n(define (factorial n)\n    (if (= n 0)\n        1\n        (* n _____)\n    )\n)\n```\n\nImplement `solution-code`, a scheme procedure that takes in a Scheme list `problem` that contains a Scheme expression with a blank, as well as a Scheme expression `solution`. It returns the result of replacing the **five-underscore blank** `_____` with the `solution`. If there are multiple blanks, they should each be replaced by the same `solution` expression.\n\n```\nscm> (define add-problem '(define (add x y) _____))\nadd-problem\nscm> (define add-sol '(+ x y))\nadd-sol\nscm> (solution-code add-problem add-sol)\n(define (add x y) (+ x y))\n```\n",
+   "statementEn": "In Schémémon, before taking an action, you have the option to solve a Scheme programming problem. Correctly answering the problem will double the damage you deal during your turn and prevent you from missing! The programming problems all consist of a description followed by a `define` form with a blank. For example,\n\n```\nImplement factorial(), which takes an integer \"n\" and outputs the value of \"n\"!.\n\n(define (factorial n)\n    (if (= n 0)\n        1\n        (* n _____)\n    )\n)\n```\n\nImplement `solution-code`, a scheme procedure that takes in a Scheme list `problem` that contains a Scheme expression with a blank, as well as a Scheme expression `solution`. It returns the result of replacing the **five-underscore blank** `_____` with the `solution`. If there are multiple blanks, they should each be replaced by the same `solution` expression.\n\n```\nscm> (define add-problem '(define (add x y) _____))\nadd-problem\nscm> (define add-sol '(+ x y))\nadd-sol\nscm> (solution-code add-problem add-sol)\n(define (add x y) (+ x y))\n```\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "16"
+   }
+  },
+  {
+   "id": "ec1",
+   "title": "Problem EC 1 (0 pts)",
+   "titleEn": "Problem EC 1 (0 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nThe `let` special form ([spec](https://cs61a.org/articles/scheme-spec/index.html#let)) binds symbols to values locally, giving them their initial values. For example:\n\n```\nscm> (define x 5)\nx\nscm> (define y 'bye)\ny\nscm> (let ((x 42)\n           (y (* x 10)))  ; this x refers to the global value of x, not 42\n       (list x y))\n(42 50)\nscm> (list x y)\n(5 bye)\n```\n\nImplement `make_let_frame` in `scheme_forms.py`, which returns a child frame of `env` that binds the symbol in each element of `bindings` to the value of its corresponding expression. The `bindings` Scheme list contains pairs that each contain a symbol and a corresponding expression.\n\nYou may find the following functions and methods useful:\n\n- `validate_form`: this function can be used to validate the structure of each binding. It takes in a Scheme list `expr` of expressions and a `min` and `max` length. If `expr` is not a list with length between `min` and `max` inclusive, it raises an error. If no `max` is passed in, the default is infinity.\n- `validate_formals`: this function validates that its argument is a Scheme list of symbols for which each symbol is distinct.\n\n**Hint:** When building new linked lists iteratively, it may be easier to build it from right to left (or end to start).\n\nRemember to refer to the [spec](https://cs61a.org/articles/scheme-spec/index.html#let) if you don't understand any of the test cases!\n\nUse Ok to unlock and test your code:\n\n```\npython3 ok -q EC1 -u\npython3 ok -q EC1\n```\n\nIn the next challenge, you will implement tail-call optimization, an essential feature of the Scheme language. Watch this [playlist](https://www.youtube.com/watch?v=zOxxB-gdO9U&list=PL6BsET-8jgYVSrrJ9XNFsYQButTbRFlJo) to learn about tail calls.\n\nWe will implement tail-call optimization in Scheme by using a technique called \"trampolining\" to tail-call optimize our `scheme_eval` function *in Python*.\n\nFirst, let's begin with why optimizing the `scheme_eval` function will optimize the Scheme interpreter.\n",
+   "statementEn": "The `let` special form ([spec](https://cs61a.org/articles/scheme-spec/index.html#let)) binds symbols to values locally, giving them their initial values. For example:\n\n```\nscm> (define x 5)\nx\nscm> (define y 'bye)\ny\nscm> (let ((x 42)\n           (y (* x 10)))  ; this x refers to the global value of x, not 42\n       (list x y))\n(42 50)\nscm> (list x y)\n(5 bye)\n```\n\nImplement `make_let_frame` in `scheme_forms.py`, which returns a child frame of `env` that binds the symbol in each element of `bindings` to the value of its corresponding expression. The `bindings` Scheme list contains pairs that each contain a symbol and a corresponding expression.\n\nYou may find the following functions and methods useful:\n\n- `validate_form`: this function can be used to validate the structure of each binding. It takes in a Scheme list `expr` of expressions and a `min` and `max` length. If `expr` is not a list with length between `min` and `max` inclusive, it raises an error. If no `max` is passed in, the default is infinity.\n- `validate_formals`: this function validates that its argument is a Scheme list of symbols for which each symbol is distinct.\n\n**Hint:** When building new linked lists iteratively, it may be easier to build it from right to left (or end to start).\n\nRemember to refer to the [spec](https://cs61a.org/articles/scheme-spec/index.html#let) if you don't understand any of the test cases!\n\nUse Ok to unlock and test your code:\n\n```\npython3 ok -q EC1 -u\npython3 ok -q EC1\n```\n\nIn the next challenge, you will implement tail-call optimization, an essential feature of the Scheme language. Watch this [playlist](https://www.youtube.com/watch?v=zOxxB-gdO9U&list=PL6BsET-8jgYVSrrJ9XNFsYQButTbRFlJo) to learn about tail calls.\n\nWe will implement tail-call optimization in Scheme by using a technique called \"trampolining\" to tail-call optimize our `scheme_eval` function *in Python*.\n\nFirst, let's begin with why optimizing the `scheme_eval` function will optimize the Scheme interpreter.\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "EC1"
+   }
+  },
+  {
+   "id": "ec2",
+   "title": "Problem EC 2 (0 pts)",
+   "titleEn": "Problem EC 2 (0 pts)",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\n**Preface**: This question is challenging and requires you to modify multiple areas in the interpreter without specifying where. **We recommend taking the time to thoroughly understand all the concepts and develop a clear strategy before beginning to code.**\n\n**Important**: While working, continuously ensure that the code you write for this question does not cause other parts of the project to fail. If you find yourself losing track of your edits, it might be a good idea to save a copy of your original code for reference.\n\nComplete the function `optimize_tail_calls` in `scheme_eval_apply.py`. It returns an alternative to `scheme_eval` that is tail-call optimized in Python. That is, it will allow an unbounded number of active tail calls to `scheme_eval` in constant space. It has a third argument `tail` that indicates whether the call to `scheme_eval` is a tail call or not.\n\nThe `Unevaluated` class represents an expression that needs to be evaluated in a specific environment. When `optimized_eval` receives a non-atomic expression in a tail context, it returns an instance of `Unevaluated`. Otherwise, `optimized_eval` should keep calling `unoptimized_scheme_eval` on the current `expr` and `env` until the result is a final value, rather than an `Unevaluated` instance.\n\nAfter you are done implementing `optimize_tail_calls`, uncomment the following line in `scheme_eval_apply.py` to reassign the original `scheme_eval` to the optimized implementation:\n\n```\nscheme_eval = optimize_tail_calls(scheme_eval)\n```\n\nFinally, identify which calls to `scheme_eval` in your interpreter are tail calls. Modify those `scheme_eval` tail calls to pass in True as the third argument (the `tail` parameter) whenever applicable.\n\n**Note**: A successful implementation will require changes to *several other functions*, including some functions that we provided for you.\n\n**Hints**:\n\nA call to `scheme_eval` is a tail call if it is the last thing to be done in a function before it returns.\n\nEven within a function, not every call to `scheme_eval` will benefit from tail-call optimization. Consider which specific calls will benefit and pass True for the `tail` argument accordingly.\n",
+   "statementEn": "**Preface**: This question is challenging and requires you to modify multiple areas in the interpreter without specifying where. **We recommend taking the time to thoroughly understand all the concepts and develop a clear strategy before beginning to code.**\n\n**Important**: While working, continuously ensure that the code you write for this question does not cause other parts of the project to fail. If you find yourself losing track of your edits, it might be a good idea to save a copy of your original code for reference.\n\nComplete the function `optimize_tail_calls` in `scheme_eval_apply.py`. It returns an alternative to `scheme_eval` that is tail-call optimized in Python. That is, it will allow an unbounded number of active tail calls to `scheme_eval` in constant space. It has a third argument `tail` that indicates whether the call to `scheme_eval` is a tail call or not.\n\nThe `Unevaluated` class represents an expression that needs to be evaluated in a specific environment. When `optimized_eval` receives a non-atomic expression in a tail context, it returns an instance of `Unevaluated`. Otherwise, `optimized_eval` should keep calling `unoptimized_scheme_eval` on the current `expr` and `env` until the result is a final value, rather than an `Unevaluated` instance.\n\nAfter you are done implementing `optimize_tail_calls`, uncomment the following line in `scheme_eval_apply.py` to reassign the original `scheme_eval` to the optimized implementation:\n\n```\nscheme_eval = optimize_tail_calls(scheme_eval)\n```\n\nFinally, identify which calls to `scheme_eval` in your interpreter are tail calls. Modify those `scheme_eval` tail calls to pass in True as the third argument (the `tail` parameter) whenever applicable.\n\n**Note**: A successful implementation will require changes to *several other functions*, including some functions that we provided for you.\n\n**Hints**:\n\nA call to `scheme_eval` is a tail call if it is the last thing to be done in a function before it returns.\n\nEven within a function, not every call to `scheme_eval` will benefit from tail-call optimization. Consider which specific calls will benefit and pass True for the `tail` argument accordingly.\n",
+   "editable": [
+    "scheme_eval_apply.py",
+    "scheme_forms.py",
+    "scheme_classes.py",
+    "questions.scm"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "EC2"
+   }
+  }
+ ]
+}

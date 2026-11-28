@@ -23,6 +23,7 @@ interface NoticeRow {
   created_at: number;
   updated_at: number;
   author_name: string | null;
+  author_username: string | null;
 }
 
 const MAX_IMAGE_BYTES = 3_000_000;
@@ -56,8 +57,8 @@ function shape(
     deadline: r.deadline,
     tags: r.tags ? (JSON.parse(r.tags) as string[]) : [],
     pinned: r.pinned === 1,
-    // 游客和校外账号看不到发布人和报名名单（都是真名，名单里还有联系方式），只看到报名人数；校外账号能看到自己报的那一条
-    author: names ? r.author_name : null,
+    // 发布人：游客和校外账号看到用户名（没设用户名就不显示）。报名名单里有真名和联系方式，他们只看到报名人数和自己报的那一条
+    author: names ? r.author_name : r.author_username ? `@${r.author_username}` : null,
     createdAt: r.created_at,
     updatedAt: r.updated_at,
     entries: r.kind === "competition" && uid ? mine.filter((e) => names || e.user_id === uid).map((e) => ({ name: e.name, team: e.team, contact: e.contact })) : [],
@@ -71,7 +72,7 @@ async function list(db: D1Database, uid: string | null, names: boolean, limit = 
   const [rows, entries, reads] = await Promise.all([
     db
       .prepare(
-        `SELECT n.*, u.name AS author_name FROM notices n LEFT JOIN users u ON u.id = n.author_id
+        `SELECT n.*, u.name AS author_name, u.username AS author_username FROM notices n LEFT JOIN users u ON u.id = n.author_id
          WHERE n.deleted_at IS NULL ORDER BY n.pinned DESC, n.created_at DESC LIMIT ?`,
       )
       .bind(limit)

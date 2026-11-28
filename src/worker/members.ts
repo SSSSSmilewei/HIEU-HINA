@@ -22,8 +22,41 @@ export type AccountKind = "campus" | "external";
 /** 学号：9 位数字（注册时检查；登录不检查格式，兼容之前录入的账号）。 */
 export const STUDENT_NO_RE = /^\d{9}$/;
 
-/** 校外账号的用户名：3–20 位，小写字母开头，只有小写字母、数字、下划线、连字符（不能全是数字，免得和学号混淆）。 */
+/** 用户名（校内、校外都有）：3–20 位，小写字母开头，只有小写字母、数字、下划线、连字符（不能全是数字，免得和学号混淆）。 */
 export const USERNAME_RE = /^[a-z][a-z0-9_-]{2,19}$/;
+export const USERNAME_RULE = "用户名 3–20 位，小写字母开头，只能用小写字母、数字、下划线和连字符";
+
+/**
+ * 不能用的用户名：仓库服务（Forgejo）的保留字和平台自己的账号；s+数字、x- 开头是以前仓库账号的命名方式，
+ * 留着防止有人用别人学号对应的名字占掉别人的仓库账号。
+ */
+const RESERVED_USERNAMES = new Set(["admin", "administrator", "root", "system", "hiana", "hiana-admin", "api", "assets", "avatar", "avatars", "explore", "ghost", "issues", "login", "logout", "new", "notifications", "org", "pulls", "repo", "search", "user", "users", "v2"]);
+
+/** 检查并规范化用户名（转小写）；不合规矩抛 400 */
+export function checkUsername(input: string): string {
+  const u = input.trim().toLowerCase();
+  if (!USERNAME_RE.test(u)) throw new AccountError(400, USERNAME_RULE);
+  if (RESERVED_USERNAMES.has(u) || /^s\d+$/.test(u) || u.startsWith("x-")) throw new AccountError(400, "这个用户名是系统保留的，换一个");
+  return u;
+}
+
+async function usernameTaken(db: D1Database, username: string, exceptId = ""): Promise<boolean> {
+  return !!(await db.prepare("SELECT 1 AS x FROM users WHERE username = ? AND id <> ?").bind(username, exceptId).first());
+}
+
+/** 本人设置 / 修改用户名（校内、校外都能改）。返回规范化后的用户名 */
+export async function setOwnUsername(db: D1Database, userId: string, input: string, now = Date.now()): Promise<string> {
+  const u = checkUsername(input);
+  if (await usernameTaken(db, u, userId)) throw new AccountError(409, "这个用户名已经有人用了，换一个");
+  try {
+    await db.prepare("UPDATE users SET username = ?, updated_at = ? WHERE id = ? AND status = 'active'").bind(u, now, userId).run();
+  } catch (err) {
+    if (String(err).includes("UNIQUE")) throw new AccountError(409, "这个用户名已经有人用了，换一个");
+    throw err;
+  }
+  return u;
+}
+
 export const EMAIL_RE = /^[^\s@]{1,64}@[^\s@]+\.[^\s@]{2,}$/;
 
 /** 校外账号在 student_no 列里的占位（这一列 NOT NULL UNIQUE），不对外显示 */
@@ -174,6 +207,9 @@ async function registerCampus(db: D1Database, secret: string, input: RegisterInp
   if (input.password !== input.confirm) throw new AccountError(400, "两次输入的密码不一样");
   const problem = passwordProblem(input.password, studentNo);
   if (problem) throw new AccountError(400, problem);
+  // 用户名（2026-11-28 起网页必填；旧版 App 不带，注册后在“我的”里补填）。对校外的人和游客只显示用户名
+  const username = input.username?.trim() ? checkUsername(input.username) : null;
+  if (username && (await usernameTaken(db, username))) throw new AccountError(409, "这个用户名已经有人用了，换一个");
 
   const existing = await db
     .prepare("SELECT id, status, password_hash FROM users WHERE student_no = ?")
@@ -196,11 +232,11 @@ async function registerCampus(db: D1Database, secret: string, input: RegisterInp
     if (bootstrap) {
       await (existing
         ? db
-            .prepare("UPDATE users SET name = ?, class_name = COALESCE(?, class_name), password_hash = ?, password_set_at = ?, passcode_hash = NULL, role = 'admin', updated_at = ? WHERE id = ?")
-            .bind(name.value, className, hash, now, now, id)
+            .prepare("UPDATE users SET name = ?, class_name = COALESCE(?, class_name), username = COALESCE(?, username), password_hash = ?, password_set_at = ?, passcode_hash = NULL, role = 'admin', updated_at = ? WHERE id = ?")
+            .bind(name.value, className, username, hash, now, now, id)
         : db
-            .prepare("INSERT INTO users (id, student_no, name, class_name, password_hash, password_set_at, role, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, 'admin', 'active', ?, ?)")
-            .bind(id, studentNo, name.value, className, hash, now, now, now)
+            .prepare("INSERT INTO users (id, student_no, name, class_name, username, password_hash, password_set_at, role, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 'admin', 'active', ?, ?)")
+            .bind(id, studentNo, name.value, className, username, hash, now, now, now)
       ).run();
     } else {
       const codeHash = await hashPasscode(secret, code);
@@ -208,16 +244,16 @@ async function registerCampus(db: D1Database, secret: string, input: RegisterInp
       const write = existing
         ? db
             .prepare(
-              `UPDATE users SET name = ?, class_name = COALESCE(?, class_name), password_hash = ?, password_set_at = ?, passcode_hash = NULL, updated_at = ?
+              `UPDATE users SET name = ?, class_name = COALESCE(?, class_name), username = COALESCE(?, username), password_hash = ?, password_set_at = ?, passcode_hash = NULL, updated_at = ?
                WHERE id = ? AND password_hash IS NULL AND ${usable}`,
             )
-            .bind(name.value, className, hash, now, now, id, codeHash, now)
+            .bind(name.value, className, username, hash, now, now, id, codeHash, now)
         : db
             .prepare(
-              `INSERT INTO users (id, student_no, name, class_name, password_hash, password_set_at, role, status, created_at, updated_at)
-               SELECT ?, ?, ?, ?, ?, ?, 'member', 'active', ?, ? WHERE ${usable}`,
+              `INSERT INTO users (id, student_no, name, class_name, username, password_hash, password_set_at, role, status, created_at, updated_at)
+               SELECT ?, ?, ?, ?, ?, ?, ?, 'member', 'active', ?, ? WHERE ${usable}`,
             )
-            .bind(id, studentNo, name.value, className, hash, now, now, now, codeHash, now);
+            .bind(id, studentNo, name.value, className, username, hash, now, now, now, codeHash, now);
       const use = db.prepare(`UPDATE invite_codes SET used_by = ?, used_at = ? WHERE code_hash = ? AND kind = 'campus' AND ${INVITE_USABLE}`).bind(id, now, codeHash, now);
       const [r] = await db.batch([write, use]);
       if (!r.meta.changes) {
@@ -228,15 +264,14 @@ async function registerCampus(db: D1Database, secret: string, input: RegisterInp
   } catch (err) {
     if (err instanceof AccountError) throw err;
     // 同一个学号几乎同时注册两次：第二次撞上唯一约束
-    if (String(err).includes("UNIQUE")) throw new AccountError(409, "这个学号已经注册过了，直接登录就行");
+    if (String(err).includes("UNIQUE")) throw new AccountError(409, String(err).includes("username") ? "这个用户名已经有人用了，换一个" : "这个学号已经注册过了，直接登录就行");
     throw err;
   }
   return readAccount(db, id);
 }
 
 async function registerExternal(db: D1Database, secret: string, input: RegisterInput, opts: { open: boolean }, now: number): Promise<AccountRow> {
-  const username = (input.username ?? "").trim().toLowerCase();
-  if (!USERNAME_RE.test(username)) throw new AccountError(400, "用户名 3–20 位，小写字母开头，只能用小写字母、数字、下划线和连字符");
+  const username = checkUsername(input.username ?? "");
   const email = input.email?.trim() ? input.email.trim().toLowerCase() : null;
   if (email && (email.length > 100 || !EMAIL_RE.test(email))) throw new AccountError(400, "邮箱格式不对");
   const name = cleanShortText(input.name, 20, "昵称");
@@ -490,14 +525,14 @@ export async function updateMember(db: D1Database, id: string, input: MemberEdit
     if ("error" in n) throw new AccountError(400, n.error);
     set("name", n.value);
   }
+  // 用户名：校内、校外都有（校内 2026-11-28 起）
+  if (input.username !== undefined) {
+    const u = checkUsername(input.username);
+    if (await usernameTaken(db, u, id)) throw new AccountError(409, "这个用户名已经有人用了");
+    set("username", u);
+  }
   if (external) {
     if (input.studentNo !== undefined || input.className !== undefined) throw new AccountError(400, "校外账号没有学号和班级");
-    if (input.username !== undefined) {
-      const u = input.username.trim().toLowerCase();
-      if (!USERNAME_RE.test(u)) throw new AccountError(400, "用户名 3–20 位，小写字母开头，只能用小写字母、数字、下划线和连字符");
-      if (await db.prepare("SELECT 1 AS x FROM users WHERE username = ? AND id <> ?").bind(u, id).first()) throw new AccountError(409, "这个用户名已经有人用了");
-      set("username", u);
-    }
     if (input.email !== undefined) {
       const e = input.email.trim().toLowerCase() || null;
       if (e && (e.length > 100 || !EMAIL_RE.test(e))) throw new AccountError(400, "邮箱格式不对");
@@ -506,7 +541,7 @@ export async function updateMember(db: D1Database, id: string, input: MemberEdit
     }
     if (input.org !== undefined) set("org", optionalText(input.org, 40, "学校 / 单位"));
   } else {
-    if (input.username !== undefined || input.email !== undefined || input.org !== undefined) throw new AccountError(400, "校内账号没有用户名、邮箱和单位");
+    if (input.email !== undefined || input.org !== undefined) throw new AccountError(400, "校内账号没有邮箱和单位");
     if (input.studentNo !== undefined) {
       const no = input.studentNo.trim();
       if (!STUDENT_NO_RE.test(no)) throw new AccountError(400, "学号是 9 位数字");

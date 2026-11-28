@@ -5,7 +5,7 @@ import { BrandMark, Shell } from "./components/Shell";
 import { PageContent } from "./components/PageContent";
 import { StartPage } from "./pages/Start";
 import { HomePage } from "./pages/Home";
-import { LoginPage, PasswordPage } from "./pages/Login";
+import { DeviceLinkPage, LoginPage, PasswordPage } from "./pages/Login";
 import { Onboarding, needsOnboarding } from "./components/Onboarding";
 import { NoticeGate } from "./components/NoticeGate";
 import { shouldPlayIntro } from "./intro";
@@ -30,9 +30,14 @@ const SiteGraphPage = lazy(() => import("./pages/BlockDetail").then((m) => ({ de
 const LessonPage = lazy(() => import("./pages/Lesson").then((m) => ({ default: m.LessonPage })));
 const LevelPage = lazy(() => import("./pages/Level").then((m) => ({ default: m.LevelPage })));
 const LevelMapPage = lazy(() => import("./pages/LevelMap").then((m) => ({ default: m.LevelMapPage })));
+const OjWorkspacePage = lazy(() => import("./pages/OjWorkspace").then((m) => ({ default: m.OjWorkspacePage })));
+const SeaMapPage = lazy(() => import("./pages/SeaMap").then((m) => ({ default: m.SeaMapPage })));
+const ExamPage = lazy(() => import("./pages/ExamPage").then((m) => ({ default: m.ExamPage })));
 const NoticesPage = lazy(() => import("./pages/Notices").then((m) => ({ default: m.NoticesPage })));
 const ProfilePage = lazy(() => import("./pages/Profile").then((m) => ({ default: m.ProfilePage })));
 const ReportPage = lazy(() => import("./pages/Report").then((m) => ({ default: m.ReportPage })));
+const ReposPage = lazy(() => import("./pages/Repos").then((m) => ({ default: m.ReposPage })));
+const RepoPage = lazy(() => import("./pages/Repos").then((m) => ({ default: m.RepoPage })));
 
 function Boot() {
   return (
@@ -49,7 +54,7 @@ function Redirect({ to }: { to: string }) {
 
 /** 游客也能看的页面；其余页面要登录。 */
 function guestCanSee(path: string): boolean {
-  return path === "/" || path === "/about" || path === "/honors" || path.startsWith("/courses") || path.startsWith("/blocks") || path === "/notices" || path === "/start";
+  return path === "/" || path === "/about" || path === "/honors" || path.startsWith("/courses") || path.startsWith("/blocks") || path === "/notices" || path === "/start" || path.startsWith("/oj");
 }
 
 export function App() {
@@ -98,6 +103,7 @@ export function App() {
   // 游客：只能看首页、协会、课程、公告；其余页面先去登录，登录完回来
   if (!me.role && !guestCanSee(path)) return <Redirect to={loginHref(path + search)} />;
   if (path === "/password" && me.role) return <PasswordPage me={me} />;
+  if (path === "/link" && me.role) return <DeviceLinkPage me={me} />;
 
   const isAdmin = !!me.isAdmin;
   let page: React.ReactNode;
@@ -105,6 +111,7 @@ export function App() {
   const lesson = matchPath("/courses/:slug/learn/:page", path);
   const block = matchPath("/blocks/:slug", path);
   const levelMap = matchPath("/courses/:slug/map", path);
+  const seaMap = matchPath("/courses/:slug/sea", path);
   const levelPage = matchPath("/courses/:slug/levels/:chapter/:level", path);
   if (path.startsWith("/admin")) {
     if (!isAdmin) page = <Empty title="这里需要管理员账号" />;
@@ -123,6 +130,7 @@ export function App() {
   else if (path === "/blocks") page = <SiteGraphPage />;
   else if (block) page = <BlockPage key={block.slug} slug={block.slug} />;
   else if (levelMap) page = <LevelMapPage key={levelMap.slug} slug={levelMap.slug} />;
+  else if (seaMap) page = <SeaMapPage key={seaMap.slug} slug={seaMap.slug} />;
   else if (levelPage) page = <LevelPage key={`${levelPage.chapter}/${levelPage.level}`} slug={levelPage.slug} chapter={levelPage.chapter} level={levelPage.level} />;
   else if (course) page = <CoursePage key={course.slug} slug={course.slug} />;
   else if (lesson) page = <LessonPage key={lesson.slug} slug={lesson.slug} page={lesson.page} />;
@@ -130,6 +138,40 @@ export function App() {
   else if (path === "/notices") page = <NoticesPage />;
   else if (path === "/me") page = <ProfilePage me={me} onLogout={loggedOut} />;
   else page = <Empty title="没有这个页面" />;
+
+  // 做题界面是全屏的 IDE，不套侧边栏
+  const ojProblem = matchPath("/oj/p/:id", path);
+  const hw = matchPath("/courses/:slug/hw/:assignment", path) ?? matchPath("/courses/:slug/hw/:assignment/:problem", path);
+  const exam = matchPath("/courses/:slug/exam/:id", path);
+  if (exam) {
+    return (
+      <MeContext.Provider value={ctx}>
+        <PageContent key={path} fallback={<Boot />}>
+          <ExamPage course={exam.slug} id={exam.id} />
+        </PageContent>
+      </MeContext.Provider>
+    );
+  }
+  // 仓库页（要登录）：和做题界面一样是全屏的 IDE 风格
+  const repoPage = matchPath("/repos/:name", path);
+  if (me.role && (path === "/repos" || repoPage)) {
+    return (
+      <MeContext.Provider value={ctx}>
+        <PageContent key={path} fallback={<Boot />}>
+          {repoPage ? <RepoPage name={repoPage.name} /> : <ReposPage />}
+        </PageContent>
+      </MeContext.Provider>
+    );
+  }
+  if (ojProblem || hw) {
+    return (
+      <MeContext.Provider value={ctx}>
+        <PageContent key={path.split("/").slice(0, 5).join("/")} fallback={<Boot />}>
+          {ojProblem ? <OjWorkspacePage problem={ojProblem.id} /> : <OjWorkspacePage course={hw!.slug} assignment={hw!.assignment} problemId={hw!.problem} />}
+        </PageContent>
+      </MeContext.Provider>
+    );
+  }
 
   // 协会页是一整张海报（新生介绍书），不套侧边栏和底栏，自己有顶栏回平台
   if (path === "/about") {

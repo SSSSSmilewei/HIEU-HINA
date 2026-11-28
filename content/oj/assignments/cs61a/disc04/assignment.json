@@ -1,0 +1,38 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "disc04",
+ "title": "讨论课 4：树形递归",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/disc/disc04/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "disc04",
+ "repoDir": "disc/disc04",
+ "intro": "讨论课的题目原本是小组在纸上一起做的。这里收了能自动判对错的两类题：写代码的题（用官方 doctest 判，做对之后题目下方显示官方解答），和画环境图的题（先在纸上画，再把每一帧填进来，判题服务实际运行程序后逐帧比对）。口头讨论的题请看讲义页的官方讲义。",
+ "problems": [
+  {
+   "id": "paths",
+   "title": "Insect Combinatorics",
+   "titleEn": "Insect Combinatorics",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nAn insect is inside an `m` by `n` grid. The insect starts at the bottom-left corner `(1, 1)` and wants to end up at the top-right corner `(m, n)`. The insect can only move up or to the right. Write a function `paths` that takes the height and width of a grid and returns the number of paths the insect can take from the start to the end. (There is a [closed-form solution](https://en.wikipedia.org/wiki/Closed-form_expression) to this problem, but try to answer it with recursion.)\n\nIn the `2` by `2` grid, the insect has two paths from the start to the end. In the `3` by `3` grid, the insect has six paths (only three are shown above).\n\n**Presentation Time:** Once your group has converged on a solution, it's time to practice your ability to describe why your recursive case is correct. Nominate someone and have them present to the group for practice. If you want feedback, ask.\n\n  Tree Recursion with Lists\n\nSome of you already know list operations that we haven't covered yet, such as `append`. Don't use those today. All you need are list literals (e.g., `[1, 2, 3]`), item selection (e.g., `s[0]`), list addition (e.g., `[1] + [2, 3]`), `len` (e.g., `len(s)`), and slicing (e.g., `s[1:]`). Use those! There will be plenty of time for other list operations when we introduce them next week.\n\n**Important:** The most important thing to remember about lists is that a non-empty list `s` can be split into its first element `s[0]` and the rest of the list `s[1:]`.\n\n```\n>>> s = [2, 3, 6, 4]\n>>> s[0]\n2\n>>> s[1:]\n[3, 6, 4]\n```\n",
+   "statementEn": "An insect is inside an `m` by `n` grid. The insect starts at the bottom-left corner `(1, 1)` and wants to end up at the top-right corner `(m, n)`. The insect can only move up or to the right. Write a function `paths` that takes the height and width of a grid and returns the number of paths the insect can take from the start to the end. (There is a [closed-form solution](https://en.wikipedia.org/wiki/Closed-form_expression) to this problem, but try to answer it with recursion.)\n\nIn the `2` by `2` grid, the insect has two paths from the start to the end. In the `3` by `3` grid, the insect has six paths (only three are shown above).\n\n**Presentation Time:** Once your group has converged on a solution, it's time to practice your ability to describe why your recursive case is correct. Nominate someone and have them present to the group for practice. If you want feedback, ask.\n\n  Tree Recursion with Lists\n\nSome of you already know list operations that we haven't covered yet, such as `append`. Don't use those today. All you need are list literals (e.g., `[1, 2, 3]`), item selection (e.g., `s[0]`), list addition (e.g., `[1] + [2, 3]`), `len` (e.g., `len(s)`), and slicing (e.g., `s[1:]`). Use those! There will be plenty of time for other list operations when we introduce them next week.\n\n**Important:** The most important thing to remember about lists is that a non-empty list `s` can be split into its first element `s[0]` and the rest of the list `s[1:]`.\n\n```\n>>> s = [2, 3, 6, 4]\n>>> s[0]\n2\n>>> s[1:]\n[3, 6, 4]\n```\n",
+   "editable": [
+    "paths.py"
+   ],
+   "focus": {
+    "file": "paths.py",
+    "symbol": "paths"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "paths"
+   },
+   "explain": "官方解答：\n\n```python\ndef paths(m, n):\n    \"\"\"Return the number of paths from one corner of an\n    M by N grid to the opposite corner.\n\n    >>> paths(2, 2)\n    2\n    >>> paths(5, 7)\n    210\n    >>> paths(117, 1)\n    1\n    >>> paths(1, 157)\n    1\n    \"\"\"\n    if m == 1 or n == 1:\n        return 1\n    return paths(m - 1, n) + paths(m, n - 1)\n    # Base case: Look at the two visual examples given. Since the insect\n    # can only move to the right or up, once it hits either the rightmost edge\n    # or the upper edge, it has a single remaining path -- the insect has\n    # no choice but to go straight up or straight right (respectively) at that point.\n    # There is no way for it to backtrack by going left or down.\n```\n"
+  }
+ ]
+}

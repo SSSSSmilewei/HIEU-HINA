@@ -1,0 +1,24 @@
+{
+  "format": "hiana-problem@1",
+  "id": "a-plus-b",
+  "title": "A + B",
+  "titleEn": "A + B",
+  "kind": "io",
+  "languages": ["cpp", "c", "java", "python"],
+  "difficulty": "easy",
+  "statement": "输入两个整数 $a$ 和 $b$，输出它们的和。\n\n### 输入格式\n\n一行，两个整数 $a, b$，用空格隔开。\n\n### 输出格式\n\n一行，一个整数，表示 $a + b$。\n\n### 示例\n\n```\n输入：1 2\n输出：3\n```\n\n### 数据范围\n\n$-10^{18} \\le a, b \\le 10^{18}$，答案在 64 位有符号整数的范围内。",
+  "editable": ["main.cpp", "main.c", "Main.java", "main.py"],
+  "tests": {
+    "kind": "io",
+    "cases": [
+      { "input": "1 2\n", "output": "3\n" },
+      { "input": "-5 5\n", "output": "0\n" },
+      { "input": "1000000000000000000 1000000000000000000\n", "output": "2000000000000000000\n", "hidden": true },
+      { "input": "-1000000000000000000 -1000000000000000000\n", "output": "-2000000000000000000\n", "hidden": true }
+    ]
+  },
+  "timeMs": 1000,
+  "memoryMb": 128,
+  "hints": ["先读入两个数，再输出它们的和。", "两个 10^18 相加是 2×10^18，long long 的上限约 9.2×10^18，放得下。"],
+  "tags": ["入门"]
+}

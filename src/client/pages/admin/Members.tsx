@@ -163,7 +163,7 @@ export function AdminMembersPage({ selfId }: { selfId: string | null }) {
       </section>
       {inviting && <InviteDialog onClose={() => setInviting(false)} />}
       {editing && (
-        <Dialog title={`修改 ${editing.name} 的信息`} sub={editing.kind === "external" ? "校外账号：改用户名或邮箱后，要用新的登录" : "校内账号：改学号后，要用新学号登录"} onClose={() => setEditing(null)}>
+        <Dialog title={`修改 ${editing.name} 的信息`} sub={editing.kind === "external" ? "校外账号：改用户名或邮箱后，要用新的登录" : "校内账号：改学号或用户名后，要用新的登录"} onClose={() => setEditing(null)}>
           <EditMemberForm m={editing} onSaved={() => void reload()} />
         </Dialog>
       )}
@@ -183,7 +183,7 @@ function EditMemberForm({ m, onSaved }: { m: AdminMember; onSaved: () => void })
   const external = m.kind === "external";
   const initial: Record<string, string> = external
     ? { name: m.name, username: m.username ?? "", email: m.email ?? "", org: m.org ?? "" }
-    : { name: m.name, studentNo: m.studentNo, className: m.className ?? "" };
+    : { name: m.name, studentNo: m.studentNo, username: m.username ?? "", className: m.className ?? "" };
   const [v, setV] = useState<Record<string, string>>(initial);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -234,6 +234,7 @@ function EditMemberForm({ m, onSaved }: { m: AdminMember; onSaved: () => void })
         <>
           {field("name", "姓名", { max: 20 })}
           {field("studentNo", "学号", { mono: true, max: 9, inputMode: "numeric", hint: "9 位数字，也是登录账号" })}
+          {field("username", "用户名", { mono: true, max: 20, hint: "3–20 位，小写字母开头；校外人员和游客看到的是用户名，也可以用它登录" })}
           {field("className", "班级", { max: 30, hint: "例如 计科2501" })}
         </>
       )}

@@ -1,0 +1,218 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "lab04",
+ "title": "实验 4：树形递归、数据抽象",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/lab/lab04/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "lab04",
+ "repoDir": "lab/lab04",
+ "intro": "",
+ "problems": [
+  {
+   "id": "pokemon",
+   "title": "Dictionaries",
+   "titleEn": "Dictionaries",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\n```\n>>> pokemon = {'pikachu': 25, 'dragonair': 148, 'mew': 151}\n>>> pokemon['pikachu']\n\n>>> len(pokemon)\n\n>>> 'mewtwo' in pokemon\n\n>>> 'pikachu' in pokemon\n\n>>> 25 in pokemon\n\n>>> 148 in pokemon.values()\n\n>>> 151 in pokemon.keys()\n\n>>> 'mew' in pokemon.keys()\n\n```\n",
+   "statementEn": "```\n>>> pokemon = {'pikachu': 25, 'dragonair': 148, 'mew': 151}\n>>> pokemon['pikachu']\n\n>>> len(pokemon)\n\n>>> 'mewtwo' in pokemon\n\n>>> 'pikachu' in pokemon\n\n>>> 25 in pokemon\n\n>>> 148 in pokemon.values()\n\n>>> 151 in pokemon.keys()\n\n>>> 'mew' in pokemon.keys()\n\n```\n",
+   "editable": [
+    "lab04.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "pokemon"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "pokemon = {'pikachu': 25, 'dragonair': 148, 'mew': 151}",
+       "want": []
+      },
+      {
+       "code": "pokemon['pikachu']",
+       "want": [
+        {
+         "hash": "6958307009d94c1d298ae9f450f606ff"
+        }
+       ]
+      },
+      {
+       "code": "len(pokemon)",
+       "want": [
+        {
+         "hash": "62cb7be5b3f27b8761401e9f99897a30"
+        }
+       ]
+      },
+      {
+       "code": "'mewtwo' in pokemon",
+       "want": [
+        {
+         "hash": "61e74011ca20035e5cb51b814087a093"
+        }
+       ]
+      },
+      {
+       "code": "'pikachu' in pokemon",
+       "want": [
+        {
+         "hash": "46d1f016b6482a76a74835354edaab71"
+        }
+       ]
+      },
+      {
+       "code": "25 in pokemon",
+       "want": [
+        {
+         "hash": "61e74011ca20035e5cb51b814087a093"
+        }
+       ]
+      },
+      {
+       "code": "148 in pokemon.values()",
+       "want": [
+        {
+         "hash": "46d1f016b6482a76a74835354edaab71"
+        }
+       ]
+      },
+      {
+       "code": "151 in pokemon.keys()",
+       "want": [
+        {
+         "hash": "61e74011ca20035e5cb51b814087a093"
+        }
+       ]
+      },
+      {
+       "code": "'mew' in pokemon.keys()",
+       "want": [
+        {
+         "hash": "46d1f016b6482a76a74835354edaab71"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "divide",
+   "title": "Divide",
+   "titleEn": "Divide",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement `divide`, which takes two lists of positive integers `quotients` and `divisors`. It returns a dictionary whose keys are the elements of `quotients`. For each key `q`, its corresponding value is a list of all of the elements of `divisors` that can be evenly divided by `q`.\n\nHint: The value for each key needs be a list, so a list comprehension might be useful here.\n",
+   "statementEn": "Implement `divide`, which takes two lists of positive integers `quotients` and `divisors`. It returns a dictionary whose keys are the elements of `quotients`. For each key `q`, its corresponding value is a list of all of the elements of `divisors` that can be evenly divided by `q`.\n\nHint: The value for each key needs be a list, so a list comprehension might be useful here.\n",
+   "editable": [
+    "lab04.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "divide"
+   },
+   "focus": {
+    "file": "lab04.py",
+    "symbol": "divide"
+   }
+  },
+  {
+   "id": "buy",
+   "title": "Buying Fruit",
+   "titleEn": "Buying Fruit",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the `buy` function that takes three parameters:\n\n1. `fruits_to_buy`: A list of strings representing the fruits you need to buy. *At least one of each fruit must be bought.*\n2. `prices`: A dictionary where the keys are fruit names (strings) and the values are positive integers representing the cost of each fruit.\n3. `total_amount`: An integer representing the total money available for purchasing the fruits. Take a look at the docstring for more details on the input structure.\n\nThe function should print **all possible ways** to buy the required fruits so that the combined cost equals `total_amount`. You can only select fruits mentioned in `fruits_to_buy` list.\n\n**Note**: You can use the `display` function to format the output. Call `display(fruit, count)` for each fruit and its corresponding quantity to generate a string showing the type and amount of fruit bought.\n\n**Hint**: How can you ensure that every combination includes at least one of each fruit listed in `fruits_to_buy`?\n",
+   "statementEn": "Implement the `buy` function that takes three parameters:\n\n1. `fruits_to_buy`: A list of strings representing the fruits you need to buy. *At least one of each fruit must be bought.*\n2. `prices`: A dictionary where the keys are fruit names (strings) and the values are positive integers representing the cost of each fruit.\n3. `total_amount`: An integer representing the total money available for purchasing the fruits. Take a look at the docstring for more details on the input structure.\n\nThe function should print **all possible ways** to buy the required fruits so that the combined cost equals `total_amount`. You can only select fruits mentioned in `fruits_to_buy` list.\n\n**Note**: You can use the `display` function to format the output. Call `display(fruit, count)` for each fruit and its corresponding quantity to generate a string showing the type and amount of fruit bought.\n\n**Hint**: How can you ensure that every combination includes at least one of each fruit listed in `fruits_to_buy`?\n",
+   "editable": [
+    "lab04.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "buy"
+   },
+   "focus": {
+    "file": "lab04.py",
+    "symbol": "buy"
+   }
+  },
+  {
+   "id": "distance",
+   "title": "Distance",
+   "titleEn": "Distance",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWe will now implement the function `distance`, which computes the distance between two city objects. Recall that the distance between two coordinate pairs `(x1, y1)` and `(x2, y2)` can be found by calculating the `sqrt` of `(x1 - x2)**2 + (y1 - y2)**2`. We have already imported `sqrt` for your convenience. Use the latitude and longitude of a city as its coordinates; you'll need to use the selectors to access this info!\n",
+   "statementEn": "We will now implement the function `distance`, which computes the distance between two city objects. Recall that the distance between two coordinate pairs `(x1, y1)` and `(x2, y2)` can be found by calculating the `sqrt` of `(x1 - x2)**2 + (y1 - y2)**2`. We have already imported `sqrt` for your convenience. Use the latitude and longitude of a city as its coordinates; you'll need to use the selectors to access this info!\n",
+   "editable": [
+    "lab04.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "distance"
+   },
+   "focus": {
+    "file": "lab04.py",
+    "symbol": "distance"
+   }
+  },
+  {
+   "id": "closer_city",
+   "title": "Closer City",
+   "titleEn": "Closer City",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nNext, implement `closer_city`, a function that takes a latitude, longitude, and two cities, and returns the *name* of the city that is closer to the provided latitude and longitude.\n\nYou may only use the selectors `get_name` `get_lat` `get_lon`, constructors `make_city`, and the `distance` function you just defined for this question.\n\n**Hint**: How can you use your `distance` function to find the distance between the given location and each of the given cities?\n",
+   "statementEn": "Next, implement `closer_city`, a function that takes a latitude, longitude, and two cities, and returns the *name* of the city that is closer to the provided latitude and longitude.\n\nYou may only use the selectors `get_name` `get_lat` `get_lon`, constructors `make_city`, and the `distance` function you just defined for this question.\n\n**Hint**: How can you use your `distance` function to find the distance between the given location and each of the given cities?\n",
+   "editable": [
+    "lab04.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "closer_city"
+   },
+   "focus": {
+    "file": "lab04.py",
+    "symbol": "closer_city"
+   }
+  },
+  {
+   "id": "check_city_abstraction",
+   "title": "Don't violate the abstraction barrier!",
+   "titleEn": "Don't violate the abstraction barrier!",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nNote: this question has no code-writing component (if you implemented the previous two questions correctly).\n\nWhen writing functions that use a data abstraction, we should use the constructor(s) and selector(s) whenever possible instead of assuming the data abstraction's implementation. Relying on a data abstraction's underlying implementation is known as *violating the abstraction barrier*.\n\nIt's possible that you passed the doctests for the previous questions even if you violated the abstraction barrier. To check whether or not you did so, run the following command:\n\nThe `check_city_abstraction` function exists only for the doctest, which swaps out the implementations of the original abstraction with something else, runs the tests from the previous two parts, then restores the original abstraction.\n\nThe nature of the abstraction barrier guarantees that changing the implementation of a data abstraction should not affect the functionality of any programs that use that data abstraction, as long as the constructors and selectors were used properly.\n\nIf you passed the Ok tests for the previous questions but not this one, the fix is simple! Just replace any code that violates the abstraction barrier with the appropriate constructor or selector.\n\nMake sure that your functions pass the tests with both the first and the second implementations of the data abstraction and that you understand why they should work for both before moving on.\n",
+   "statementEn": "Note: this question has no code-writing component (if you implemented the previous two questions correctly).\n\nWhen writing functions that use a data abstraction, we should use the constructor(s) and selector(s) whenever possible instead of assuming the data abstraction's implementation. Relying on a data abstraction's underlying implementation is known as *violating the abstraction barrier*.\n\nIt's possible that you passed the doctests for the previous questions even if you violated the abstraction barrier. To check whether or not you did so, run the following command:\n\nThe `check_city_abstraction` function exists only for the doctest, which swaps out the implementations of the original abstraction with something else, runs the tests from the previous two parts, then restores the original abstraction.\n\nThe nature of the abstraction barrier guarantees that changing the implementation of a data abstraction should not affect the functionality of any programs that use that data abstraction, as long as the constructors and selectors were used properly.\n\nIf you passed the Ok tests for the previous questions but not this one, the fix is simple! Just replace any code that violates the abstraction barrier with the appropriate constructor or selector.\n\nMake sure that your functions pass the tests with both the first and the second implementations of the data abstraction and that you understand why they should work for both before moving on.\n",
+   "editable": [
+    "lab04.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "check_city_abstraction"
+   },
+   "focus": {
+    "file": "lab04.py",
+    "symbol": "check_city_abstraction"
+   }
+  }
+ ]
+}

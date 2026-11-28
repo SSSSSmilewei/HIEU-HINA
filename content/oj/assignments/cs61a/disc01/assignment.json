@@ -1,0 +1,174 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "disc01",
+ "title": "讨论课 1：控制、环境图",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/disc/disc01/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "disc01",
+ "repoDir": "disc/disc01",
+ "intro": "讨论课的题目原本是小组在纸上一起做的。这里收了能自动判对错的两类题：写代码的题（用官方 doctest 判，做对之后题目下方显示官方解答），和画环境图的题（先在纸上画，再把每一帧填进来，判题服务实际运行程序后逐帧比对）。口头讨论的题请看讲义页的官方讲义。",
+ "problems": [
+  {
+   "id": "is_prime",
+   "title": "Is Prime?",
+   "titleEn": "Is Prime?",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function that returns `True` if a positive integer `n` is a prime number and `False` otherwise.\n\nA prime number n is a number that is not divisible by any numbers other than 1 and n itself. For example, 13 is prime, since it is only divisible by 1 and 13, but 14 is not, since it is divisible by 1, 2, 7, and 14.\n\nUse the `%` operator: `x % y` returns the remainder of `x` when divided by `y`.\n\n**Description Time**: Come up with a **one sentence description** of the process you implemented to solve `is_prime` that you think someone could understand without looking at your code. Try not to just read your code, but instead describe the process it carries out.\n",
+   "statementEn": "Write a function that returns `True` if a positive integer `n` is a prime number and `False` otherwise.\n\nA prime number n is a number that is not divisible by any numbers other than 1 and n itself. For example, 13 is prime, since it is only divisible by 1 and 13, but 14 is not, since it is divisible by 1, 2, 7, and 14.\n\nUse the `%` operator: `x % y` returns the remainder of `x` when divided by `y`.\n\n**Description Time**: Come up with a **one sentence description** of the process you implemented to solve `is_prime` that you think someone could understand without looking at your code. Try not to just read your code, but instead describe the process it carries out.\n",
+   "editable": [
+    "is_prime.py"
+   ],
+   "focus": {
+    "file": "is_prime.py",
+    "symbol": "is_prime"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "is_prime"
+   },
+   "hints": [
+    "Here's a `while` statement that goes through all numbers above 1 and below `n` :\n\n```\ni = 2\nwhile i < n:\n    ...\n    i = i + 1\n```\n\nYou can use `n % i == 0` to check whether `i` is a factor of `n`. If it is, `return False`."
+   ],
+   "explain": "官方解答：\n\n```python\ndef is_prime(n):\n    \"\"\"\n    >>> is_prime(10)\n    False\n    >>> is_prime(7)\n    True\n    >>> is_prime(1) # one is not a prime number!!\n    False\n    \"\"\"\n    if n == 1:\n        return False\n    k = 2\n    while k < n:\n        if n % k == 0:\n            return False\n        k += 1\n    return True\n```\n"
+  },
+  {
+   "id": "fizzbuzz",
+   "title": "Fizzbuzz",
+   "titleEn": "Fizzbuzz",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the classic [*Fizz Buzz* sequence](https://en.wikipedia.org/wiki/Fizz_buzz). The `fizzbuzz` function takes a positive integer `n` and prints out a *single line* for each integer from 1 to `n`. For each `i`:\n\n- If `i` is divisible by both 3 and 5, print `fizzbuzz`.\n- If `i` is divisible by 3 (but not 5), print `fizz`.\n- If `i` is divisible by 5 (but not 3), print `buzz`.\n- Otherwise, print the number `i`.\n\nTry to make your implementation of `fizzbuzz` concise.\n",
+   "statementEn": "Implement the classic [*Fizz Buzz* sequence](https://en.wikipedia.org/wiki/Fizz_buzz). The `fizzbuzz` function takes a positive integer `n` and prints out a *single line* for each integer from 1 to `n`. For each `i`:\n\n- If `i` is divisible by both 3 and 5, print `fizzbuzz`.\n- If `i` is divisible by 3 (but not 5), print `fizz`.\n- If `i` is divisible by 5 (but not 3), print `buzz`.\n- Otherwise, print the number `i`.\n\nTry to make your implementation of `fizzbuzz` concise.\n",
+   "editable": [
+    "fizzbuzz.py"
+   ],
+   "focus": {
+    "file": "fizzbuzz.py",
+    "symbol": "fizzbuzz"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "fizzbuzz"
+   },
+   "hints": [
+    "Be careful about the order of your `if` and `elif` clauses: try first checking if the current number is divisible by both 3 and 5, then check for just divisibility by 3 and just divisibility by 5."
+   ],
+   "explain": "官方解答：\n\n```python\ndef fizzbuzz(n):\n    \"\"\"\n    >>> result = fizzbuzz(16)\n    1\n    2\n    fizz\n    4\n    buzz\n    fizz\n    7\n    8\n    fizz\n    buzz\n    11\n    fizz\n    13\n    14\n    fizzbuzz\n    16\n    >>> print(result)\n    None\n    \"\"\"\n    i = 1\n    while i <= n:\n        if i % 3 == 0 and i % 5 == 0:\n            print('fizzbuzz')\n        elif i % 3 == 0:\n            print('fizz')\n        elif i % 5 == 0:\n            print('buzz')\n        else:\n            print(i)\n        i += 1\n```\n"
+  },
+  {
+   "id": "ordered_digits",
+   "title": "Ordered Digits",
+   "titleEn": "Ordered Digits",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement the function `ordered_digits`, which takes as input a positive integer and returns `True` if its digits, read left to right, are in non-decreasing order, and `False` otherwise. For example, the digits of 5, 11, 127, 1357 are ordered, but not those of 21 or 1375.\n\nIf you want to discuss this problem with a TA, just ask.\n",
+   "statementEn": "Implement the function `ordered_digits`, which takes as input a positive integer and returns `True` if its digits, read left to right, are in non-decreasing order, and `False` otherwise. For example, the digits of 5, 11, 127, 1357 are ordered, but not those of 21 or 1375.\n\nIf you want to discuss this problem with a TA, just ask.\n",
+   "editable": [
+    "ordered_digits.py"
+   ],
+   "focus": {
+    "file": "ordered_digits.py",
+    "symbol": "ordered_digits"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "ordered_digits"
+   },
+   "explain": "官方解答：\n\n```python\ndef ordered_digits(x):\n    \"\"\"Return True if the (base 10) digits of X>0 are in non-decreasing\n    order, and False otherwise.\n\n    >>> ordered_digits(5)\n    True\n    >>> ordered_digits(11)\n    True\n    >>> ordered_digits(127)\n    True\n    >>> ordered_digits(1357)\n    True\n    >>> ordered_digits(21)\n    False\n    >>> result = ordered_digits(1375) # Return, don't print\n    >>> result\n    False\n    \"\"\"\n    last = x % 10\n    x = x // 10\n    while x > 0:\n        if last < x % 10:\n            return False\n        last = x % 10\n        x = x // 10\n    return True\n```\n"
+  },
+  {
+   "id": "unique_digits",
+   "title": "Unique Digits",
+   "titleEn": "Unique Digits",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function that returns the number of unique digits in a positive integer.\n\n**Hints:** You can use `//` and `%` to separate a positive integer into its one's digit and the rest of its digits.\n\nYou may find it helpful to first define a function `has_digit(n, k)`, which determines whether a number `n` has digit `k`.\n\n              Environment Diagrams\n",
+   "statementEn": "Write a function that returns the number of unique digits in a positive integer.\n\n**Hints:** You can use `//` and `%` to separate a positive integer into its one's digit and the rest of its digits.\n\nYou may find it helpful to first define a function `has_digit(n, k)`, which determines whether a number `n` has digit `k`.\n\n              Environment Diagrams\n",
+   "editable": [
+    "unique_digits.py"
+   ],
+   "focus": {
+    "file": "unique_digits.py",
+    "symbol": "unique_digits"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "unique_digits"
+   },
+   "hints": [
+    "One approach is to loop through every digit from 0 to 9 and check whether `n` has the digit. Count up the ones it has."
+   ],
+   "explain": "官方解答：\n\n```python\ndef unique_digits(n):\n    \"\"\"Return the number of unique digits in positive integer n.\n\n    >>> unique_digits(8675309) # All are unique\n    7\n    >>> unique_digits(13173131) # 1, 3, and 7\n    3\n    >>> unique_digits(101) # 0 and 1\n    2\n    \"\"\"\n    unique = 0\n    while n > 0:\n        last = n % 10\n        n = n // 10\n        if not has_digit(n, last):\n            unique += 1\n    return unique\n\n# Alternate solution\ndef unique_digits_alt(n):\n    unique = 0\n    i = 0\n    while i < 10:\n        if has_digit(n, i):\n            unique += 1\n        i += 1\n    return unique\n\n\n\n\n\ndef has_digit(n, k):\n    \"\"\"Returns whether k is a digit in n.\n\n    >>> has_digit(10, 1)\n    True\n    >>> has_digit(12, 7)\n    False\n    \"\"\"\n    assert k >= 0 and k < 10\n    while n > 0:\n        last = n % 10\n        n = n // 10\n        if last == k:\n            return True\n    return False\n```\n"
+  },
+  {
+   "id": "double-trouble",
+   "title": "环境图：Double Trouble",
+   "titleEn": "Double Trouble",
+   "kind": "envdiagram",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nDraw the environment diagram on paper or a whiteboard (without having the computer draw it for you)! Then, check your work by stepping through the diagram.\n",
+   "statementEn": "Draw the environment diagram on paper or a whiteboard (without having the computer draw it for you)! Then, check your work by stepping through the diagram.\n",
+   "editable": [],
+   "tests": {
+    "kind": "envdiagram",
+    "code": "def double(x):\n    return x * 2\n\ndef triple(x):\n    return x * 3\n\nhat = double\ndouble = triple\n"
+   }
+  },
+  {
+   "id": "dream-work",
+   "title": "环境图：Dream Work",
+   "titleEn": "Dream Work",
+   "kind": "envdiagram",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nDraw an environment diagram for the code below. Then, step through the diagram with PythonTutor to check your work.\n\n      Optional: Exam Practice\n\nIf you all finish early, it's a great idea to get ready for Quest by trying out this slight variant of a Spring 2023 Midterm 1 question.\n",
+   "statementEn": "Draw an environment diagram for the code below. Then, step through the diagram with PythonTutor to check your work.\n\n      Optional: Exam Practice\n\nIf you all finish early, it's a great idea to get ready for Quest by trying out this slight variant of a Spring 2023 Midterm 1 question.\n",
+   "editable": [],
+   "tests": {
+    "kind": "envdiagram",
+    "code": "def team(work):\n\treturn t(work) - 1\ndef dream(work, s):\n\tif work(s-2):\n\t\tt = not s\n\treturn not t\nwork, t = 3, abs\nteam = dream(team, work + 1) and t"
+   }
+  },
+  {
+   "id": "repeating",
+   "title": "Repeating",
+   "titleEn": "Repeating",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\n**Definition**: A positive integer `n` is a *repeating sequence* of positive integer `m` if `n` is written by repeating the digits of `m` one or more times. For example, 616161 is a repeating sequence of 61, but 61616 is not.\n\nImplement `repeating` which takes positive integers `t` and `n`. It returns whether `n` is a repeating sequence of some `t`-digit integer.\n",
+   "statementEn": "**Definition**: A positive integer `n` is a *repeating sequence* of positive integer `m` if `n` is written by repeating the digits of `m` one or more times. For example, 616161 is a repeating sequence of 61, but 61616 is not.\n\nImplement `repeating` which takes positive integers `t` and `n`. It returns whether `n` is a repeating sequence of some `t`-digit integer.\n",
+   "editable": [
+    "repeating.py"
+   ],
+   "focus": {
+    "file": "repeating.py",
+    "symbol": "repeating"
+   },
+   "tests": {
+    "kind": "ok",
+    "question": "repeating"
+   },
+   "hints": [
+    "The iterative process needed to implement this function is to check that the last `t` digits of the `rest` match the last `t` digits of `n`, then remove the last `t` digits of `rest`."
+   ],
+   "explain": "官方解答：\n\n```python\ndef repeating(t, n):\n    \"\"\"Return whether t digits repeat to form positive integer n.\n\n    >>> repeating(1, 6161)\n    False\n    >>> repeating(2, 6161)  # repeats 61 (2 digits)\n    True\n    >>> repeating(3, 6161)\n    False\n    >>> repeating(4, 6161)  # repeats 6161 (4 digits)\n    True\n    >>> repeating(5, 6161)  # there are only 4 digits\n    False\n    \"\"\"\n    if pow(10, t-1) > n:  # make sure n has at least t digits\n        return False\n    end = n % pow(10, t)\n    rest = n\n    while rest:\n        if rest % pow(10, t) != end:\n           return False\n        rest = rest // pow(10, t)\n    return True\n```\n"
+  }
+ ]
+}

@@ -1,0 +1,103 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "hw01",
+ "title": "作业 1：函数、控制",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/hw/hw01/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "hw01",
+ "repoDir": "hw/hw01",
+ "intro": "",
+ "problems": [
+  {
+   "id": "a_plus_abs_b",
+   "title": "A Plus Abs B",
+   "titleEn": "A Plus Abs B",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nPython's `operator` module contains two-argument functions such as `add` and `sub` for Python's built-in arithmetic operators. For example, `add(2, 3)` evalutes to 5, just like the expression `2 + 3`.\n\nFill in the blanks in the following function to add `a` to the absolute value of `b`, without calling the `abs` function. You may **not** modify any of the provided code other than the two blanks.\n\n```\ndef a_plus_abs_b(a, b):\n    \"\"\"Return a+abs(b), but without calling abs.\n\n    >>> a_plus_abs_b(2, 3)\n    5\n    >>> a_plus_abs_b(2, -3)\n    5\n    >>> a_plus_abs_b(-1, 4)\n    3\n    >>> a_plus_abs_b(-1, -4)\n    3\n    \"\"\"\n    if b < 0:\n        f = _____\n    else:\n        f = _____\n    return f(a, b)\n```\n",
+   "statementEn": "Python's `operator` module contains two-argument functions such as `add` and `sub` for Python's built-in arithmetic operators. For example, `add(2, 3)` evalutes to 5, just like the expression `2 + 3`.\n\nFill in the blanks in the following function to add `a` to the absolute value of `b`, without calling the `abs` function. You may **not** modify any of the provided code other than the two blanks.\n\n```\ndef a_plus_abs_b(a, b):\n    \"\"\"Return a+abs(b), but without calling abs.\n\n    >>> a_plus_abs_b(2, 3)\n    5\n    >>> a_plus_abs_b(2, -3)\n    5\n    >>> a_plus_abs_b(-1, 4)\n    3\n    >>> a_plus_abs_b(-1, -4)\n    3\n    \"\"\"\n    if b < 0:\n        f = _____\n    else:\n        f = _____\n    return f(a, b)\n```\n",
+   "editable": [
+    "hw01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "a_plus_abs_b a_plus_abs_b_syntax_check"
+   },
+   "focus": {
+    "file": "hw01.py",
+    "symbol": "a_plus_abs_b"
+   }
+  },
+  {
+   "id": "two_of_three",
+   "title": "Two of Three",
+   "titleEn": "Two of Three",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function that takes three *positive* numbers as arguments and returns the sum of the squares of the two smallest numbers. **Use only a single line for the body of the function.**\n\n```\ndef two_of_three(i, j, k):\n    \"\"\"Return m*m + n*n, where m and n are the two smallest members of the\n    positive numbers i, j, and k.\n\n    >>> two_of_three(1, 2, 3)\n    5\n    >>> two_of_three(5, 3, 1)\n    10\n    >>> two_of_three(10, 2, 8)\n    68\n    >>> two_of_three(5, 5, 5)\n    50\n    \"\"\"\n    return _____\n\n```\n\n**Hint:** Consider using the `max` or `min` function:\n\n```\n>>> max(1, 2, 3)\n3\n>>> min(-1, -2, -3)\n-3\n```\n",
+   "statementEn": "Write a function that takes three *positive* numbers as arguments and returns the sum of the squares of the two smallest numbers. **Use only a single line for the body of the function.**\n\n```\ndef two_of_three(i, j, k):\n    \"\"\"Return m*m + n*n, where m and n are the two smallest members of the\n    positive numbers i, j, and k.\n\n    >>> two_of_three(1, 2, 3)\n    5\n    >>> two_of_three(5, 3, 1)\n    10\n    >>> two_of_three(10, 2, 8)\n    68\n    >>> two_of_three(5, 5, 5)\n    50\n    \"\"\"\n    return _____\n\n```\n\n**Hint:** Consider using the `max` or `min` function:\n\n```\n>>> max(1, 2, 3)\n3\n>>> min(-1, -2, -3)\n-3\n```\n",
+   "editable": [
+    "hw01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "two_of_three two_of_three_syntax_check"
+   },
+   "focus": {
+    "file": "hw01.py",
+    "symbol": "two_of_three"
+   }
+  },
+  {
+   "id": "largest_factor",
+   "title": "Largest Factor",
+   "titleEn": "Largest Factor",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nWrite a function that takes an integer `n` that is **greater than 1** and returns the largest integer that is smaller than `n` and evenly divides `n`.\n\n```\ndef largest_factor(n):\n    \"\"\"Return the largest factor of n that is smaller than n.\n\n    >>> largest_factor(15) # factors are 1, 3, 5\n    5\n    >>> largest_factor(80) # factors are 1, 2, 4, 5, 8, 10, 16, 20, 40\n    40\n    >>> largest_factor(13) # factors are 1, 13\n    1\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n\n**Hint:** To check if `b` evenly divides `a`, use the expression `a % b == 0`, which can be read as, \"the remainder when dividing `a` by `b` is 0.\"\n",
+   "statementEn": "Write a function that takes an integer `n` that is **greater than 1** and returns the largest integer that is smaller than `n` and evenly divides `n`.\n\n```\ndef largest_factor(n):\n    \"\"\"Return the largest factor of n that is smaller than n.\n\n    >>> largest_factor(15) # factors are 1, 3, 5\n    5\n    >>> largest_factor(80) # factors are 1, 2, 4, 5, 8, 10, 16, 20, 40\n    40\n    >>> largest_factor(13) # factors are 1, 13\n    1\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n\n**Hint:** To check if `b` evenly divides `a`, use the expression `a % b == 0`, which can be read as, \"the remainder when dividing `a` by `b` is 0.\"\n",
+   "editable": [
+    "hw01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "largest_factor"
+   },
+   "focus": {
+    "file": "hw01.py",
+    "symbol": "largest_factor"
+   }
+  },
+  {
+   "id": "hailstone",
+   "title": "Hailstone",
+   "titleEn": "Hailstone",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nDouglas Hofstadter's Pulitzer-prize-winning book, *Gödel, Escher, Bach*, poses the following mathematical puzzle.\n\n1. Pick a positive integer `n` as the start.\n2. If `n` is even, divide it by 2.\n3. If `n` is odd, multiply it by 3 and add 1.\n4. Continue this process until `n` is 1.\n\nThe number `n` will travel up and down but eventually end at 1 (at least for all numbers that have ever been tried—nobody has ever proved that the sequence will terminate). Analogously, a hailstone travels up and down in the atmosphere before eventually landing on earth.\n\nThis sequence of values of `n` is often called a Hailstone sequence. Write a function that takes a single argument with formal parameter name `n`, prints out the hailstone sequence starting at `n`, and returns the number of steps in the sequence:\n\n```\ndef hailstone(n):\n    \"\"\"Print the hailstone sequence starting at n and return its\n    length.\n\n    >>> a = hailstone(10)\n    10\n    5\n    16\n    8\n    4\n    2\n    1\n    >>> a\n    7\n    >>> b = hailstone(1)\n    1\n    >>> b\n    1\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n\nHailstone sequences can get quite long! Try 27. What's the longest you can find?\n\nNote that if `n == 1` initially, then the sequence is one step long.\n **Hint:** If you see 4.0 but want just 4, try using floor division `//` instead of regular division `/`.\n\n**Curious about hailstone sequences? Take a look at this article:**\n\n- In 2019, there was a major [development](https://www.quantamagazine.org/mathematician-terence-tao-and-the-collatz-conjecture-20191211/) in understanding how the hailstone conjecture works for most numbers!\n",
+   "statementEn": "Douglas Hofstadter's Pulitzer-prize-winning book, *Gödel, Escher, Bach*, poses the following mathematical puzzle.\n\n1. Pick a positive integer `n` as the start.\n2. If `n` is even, divide it by 2.\n3. If `n` is odd, multiply it by 3 and add 1.\n4. Continue this process until `n` is 1.\n\nThe number `n` will travel up and down but eventually end at 1 (at least for all numbers that have ever been tried—nobody has ever proved that the sequence will terminate). Analogously, a hailstone travels up and down in the atmosphere before eventually landing on earth.\n\nThis sequence of values of `n` is often called a Hailstone sequence. Write a function that takes a single argument with formal parameter name `n`, prints out the hailstone sequence starting at `n`, and returns the number of steps in the sequence:\n\n```\ndef hailstone(n):\n    \"\"\"Print the hailstone sequence starting at n and return its\n    length.\n\n    >>> a = hailstone(10)\n    10\n    5\n    16\n    8\n    4\n    2\n    1\n    >>> a\n    7\n    >>> b = hailstone(1)\n    1\n    >>> b\n    1\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n\nHailstone sequences can get quite long! Try 27. What's the longest you can find?\n\nNote that if `n == 1` initially, then the sequence is one step long.\n **Hint:** If you see 4.0 but want just 4, try using floor division `//` instead of regular division `/`.\n\n**Curious about hailstone sequences? Take a look at this article:**\n\n- In 2019, there was a major [development](https://www.quantamagazine.org/mathematician-terence-tao-and-the-collatz-conjecture-20191211/) in understanding how the hailstone conjecture works for most numbers!\n",
+   "editable": [
+    "hw01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "hailstone"
+   },
+   "focus": {
+    "file": "hw01.py",
+    "symbol": "hailstone"
+   }
+  }
+ ]
+}

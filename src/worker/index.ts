@@ -1,10 +1,12 @@
 import { api } from "./api/index";
 import { ensureSchema, getSetting } from "./db";
+import { drainQueue } from "./forgejo";
 import type { CurrentUser, Env } from "./env";
 import { syncEveryone } from "./heatmap/store";
 import { dispatch, json, parseCookies } from "./http";
 import { flush } from "./notify";
 import { COOKIE, bearerToken, verifySession } from "./session";
+import { isPersonalToken, tokenAllowed, tokenOwner } from "./api/tokens";
 
 /**
  * 没在 Cloudflare 设置里配置 SESSION_SECRET 时，自动生成一个存在数据库里（只生成一次）。
@@ -41,17 +43,22 @@ async function handleApi(req: Request, env: Env): Promise<Response> {
     });
   }
   // 网页用 Cookie；手机 App 没有 Cookie，改用 Authorization: Bearer 头，令牌格式相同
-  const token = parseCookies(req.headers.get("cookie"))[COOKIE] ?? bearerToken(req);
+  const cookieToken = parseCookies(req.headers.get("cookie"))[COOKIE];
+  const bearer = bearerToken(req);
+  // VSCode 插件用个人令牌（hnp_ 开头，故事 2.3）：只能用 tokenAllowed 里的接口，其余接口当作没登录
+  const personal = !cookieToken && isPersonalToken(bearer);
+  const token = cookieToken ?? (personal ? null : bearer);
   let session = token && env.SESSION_SECRET ? await verifySession(env.SESSION_SECRET, token) : null;
   // 以前的“会长”会话（没有 uid）已经取消，当作没登录
   if (session && (session.role !== "member" || typeof session.uid !== "string")) session = null;
   let user: CurrentUser | null = null;
+  const owner = personal && tokenAllowed(req.method, url.pathname) ? await tokenOwner(env, bearer) : null;
   // 每次请求都读一下账号：停用、重置密码后旧会话（网页和 App）立即失效；改成管理员也立即生效
-  if (session) {
+  if (session || owner) {
     const row = await env.DB.prepare(
       "SELECT id, student_no, name, display_name, class_name, role, session_version, kind, username, email, org FROM users WHERE id = ? AND status = 'active'",
     )
-      .bind(session.uid)
+      .bind(session?.uid ?? owner!.uid)
       .first<{
         id: string;
         student_no: string;
@@ -65,7 +72,8 @@ async function handleApi(req: Request, env: Env): Promise<Response> {
         email: string | null;
         org: string | null;
       }>();
-    if (!row || row.session_version !== (session.sv ?? 0)) session = null;
+    // 改密码、重置密码以后 session_version 加一：旧会话和旧令牌一起失效
+    if (!row || row.session_version !== (session ? (session.sv ?? 0) : owner!.sv)) session = null;
     else
       user = {
         id: row.id,
@@ -115,6 +123,12 @@ export default {
       ensureSchema(env.DB)
         .then(() => flush(env, { force: true }))
         .catch((err) => console.error(JSON.stringify({ msg: "scheduled flush failed", error: String(err) }))),
+    );
+    // 每 5 分钟：重试没写进学员仓库的提交
+    ctx.waitUntil(
+      ensureSchema(env.DB)
+        .then(() => drainQueue(env))
+        .catch((err) => console.error(JSON.stringify({ msg: "forgejo queue failed", error: String(err) }))),
     );
   },
 };

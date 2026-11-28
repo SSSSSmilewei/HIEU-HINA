@@ -1,0 +1,87 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "lab11",
+ "title": "实验 11：SQL",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/lab/lab11/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "lab11",
+ "repoDir": "lab/lab11",
+ "intro": "",
+ "problems": [
+  {
+   "id": "newest",
+   "title": "Newest Movies",
+   "titleEn": "Newest Movies",
+   "kind": "function",
+   "languages": [
+    "sql"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nCreate a table `newest` that contains the 10 newest movies in the dataset, and that has two columns:\n\n- `title`: The name of a movie\n- `year`: The year the movie was made\n\nIf you'd like, see if you can guess which movies will be in the results.\n",
+   "statementEn": "Create a table `newest` that contains the 10 newest movies in the dataset, and that has two columns:\n\n- `title`: The name of a movie\n- `year`: The year the movie was made\n\nIf you'd like, see if you can guess which movies will be in the results.\n",
+   "editable": [
+    "lab11.sql"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "newest"
+   }
+  },
+  {
+   "id": "dog_movies",
+   "title": "Movies with Dogs",
+   "titleEn": "Movies with Dogs",
+   "kind": "function",
+   "languages": [
+    "sql"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nCreate a `dog_movies` table that includes one row for each movie character that includes the word \"dog\", and that has two columns:\n\n- `title` (text): The name of a movie\n- `character` (text): The name of the dog character\n\nA single movie may appear multiple times if it has multiple dog characters.\n",
+   "statementEn": "Create a `dog_movies` table that includes one row for each movie character that includes the word \"dog\", and that has two columns:\n\n- `title` (text): The name of a movie\n- `character` (text): The name of the dog character\n\nA single movie may appear multiple times if it has multiple dog characters.\n",
+   "editable": [
+    "lab11.sql"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "dog_movies"
+   }
+  },
+  {
+   "id": "leads",
+   "title": "Leads of Leads",
+   "titleEn": "Leads of Leads",
+   "kind": "function",
+   "languages": [
+    "sql"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nCreate a `leads` table that has two columns:\n\n- `name` (text): The name of an actor\n- `lead_roles` (integer): The number of movies that the actor has been the lead in\n\nYou can find lead roles by looking in the `principals` table for rows with `ordering` set to 1. Only select actors who have been the lead in **more than 10** movies.\n",
+   "statementEn": "Create a `leads` table that has two columns:\n\n- `name` (text): The name of an actor\n- `lead_roles` (integer): The number of movies that the actor has been the lead in\n\nYou can find lead roles by looking in the `principals` table for rows with `ordering` set to 1. Only select actors who have been the lead in **more than 10** movies.\n",
+   "editable": [
+    "lab11.sql"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "leads"
+   }
+  },
+  {
+   "id": "long_movies",
+   "title": "Long Movies",
+   "titleEn": "Long Movies",
+   "kind": "function",
+   "languages": [
+    "sql"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nCreate a `long_movies` table that contains the number of movies in each decade that are over 3 hours long. `long_movies` has two columns:\n\n- `decade` (strings): The decade, e.g., `1920s`\n- `count` (numbers): The number of movies in that decade that are over 3 hours (180 minutes) long\n\nFor the IMDB 1000 dataset, the result will be:\n\n```\n+--------+-------+\n| decade | count |\n+--------+-------+\n| 1930s  | 1     |\n| 1950s  | 2     |\n| 1960s  | 2     |\n| 1970s  | 3     |\n| 1980s  | 2     |\n| 1990s  | 7     |\n| 2000s  | 4     |\n| 2010s  | 3     |\n| 2020s  | 4     |\n+--------+-------+\n```\n",
+   "statementEn": "Create a `long_movies` table that contains the number of movies in each decade that are over 3 hours long. `long_movies` has two columns:\n\n- `decade` (strings): The decade, e.g., `1920s`\n- `count` (numbers): The number of movies in that decade that are over 3 hours (180 minutes) long\n\nFor the IMDB 1000 dataset, the result will be:\n\n```\n+--------+-------+\n| decade | count |\n+--------+-------+\n| 1930s  | 1     |\n| 1950s  | 2     |\n| 1960s  | 2     |\n| 1970s  | 3     |\n| 1980s  | 2     |\n| 1990s  | 7     |\n| 2000s  | 4     |\n| 2010s  | 3     |\n| 2020s  | 4     |\n+--------+-------+\n```\n",
+   "editable": [
+    "lab11.sql"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "long_movies"
+   }
+  }
+ ]
+}

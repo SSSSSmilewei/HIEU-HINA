@@ -1,0 +1,190 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "fa20-lab06",
+ "title": "实验 6：非局部, 可变性",
+ "semester": "fa20",
+ "language": "zh",
+ "source": "https://inst.eecs.berkeley.edu/~cs61a/fa20/lab/lab06/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2020 秋季）；中文翻译来自 github.com/chillyhigh/CS61A-CN（MIT 许可）。仅供协会内部学习交流",
+ "item": "lab05",
+ "repoDir": "fa20/lab/lab06",
+ "intro": "",
+ "problems": [
+  {
+   "id": "make_adder_inc",
+   "title": "递增加法器",
+   "titleEn": "Make Adder Increasing",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个函数，该函数接收一个整数 `a` 并返回一个单参数函数。 这个函数应该接收一个值 `b`，第一次调用时返回 `a + b`，类似于 `make_adder`。 但是第二次调用时，它应该返回 `a + b + 1`， 第三次调用时返回 `a + b + 2`，以此类推。\n",
+   "statementEn": "Write a function which takes in an integer `a` and returns a one-argument function. This function should take in some value `b` and return `a + b` the first time it is called, similar to `make_adder`. The second time it is called, however, it should return `a + b + 1`, then `a + b + 2` the third time, and so on.\n",
+   "editable": [
+    "lab06.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "make_adder_inc"
+   },
+   "focus": {
+    "file": "lab06.py",
+    "symbol": "make_adder_inc"
+   }
+  },
+  {
+   "id": "make_fib",
+   "title": "下一个斐波那契数",
+   "titleEn": "Next Fibonacci",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个函数 `make_fib`，它返回一个函数，该函数每次被调用时都会返回下一个斐波那契数。 （斐波那契数列从 0 开始，然后是 1，之后的每个元素都是前两个元素之和。） 使用 `nonlocal` 语句！此外，不要使用 Python 列表来解决此问题。\n",
+   "statementEn": "Write a function `make_fib` that returns a function that returns the next Fibonacci number each time it is called. (The Fibonacci sequence begins with 0 and then 1, after which each element is the sum of the preceding two.) Use a `nonlocal` statement! In addition, do not use python lists to solve this problem.\n",
+   "editable": [
+    "lab06.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "make_fib"
+   },
+   "focus": {
+    "file": "lab06.py",
+    "symbol": "make_fib"
+   }
+  },
+  {
+   "id": "list-mutation",
+   "title": "列表变更",
+   "titleEn": "List-Mutation",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "通过以下问题来测试你对列表变更 (List Mutation) 的理解。Python 会输出什么？如果卡住了，可以在 Python 解释器中输入代码进行测试！\n\n注意：如果 Python 不会输出任何内容，请输入 `Nothing`。\n\n```\n>>> lst = [5, 6, 7, 8]\n>>> lst.append(6)\n\n>>> lst\n\n>>> lst.insert(0, 9)\n>>> lst\n\n>>> x = lst.pop(2)\n>>> lst\n\n>>> lst.remove(x)\n>>> lst\n\n>>> a, b = lst, lst[:]\n>>> a is lst\n\n>>> b == lst\n\n>>> b is lst\n\n```\n",
+   "statementEn": "Test your understaninding of list mutation with the following questions. What would Python display? Type it in the intepreter if you're stuck!\n\nNote: if nothing would be output by Python, type `Nothing`.\n\n```\n>>> lst = [5, 6, 7, 8]\n>>> lst.append(6)\n\n>>> lst\n\n>>> lst.insert(0, 9)\n>>> lst\n\n>>> x = lst.pop(2)\n>>> lst\n\n>>> lst.remove(x)\n>>> lst\n\n>>> a, b = lst, lst[:]\n>>> a is lst\n\n>>> b == lst\n\n>>> b is lst\n\n```\n",
+   "editable": [
+    "lab06.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "list-mutation"
+   },
+   "unlock": [
+    {
+     "type": "session",
+     "steps": [
+      {
+       "code": "lst = [5, 6, 7, 8]",
+       "want": []
+      },
+      {
+       "code": "lst.append(6)",
+       "want": [
+        {
+         "hash": "75e7eb45dffa5d30654f02570401dfe8"
+        }
+       ]
+      },
+      {
+       "code": "lst",
+       "want": [
+        {
+         "hash": "e00080febf70d22e17acdf9200f4f2b1"
+        }
+       ]
+      },
+      {
+       "code": "lst.insert(0, 9)",
+       "want": []
+      },
+      {
+       "code": "lst",
+       "want": [
+        {
+         "hash": "0ea9eed7ff12aab2876d132e05539bcd"
+        }
+       ]
+      },
+      {
+       "code": "x = lst.pop(2)",
+       "want": []
+      },
+      {
+       "code": "lst",
+       "want": [
+        {
+         "hash": "f133aae65b3ae4795aed5b60b8fe7a72"
+        }
+       ]
+      },
+      {
+       "code": "lst.remove(x)",
+       "want": []
+      },
+      {
+       "code": "lst",
+       "want": [
+        {
+         "hash": "9a5a83015493c89b42df02f7bc04f9f8"
+        }
+       ]
+      },
+      {
+       "code": "a, b = lst, lst[:]",
+       "want": []
+      },
+      {
+       "code": "a is lst",
+       "want": [
+        {
+         "hash": "ede6df328b7c3fa6304f7eb1608d9dc4"
+        }
+       ]
+      },
+      {
+       "code": "b == lst",
+       "want": [
+        {
+         "hash": "ede6df328b7c3fa6304f7eb1608d9dc4"
+        }
+       ]
+      },
+      {
+       "code": "b is lst",
+       "want": [
+        {
+         "hash": "a559f517e8f86de30b928d7e29ec2331"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "insert_items",
+   "title": "插入元素",
+   "titleEn": "Insert Items",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个函数，该函数接受一个列表 `lst`，一个参数 `entry`，以及另一个参数 `elem`。 该函数会遍历 `lst` 中的每个元素，检查它是否与 `entry` 相等。 如果找到与 `entry` 相等的元素，则在其后面插入 `elem`。 最终，返回修改后的列表。请参考 doctests 以了解该函数的具体用法。 该函数必须使用**列表变更（List Mutation）** 来修改原始列表，不能创建或返回新的列表。\n\n**请注意：**如果传入的 `entry` 和 `elem` 具有相同的值， 可能会导致无限循环，因为每次插入 `elem` 后都会遇到新的 `entry`，从而不断插入。 如果发现代码运行时间超过几秒钟，很可能是函数进入了无限插入的循环。\n",
+   "statementEn": "Write a function which takes in a list `lst`, an argument `entry`, and another argument `elem`. This function will check through each item present in `lst` to see if it is equivalent with `entry`. Upon finding an equivalent entry, the function should modify the list by placing `elem` into the list right after the found entry. At the end of the function, the modified list should be returned. See the doctests for examples on how this function is utilized. Use list mutation to modify the original list, no new lists should be created or returned.\n\n**Be careful in situations where the values passed into `entry` and `elem` are equivalent, so as not to create an infinitely long list while iterating through it.** If you find that your code is taking more than a few seconds to run, it is most likely that the function is in a loop of inserting new values.\n",
+   "editable": [
+    "lab06.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "insert_items"
+   },
+   "focus": {
+    "file": "lab06.py",
+    "symbol": "insert_items"
+   }
+  }
+ ]
+}

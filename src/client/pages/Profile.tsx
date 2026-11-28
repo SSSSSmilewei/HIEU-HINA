@@ -59,7 +59,7 @@ export function ProfilePage({ me, onLogout }: { me: Me; onLogout: () => void }) 
           </h1>
           <span className="small sub">{(me.member?.kind === "external"
             ? ["校外账号", me.member.username, me.member.org, me.isAdmin ? "管理员" : null]
-            : [me.member?.className, `学号 ${me.member?.studentNo}`, me.isAdmin ? "管理员" : null]
+            : [me.member?.username ? `@${me.member.username}` : null, me.member?.className, `学号 ${me.member?.studentNo}`, me.isAdmin ? "管理员" : null]
           )
             .filter(Boolean)
             .join(" · ")}</span>
@@ -72,12 +72,27 @@ export function ProfilePage({ me, onLogout }: { me: Me; onLogout: () => void }) 
         )}
       </header>
 
+      {me.member && !me.member.username && (
+        <a href="#username-form" className="card row" style={{ gap: 12, padding: "14px 18px", borderColor: "var(--accent)", textDecoration: "none", color: "inherit" }}>
+          <Icon name="edit" size={18} />
+          <span className="grow small">还没设置用户名。校外人员和游客看到的是你的用户名，不是姓名和学号；用户名也用作你的仓库地址。点这里设置。</span>
+        </a>
+      )}
+
       {me.member?.kind !== "external" && !me.member?.className && (
         <a href="#class-form" className="card row" style={{ gap: 12, padding: "14px 18px", borderColor: "var(--accent)", textDecoration: "none", color: "inherit" }}>
           <Icon name="edit" size={18} />
           <span className="grow small">还没填班级。签到表要按班级交给学校，点这里补上。</span>
         </a>
       )}
+
+      <Link to="/repos" className="card row" style={{ gap: 12, padding: "14px 18px", textDecoration: "none", color: "inherit" }}>
+        <Icon name="code" size={18} />
+        <span className="stack grow" style={{ gap: 2 }}>
+          <span style={{ fontWeight: 500 }}>我的仓库</span>
+          <span className="small sub">作业和刷题的代码都保存在自己的 Git 仓库里，可以查看提交历史和每次的改动，也可以克隆到本地或镜像到 GitHub。</span>
+        </span>
+      </Link>
 
       <section className="card stack" aria-labelledby="hm-h" style={{ gap: 16, padding: 22, borderRadius: 26 }}>
         <div className="row wrap" style={{ justifyContent: "space-between" }}>
@@ -187,6 +202,7 @@ export function ProfilePage({ me, onLogout }: { me: Me; onLogout: () => void }) 
         </section>
 
         <section className="card stack" id="settings" aria-labelledby="set-h" style={{ gap: 16 }}>
+          <UsernameForm />
           {me.member?.kind !== "external" && <ClassForm />}
           <DisplayNameForm />
           <h2 id="set-h" className="h3" style={{ paddingTop: 14, borderTop: "1px solid var(--line)" }}>
@@ -208,6 +224,66 @@ export function ProfilePage({ me, onLogout }: { me: Me; onLogout: () => void }) 
       </div>
       {binding && data && <BindDialog data={data} onClose={() => setBinding(false)} />}
     </div>
+  );
+}
+
+const USERNAME_RE = /^[a-z][a-z0-9_-]{2,19}$/;
+
+/** 用户名：校外人员和游客看到的名字，也是仓库地址的一部分。校内老账号注册时没有，在这里补。 */
+function UsernameForm() {
+  const { me, setMe } = useMe();
+  const toast = useToast();
+  const saved = me.member?.username ?? "";
+  const [value, setValue] = useState(saved);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const v = value.trim().toLowerCase();
+
+  const save = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      const r = await api<{ username: string }>("/api/me/username", { method: "PUT", body: { username: v } });
+      if (me.member) setMe({ ...me, member: { ...me.member, username: r.username } });
+      setValue(r.username);
+      clearCache();
+      toast("用户名已保存");
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <form
+      id="username-form"
+      className="stack"
+      style={{ gap: 8, paddingBottom: 14, borderBottom: "1px solid var(--line)" }}
+      onSubmit={(e) => {
+        e.preventDefault();
+        void save();
+      }}
+    >
+      <h2 className="h3">用户名</h2>
+      <label className="field">
+        <span className="sr-only">用户名</span>
+        <input className="input mono" value={value} onChange={(e) => setValue(e.target.value)} maxLength={20} autoCapitalize="off" spellCheck={false} placeholder="例如 xiaoming" />
+        <span className={v && !USERNAME_RE.test(v) ? "error-text xsmall" : "hint xsmall"}>
+          3–20 位，小写字母开头，可用小写字母、数字、_ 和 -。校外人员和游客只能看到用户名；{me.member?.kind === "external" ? "用户名也用来登录，改了以后要用新的登录。" : "也可以用用户名代替学号登录。"}修改后仓库地址随之改变，本地克隆过的仓库要更新远程地址。
+        </span>
+      </label>
+      {error && (
+        <span className="error-text xsmall" role="alert">
+          {error}
+        </span>
+      )}
+      <div>
+        <button type="submit" className="btn btn-soft btn-sm" disabled={busy || !USERNAME_RE.test(v) || v === saved}>
+          {busy ? <Spinner /> : "保存"}
+        </button>
+      </div>
+    </form>
   );
 }
 

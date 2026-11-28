@@ -35,6 +35,15 @@ export function seesNames(c: Ctx): boolean {
   return !!c.user && (c.user.kind === "campus" || c.user.role === "admin");
 }
 
+/**
+ * 别人看到的名字（2026-11-28 起）：校内账号和管理员看真名（校外成员是昵称）；
+ * 校外账号和游客只看到用户名。还没设用户名的老账号对外显示“协会成员”。
+ */
+export function shownName(c: Ctx, u: { name: string; username: string | null; displayName?: string | null }): string {
+  if (seesNames(c)) return u.displayName || u.name;
+  return u.username ? `@${u.username}` : "协会成员";
+}
+
 export function isAdmin(c: Ctx): boolean {
   return c.user?.role === "admin";
 }

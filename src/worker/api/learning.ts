@@ -5,7 +5,7 @@ import { parsePackage } from "../../shared/package";
 import { recordActivity, recordActivityOnce } from "../activity";
 import { MAX_PACKAGE_BYTES, allCourses, deletePackage, getCourse, getPackageJson, isBuiltin, savePackage } from "../catalog";
 import { type Ctx, HttpError, type Router, json } from "../http";
-import { memberId, requireAdmin, seesNames, viewerId } from "./common";
+import { memberId, requireAdmin, seesNames, shownName, viewerId } from "./common";
 
 /**
  * 选课、条目进度、练手题记录，以及管理员发布课程包。
@@ -72,20 +72,21 @@ export function learningRoutes(api: Router) {
     );
   });
 
-  /** 课程详情。游客也能看；游客和校外账号看不到“一起在学的人”（那是成员的真名）。 */
+  /** 课程详情。游客也能看；游客和校外账号看到的“一起在学的人”是用户名，不是真名。 */
   api.get("/api/courses/:slug", async (c) => {
     const uid = viewerId(c);
     const course = await getCourse(c.env.DB, c.params.slug);
     if (!course) throw new HttpError(404, "没有这门课");
     const [{ enrolls, done }, peers, solved] = await Promise.all([
       myState(c.env.DB, uid),
-      uid && seesNames(c)
-        ? c.env.DB.prepare(
-            "SELECT u.name FROM enrollments e JOIN users u ON u.id = e.user_id WHERE e.course_slug = ? AND e.status = 'active' AND u.status = 'active' AND u.id != ? ORDER BY e.started_at LIMIT 12",
-          )
-            .bind(course.slug, uid)
-            .all<{ name: string }>()
-        : { results: [] as { name: string }[] },
+      // 一起在学的人：能看真名的看名字，其余人（校外、游客）只看到设了用户名的人的用户名
+      c.env.DB.prepare(
+        `SELECT u.name, u.username FROM enrollments e JOIN users u ON u.id = e.user_id
+         WHERE e.course_slug = ? AND e.status = 'active' AND u.status = 'active' AND u.id != COALESCE(?, '') ${seesNames(c) ? "" : "AND u.username IS NOT NULL"}
+         ORDER BY e.started_at LIMIT 12`,
+      )
+        .bind(course.slug, uid)
+        .all<{ name: string; username: string | null }>(),
       uid
         ? c.env.DB.prepare("SELECT item_id, question_id FROM practice_solved WHERE user_id = ? AND course_slug = ?")
             .bind(uid, course.slug)
@@ -101,7 +102,7 @@ export function learningRoutes(api: Router) {
       enrollment: e ? { status: e.status, startedAt: e.started_at } : null,
       done: Object.fromEntries(doneMap),
       progress: compat(progress(course, new Set(doneMap.keys()))),
-      peers: peers.results.map((p) => p.name),
+      peers: peers.results.map((p) => shownName(c, p)),
       solved: solvedBy,
     });
   });

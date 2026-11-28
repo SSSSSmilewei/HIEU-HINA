@@ -1,0 +1,433 @@
+{
+ "format": "hiana-exam@1",
+ "id": "cs61a-fa25-mt2",
+ "course": "cs61a",
+ "item": "exam-midterm",
+ "title": "期中测验 2（改编自 2025 秋季期中考试 2）",
+ "source": "UC Berkeley CS 61A 2025 秋季 期中考试 2（Midterm 2）",
+ "license": "题目 © UC Berkeley CS 61A（2025 秋季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文改编 海纳协会",
+ "minutes": 100,
+ "pass": 0.7,
+ "certificate": false,
+ "intro": "范围：迭代器与生成器、增长阶、树、链表、可变性、面向对象、递归与树形递归（对应讲义第 2 章、第 4 章前半）。\n\n- 限时 100 分钟，开始后计时，到时自动交卷；作答自动保存。\n- 可以看讲义和自己的笔记，**不能**用 AI。\n- 填空题写一个表达式或一行代码，判分时忽略多余空格；写法和标准答案等价但不一样时可能判错，交卷后可以对照讲解。\n- `Tree`、`Link` 类就是课上和作业里用的那两个。\n- 改编说明：原卷第 2 题（环境图）的代码是图片，站内暂不收；原卷 A+ 附加题（0 分）不收。\n\n交卷后能看到每题得分、标准答案和讲解，可以重考。",
+ "sections": [
+  {
+   "title": "第 1 大题：Python 会显示什么（5 分）",
+   "intro": "假设下面的代码已经运行：\n\n```python\ndef weird(s):\n    if s:\n        if len(s) > 1:\n            yield s[1]\n        for x in weird(s[1:]):\n            yield x\n        yield s[0]\n\nt = weird([5, [6, 7], 8])\n\ndef even(s):\n    def weirder(t, i):\n        if i < len(s):\n            t.append(s[i-1])\n            t.append(s[i])\n            weirder(t, i * 2)\n        return t\n    return weirder([], 1)\n```\n\n按顺序求值下面的表达式（前一个会影响后一个）。生成器写 `Generator`，函数写 `Function`，出错写 `Error`。",
+   "questions": [
+    {
+     "id": "q1a",
+     "type": "choice",
+     "points": 1,
+     "prompt": "`print(next(t))` 显示什么？",
+     "choices": [
+      "5",
+      "6",
+      "7",
+      "[6, 7]"
+     ],
+     "answer": 3,
+     "explain": "`s` 非空且长度大于 1，先 `yield s[1]`，也就是 `[6, 7]`。"
+    },
+    {
+     "id": "q1b",
+     "type": "text",
+     "points": 3,
+     "prompt": "接着求值 `print([x for x in t])` 显示什么？",
+     "accept": [
+      "[8, 8, [6, 7], 5]"
+     ],
+     "explain": "生成器从上次停下的地方继续：递归调用 `weird([[6, 7], 8])` 依次产生 `8`（它的 `s[1]`）、`8`（`weird([8])` 产生的 `s[0]`）、`[6, 7]`（它的 `s[0]`），最后外层产生 `s[0]` 即 `5`。"
+    },
+    {
+     "id": "q1c",
+     "type": "choice",
+     "points": 1,
+     "prompt": "`even(s)` 的运行时间相对于列表 `s` 的长度，增长阶是？（`len`、`append`、下标访问和算术运算都算常数时间）",
+     "choices": [
+      "指数（exponential）",
+      "平方（quadratic）",
+      "线性（linear）",
+      "对数（logarithmic）",
+      "常数（constant）"
+     ],
+     "answer": 3,
+     "explain": "`i` 每次乘 2，直到不小于 `len(s)`，所以只递归约 log₂ n 次。"
+    }
+   ]
+  },
+  {
+   "title": "第 2 大题：包含（5 分）",
+   "intro": "**定义**：如果从树 `whole` 中删掉一些结点（删掉一个结点时它的子树一起删掉，其余不变、顺序不变），能得到和 `part` 的 repr 字符串完全一样的树，就说 `whole` 包含 `part`。\n\n实现 `includes(part, whole)`：\n\n```python\ndef includes(part, whole):\n    \"\"\"Return whether the Tree part is included in the Tree whole.\n\n    >>> p1 = Tree(2, [Tree(20), Tree(22)])\n    >>> right = Tree(2, [Tree(19), Tree(20), Tree(21), Tree(22), Tree(23)])\n    >>> wrong = Tree(2, [Tree(19), Tree(22), Tree(20), Tree(23)])\n    >>> [includes(p1, right), includes(p1, wrong), includes(Tree(1, [right]), p1)]\n    [True, False, False]\n    \"\"\"\n    if whole.label != part.label:\n        return False\n    p, w = 0, 0\n    while ______(a):\n        if ______(b):\n            p += 1\n        w += 1\n    return ______(c)\n```",
+   "questions": [
+    {
+     "id": "q2a",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (a) 填什么？",
+     "choices": [
+      "p < len(part.branches)",
+      "w < len(whole.branches)",
+      "p < len(part.branches) or w < len(whole.branches)",
+      "p < len(part.branches) and w < len(whole.branches)"
+     ],
+     "answer": 3,
+     "explain": "两边的分支都还没走完时才能继续匹配。"
+    },
+    {
+     "id": "q2b",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (b) 填什么？",
+     "accept": [
+      "includes(part.branches[p], whole.branches[w])"
+     ],
+     "explain": "当前的 `whole` 分支包含当前的 `part` 分支时，`part` 往下走一个（`whole` 每轮都往下走）。"
+    },
+    {
+     "id": "q2c",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (c) 填什么？",
+     "accept": [
+      "p == len(part.branches)",
+      "len(part.branches) == p"
+     ],
+     "explain": "`part` 的每个分支都按顺序匹配上了，才算包含。"
+    }
+   ]
+  },
+  {
+   "title": "第 3 大题：排除（6 分）",
+   "intro": "两个函数都不能修改输入。",
+   "questions": [
+    {
+     "id": "q3a",
+     "type": "text",
+     "points": 2,
+     "prompt": "实现 `exclude(s, x)`：返回列表 `s` 中所有不等于 `x` 的元素组成的新列表。\n\n```python\ndef exclude(s, x):\n    \"\"\"\n    >>> a = [3, 4, 5, 3.0, 6, 5, 3]\n    >>> exclude(a, 3)\n    [4, 5, 6, 5]\n    >>> a\n    [3, 4, 5, 3.0, 6, 5, 3]\n    \"\"\"\n    return ______\n```\n\n写出 `return` 后面的表达式（用 `y` 作循环变量）。",
+     "accept": [
+      "[y for y in s if y != x]",
+      "[y for y in s if not y == x]",
+      "list(filter(lambda y: y != x, s))"
+     ],
+     "explain": "列表推导式会生成新列表，不改动 `s`。注意 `3.0 == 3` 为真，所以 `3.0` 也被排除。"
+    },
+    {
+     "id": "q3b",
+     "type": "text",
+     "points": 0.8,
+     "prompt": "实现 `exclude_link`（链表版）：\n\n```python\ndef exclude_link(s, x):\n    \"\"\"Return a linked list with all of the elements of linked list s except those equal to x.\n\n    >>> a = Link(3, Link(4, Link(5, Link(3.0, Link(6, Link(5, Link(3)))))))\n    >>> exclude_link(a, 3)\n    Link(4, Link(5, Link(6, Link(5))))\n    >>> a  # a 没有被改变\n    Link(3, Link(4, Link(5, Link(3.0, Link(6, Link(5, Link(3)))))))\n    \"\"\"\n    if ______(b):\n        return ______(c)\n    elif ______(d):\n        return ______(e)\n    else:\n        return ______(f)\n```\n\n空 (b)（if 的条件）填什么？",
+     "accept": [
+      "s is Link.empty",
+      "s == Link.empty"
+     ],
+     "explain": "空链表是基本情况。"
+    },
+    {
+     "id": "q3c",
+     "type": "text",
+     "points": 0.8,
+     "prompt": "空 (c)（第一个 return）填什么？",
+     "accept": [
+      "s",
+      "Link.empty"
+     ],
+     "explain": "空链表排除之后还是空链表。"
+    },
+    {
+     "id": "q3d",
+     "type": "text",
+     "points": 0.8,
+     "prompt": "空 (d)（elif 的条件）填什么？",
+     "accept": [
+      "s.first == x",
+      "x == s.first"
+     ],
+     "explain": "第一个元素要排除。"
+    },
+    {
+     "id": "q3e",
+     "type": "text",
+     "points": 0.8,
+     "prompt": "空 (e)（elif 里的 return）填什么？",
+     "accept": [
+      "exclude_link(s.rest, x)"
+     ],
+     "explain": "跳过第一个元素，处理剩下的。"
+    },
+    {
+     "id": "q3f",
+     "type": "text",
+     "points": 0.8,
+     "prompt": "空 (f)（else 里的 return）填什么？",
+     "accept": [
+      "Link(s.first, exclude_link(s.rest, x))"
+     ],
+     "explain": "保留第一个元素，后面接上处理过的剩余部分；新建结点，不改原链表。"
+    }
+   ]
+  },
+  {
+   "title": "第 4 大题：披萨店（10 分）",
+   "intro": "`Parlor`（披萨店）有名字 `name`、单价 `price`、能做的披萨数 `pizzas`、备用店 `alt` 和总利润 `profit`。`order(quantity, source)` 处理一笔订单：自己最多做 `pizzas` 个，多出来的交给 `alt`；利润加上 `price × quantity`，再减去 `alt` 的单价 × 交给 `alt` 的数量。每完成一笔订单、或者从别的店转来订单时打印一句话。`MegaParlor` 能做任意数量，没有 `alt`。\n\n```python\nclass Parlor:\n    \"\"\"\n    >>> c = Parlor('Sliver', 3, 10, Parlor('Cheeseboard', 4, 10, MegaParlor(5)))\n    >>> c.order(6)    # 3*6 全归 Sliver；它还剩 4 个披萨\n    Sliver now has $18 profit\n    >>> c.order(6)    # Sliver 又收 3*6，付给 Cheeseboard 4*2\n    Sliver forwarded an order of 2 to Cheeseboard\n    Cheeseboard now has $8 profit\n    Sliver now has $28 profit\n    >>> c.order(10)   # Sliver 收 3*10 但付给 Cheeseboard 4*10，Cheeseboard 再付给 MEGA 5*2\n    Sliver forwarded an order of 10 to Cheeseboard\n    Cheeseboard forwarded an order of 2 to MEGA\n    MEGA now has $10 profit\n    Cheeseboard now has $38 profit\n    Sliver now has $18 profit\n    \"\"\"\n    def __init__(self, name, price, pizzas, alt):\n        self.name, self.price, self.pizzas, self.alt = name, price, pizzas, alt\n        self.profit = 0\n\n    def cook(self, q):\n        overload = ______(a)          # 必须转给 alt 的数量\n        self.pizzas -= (q - overload)  # 自己做的数量\n        return overload\n\n    def order(self, quantity, source=None):\n        if isinstance(source, Parlor):\n            print(source.name, 'forwarded an order of', quantity, 'to', self.name)\n        self.profit += ______(b)\n        rest = ______(c)\n        if rest:\n            self.profit -= ______(d)\n            ______(e)\n        print(f'{self.name} now has ${self.profit} profit')\n\nclass MegaParlor(Parlor):\n    def __init__(self, price):\n        self.name, self.price, self.profit = \"MEGA\", price, 0\n\n    def cook(self, q):\n        return ______(f)\n```",
+   "questions": [
+    {
+     "id": "q4a",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (a) 填什么？",
+     "choices": [
+      "q - self.pizzas",
+      "abs(q - self.pizzas)",
+      "max(0, q - self.pizzas)",
+      "min(0, q - self.pizzas)"
+     ],
+     "answer": 2,
+     "explain": "超出自己能做的部分才转出去，不能是负数。"
+    },
+    {
+     "id": "q4b",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (b) 填什么？",
+     "choices": [
+      "price * quantity",
+      "price * self.quantity",
+      "price * pizzas",
+      "price * self.pizzas",
+      "self.price * quantity",
+      "self.price * self.quantity",
+      "self.price * pizzas",
+      "self.price * self.pizzas"
+     ],
+     "answer": 4,
+     "explain": "整笔订单都按自己的单价收钱。"
+    },
+    {
+     "id": "q4c",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (c) 填什么？（不能调用 `type` 或 `isinstance`）",
+     "accept": [
+      "self.cook(quantity)"
+     ],
+     "explain": "`cook` 返回要转给 `alt` 的数量；`MegaParlor` 重写了 `cook`，这里靠动态分派，不用判断类型。"
+    },
+    {
+     "id": "q4d",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (d) 填什么？",
+     "accept": [
+      "rest * self.alt.price",
+      "self.alt.price * rest"
+     ],
+     "explain": "付给备用店的钱：备用店的单价 × 转出的数量。"
+    },
+    {
+     "id": "q4e",
+     "type": "text",
+     "points": 3,
+     "prompt": "空 (e) 填什么？（不能写 `=`）",
+     "accept": [
+      "self.alt.order(rest, self)"
+     ],
+     "explain": "把剩下的订单交给备用店，并告诉它订单是自己转来的（它会打印 forwarded）。"
+    },
+    {
+     "id": "q4f",
+     "type": "text",
+     "points": 1,
+     "prompt": "空 (f) 填什么？",
+     "accept": [
+      "0"
+     ],
+     "explain": "`MegaParlor` 什么都能做，不需要转出。"
+    }
+   ]
+  },
+  {
+   "title": "第 5 大题：双拼披萨（20 分）",
+   "intro": "Kay 喜欢蘑菇（M），John 喜欢菠萝（P），但他们不吃「蘑菇片和菠萝片相邻」的披萨。一个 n 片的披萨用长度为 n 的字符串表示：`M` 蘑菇，`P` 菠萝，`_` 什么都不放。字符串里相邻的两片相邻，**第一片和最后一片也相邻**。例如 `MMMMPPPP`（MP 相邻）、`MM__PP`（首尾 M 和 P 相邻）不行；`MM__M_PP_M`、`_P_M_P_M` 可以。",
+   "questions": [
+    {
+     "id": "q5a",
+     "type": "choice",
+     "points": 2,
+     "prompt": "实现 `symmetrical(d)`：对 `d` 里每一对 `d[k] == v`，都有 `d[v] == k` 时返回 `True`。（`None` 不是 `d` 的键或值；`d.get(key)` 键不存在时返回 `None`）\n\n```python\ndef symmetrical(d):\n    \"\"\"\n    >>> symmetrical({'M': 'P', 'P': 'M', 'G': 'G'})\n    True\n    >>> symmetrical({'M': 'P', 'P': 'M', 'G': 'M'})   # 没有 M->G\n    False\n    \"\"\"\n    return all([ ______ for k in d.keys()])\n```\n\n空里填什么？",
+     "choices": [
+      "k in d and d[k] in d",
+      "k in d.keys() and d[k] in d.values()",
+      "k in d.keys() and v in d.values()",
+      "d[k] == d.get(k)",
+      "d[k] == d.get(v)",
+      "d[k] == v and d.get(v) == k",
+      "d[k] != v or d.get(v) == k",
+      "d[k].get(v) == v",
+      "d[k].get(v) == k",
+      "d[k].get(k) == v",
+      "d[k].get(k) == k",
+      "d.get(d[k]) == v",
+      "d.get(d[k]) == k",
+      "d.get(d[k]) == d.get(v)",
+      "d.get(d[k]) == d.get(k)"
+     ],
+     "answer": 12,
+     "explain": "以 `d[k]` 为键查回去，应该得到 `k`；用 `get` 避免键不存在时报错。"
+    },
+    {
+     "id": "q5b",
+     "type": "choice",
+     "points": 1,
+     "prompt": "实现 `acceptable(pizza, disallow)`：相邻的两片不出现 `disallow` 里的一对时返回 `True`（`disallow` 是对称的字典）。\n\n```python\ndef acceptable(pizza, disallow={'M': 'P', 'P': 'M'}):\n    \"\"\"\n    >>> acceptable(\"MM_PPP__M\")\n    True\n    >>> acceptable(\"MM__PPP\")   # 第一片 M 和最后一片 P 相邻\n    False\n    >>> acceptable(\"MM__PPP_\")\n    True\n    >>> acceptable(\"MM__MPPP_\")\n    False\n    \"\"\"\n    assert symmetrical(disallow)\n    previous = ''\n    for slice in pizza:\n        if previous ______(b):\n            return False\n        ______(c)\n    return ______(d)\n```\n\n空 (b) 填什么？",
+     "choices": [
+      "or disallow.get(previous) == slice",
+      "and disallow.get(previous) == slice",
+      "or disallow.get(previous) == disallow.get(slice)",
+      "and disallow.get(previous) == disallow.get(slice)"
+     ],
+     "answer": 1,
+     "explain": "有前一片（不是空字符串），而且前一片和这一片是不允许相邻的一对。"
+    },
+    {
+     "id": "q5c",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (c) 填什么？",
+     "choices": [
+      "previous = slice",
+      "previous = pizza[slice]",
+      "previous = previous + 1",
+      "slice = previous",
+      "slice = pizza[slice]",
+      "slice = disallow.get(previous)"
+     ],
+     "answer": 0,
+     "explain": "往后走一片。"
+    },
+    {
+     "id": "q5d",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (d) 填什么？（不能调用 `acceptable`）",
+     "accept": [
+      "disallow.get(slice) != pizza[0]",
+      "pizza[0] != disallow.get(slice)"
+     ],
+     "explain": "循环结束时 `slice` 是最后一片，还要检查它和第一片 `pizza[0]` 是否相邻冲突。"
+    },
+    {
+     "id": "q5e",
+     "type": "text",
+     "points": 1,
+     "prompt": "实现 `count_pizzas(num_slices)`：返回 n 片披萨的合法放法有几种（不能调用 `acceptable`）。\n\n```python\ndef count_pizzas(num_slices):\n    \"\"\"\n    >>> count_pizzas(1)   # 一片：M、P 或什么都不放\n    3\n    >>> count_pizzas(2)   # MM M_ _M __ PP P_ _P\n    7\n    \"\"\"\n    def f(n, first, previous):\n        if ______(e):\n            if first == previous or ______(f):\n                return 1\n            return 0\n        allowed_next = ______(g)\n        if previous == 'P':\n            allowed_next.remove('M')\n        if previous == 'M':\n            allowed_next.remove('P')\n        return sum([______(h) for x in allowed_next])\n    slice_types = ['_', 'M', 'P']\n    return sum([f(1, x, x) for x in slice_types])\n```\n\n空 (e) 填什么？",
+     "accept": [
+      "n == num_slices",
+      "num_slices == n"
+     ],
+     "explain": "已经放满 `num_slices` 片时，检查首尾是否冲突。"
+    },
+    {
+     "id": "q5f",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (f) 填什么？",
+     "choices": [
+      "'_' in [first, previous]",
+      "first in ['M', 'P']",
+      "first in ['M', 'P'] or previous in ['M', 'P']",
+      "first != previous"
+     ],
+     "answer": 0,
+     "explain": "首尾相同，或者其中有一片什么都没放，就不会冲突。"
+    },
+    {
+     "id": "q5g",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (g) 填什么？",
+     "choices": [
+      "slice_types",
+      "list(slice_types)",
+      "[first, previous]",
+      "[first, previous, '_']"
+     ],
+     "answer": 1,
+     "explain": "要复制一份再 `remove`，不能改到共用的 `slice_types`。"
+    },
+    {
+     "id": "q5h",
+     "type": "text",
+     "points": 3,
+     "prompt": "空 (h) 填什么？",
+     "accept": [
+      "f(n+1, first, x)",
+      "f(n + 1, first, x)",
+      "f(1 + n, first, x)"
+     ],
+     "explain": "再放一片 `x`：片数加一，第一片不变，前一片变成 `x`。"
+    },
+    {
+     "id": "q5i",
+     "type": "text",
+     "points": 1,
+     "prompt": "实现 `pizzas(n)`：返回所有合法的 n 片披萨（字符串列表）。`check_ends` 表示是否检查首尾。不能调用 `acceptable`。\n\n```python\ndef pizzas(n, check_ends=True):\n    \"\"\"\n    >>> pizzas(1)\n    ['_', 'M', 'P']\n    >>> pizzas(2)\n    ['__', '_M', '_P', 'M_', 'MM', 'P_', 'PP']\n    >>> '_M_P' in pizzas(4)\n    True\n    \"\"\"\n    if n == 0:\n        return ______(i)\n    recurse = pizzas(n-1, False)\n    ways = ______(j)\n    for y, z in [['M', 'P'], ['P', 'M']]:\n        ______(k)([y + x for x in recurse if not x or ______(l)])\n    ok = lambda x: True\n    if check_ends:\n        ok = lambda x: x[0] + x[-1] not in ['MP', 'PM']\n    return ______(m)      # 必须是一个调用表达式\n```\n\n空 (i) 填什么？",
+     "accept": [
+      "[\"\"]",
+      "['']"
+     ],
+     "explain": "0 片只有一种放法：空字符串。注意不是空列表。"
+    },
+    {
+     "id": "q5j",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (j) 填什么？（不能调用 `pizzas`）",
+     "accept": [
+      "[\"_\" + x for x in recurse]",
+      "['_' + x for x in recurse]"
+     ],
+     "explain": "第一片什么都不放，后面接任意一种 n-1 片的放法都行。"
+    },
+    {
+     "id": "q5k",
+     "type": "choice",
+     "points": 1,
+     "prompt": "空 (k) 填什么？",
+     "choices": [
+      "yield",
+      "yield from",
+      "return",
+      "ways =",
+      "ways.append",
+      "ways.extend"
+     ],
+     "answer": 5,
+     "explain": "把一批新的放法加到 `ways` 里。"
+    },
+    {
+     "id": "q5l",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (l) 填什么？",
+     "accept": [
+      "x[0] != z",
+      "z != x[0]"
+     ],
+     "explain": "第一片放 `y` 时，后面紧跟的那片不能是和它冲突的 `z`。"
+    },
+    {
+     "id": "q5m",
+     "type": "text",
+     "points": 2,
+     "prompt": "空 (m) 填什么？（只能写名字、括号和逗号，不能用 `[ ]`）",
+     "accept": [
+      "list(filter(ok, ways))"
+     ],
+     "explain": "用 `ok` 过滤掉首尾冲突的放法，再转成列表。"
+    }
+   ]
+  }
+ ]
+}

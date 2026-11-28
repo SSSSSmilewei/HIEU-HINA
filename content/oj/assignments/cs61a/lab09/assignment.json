@@ -1,0 +1,176 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "lab09",
+ "title": "实验 9：解释器",
+ "semester": "sp26",
+ "language": "en",
+ "source": "https://cs61a.org/lab/lab09/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2026 春季，存档见 github.com/lr2933/cs61a-spring-2026），仅供协会内部学习交流；中文翻译 海纳协会",
+ "item": "lab09",
+ "repoDir": "lab/lab09",
+ "intro": "",
+ "problems": [
+  {
+   "id": "using_link",
+   "title": "Using Link",
+   "titleEn": "Using Link",
+   "kind": "wwpd",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nAnswer the following questions about a `Link` instance representing the Calculator expression `(+ (- 2 4) 6 8)`.\n",
+   "statementEn": "Answer the following questions about a `Link` instance representing the Calculator expression `(+ (- 2 4) 6 8)`.\n",
+   "editable": [
+    "lab09.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "using_link"
+   },
+   "unlock": [
+    {
+     "type": "choice",
+     "question": "Find the Python expression that returns a `Link` representing the given expression: (+ (- 2 4) 6 8)",
+     "choices": [
+      "Link('+', Link('-', Link(2, Link(4, Link(6, Link(8))))))",
+      "Link('+', Link(Link(-, Link(2, Link(4))), Link(6, Link(8))))",
+      "Link(+, Link(Link(-, Link(2, Link(4))), Link(6, Link(8))))",
+      "Link('+', Link(Link('-', Link(2, Link(4))), Link(6, Link(8))))",
+      "None of these"
+     ],
+     "answer": "c7fdc39a612e9c8887a26a2e08ea34c1"
+    },
+    {
+     "type": "choice",
+     "question": "What is the operator of the previous part's call expression?",
+     "choices": [
+      "-",
+      "+",
+      "(",
+      "2",
+      "6",
+      "None of these"
+     ],
+     "answer": "b440e2425a7fbf959b0a6ec6eb62bd64"
+    },
+    {
+     "type": "choice",
+     "question": "If the `Link` you constructed in the previous part was bound to the name `p`,\nhow would you retrieve the operator?",
+     "choices": [
+      "p",
+      "p.first",
+      "p.rest",
+      "p.rest.first",
+      "p.first.rest"
+     ],
+     "answer": "f379e7b2c525636836e9d5c05801d4a1"
+    },
+    {
+     "type": "choice",
+     "question": "If the `Link` you constructed was bound to the name `p`, \nhow would you retrieve a list containing all of the operands?",
+     "choices": [
+      "p",
+      "p.first",
+      "p.rest",
+      "p.rest.first",
+      "p.first.rest"
+     ],
+     "answer": "fb6d6085526139789c44f24d956e1e0b"
+    },
+    {
+     "type": "choice",
+     "question": "How would you retrieve only the first operand?",
+     "choices": [
+      "p",
+      "p.first",
+      "p.rest",
+      "p.rest.first",
+      "p.first.rest"
+     ],
+     "answer": "6062d3641c25b44c5a0575a7c37ffb2a"
+    },
+    {
+     "type": "choice",
+     "question": "What is the first operand of the call expression (+ (- 2 4) 6 8) prior to evaluation?",
+     "choices": [
+      "'-'",
+      "'+'",
+      "2",
+      "4",
+      "-2",
+      "Link('-', Link(2, Link(4)))",
+      "Link(2, Link(4))"
+     ],
+     "answer": "2b2fb7e39cdf1487bec74987d5485b40"
+    }
+   ]
+  },
+  {
+   "id": "floor_div",
+   "title": "New Procedure",
+   "titleEn": "New Procedure",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nAdd the `//` operation to Calculator, a floor-division procedure such that `(// dividend divisor)` returns the result of dividing `dividend` by `divisor`, ignoring the remainder (`dividend // divisor` in Python). Handle multiple inputs as illustrated in the following example: `(// dividend divisor1 divisor2 divisor3)` evaluates to `(((dividend // divisor1) // divisor2) // divisor3)` in Python. Assume every call to `//` has at least two arguments.\n\n*Hint:* You will need to modify both the `calc_eval` and `floor_div` methods for this question!\n\n```\ncalc> (// 1 1)\n1\ncalc> (// 5 2)\n2\ncalc> (// 28 (+ 1 1) 1)\n14\n```\n\n*Hint:* Make sure that every element in a `Link` (the operator and all operands) will be `calc_eval`-uated once so that we can correctly apply the relevant Python operator to operands!\n",
+   "statementEn": "Add the `//` operation to Calculator, a floor-division procedure such that `(// dividend divisor)` returns the result of dividing `dividend` by `divisor`, ignoring the remainder (`dividend // divisor` in Python). Handle multiple inputs as illustrated in the following example: `(// dividend divisor1 divisor2 divisor3)` evaluates to `(((dividend // divisor1) // divisor2) // divisor3)` in Python. Assume every call to `//` has at least two arguments.\n\n*Hint:* You will need to modify both the `calc_eval` and `floor_div` methods for this question!\n\n```\ncalc> (// 1 1)\n1\ncalc> (// 5 2)\n2\ncalc> (// 28 (+ 1 1) 1)\n14\n```\n\n*Hint:* Make sure that every element in a `Link` (the operator and all operands) will be `calc_eval`-uated once so that we can correctly apply the relevant Python operator to operands!\n",
+   "editable": [
+    "lab09.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "floor_div"
+   },
+   "focus": {
+    "file": "lab09.py",
+    "symbol": "floor_div"
+   }
+  },
+  {
+   "id": "eval_and",
+   "title": "New Form",
+   "titleEn": "New Form",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nAdd `and` expressions to our Calculator interpreter as well as introduce the Scheme boolean values `#t` and `#f`, represented as Python `True` and `False`. The examples below assumes conditional operators (e.g. `<`, `>`, `=`, etc) have already been implemented, but you do not have to worry about them for this question.\n\n```\ncalc> (and (= 1 1) 3)\n3\ncalc> (and (+ 1 0) (< 1 0) (/ 1 0))\n#f\ncalc> (and #f (+ 1 0))\n#f\ncalc> (and 0 1 (+ 5 1)) ; 0 is a true value in Scheme!\n6\n```\n\nIn a call expression, we first evaluate the operator, then evaluate the operands, and finally apply the procedure to its arguments (just like you did for `floor_div` in the previous question). However, we cannot evaluate `and` expressions the same way we evaluate call expressions. Since `and` is a special form that short circuits on the first false argument, we need to add special logic so that we don't always evaluate all of the sub-expressions.\n\n**Important**: To check whether some `val` is a false value in Scheme, use `val is scheme_f` rather than `val == scheme_f` because in Python `0 == False` but `0 is not False` (crazy, right!).\n",
+   "statementEn": "Add `and` expressions to our Calculator interpreter as well as introduce the Scheme boolean values `#t` and `#f`, represented as Python `True` and `False`. The examples below assumes conditional operators (e.g. `<`, `>`, `=`, etc) have already been implemented, but you do not have to worry about them for this question.\n\n```\ncalc> (and (= 1 1) 3)\n3\ncalc> (and (+ 1 0) (< 1 0) (/ 1 0))\n#f\ncalc> (and #f (+ 1 0))\n#f\ncalc> (and 0 1 (+ 5 1)) ; 0 is a true value in Scheme!\n6\n```\n\nIn a call expression, we first evaluate the operator, then evaluate the operands, and finally apply the procedure to its arguments (just like you did for `floor_div` in the previous question). However, we cannot evaluate `and` expressions the same way we evaluate call expressions. Since `and` is a special form that short circuits on the first false argument, we need to add special logic so that we don't always evaluate all of the sub-expressions.\n\n**Important**: To check whether some `val` is a false value in Scheme, use `val is scheme_f` rather than `val == scheme_f` because in Python `0 == False` but `0 is not False` (crazy, right!).\n",
+   "editable": [
+    "lab09.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "eval_and"
+   },
+   "focus": {
+    "file": "lab09.py",
+    "symbol": "eval_and"
+   }
+  },
+  {
+   "id": "eval_define",
+   "title": "Saving Values",
+   "titleEn": "Saving Values",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "> 中文翻译还没做好，下面是官方英文原文。\n\nImplement a `define` special form that binds values to symbols. This should work like `define` in Scheme: `(define <symbol> <expression>)` first evaluates the `expression`, then binds the `symbol` to the value of `expression`. The whole `define` expression evaluates to the `symbol`. Here's an example to illustrate:\n\n```\ncalc> (define a 1)\na\ncalc> a\n1\n```\n\nThis is a more involved change. Here are the 4 steps involved:\n\n1. Add a `bindings` dictionary that will store the symbols and correspondings values (done for you).\n2. Identify when the define form is given to `calc_eval` (done for you).\n3. Modify `calc_eval` to allow the lookup of symbols in `bindings` and get their values.\n4. Write the function `eval_define` which adds the defined symbol and its value to the bindings dictionary.\n",
+   "statementEn": "Implement a `define` special form that binds values to symbols. This should work like `define` in Scheme: `(define <symbol> <expression>)` first evaluates the `expression`, then binds the `symbol` to the value of `expression`. The whole `define` expression evaluates to the `symbol`. Here's an example to illustrate:\n\n```\ncalc> (define a 1)\na\ncalc> a\n1\n```\n\nThis is a more involved change. Here are the 4 steps involved:\n\n1. Add a `bindings` dictionary that will store the symbols and correspondings values (done for you).\n2. Identify when the define form is given to `calc_eval` (done for you).\n3. Modify `calc_eval` to allow the lookup of symbols in `bindings` and get their values.\n4. Write the function `eval_define` which adds the defined symbol and its value to the bindings dictionary.\n",
+   "editable": [
+    "lab09.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "eval_define"
+   },
+   "focus": {
+    "file": "lab09.py",
+    "symbol": "eval_define"
+   }
+  }
+ ]
+}

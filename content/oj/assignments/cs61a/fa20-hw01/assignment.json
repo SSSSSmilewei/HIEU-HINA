@@ -1,0 +1,125 @@
+{
+ "format": "hiana-assignment@1",
+ "course": "cs61a",
+ "id": "fa20-hw01",
+ "title": "作业 1：变量和函数，控制",
+ "semester": "fa20",
+ "language": "zh",
+ "source": "https://inst.eecs.berkeley.edu/~cs61a/fa20/hw/hw01/",
+ "license": "题目、起始代码与测试 © UC Berkeley CS 61A（2020 秋季）；中文翻译来自 github.com/chillyhigh/CS61A-CN（MIT 许可）。仅供协会内部学习交流",
+ "item": "hw01",
+ "repoDir": "fa20/hw/hw01",
+ "intro": "",
+ "problems": [
+  {
+   "id": "a_plus_abs_b",
+   "title": "A 加上 B 的绝对值",
+   "titleEn": "A Plus Abs B",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "在以下函数中填空，在不调用`abs`函数的情况下将`a`加到`b`的绝对值上。除了两个空白处以外，你**不能**修改所提供的代码。\n\n```\nfrom operator import add, sub\n\ndef a_plus_abs_b(a, b):\n    \"\"\"Return a+abs(b), but without calling abs.\n\n    >>> a_plus_abs_b(2, 3)\n    5\n    >>> a_plus_abs_b(2, -3)\n    5\n    >>> # a check that you didn't change the return statement!\n    >>> import inspect, re\n    >>> re.findall(r'^\\s*(return .*)', inspect.getsource(a_plus_abs_b), re.M)\n    ['return f(a, b)']\n    \"\"\"\n    if b < 0:\n        f = _____\n    else:\n        f = _____\n    return f(a, b)\n```\n",
+   "statementEn": "Fill in the blanks in the following function for adding `a` to the absolute value of `b`, without calling `abs`. You may **not** modify any of the provided code other than the two blanks.\n\n```\nfrom operator import add, sub\n\ndef a_plus_abs_b(a, b):\n    \"\"\"Return a+abs(b), but without calling abs.\n\n    >>> a_plus_abs_b(2, 3)\n    5\n    >>> a_plus_abs_b(2, -3)\n    5\n    >>> # a check that you didn't change the return statement!\n    >>> import inspect, re\n    >>> re.findall(r'^\\s*(return .*)', inspect.getsource(a_plus_abs_b), re.M)\n    ['return f(a, b)']\n    \"\"\"\n    if b < 0:\n        f = _____\n    else:\n        f = _____\n    return f(a, b)\n```\n",
+   "editable": [
+    "hw01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "a_plus_abs_b"
+   },
+   "focus": {
+    "file": "hw01.py",
+    "symbol": "a_plus_abs_b"
+   }
+  },
+  {
+   "id": "two_of_three",
+   "title": "三个数中取两个",
+   "titleEn": "Two of Three",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个函数，该函数接受三个*正数*作为参数，并返回其中两个最小数的平方和。**函数体只能使用一行代码。**\n\n```\ndef two_of_three(x, y, z):\n    \"\"\"Return a*a + b*b, where a and b are the two smallest members of the\n    positive numbers x, y, and z.\n\n    >>> two_of_three(1, 2, 3)\n    5\n    >>> two_of_three(5, 3, 1)\n    10\n    >>> two_of_three(10, 2, 8)\n    68\n    >>> two_of_three(5, 5, 5)\n    50\n    >>> # check that your code consists of nothing but an expression (this docstring)\n    >>> # a return statement\n    >>> import inspect, ast\n    >>> [type(x).__name__ for x in ast.parse(inspect.getsource(two_of_three)).body[0].body]\n    ['Expr', 'Return']\n    \"\"\"\n    return _____\n\n```\n\n**提示：**考虑使用`max`或`min`函数：\n\n```\n>>> max(1, 2, 3)\n3\n>>> min(-1, -2, -3)\n-3\n```\n",
+   "statementEn": "Write a function that takes three *positive* numbers as arguments and returns the sum of the squares of the two smallest numbers. **Use only a single line for the body of the function.**\n\n```\ndef two_of_three(x, y, z):\n    \"\"\"Return a*a + b*b, where a and b are the two smallest members of the\n    positive numbers x, y, and z.\n\n    >>> two_of_three(1, 2, 3)\n    5\n    >>> two_of_three(5, 3, 1)\n    10\n    >>> two_of_three(10, 2, 8)\n    68\n    >>> two_of_three(5, 5, 5)\n    50\n    >>> # check that your code consists of nothing but an expression (this docstring)\n    >>> # a return statement\n    >>> import inspect, ast\n    >>> [type(x).__name__ for x in ast.parse(inspect.getsource(two_of_three)).body[0].body]\n    ['Expr', 'Return']\n    \"\"\"\n    return _____\n\n```\n\n**Hint:** Consider using the `max` or `min` function:\n\n```\n>>> max(1, 2, 3)\n3\n>>> min(-1, -2, -3)\n-3\n```\n",
+   "editable": [
+    "hw01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "two_of_three"
+   },
+   "focus": {
+    "file": "hw01.py",
+    "symbol": "two_of_three"
+   }
+  },
+  {
+   "id": "largest_factor",
+   "title": "最大因子",
+   "titleEn": "Largest Factor",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "编写一个函数，该函数接受一个**大于1**的整数`n`，并返回一个小于`n`且能整除`n`的最大整数。\n\n```\ndef largest_factor(n):\n    \"\"\"Return the largest factor of n that is smaller than n.\n\n    >>> largest_factor(15) # factors are 1, 3, 5\n    5\n    >>> largest_factor(80) # factors are 1, 2, 4, 5, 8, 10, 16, 20, 40\n    40\n    >>> largest_factor(13) # factor is 1 since 13 is prime\n    1\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n\n**提示：**要确定`b`是否能整除`a`， 你可以使用表达式`a % b == 0`，它的意思是： “`a`除以`b`的余数为0。”\n",
+   "statementEn": "Write a function that takes an integer `n` that is **greater than 1** and returns the largest integer that is smaller than `n` and evenly divides `n`.\n\n```\ndef largest_factor(n):\n    \"\"\"Return the largest factor of n that is smaller than n.\n\n    >>> largest_factor(15) # factors are 1, 3, 5\n    5\n    >>> largest_factor(80) # factors are 1, 2, 4, 5, 8, 10, 16, 20, 40\n    40\n    >>> largest_factor(13) # factor is 1 since 13 is prime\n    1\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n\n**Hint:** To check if `b` evenly divides `a`, you can use the expression `a % b == 0`, which can be read as, \"the remainder of dividing `a` by `b` is 0.\"\n",
+   "editable": [
+    "hw01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "largest_factor"
+   },
+   "focus": {
+    "file": "hw01.py",
+    "symbol": "largest_factor"
+   }
+  },
+  {
+   "id": "with_if_statement",
+   "title": "If 函数 vs 语句",
+   "titleEn": "If Function vs Statement",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "下面是一个函数，该函数与`if`语句执行相同的操作。\n\n```\ndef if_function(condition, true_result, false_result):\n    \"\"\"Return true_result if condition is a true value, and\n    false_result otherwise.\n\n    >>> if_function(True, 2, 3)\n    2\n    >>> if_function(False, 2, 3)\n    3\n    >>> if_function(3==2, 3+2, 3-2)\n    1\n    >>> if_function(3>2, 3+2, 3-2)\n    5\n    \"\"\"\n    if condition:\n        return true_result\n    else:\n        return false_result\n```\n\n尽管上面 doctests 的结果与`if`语句的结果相同，但实际上在任何情况下它并*不*与`if`语句执行相同的操作。 为了证明这一点，请你编写函数`cond`、`true_func`和`false_func`，使得 `with_if_statement` 打印数字`47`，但是`with_if_function`打印`42`和`47`。\n\n```\ndef with_if_statement():\n    \"\"\"\n    >>> result = with_if_statement()\n    47\n    >>> print(result)\n    None\n    \"\"\"\n    if cond():\n        return true_func()\n    else:\n        return false_func()\n\ndef with_if_function():\n    \"\"\"\n    >>> result = with_if_function()\n    42\n    47\n    >>> print(result)\n    None\n    \"\"\"\n    return if_function(cond(), true_func(), false_func())\n\ndef cond():\n    \"*** YOUR CODE HERE ***\"\n\ndef true_func():\n    \"*** YOUR CODE HERE ***\"\n\ndef false_func():\n    \"*** YOUR CODE HERE ***\"\n\n```\n\n**提示**：如果你很难区分`if`语句和`if_function`， 请看一下[if 语句的求值规则](https://composingprograms.netlify.app/1/5#_1-5-4-%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5)和[调用表达式](https://composingprograms.netlify.app/1/2#_1-2-2-%E8%B0%83%E7%94%A8%E8%A1%A8%E8%BE%BE%E5%BC%8F)。\n\n使用 Ok 来测试你的代码：\n\n```\npython3 ok -q with_if_statement --local\npython3 ok -q with_if_function --local\n```\n",
+   "statementEn": "Let's try to write a function that does the same thing as an `if` statement.\n\n```\ndef if_function(condition, true_result, false_result):\n    \"\"\"Return true_result if condition is a true value, and\n    false_result otherwise.\n\n    >>> if_function(True, 2, 3)\n    2\n    >>> if_function(False, 2, 3)\n    3\n    >>> if_function(3==2, 3+2, 3-2)\n    1\n    >>> if_function(3>2, 3+2, 3-2)\n    5\n    \"\"\"\n    if condition:\n        return true_result\n    else:\n        return false_result\n```\n\nDespite the doctests above, this function actually does *not* do the same thing as an `if` statement in all cases. To prove this fact, write functions `cond`, `true_func`, and `false_func` such that `with_if_statement` prints the number `47`, but `with_if_function` prints both `42` and `47`.\n\n```\ndef with_if_statement():\n    \"\"\"\n    >>> result = with_if_statement()\n    47\n    >>> print(result)\n    None\n    \"\"\"\n    if cond():\n        return true_func()\n    else:\n        return false_func()\n\ndef with_if_function():\n    \"\"\"\n    >>> result = with_if_function()\n    42\n    47\n    >>> print(result)\n    None\n    \"\"\"\n    return if_function(cond(), true_func(), false_func())\n\ndef cond():\n    \"*** YOUR CODE HERE ***\"\n\ndef true_func():\n    \"*** YOUR CODE HERE ***\"\n\ndef false_func():\n    \"*** YOUR CODE HERE ***\"\n\n```\n\n**Hint**: If you are having a hard time identifying how an `if` statement and `if_function` differ, consider the [rules of evaluation for `if` statements](http://composingprograms.com/pages/15-control.html#conditional-statements) and [call expressions](http://composingprograms.com/pages/12-elements-of-programming.html#call-expressions).\n\nUse Ok to test your code:\n\n```\npython3 ok -q with_if_statement\npython3 ok -q with_if_function\n```\n",
+   "editable": [
+    "hw01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "with_if_statement with_if_function"
+   },
+   "focus": {
+    "file": "hw01.py",
+    "symbol": "with_if_statement"
+   }
+  },
+  {
+   "id": "hailstone",
+   "title": "冰雹序列",
+   "titleEn": "Hailstone",
+   "kind": "function",
+   "languages": [
+    "python"
+   ],
+   "statement": "Douglas Hofstadter在普利策奖获奖书籍 *Gödel, Escher, Bach* 中提出了以下数学猜想。\n\n1. 选择一个正整数`n`作为开始。\n2. 如果`n`是偶数，将它除以2。\n3. 如果`n`是奇数，将它乘以3再加1。\n4. 继续这个过程直到`n`变为1。\n\n数字`n`会上下波动，但最终会变为1（至少对于所有尝试过的数字来说——没有人曾经证明这个序列会终止）。类似地，冰雹在最终落到地面之前会在大气中上下波动。\n\n**突发新闻**（或者至少在数学中最接近突发新闻的东西）。去年冰雹猜想有了[最新进展](https://www.quantamagazine.org/mathematician-terence-tao-and-the-collatz-conjecture-20191211/)，表明如果你重复这个过程，几乎所有的数字最终都会变为1。这不是一个完整的证明，但却是一个重大突破。\n\n这个`n`值的序列通常被称为冰雹序列。编写一个函数，该函数接受一个名为`n`的形式参数，打印出从`n`开始的冰雹序列，并返回序列中的步骤数：\n\n```\ndef hailstone(n):\n    \"\"\"Print the hailstone sequence starting at n and return its\n    length.\n\n    >>> a = hailstone(10)\n    10\n    5\n    16\n    8\n    4\n    2\n    1\n    >>> a\n    7\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n\n冰雹序列可能会变得非常长！试试27。你找到的最长序列是什么？\n",
+   "statementEn": "Douglas Hofstadter's Pulitzer-prize-winning book, *Gödel, Escher, Bach*, poses the following mathematical puzzle.\n\n1. Pick a positive integer `n` as the start.\n2. If `n` is even, divide it by 2.\n3. If `n` is odd, multiply it by 3 and add 1.\n4. Continue this process until `n` is 1.\n\nThe number `n` will travel up and down but eventually end at 1 (at least for all numbers that have ever been tried -- nobody has ever proved that the sequence will terminate). Analogously, a hailstone travels up and down in the atmosphere before eventually landing on earth.\n\n**Breaking News** (or at least the closest thing to that in math). There was a [recent development](https://www.quantamagazine.org/mathematician-terence-tao-and-the-collatz-conjecture-20191211/) in the hailstone conjecture last year that shows that almost all numbers will eventually get to 1 if you repeat this process. This isn't a complete proof but a major breakthrough.\n\nThis sequence of values of `n` is often called a Hailstone sequence. Write a function that takes a single argument with formal parameter name `n`, prints out the hailstone sequence starting at `n`, and returns the number of steps in the sequence:\n\n```\ndef hailstone(n):\n    \"\"\"Print the hailstone sequence starting at n and return its\n    length.\n\n    >>> a = hailstone(10)\n    10\n    5\n    16\n    8\n    4\n    2\n    1\n    >>> a\n    7\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n\n```\n\nHailstone sequences can get quite long! Try 27. What's the longest you can find?\n",
+   "editable": [
+    "hw01.py"
+   ],
+   "tests": {
+    "kind": "ok",
+    "question": "hailstone"
+   },
+   "focus": {
+    "file": "hw01.py",
+    "symbol": "hailstone"
+   }
+  }
+ ]
+}

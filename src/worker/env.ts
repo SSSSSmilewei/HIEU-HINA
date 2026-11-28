@@ -20,6 +20,14 @@ export interface Env {
   IMAGE_BASE_URL?: string;
   /** App 安装包发在哪个 GitHub 仓库的 Releases（/api/app/apk 从这里转发），默认 SSSSSmilewei/HIANA-Association */
   APP_RELEASE_REPO?: string;
+  /** 判题服务（judge/）的地址和令牌，学校服务器上经隧道访问；没配时判题接口回 503 */
+  JUDGE_URL?: string;
+  JUDGE_TOKEN?: string;
+  /** 学员仓库（Forgejo）的地址和管理员令牌；没配时不写仓库，判题照常 */
+  FORGEJO_URL?: string;
+  FORGEJO_TOKEN?: string;
+  /** 学员能访问的 Forgejo 地址（clone 用）；不填就用 FORGEJO_URL */
+  FORGEJO_PUBLIC_URL?: string;
 }
 
 /**
