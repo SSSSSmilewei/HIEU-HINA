@@ -486,6 +486,22 @@ export const MIGRATIONS: string[][] = [
     )`,
     `CREATE INDEX IF NOT EXISTS video_sources_by_item ON video_sources(course, item)`,
   ],
+  // v21：个人令牌（故事 2.3，VSCode 插件用）。只存令牌的 SHA-256；撤销后保留一行，记撤销时间。
+  // sv 是签发时账号的 session_version：改密码、重置密码以后，旧令牌和其他设备的登录一起失效
+  [
+    `CREATE TABLE IF NOT EXISTS api_tokens (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      name TEXT NOT NULL,
+      hash TEXT NOT NULL UNIQUE,
+      hint TEXT NOT NULL,
+      sv INTEGER NOT NULL DEFAULT 0,
+      created_at INTEGER NOT NULL,
+      last_used_at INTEGER,
+      revoked_at INTEGER
+    )`,
+    `CREATE INDEX IF NOT EXISTS api_tokens_by_user ON api_tokens(user_id)`,
+  ],
 ];
 
 // 每个数据库连接只迁移一次（Worker 里通常只有一个；测试里每个用例一个内存库）

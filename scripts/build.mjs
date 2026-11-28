@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { buildBlocks } from "./blocks.mjs";
 import { buildCourses, writeCatalog } from "./courses.mjs";
 import { buildOj } from "./oj.mjs";
+import { buildVsix } from "./vsix.mjs";
 import { light } from "../src/shared/light.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -68,6 +69,7 @@ if (existsSync(join(root, "content/levels")))
 const pageCount = buildCourses(root, out, courses);
 const blockCount = buildBlocks(root, out, courses.map(light));
 const oj = buildOj(root, out);
+const vsix = await buildVsix(root, out);
 
 const outputs = Object.keys(result.metafile.outputs).map((p) => p.replace(/\\/g, "/"));
 const js = outputs.find((p) => /assets\/app-[^/]+\.js$/.test(p));
@@ -118,4 +120,4 @@ ${[...initialChunks].map((p) => `<link rel="modulepreload" href="${rel(p)}">`).j
 
 const size = (p) => (result.metafile.outputs[p]?.bytes / 1024).toFixed(0);
 const initialSize = ([js, ...initialChunks].reduce((sum, p) => sum + result.metafile.outputs[p].bytes, 0) / 1024).toFixed(0);
-console.log(`前端已打包：${rel(js)} (${size(js)} KB)，首屏 JS 合计 ${initialSize} KB${css ? `，${rel(css)} (${size(css)} KB)` : ""}，${courses.length} 门课、${pageCount} 页讲义、${blockCount} 个知识块、${oj.assignments} 份作业、${oj.problems} 道 OJ 题`);
+console.log(`前端已打包：${rel(js)} (${size(js)} KB)，首屏 JS 合计 ${initialSize} KB${css ? `，${rel(css)} (${size(css)} KB)` : ""}，${courses.length} 门课、${pageCount} 页讲义、${blockCount} 个知识块、${oj.assignments} 份作业、${oj.problems} 道 OJ 题，VSCode 插件 ${vsix.version}（${Math.round(vsix.bytes / 1024)} KB）`);

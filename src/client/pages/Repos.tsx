@@ -229,6 +229,7 @@ export function ReposPage() {
                 )}
               </section>
               <LocalGuide owner={data.owner} sampleUrl={sample?.cloneUrl ?? null} sampleName={sample?.name ?? "cs61a"} onOwner={(owner) => setData({ ...data, owner })} />
+              <VscodeSection />
             </>
           )}
         </div>
@@ -299,6 +300,119 @@ git push`}</pre>
 git push github main`}</pre>
       <p className="ide-muted">
         以后每次在作业台提交以后，先 <code>git pull</code> 拉取平台上的新提交，再 <code>git push github main</code>，GitHub 上的副本就和平台保持一致。课程作业受学术诚信规定约束，镜像到 GitHub 时请把 GitHub 仓库设为私有。
+      </p>
+    </section>
+  );
+}
+
+interface TokenRow {
+  id: string;
+  name: string;
+  hint: string;
+  createdAt: number;
+  lastUsedAt: number | null;
+}
+
+/** VSCode 插件：下载、安装说明、签发和撤销个人令牌（故事 2.3） */
+function VscodeSection() {
+  const [tokens, setTokens] = useState<TokenRow[] | null>(null);
+  const [name, setName] = useState("");
+  const [fresh, setFresh] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const load = () => api<{ tokens: TokenRow[] }>("/api/tokens").then((r) => setTokens(r.tokens), (e: ApiError) => setError(e.message));
+  useEffect(() => {
+    void load();
+  }, []);
+  const issue = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setBusy(true);
+    setError(null);
+    try {
+      const r = await api<{ token: string }>("/api/tokens", { body: { name: name.trim() } });
+      setFresh(r.token);
+      setName("");
+      await load();
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  };
+  const revoke = async (t: TokenRow) => {
+    if (!window.confirm(`撤销令牌「${t.name}」以后，用它登录的 VSCode 会立即失效。确定撤销吗？`)) return;
+    try {
+      await api(`/api/tokens/${t.id}`, { method: "DELETE" });
+      await load();
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  };
+  return (
+    <section className="repo-section">
+      <h2 className="ide-h2">VSCode 插件</h2>
+      <p className="ide-muted">
+        装上插件以后，可以在 VSCode 里克隆自己的课程仓库、运行公开测试、提交到 OJ，判题结果显示在 VSCode 的输出面板里。提交时插件会先把改动推送到你的仓库，再交给平台判题，网页上的提交记录和仓库里都能看到。
+      </p>
+      <ol className="repo-steps">
+        <li>
+          <a className="ide-link" style={{ padding: 0 }} href="/downloads/hiana-oj.vsix" download>
+            下载插件（hiana-oj.vsix）
+          </a>
+          。在 VSCode 的「扩展」视图右上角点「…」，选「从 VSIX 安装…」，选中下载的文件；也可以在终端运行 <code>code --install-extension hiana-oj.vsix</code>。
+        </li>
+        <li>在下面签发一个令牌并复制下来。令牌只显示这一次。</li>
+        <li>
+          在 VSCode 里按 <code>Ctrl+Shift+P</code>，运行「HIANA：登录」，粘贴令牌。然后运行「HIANA：克隆我的课程仓库」，询问账号密码时填上面的 Git 用户名和 Git 密码。
+        </li>
+      </ol>
+      <form className="repo-form" onSubmit={(e) => void issue(e)}>
+        <div className="ide-field-label">签发令牌（起个名字，方便以后认出是哪台电脑在用）</div>
+        <div className="repo-form-row">
+          <input className="repo-input" placeholder="例如：宿舍的笔记本" maxLength={40} value={name} onChange={(e) => setName(e.target.value)} aria-label="令牌名称" />
+          <button className="ide-btn ide-btn-primary" disabled={busy || !name.trim()}>
+            {busy ? "正在签发…" : "签发"}
+          </button>
+        </div>
+      </form>
+      {fresh && (
+        <div className="repo-ok" style={{ color: "inherit" }}>
+          <CopyField label="新令牌（离开这个页面以后就看不到了，请现在复制）" value={fresh} />
+        </div>
+      )}
+      {error && <div className="ide-error" style={{ margin: "8px 0 0" }}>{error}</div>}
+      {tokens && tokens.length > 0 && (
+        <table className="repo-table" style={{ marginTop: 14 }}>
+          <thead>
+            <tr>
+              <th>名称</th>
+              <th>令牌末四位</th>
+              <th>签发时间</th>
+              <th>最近使用</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {tokens.map((t) => (
+              <tr key={t.id}>
+                <td>{t.name}</td>
+                <td className="ide-muted">
+                  <code>…{t.hint}</code>
+                </td>
+                <td className="ide-muted">{relativeTime(t.createdAt)}</td>
+                <td className="ide-muted">{t.lastUsedAt ? relativeTime(t.lastUsedAt) : "还没用过"}</td>
+                <td style={{ textAlign: "right" }}>
+                  <button className="ide-btn" onClick={() => void revoke(t)}>
+                    撤销
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      <p className="ide-muted" style={{ marginTop: 12 }}>
+        令牌只能用来运行、提交、查看提交记录和查看仓库，不能修改密码或做其他操作。改过平台密码以后，以前签发的令牌会自动失效。
       </p>
     </section>
   );

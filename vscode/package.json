@@ -1,0 +1,41 @@
+{
+  "name": "hiana-oj",
+  "displayName": "海纳协会 OJ",
+  "description": "在 VSCode 里写海纳协会学习平台的作业：克隆自己的课程仓库，运行公开测试，提交到 OJ，查看判题结果。",
+  "version": "0.1.0",
+  "publisher": "hiana",
+  "license": "MIT",
+  "engines": { "vscode": "^1.85.0" },
+  "categories": ["Education", "Other"],
+  "extensionDependencies": ["vscode.git"],
+  "main": "./dist/extension.js",
+  "activationEvents": ["onStartupFinished"],
+  "contributes": {
+    "commands": [
+      { "command": "hiana.login", "title": "登录", "category": "HIANA" },
+      { "command": "hiana.logout", "title": "退出登录", "category": "HIANA" },
+      { "command": "hiana.clone", "title": "克隆我的课程仓库", "category": "HIANA" },
+      { "command": "hiana.run", "title": "运行公开测试", "category": "HIANA", "icon": "$(play)" },
+      { "command": "hiana.submit", "title": "提交到 OJ", "category": "HIANA", "icon": "$(cloud-upload)" },
+      { "command": "hiana.history", "title": "查看提交记录", "category": "HIANA" },
+      { "command": "hiana.openWeb", "title": "在平台上打开这道题", "category": "HIANA" },
+      { "command": "hiana.menu", "title": "操作菜单", "category": "HIANA" }
+    ],
+    "menus": {
+      "editor/title": [
+        { "command": "hiana.run", "when": "hiana.loggedIn && resourceScheme == file && resourceExtname =~ /^\\.(py|scm|sql|c|cpp|java)$/", "group": "navigation@1" },
+        { "command": "hiana.submit", "when": "hiana.loggedIn && resourceScheme == file && resourceExtname =~ /^\\.(py|scm|sql|c|cpp|java)$/", "group": "navigation@2" }
+      ]
+    },
+    "configuration": {
+      "title": "海纳协会 OJ",
+      "properties": {
+        "hiana.server": {
+          "type": "string",
+          "default": "https://study.shanmoew-denied.win",
+          "description": "海纳协会学习平台的地址。"
+        }
+      }
+    }
+  }
+}

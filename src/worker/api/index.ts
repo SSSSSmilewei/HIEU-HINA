@@ -14,6 +14,7 @@ import { videoRoutes } from "./videos";
 import { pinRoutes } from "./pins";
 import { reflectionRoutes } from "./reflections";
 import { repoRoutes } from "./repos";
+import { tokenRoutes } from "./tokens";
 import { siteRoutes } from "./site";
 import { startRoutes } from "./start";
 
@@ -39,3 +40,4 @@ ojAiRoutes(api);
 examRoutes(api);
 videoRoutes(api);
 repoRoutes(api);
+tokenRoutes(api);

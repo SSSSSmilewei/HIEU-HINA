@@ -94,7 +94,7 @@ export function buildOj(root, out) {
   }
   for (const p of problems) writeFileSync(join(dir, "problems", `${p.id}.json`), JSON.stringify(publicProblem(p)));
   const index = {
-    assignments: assignments.map((a) => ({ course: a.course, id: a.id, title: a.title, item: a.item, semester: a.semester, language: a.language, problems: a.problems.map((p) => ({ id: p.id, title: p.title, kind: p.kind })) })),
+    assignments: assignments.map((a) => ({ course: a.course, id: a.id, title: a.title, item: a.item, semester: a.semester, language: a.language, repoDir: a.repoDir, problems: a.problems.map((p) => ({ id: p.id, title: p.title, kind: p.kind })) })),
     problems: problems.map((p) => ({ id: p.id, title: p.title, difficulty: p.difficulty, tags: p.tags, languages: p.languages })),
   };
   writeFileSync(join(dir, "index.json"), JSON.stringify(index));
